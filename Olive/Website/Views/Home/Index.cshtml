@@ -1,0 +1,17 @@
+﻿@model Olive.Website.ViewModels.Home.IndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<div>
+    @using (Html.BeginForm("Login", "Account"))
+    {
+        @Html.TextBox("UserId")
+        @Html.Password("Password")
+        <input type="submit" name="submit" value="Ok" />
+    }
+</div>

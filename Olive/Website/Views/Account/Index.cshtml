@@ -1,0 +1,25 @@
+﻿@model Olive.Services.AccountOverview
+
+@{
+    ViewBag.Title = "Overview";
+}
+
+<h2>Overview</h2>
+<table>
+    <tr>
+        <th>#</th>
+        <th>Currency</th>
+        <th>Balance</th>
+        <th>Name</th>
+    </tr>
+
+    @foreach (var account in this.Model)
+    {
+        <tr>
+            <td>@account.AccountId</td>
+            <td>@account.CurrencyShortName</td>
+            <td>@account.Balance</td>
+            <td>@account.DisplayName</td>
+        </tr>
+    }
+</table>

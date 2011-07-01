@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Login/register";
+}
+
+<h2>Index</h2>
+
+<div>
+    <h3>Login</h3>
+    @using (Html.BeginForm("Login", "Account"))
+    {
+        @Html.TextBox("UserId")
+        @Html.Password("Password")
+        <input type="submit" name="submit" value="Login" />
+    }
+
+    <h3>Register</h3>
+    @using (Html.BeginForm("Register", "Account"))
+    {
+        @Html.Password("Password")
+        <input type="submit" name="submit" value="Register" />
+    }
+</div>
