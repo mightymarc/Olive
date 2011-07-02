@@ -61,7 +61,7 @@ namespace Olive.Website.Controllers
         /// <param name="password">The password to use for authentication.</param>
         /// <returns>A redirect to the account index if the login was successful.</returns>
         [HttpPost]
-        public ActionResult Login(int userId, string password)
+        public ActionResult Login(int userId, string password, string returnUrl = null)
         {
             Contract.Requires<ArgumentNullException>(this.SessionPersister != null, "this.SessionPersister");
             Contract.Requires<ArgumentNullException>(this.Service != null, "this.Service");
@@ -70,7 +70,13 @@ namespace Olive.Website.Controllers
             {
                 var sessionId = this.Service.CreateSession(userId, password);
                 this.SessionPersister.SessionId = sessionId;
-                return this.RedirectToAction("Index", "Account");
+
+                if (returnUrl == null)
+                {
+                    return this.RedirectToAction("Index", "Account");
+                }
+
+                return new RedirectResult(returnUrl);
             }
             catch (FaultException<AuthenticationFault>)
             {

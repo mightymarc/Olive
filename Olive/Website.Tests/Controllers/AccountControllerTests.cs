@@ -28,13 +28,16 @@ namespace Website.Tests.Controllers
     [TestFixture]
     public class AccountControllerTests
     {
-        private IUnityContainer container;
-        private Mockery mockery = new Mockery();
+        private IUnityContainer container = new UnityContainer();
+        private readonly Mockery mockery = new Mockery();
 
         [SetUp]
         public void SetUp()
         {
-            this.container = new UnityContainer();
+            // Register mocks with unity
+            this.container.RegisterInstance(this.mockery.NewMock<ISiteSessionPersister>());
+            this.container.RegisterInstance(this.mockery.NewMock<IWebService>());
+            this.container.RegisterInstance(this.mockery.NewMock<HttpContextBase>());
         }
 
         [Test]
@@ -63,10 +66,6 @@ namespace Website.Tests.Controllers
             var password = "ghjk!dflkjh$gf";
             var expectedSessionId = Guid.NewGuid();
 
-            // Register mocks with unity
-            this.container.RegisterInstance<ISiteSessionPersister>(this.mockery.NewMock<ISiteSessionPersister>());
-            this.container.RegisterInstance<IWebService>(this.mockery.NewMock<IWebService>());
-
             var siteSessionPersister = this.container.Resolve<ISiteSessionPersister>();
             var mockService = this.container.Resolve<IWebService>();
 
@@ -91,12 +90,47 @@ namespace Website.Tests.Controllers
         }
 
         [Test]
+        public void LoginActionRedirectsWithRedirectUrlOnSuccess()
+        {
+            // Setup
+            var userId = 500000;
+            var password = "ghjk!dflkjh$gf";
+            var expectedSessionId = Guid.NewGuid();
+            var redirectUrl = "/SomeController/Index";
+
+            var siteSessionPersister = this.container.Resolve<ISiteSessionPersister>();
+            var mockService = this.container.Resolve<IWebService>();
+
+            var controller = new AccountController();
+            this.container.BuildUp(controller);
+
+            Expect.Once.On(siteSessionPersister).GetProperty("HasSession").Will(Return.Value(false));
+            Expect.On(siteSessionPersister).GetProperty("SessionId").Will(Return.Value(Guid.Empty));
+            Expect.Once.On(mockService).Method("CreateSession").With(userId, password).Will(
+                Return.Value(expectedSessionId));
+            Expect.Once.On(siteSessionPersister).SetProperty("SessionId").To(expectedSessionId);
+
+            // Act
+            var actionResult = controller.Login(userId, password, redirectUrl);
+
+            // Assert
+            Assert.IsInstanceOf(typeof(RedirectResult), actionResult);
+            var redirectActionResult = (RedirectResult)actionResult;
+            Assert.False(redirectActionResult.Permanent);
+            Assert.AreEqual(redirectActionResult.Url, redirectUrl);
+        }
+
+        [Test]
+        public void ReturnUrlIsValidatedToNotBeAbsolute()
+        {
+            Assert.Inconclusive("Not implemented.");
+
+            // Expected behavior is to ignore the bad redirect url.
+        }
+
+        [Test]
         public void IndexWhenNotAuthenticatedRedirectsToLogin()
         {
-            this.container.RegisterInstance(this.mockery.NewMock<ISiteSessionPersister>());
-            this.container.RegisterInstance(this.mockery.NewMock<IWebService>());
-            this.container.RegisterInstance(this.mockery.NewMock<HttpContextBase>());
-
             var siteSessionPersister = this.container.Resolve<ISiteSessionPersister>();
             var mockContext = this.container.Resolve<HttpContextBase>();
             var mockRequest = this.mockery.NewMock<HttpRequestBase>();
@@ -125,10 +159,6 @@ namespace Website.Tests.Controllers
             // Setup
             var userId = 500000;
             var password = "ghjk!dflkjh$gf";
-
-            // Register mocks with unity
-            this.container.RegisterInstance<ISiteSessionPersister>(this.mockery.NewMock<ISiteSessionPersister>());
-            this.container.RegisterInstance<IWebService>(this.mockery.NewMock<IWebService>());
 
             var siteSessionPersister = this.container.Resolve<ISiteSessionPersister>();
             var mockService = this.container.Resolve<IWebService>();
