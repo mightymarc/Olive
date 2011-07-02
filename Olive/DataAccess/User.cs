@@ -1,15 +1,39 @@
-﻿namespace Olive.DataAccess
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="User.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   The user.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Olive.DataAccess
 {
     using System.Collections.Generic;
 
+    /// <summary>
+    /// The user.
+    /// </summary>
     public class User
     {
-        public int UserId { get; set; }
+        /// <summary>
+        /// Gets or sets AccountAccess.
+        /// </summary>
+        public virtual ICollection<AccountUser> AccountAccess { get; set; }
 
+        /// <summary>
+        /// Gets or sets PasswordHash.
+        /// </summary>
         public string PasswordHash { get; set; }
 
-        public ICollection<AccountUser> AccountAccess { get; set; }
-
+        /// <summary>
+        /// Gets or sets PasswordSalt.
+        /// </summary>
         public string PasswordSalt { get; set; }
+
+        /// <summary>
+        /// Gets or sets UserId.
+        /// </summary>
+        public int UserId { get; set; }
     }
 }

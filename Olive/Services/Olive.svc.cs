@@ -22,7 +22,7 @@
             using (var context = this.GetContext())
             {
                 var salt = context.Users.Find(userId).PasswordSalt;
-                var hash = Crypto.GetHash(password, salt);
+                var hash = Crypto.GenerateHash(password, salt);
                 return context.CreateSession(userId, hash);
             }
         }
@@ -32,7 +32,7 @@
             using (var context = this.GetContext())
             {
                 var salt = Crypto.CreateSalt(64);
-                var hash = Crypto.GetHash(password, salt);
+                var hash = Crypto.GenerateHash(password, salt);
 
                 var user = new User { PasswordHash = hash, PasswordSalt = salt };
                 context.Users.Add(user);

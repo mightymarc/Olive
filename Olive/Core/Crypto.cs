@@ -1,39 +1,65 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Crypto.cs" company="Microsoft">
-// TODO: Update copyright text.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Crypto.cs" company="Olive">
+//   [Copyright]
 // </copyright>
-// -----------------------------------------------------------------------
+// <summary>
+//   Defines the Crypto class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
-    using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Contains helpers to perform hashing.
     /// </summary>
-    public class Crypto
+    public static class Crypto
     {
-        public static string CreateSalt(int byteCount = 128)
+        /// <summary>
+        /// Creates a salt.
+        /// </summary>
+        /// <param name="length">The number of bytes to use in the salt.</param>
+        /// <returns>The salt that was created.</returns>
+        public static string CreateSalt(int length)
         {
-            Contract.Requires<ArgumentException>(byteCount > 0, "byteCount");
+            Contract.Requires<ArgumentException>(length > 0, "length");
             Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-            var resultBytes = new byte[byteCount];
+            var resultBytes = new byte[length];
 
             using (var rng = new RNGCryptoServiceProvider())
             {
                 rng.GetNonZeroBytes(resultBytes);
             }
 
-            return Convert.ToBase64String(resultBytes);
+            var result = Convert.ToBase64String(resultBytes);
+            Contract.Assume(!string.IsNullOrEmpty(result));
+
+            return result;
         }
 
-        public static string GetHash(string password, string salt)
+        /// <summary>
+        /// Creates a salt.
+        /// </summary>
+        /// <returns>The salt that was created.</returns>
+        public static string CreateSalt()
+        {
+            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+            return CreateSalt(128);
+        }
+
+        /// <summary>
+        /// Generates a hash from the specified password and salt.
+        /// </summary>
+        /// <param name="password">The password.</param>
+        /// <param name="salt">The salt to use for hashing.</param>
+        /// <returns>The hash that was generated.</returns>
+        public static string GenerateHash(string password, string salt)
         {
             using (var hashAlgo = new SHA512Managed())
             {
