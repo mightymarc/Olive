@@ -10,13 +10,11 @@ namespace Olive.DataAccess.Tests
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using Xunit;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
     public class OliveContextTests
     {
-        [TestMethod]
+        [Fact]
         public void AccountsWithBalancesEntitiesCurrencyNotNull()
         {
             using (var context = OliveContextFactory.GetDbaContext())
@@ -25,14 +23,14 @@ namespace Olive.DataAccess.Tests
 
                 if (target == null)
                 {
-                    Assert.Inconclusive("The AccountWithBalance view is empty.");
+                    Assert.True(false, "The AccountWithBalance view is empty.");
                 }
 
-                Assert.IsNotNull(target.Currency);
+                Assert.NotNull(target.Currency);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AccountsWithBalancesEntitiesUsersNotNull()
         {
             using (var context = OliveContextFactory.GetDbaContext())
@@ -41,14 +39,14 @@ namespace Olive.DataAccess.Tests
 
                 if (target == null)
                 {
-                    Assert.Inconclusive("The AccountWithBalance view is empty.");
+                    Assert.True(false, "The AccountWithBalance view is empty.");
                 }
 
-                Assert.IsNotNull(target.Users);
+                Assert.NotNull(target.Users);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AccountsEntitiesUsersNotNull()
         {
             using (var context = OliveContextFactory.GetDbaContext())
@@ -57,14 +55,14 @@ namespace Olive.DataAccess.Tests
 
                 if (target == null)
                 {
-                    Assert.Inconclusive("The Account table is empty.");
+                    Assert.True(false, "The Account table is empty.");
                 }
 
-                Assert.IsNotNull(target.Users);
+                Assert.NotNull(target.Users);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AccountsEntitiesCurrencyNotNull()
         {
             using (var context = OliveContextFactory.GetDbaContext())
@@ -73,14 +71,14 @@ namespace Olive.DataAccess.Tests
 
                 if (target == null)
                 {
-                    Assert.Inconclusive("The Account table is empty.");
+                    Assert.True(false, "The Account table is empty.");
                 }
 
-                Assert.IsNotNull(target.Currency);
+                Assert.NotNull(target.Currency);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void UsersEntitiesAccountAccessNotNull()
         {
             using (var context = OliveContextFactory.GetDbaContext())
@@ -89,14 +87,14 @@ namespace Olive.DataAccess.Tests
 
                 if (target == null)
                 {
-                    Assert.Inconclusive("The User table is empty.");
+                    Assert.True(false, "The User table is empty.");
                 }
 
-                Assert.IsNotNull(target.AccountAccess);
+                Assert.NotNull(target.AccountAccess);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TransfersEntitiesSourceAccountNotNull()
         {
             using (var context = OliveContextFactory.GetDbaContext())
@@ -105,14 +103,14 @@ namespace Olive.DataAccess.Tests
 
                 if (target == null)
                 {
-                    Assert.Inconclusive("The Transfer table is empty.");
+                    Assert.True(false, "The Transfer table is empty.");
                 }
 
-                Assert.IsNotNull(target.SourceAccount);
+                Assert.NotNull(target.SourceAccount);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TransfersEntitiesDestAccountNotNull()
         {
             using (var context = OliveContextFactory.GetDbaContext())
@@ -121,15 +119,15 @@ namespace Olive.DataAccess.Tests
 
                 if (target == null)
                 {
-                    Assert.Inconclusive("The Transfer table is empty.");
+                    Assert.True(false, "The Transfer table is empty.");
                 }
 
-                Assert.IsNotNull(target.SourceAccount);
+                Assert.NotNull(target.SourceAccount);
             }
         }
 
 
-        [TestMethod]
+        [Fact]
         public void Sessions_EntitiesDestAccountNotNull()
         {
             using (var context = OliveContextFactory.GetDbaContext())
@@ -138,16 +136,16 @@ namespace Olive.DataAccess.Tests
 
                 if (target == null)
                 {
-                    Assert.Inconclusive("The Session table is empty.");
+                    Assert.True(false, "The Session table is empty.");
                 }
 
-                Assert.IsNotNull(target.User);
+                Assert.NotNull(target.User);
             }
         }
 
         private static readonly Random Random = new Random();
 
-        [TestMethod]
+        [Fact]
         public void CreateTransfer_ReturnsCorrectTransfer()
         {
             using (var context = OliveContextFactory.GetDbaContext())
@@ -160,7 +158,7 @@ namespace Olive.DataAccess.Tests
 
                 if (sourceAccount == null)
                 {
-                    Assert.Inconclusive("Unable to find a source account.");
+                    Assert.True(false, "Unable to find a source account.");
                 }
 
                 var destAccountQuery = from a in context.Accounts
@@ -173,7 +171,7 @@ namespace Olive.DataAccess.Tests
 
                 if (destAccount == null)
                 {
-                    Assert.Inconclusive("Unable to find a destination account.");
+                    Assert.True(false, "Unable to find a destination account.");
                 }
 
                 var amount = ((decimal)Random.Next(1, 10000000)) / 100000;
@@ -184,13 +182,13 @@ namespace Olive.DataAccess.Tests
 
                 var transfer = context.Transfers.Find(transferId);
 
-                Assert.IsNotNull(transfer);
-                Assert.AreEqual(amount, transfer.Amount);
-                Assert.AreEqual(Description, transfer.Description);
-                Assert.AreEqual(sourceAccount, transfer.SourceAccount);
-                Assert.AreEqual(destAccount, transfer.DestAccount);
-                Assert.AreEqual(transfer.TransferId, transferId);
-                Assert.IsTrue((transfer.CreatedAt - DateTime.UtcNow).Duration().TotalMinutes < 5);
+                Assert.NotNull(transfer);
+                Assert.Equal(amount, transfer.Amount);
+                Assert.Equal(Description, transfer.Description);
+                Assert.Equal(sourceAccount, transfer.SourceAccount);
+                Assert.Equal(destAccount, transfer.DestAccount);
+                Assert.Equal(transfer.TransferId, transferId);
+                Assert.True((transfer.CreatedAt - DateTime.UtcNow).Duration().TotalMinutes < 5);
             }
         }
     }

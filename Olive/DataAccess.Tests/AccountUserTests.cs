@@ -11,19 +11,18 @@ namespace Olive.DataAccess.Tests
     using System.Linq;
     using System.Text;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
 
-    [TestClass]
     public class AccountUserTests
     {
         private static readonly Random Random = new Random();
 
         private static void AssertIsDefault<T>(T target)
         {
-            Assert.AreEqual(default(T), target);
+            Assert.Equal(default(T), target);
         }
 
-        [TestMethod]
+        [Fact]
         public void EmptyConstructor()
         {
             var target = new AccountUser();
@@ -35,7 +34,7 @@ namespace Olive.DataAccess.Tests
             AssertIsDefault(target.UserId);
         }
 
-        [TestMethod]
+        [Fact]
         public void AccountId_GetSet()
         {
             var target = new AccountUser();
@@ -43,10 +42,10 @@ namespace Olive.DataAccess.Tests
 
             target.AccountId = expected;
 
-            Assert.AreEqual(expected, target.AccountId);
+            Assert.Equal(expected, target.AccountId);
         }
 
-        [TestMethod]
+        [Fact]
         public void UserId_GetSet()
         {
             var target = new AccountUser();
@@ -54,7 +53,7 @@ namespace Olive.DataAccess.Tests
 
             target.UserId = expected;
 
-            Assert.AreEqual(expected, target.UserId);
+            Assert.Equal(expected, target.UserId);
         }
     }
 }

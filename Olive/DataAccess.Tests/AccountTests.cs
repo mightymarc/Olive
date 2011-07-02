@@ -3,36 +3,35 @@
     using System;
     using System.Linq;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Olive.DataAccess;
 
-    [TestClass]
+    using Xunit;
+
     public class AccountTests
     {
         private readonly Random random = new Random();
 
-        [TestMethod]
+        [Fact]
         public void EmptyConstructor()
         {
             var account = new Account();
         }
 
-        [TestMethod]
+        [Fact]
         public void AccountId_GetSet()
         {
             var account = new Account();
 
             var accountId = this.random.Next(1, 1000000000);
             account.AccountId = accountId;
-            Assert.AreEqual(accountId, account.AccountId);
+            Assert.Equal(accountId, account.AccountId);
 
             accountId = this.random.Next(1, 1000000000);
             account.AccountId = accountId;
-            Assert.AreEqual(accountId, account.AccountId);
+            Assert.Equal(accountId, account.AccountId);
         }
 
-        [TestMethod]
+        [Fact]
         public void Users_NotNull()
         {
             using (var context = OliveContextFactory.GetDbaContext())
@@ -41,10 +40,10 @@
 
                 if (account == null)
                 {
-                    Assert.Inconclusive("There are no accounts in the store.");
+                    Assert.True(false, "There are no accounts in the store.");
                 }
 
-                Assert.IsNotNull(account.Users);
+                Assert.NotNull(account.Users);
             }
         }
     }

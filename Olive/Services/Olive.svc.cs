@@ -1,4 +1,13 @@
-﻿namespace Olive.Services
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Olive.svc.cs" company="Olive">
+//   [Copyright]
+// </copyright>
+// <summary>
+//   Defines the Olive type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Olive.Services
 {
     using System;
     using System.Collections.Generic;
@@ -7,13 +16,13 @@
     using System.Runtime.Serialization;
     using System.ServiceModel;
     using System.Text;
-
-    using global::Olive.DataAccess;
+    using Olive.DataAccess;
 
     public class Olive
     {
         private OliveContext GetContext()
         {
+            
             return new OliveContext(@"server=.\SQLEXPRESS;database=OliveTest;user=ServiceUser;password=temp;");
         }
 
