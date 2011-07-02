@@ -1,1 +1,1 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="Olive.Services.Olive" CodeBehind="Olive.svc.cs" %>
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Olive.Services.OliveService" CodeBehind="Olive.svc.cs" %>

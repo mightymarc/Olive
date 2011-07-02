@@ -15,7 +15,7 @@ namespace Olive.Website.Controllers
     /// <summary>
     /// The site session persister.
     /// </summary>
-    public static class SiteSessionPersister
+    public class SiteSessionPersister : ISiteSessionPersister
     {
         /// <summary>
         /// The session id key.
@@ -25,7 +25,7 @@ namespace Olive.Website.Controllers
         /// <summary>
         /// Gets a value indicating whether HasSession.
         /// </summary>
-        public static bool HasSession
+        public bool HasSession
         {
             get
             {
@@ -36,7 +36,7 @@ namespace Olive.Website.Controllers
         /// <summary>
         /// Gets or sets SessionId.
         /// </summary>
-        public static Guid SessionId
+        public Guid SessionId
         {
             get
             {

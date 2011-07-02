@@ -105,7 +105,10 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="IOlive.cs" />
+    <Compile Include="AccountOverview.svc.cs" />
+    <Compile Include="AccountOverviewAccount.svc.cs" />
+    <Compile Include="AuthenticationFault.cs" />
+    <Compile Include="IWebService.cs" />
     <Compile Include="Olive.svc.cs">
       <DependentUpon>Olive.svc</DependentUpon>
     </Compile>

@@ -10,7 +10,12 @@
 namespace Olive.Website.Controllers
 {
     using System;
+    using System.Diagnostics.Contracts;
+    using System.ServiceModel;
     using System.Web.Mvc;
+
+    using Olive.Services;
+    using Olive.Website.ViewModels.Account;
 
     /// <summary>
     /// The account controller.
@@ -26,22 +31,25 @@ namespace Olive.Website.Controllers
         /// </returns>
         public ActionResult Auth()
         {
-            return this.View("Auth");
+            return this.View("Auth", new AuthViewModel());
         }
 
         /// <summary>
         /// The index.
         /// </summary>
-        /// <returns>
-        /// </returns>
+        /// <returns></returns>
         public ActionResult Index()
         {
-            if (!SiteSessionPersister.HasSession)
+            Contract.Requires<ArgumentNullException>(this.SessionPersister != null, "this.SessionPersister");
+            Contract.Requires<ArgumentNullException>(this.Service != null, "this.Service");
+            Contract.Requires<ArgumentNullException>(this.Context != null, "this.Context != null");
+
+            if (!this.SessionPersister.HasSession)
             {
                 return this.RedirectToLogin();
             }
 
-            var accounts = ServiceHelper.Instance.GetAccounts(SiteSessionPersister.SessionId);
+            var accounts = this.Service.GetAccounts(this.SessionPersister.SessionId);
 
             return View(accounts);
         }
@@ -55,9 +63,19 @@ namespace Olive.Website.Controllers
         [HttpPost]
         public ActionResult Login(int userId, string password)
         {
-            SiteSessionPersister.SessionId = ServiceHelper.Instance.CreateSession(userId, password);
+            Contract.Requires<ArgumentNullException>(this.SessionPersister != null, "this.SessionPersister");
+            Contract.Requires<ArgumentNullException>(this.Service != null, "this.Service");
 
-            return this.RedirectToAction("Index", "Account");
+            try
+            {
+                var sessionId = this.Service.CreateSession(userId, password);
+                this.SessionPersister.SessionId = sessionId;
+                return this.RedirectToAction("Index", "Account");
+            }
+            catch (FaultException<AuthenticationFault>)
+            {
+                return this.View("Auth", new AuthViewModel() { LoginError = true });
+            }
         }
 
         /// <summary>
@@ -71,8 +89,8 @@ namespace Olive.Website.Controllers
         [HttpPost]
         public ActionResult Register(string password)
         {
-            var userId = ServiceHelper.Instance.CreateUser(password);
-            SiteSessionPersister.SessionId = ServiceHelper.Instance.CreateSession(userId, password);
+            var userId = this.Service.CreateUser(password);
+            this.SessionPersister.SessionId = this.Service.CreateSession(userId, password);
 
             return this.RedirectToAction("Index", "Account");
         }

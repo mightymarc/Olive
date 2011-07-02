@@ -8,12 +8,16 @@
     using System.Text;
 
     [ServiceContract]
-    public interface IOlive
+    public interface IWebService
     {
         [OperationContract]
+        [FaultContract(typeof(AuthenticationFault))]
         Guid CreateSession(int userId, string password);
 
         [OperationContract]
         int CreateUser(string password);
+
+        [OperationContract]
+        AccountOverview GetAccounts(Guid sessionId);
     }
 }

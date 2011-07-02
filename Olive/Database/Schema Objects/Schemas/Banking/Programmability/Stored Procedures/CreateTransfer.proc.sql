@@ -47,6 +47,8 @@ BEGIN TRY
 		raiserror('Failed to insert transfer row.', 16, 1)
 	END
 
+	SELECT @TransferId = CONVERT(BIGINT, SCOPE_IDENTITY());
+
 	COMMIT TRAN
 
 	RETURN 0

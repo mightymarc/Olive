@@ -3,35 +3,35 @@
     using System;
     using System.Linq;
 
-    using Olive.DataAccess;
+    using NUnit.Framework;
 
-    using Xunit;
+    using Olive.DataAccess;
 
     public class AccountTests
     {
         private readonly Random random = new Random();
 
-        [Fact]
+        [Test]
         public void EmptyConstructor()
         {
             var account = new Account();
         }
 
-        [Fact]
+        [Test]
         public void AccountId_GetSet()
         {
             var account = new Account();
 
             var accountId = this.random.Next(1, 1000000000);
             account.AccountId = accountId;
-            Assert.Equal(accountId, account.AccountId);
+            Assert.AreEqual(accountId, account.AccountId);
 
             accountId = this.random.Next(1, 1000000000);
             account.AccountId = accountId;
-            Assert.Equal(accountId, account.AccountId);
+            Assert.AreEqual(accountId, account.AccountId);
         }
 
-        [Fact]
+        [Test]
         public void Users_NotNull()
         {
             using (var context = OliveContextFactory.GetDbaContext())
@@ -40,7 +40,7 @@
 
                 if (account == null)
                 {
-                    Assert.True(false, "There are no accounts in the store.");
+                    Assert.Inconclusive("There are no accounts in the store.");
                 }
 
                 Assert.NotNull(account.Users);

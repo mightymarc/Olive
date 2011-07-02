@@ -16,9 +16,10 @@ namespace Olive.Services
     using System.Runtime.Serialization;
     using System.ServiceModel;
     using System.Text;
+
     using Olive.DataAccess;
 
-    public class Olive
+    public class WebService : IWebService
     {
         private OliveContext GetContext()
         {
@@ -87,20 +88,5 @@ namespace Olive.Services
                 return context.VerifySession(sessionId);
             }
         }
-    }
-
-    public class AccountOverview : List<AccountOverviewAccount>
-    {
-    }
-
-    public class AccountOverviewAccount
-    {
-        public string DisplayName { get; set; }
-
-        public int AccountId { get; set; }
-
-        public decimal Balance { get; set; }
-
-        public string CurrencyShortName { get; set; }
     }
 }

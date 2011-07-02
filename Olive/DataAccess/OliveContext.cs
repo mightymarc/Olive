@@ -114,7 +114,6 @@ namespace Olive.DataAccess
             {
                 command.AddParam("@SourceAccountId", DbType.Int32, sourceAccountId);
                 command.AddParam("@DestAccountId", DbType.Int32, destAccountId);
-                command.AddParam("@DestAccountId", DbType.String, description);
                 command.AddParam("@Amount", DbType.Decimal, amount);
                 command.AddParam("@Description", DbType.String, description);
                 command.AddParam("@TransferId", DbType.Int64, direction: ParameterDirection.Output);

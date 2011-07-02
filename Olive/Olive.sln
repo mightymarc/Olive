@@ -26,9 +26,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database.Tests", "Database.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Tests", "DataAccess.Tests\DataAccess.Tests.csproj", "{5C09A873-BC43-4C45-96DF-BE974080B8A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website.Tests", "Website.Tests\Website.Tests.csproj", "{AC179D6C-1A86-4695-84BA-E8DF4114B87D}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
+		SccNumberOfProjects = 10
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs18
 		SccLocalPath0 = .
@@ -56,6 +58,9 @@ Global
 		SccProjectUniqueName8 = Website\\Website.csproj
 		SccProjectName8 = Website
 		SccLocalPath8 = Website
+		SccProjectUniqueName9 = Website.Tests\\Website.Tests.csproj
+		SccProjectName9 = Website.Tests
+		SccLocalPath9 = Website.Tests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Olive.vsmdi
@@ -101,6 +106,10 @@ Global
 		{5C09A873-BC43-4C45-96DF-BE974080B8A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C09A873-BC43-4C45-96DF-BE974080B8A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C09A873-BC43-4C45-96DF-BE974080B8A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC179D6C-1A86-4695-84BA-E8DF4114B87D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC179D6C-1A86-4695-84BA-E8DF4114B87D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC179D6C-1A86-4695-84BA-E8DF4114B87D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC179D6C-1A86-4695-84BA-E8DF4114B87D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

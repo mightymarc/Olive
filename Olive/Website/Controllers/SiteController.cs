@@ -10,18 +10,35 @@
 namespace Olive.Website.Controllers
 {
     using System;
+    using System.Web;
     using System.Web.Mvc;
+    using System.Web.Routing;
+
+    using Microsoft.Practices.Unity;
 
     using Olive.DataAccess;
+    using Olive.Services;
 
     /// <summary>
     /// The site controller.
     /// </summary>
     public abstract class SiteController : Controller
     {
+        [Dependency]
+        public ISiteSessionPersister SessionPersister { get; set; }
+
+        [Dependency]
+        public IWebService Service { get; set; }
+
+        [Dependency]
+        public HttpContextBase Context { get; set; }
+
         protected ActionResult RedirectToLogin()
         {
-            return RedirectToAction("Auth", "Account");
+            return RedirectToAction(
+                "Auth", 
+                "Account", 
+                new RouteValueDictionary { { "redirectUrl", this.Context.Request.RawUrl } });
         }
 
         /// <summary>
@@ -32,7 +49,7 @@ namespace Olive.Website.Controllers
         {
             if (filterContext.Exception is SessionDoesNotExistException)
             {
-                SiteSessionPersister.SessionId = Guid.Empty;
+                this.SessionPersister.SessionId = Guid.Empty;
                 filterContext.ExceptionHandled = true;
                 this.Response.Redirect("/Account/Auth");
                 return;
