@@ -13,12 +13,12 @@ namespace Olive.DataAccess.Tests
 
     using NUnit.Framework;
 
-    public class OliveContextTests
+    public class OliveContextTests : TestBase
     {
         [Test]
         public void AccountsWithBalancesEntitiesCurrencyNotNull()
         {
-            using (var context = OliveContextFactory.GetDbaContext())
+            using (var context = this.GetDbaContext())
             {
                 var target = context.AccountsWithBalance.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
 
@@ -34,7 +34,7 @@ namespace Olive.DataAccess.Tests
         [Test]
         public void AccountsWithBalancesEntitiesUsersNotNull()
         {
-            using (var context = OliveContextFactory.GetDbaContext())
+            using (var context = this.GetDbaContext())
             {
                 var target = context.AccountsWithBalance.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
 
@@ -50,7 +50,7 @@ namespace Olive.DataAccess.Tests
         [Test]
         public void AccountsEntitiesUsersNotNull()
         {
-            using (var context = OliveContextFactory.GetDbaContext())
+            using (var context = this.GetDbaContext())
             {
                 var target = context.Accounts.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
 
@@ -66,7 +66,7 @@ namespace Olive.DataAccess.Tests
         [Test]
         public void AccountsEntitiesCurrencyNotNull()
         {
-            using (var context = OliveContextFactory.GetDbaContext())
+            using (var context = this.GetDbaContext())
             {
                 var target = context.Accounts.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
 
@@ -82,7 +82,7 @@ namespace Olive.DataAccess.Tests
         [Test]
         public void UsersEntitiesAccountAccessNotNull()
         {
-            using (var context = OliveContextFactory.GetDbaContext())
+            using (var context = this.GetDbaContext())
             {
                 var target = context.Users.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
 
@@ -98,7 +98,7 @@ namespace Olive.DataAccess.Tests
         [Test]
         public void TransfersEntitiesSourceAccountNotNull()
         {
-            using (var context = OliveContextFactory.GetDbaContext())
+            using (var context = this.GetDbaContext())
             {
                 var target = context.Transfers.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
 
@@ -114,7 +114,7 @@ namespace Olive.DataAccess.Tests
         [Test]
         public void TransfersEntitiesDestAccountNotNull()
         {
-            using (var context = OliveContextFactory.GetDbaContext())
+            using (var context = this.GetDbaContext())
             {
                 var target = context.Transfers.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
 
@@ -131,7 +131,7 @@ namespace Olive.DataAccess.Tests
         [Test]
         public void SessionsEntitiesDestAccountNotNull()
         {
-            using (var context = OliveContextFactory.GetDbaContext())
+            using (var context = this.GetDbaContext())
             {
                 var target = context.Sessions.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
 
@@ -149,7 +149,7 @@ namespace Olive.DataAccess.Tests
         [Test]
         public void CreateTransfer_ReturnsCorrectTransfer()
         {
-            using (var context = OliveContextFactory.GetDbaContext())
+            using (var context = this.GetDbaContext())
             {
                 var sourceAccountQuery = from a in context.Accounts
                                where a.AccountType == AccountType.IncomingMoneybookersUsd

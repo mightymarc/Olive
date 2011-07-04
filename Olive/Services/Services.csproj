@@ -108,6 +108,8 @@
     <Compile Include="AccountOverview.svc.cs" />
     <Compile Include="AccountOverviewAccount.svc.cs" />
     <Compile Include="AuthenticationFault.cs" />
+    <Compile Include="GetAccountAccount.cs" />
+    <Compile Include="GetAccountTransfersTransfer.cs" />
     <Compile Include="IWebService.cs" />
     <Compile Include="Olive.svc.cs">
       <DependentUpon>Olive.svc</DependentUpon>

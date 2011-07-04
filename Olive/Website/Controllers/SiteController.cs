@@ -25,7 +25,7 @@ namespace Olive.Website.Controllers
     public abstract class SiteController : Controller
     {
         [Dependency]
-        public ISiteSessionPersister SessionPersister { get; set; }
+        public ISiteSession SessionPersister { get; set; }
 
         [Dependency]
         public IWebService Service { get; set; }

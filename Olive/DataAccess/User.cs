@@ -35,5 +35,13 @@ namespace Olive.DataAccess
         /// Gets or sets UserId.
         /// </summary>
         public int UserId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the email.
+        /// </summary>
+        /// <value>
+        /// The email.
+        /// </value>
+        public string Email { get; set; }
     }
 }

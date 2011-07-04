@@ -27,24 +27,37 @@ namespace Olive.Services
             return new OliveContext(@"server=.\SQLEXPRESS;database=OliveTest;user=ServiceUser;password=temp;");
         }
 
-        public Guid CreateSession(int userId, string password)
+        public Guid CreateSession(string email, string password)
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(email), "email");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(password), "password");
+
             using (var context = this.GetContext())
             {
-                var salt = context.Users.Find(userId).PasswordSalt;
+                var salt = context.Users.Where(u => u.Email == email).Select(u => u.PasswordSalt).FirstOrDefault();
+
+                if (salt == null)
+                {
+                    throw new FaultException<AuthenticationFault>(new AuthenticationFault());
+                }
+
                 var hash = Crypto.GenerateHash(password, salt);
-                return context.CreateSession(userId, hash);
+                return context.CreateSession(email, hash);
             }
         }
 
-        public int CreateUser(string password)
+        public int CreateUser(string email, string password)
         {
+            // TODO: Verify with password policy.
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(email), "email");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(password), "password");
+
             using (var context = this.GetContext())
             {
                 var salt = Crypto.CreateSalt(64);
                 var hash = Crypto.GenerateHash(password, salt);
 
-                var user = new User { PasswordHash = hash, PasswordSalt = salt };
+                var user = new User { PasswordHash = hash, PasswordSalt = salt, Email = email };
                 context.Users.Add(user);
                 context.SaveChanges();
 
@@ -76,6 +89,26 @@ namespace Olive.Services
                 result.AddRange(query);
                 return result;
             }
+        }
+
+        public List<GetAccountTransfersTransfer> GetAccountTransfers(Guid sessionId, int accountId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public GetAccountAccount GetAccount(Guid sessionId, int accountId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public AccountOverview GetAccountOverview(Guid sessionId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CreateAccount(Guid mockSessionId, int currencyId, string displayName)
+        {
+            throw new NotImplementedException();
         }
 
         private int VerifySession(Guid sessionId)

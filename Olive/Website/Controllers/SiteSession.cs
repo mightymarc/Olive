@@ -15,7 +15,7 @@ namespace Olive.Website.Controllers
     /// <summary>
     /// The site session persister.
     /// </summary>
-    public class SiteSessionPersister : ISiteSessionPersister
+    public class SiteSession : ISiteSession
     {
         /// <summary>
         /// The session id key.

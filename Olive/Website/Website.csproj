@@ -96,9 +96,9 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ISiteSessionPersister.cs" />
+    <Compile Include="Controllers\ISiteSession.cs" />
     <Compile Include="Controllers\SiteController.cs" />
-    <Compile Include="Controllers\SiteSessionPersister.cs" />
+    <Compile Include="Controllers\SiteSession.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -106,6 +106,8 @@
     <Compile Include="SiteIdentity.cs" />
     <Compile Include="SitePrincipal.cs" />
     <Compile Include="ViewModels\Account\AuthViewModel.cs" />
+    <Compile Include="ViewModels\Account\DetailsViewModel.cs" />
+    <Compile Include="ViewModels\Account\IndexViewModel.cs" />
     <Compile Include="ViewModels\Home\IndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

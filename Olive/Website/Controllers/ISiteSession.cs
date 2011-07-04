@@ -2,7 +2,7 @@
 {
     using System;
 
-    public interface ISiteSessionPersister
+    public interface ISiteSession
     {
         /// <summary>
         /// Gets a value indicating whether HasSession.

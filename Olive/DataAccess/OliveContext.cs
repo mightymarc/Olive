@@ -20,7 +20,7 @@ namespace Olive.DataAccess
     /// <summary>
     /// The entity framework database context.
     /// </summary>
-    public class OliveContext : DbContext
+    public class OliveContext : DbContext, IOliveContext
     {
         // private string connectionString;
 
@@ -36,48 +36,48 @@ namespace Olive.DataAccess
         /// <summary>
         /// Gets or sets Accounts.
         /// </summary>
-        public DbSet<Account> Accounts { get; set; }
+        public IDbSet<Account> Accounts { get; set; }
 
         /// <summary>
         /// Gets or sets AccountsWithBalance.
         /// </summary>
-        public DbSet<AccountWithBalance> AccountsWithBalance { get; set; }
+        public IDbSet<AccountWithBalance> AccountsWithBalance { get; set; }
 
         /// <summary>
         /// Gets or sets Currencies.
         /// </summary>
-        public DbSet<Currency> Currencies { get; set; }
+        public IDbSet<Currency> Currencies { get; set; }
 
         /// <summary>
         /// Gets or sets Sessions.
         /// </summary>
-        public DbSet<Session> Sessions { get; set; }
+        public IDbSet<Session> Sessions { get; set; }
 
         /// <summary>
         /// Gets or sets Transfers.
         /// </summary>
-        public DbSet<Transfer> Transfers { get; set; }
+        public IDbSet<Transfer> Transfers { get; set; }
 
         /// <summary>
         /// Gets or sets Users.
         /// </summary>
-        public DbSet<User> Users { get; set; }
+        public IDbSet<User> Users { get; set; }
 
         /// <summary>
         /// Creates the session.
         /// </summary>
-        /// <param name="userId">The user id.</param>
+        /// <param name="email">The email.</param>
         /// <param name="passwordHash">The password hash.</param>
-        /// <returns></returns>
-        public Guid CreateSession(int userId, string passwordHash)
+        /// <returns>The session identifier.</returns>
+        public Guid CreateSession(string email, string passwordHash)
         {
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(passwordHash), "passwordHash");
-            Contract.Requires<ArgumentException>(userId > 0, "userId");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(email), "email");
             Contract.Ensures(Contract.Result<Guid>() != Guid.Empty);
 
             using (var command = this.Database.Connection.CreateCommand("Auth.CreateSession"))
             {
-                command.AddParam("@UserId", DbType.Int32, userId);
+                command.AddParam("@Email", DbType.String, email);
                 command.AddParam("@PasswordHash", DbType.String, passwordHash, size: 100);
                 command.AddParam("@SessionId", DbType.Guid, direction: ParameterDirection.Output);
 

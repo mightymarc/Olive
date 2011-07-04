@@ -1,4 +1,13 @@
-﻿namespace Olive.DataAccess.Tests
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AccountTests.cs" company="Olive">
+//   [Copyright]
+// </copyright>
+// <summary>
+//   Defines the AccountTests type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Olive.DataAccess.Tests
 {
     using System;
     using System.Linq;
@@ -7,7 +16,7 @@
 
     using Olive.DataAccess;
 
-    public class AccountTests
+    public class AccountTests : TestBase
     {
         private readonly Random random = new Random();
 
@@ -34,7 +43,7 @@
         [Test]
         public void Users_NotNull()
         {
-            using (var context = OliveContextFactory.GetDbaContext())
+            using (var context = this.GetDbaContext())
             {
                 var account = context.Accounts.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
 
