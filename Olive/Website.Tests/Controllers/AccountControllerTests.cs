@@ -11,6 +11,7 @@ namespace Olive.Website.Tests.Controllers
     using System.ServiceModel;
     using System.Web;
     using System.Web.Mvc;
+    using System.Web.Routing;
 
     using Microsoft.Practices.Unity;
 
@@ -23,70 +24,20 @@ namespace Olive.Website.Tests.Controllers
     using Olive.Website.ViewModels.Account;
 
     [TestFixture]
-    public class AccountControllerTests
+    public class AccountControllerTests : ControllerTestBase<AccountController>
     {
-        private IUnityContainer container = new UnityContainer();
-
-        private Mock<ISiteSession> sessionMock;
-
-        private Mock<IWebService> serviceMock;
-
-        private Mock<HttpContextBase> httpContextMock;
-
         [SetUp]
-        public void SetUp()
+        public override void SetUp()
         {
-            this.sessionMock = new Mock<ISiteSession>();
-            this.serviceMock = new Mock<IWebService>();
-            this.httpContextMock = new Mock<HttpContextBase>();
-
-            // Register mocks with unity
-            this.container.RegisterInstance(this.sessionMock.Object);
-            this.container.RegisterInstance(this.serviceMock.Object);
-            this.container.RegisterInstance(this.httpContextMock.Object);
-        }
-
-        [Test]
-        public void CannotRegisterWhenLoggedIn()
-        {
-            Assert.Inconclusive("Not implemented.");
-        }
-
-        [Test]
-        public void RegisterActionLogsInAndRegistersOnSuccess()
-        {
-            var email = "valid@email.info";
-            var password = Guid.NewGuid().ToString().Substring(0, 10);
-            var sessionId = Guid.NewGuid();
-            var userId = Random.Next(1, 1000);
-
-            // Mocks services
-            var service = this.container.Resolve<IWebService>();
-            var session = this.container.Resolve<ISiteSession>();
-
-            // Expectations
-            this.sessionMock.SetupGet(m => m.HasSession).Returns(false);
-            this.sessionMock.SetupSet(s => s.SessionId = sessionId);
-            this.serviceMock.Setup(s => s.CreateUser(email, password)).Returns(userId);
-            this.serviceMock.Setup(s => s.CreateSession(email, password)).Returns(sessionId);
-
-            var target = new AccountController();
-            this.container.BuildUp(target);
-
-            var actionResult = target.Register(email, password);
-
-            // Assert
-            Assert.IsInstanceOf(typeof(RedirectToRouteResult), actionResult);
-            var redirectActionResult = (RedirectToRouteResult)actionResult;
-            Assert.False(redirectActionResult.Permanent);
-            Assert.AreEqual("Account", redirectActionResult.RouteValues["controller"]);
-            Assert.AreEqual("Index", redirectActionResult.RouteValues["action"]);
+            base.SetUp();
         }
 
         [Test]
         public void IndexContainsAccountOverviewViewData()
         {
             var target = new AccountController();
+            this.container.BuildUp(target);
+
             var sessionId = Guid.NewGuid();
 
             this.sessionMock.SetupGet(s => s.HasSession).Returns(true);
@@ -110,15 +61,20 @@ namespace Olive.Website.Tests.Controllers
                         }
                 };
 
-            this.serviceMock.Setup(s => s.GetAccountOverview(sessionId)).Returns(mockServiceResult);
+            this.serviceMock.Setup(s => s.GetAccountOverview(sessionId)).Returns(mockServiceResult).Verifiable();
 
             var actionResult = target.Index();
+
+            this.serviceMock.Verify(s => s.GetAccountOverview(sessionId), Times.Once());
+
             Assert.IsInstanceOf(typeof(ViewResult), actionResult);
 
             var viewResult = (ViewResult)actionResult;
             Assert.IsInstanceOf(typeof(IndexViewModel), viewResult.Model);
 
             var viewModel = (IndexViewModel)viewResult.Model;
+            Assert.IsNotNull(viewModel.Accounts);
+
             Assert.AreEqual(mockServiceResult.Count, viewModel.Accounts.Count);
             mockServiceResult.ForEach(x => Assert.Contains(x, viewModel.Accounts));
         }
@@ -176,231 +132,59 @@ namespace Olive.Website.Tests.Controllers
         [Test]
         public void CreateAccountSuccessTest()
         {
-            var displayName = Guid.NewGuid().ToString().Substring(0, 10);
-            var mockAccountId = Random.Next(1, 100000000);
-            var mockSessionId = Guid.NewGuid();
-            var currencyId = Random.Next(1, 100);
-            var target = new AccountController();
-            this.container.BuildUp(target);
+            // Arrange
+            var model = new CreateAccountViewModel
+            {
+                CurrencyId = Random.Next(1, 10000),
+                DisplayName = string.Empty
+            };
 
-            this.sessionMock.SetupGet(s => s.HasSession).Returns(true);
-            this.sessionMock.SetupGet(s => s.SessionId).Returns(mockSessionId);
+            var newAccountId = Random.Next(1, 10000000);
+            var sessionId = this.SetupHasSession();
+            this.serviceMock.Setup(s => s.CreateAccount(sessionId, model.CurrencyId, model.DisplayName)).Returns(newAccountId);
+            var target = this.CreateController();
 
-            this.serviceMock.Setup(s => s.CreateAccount(mockSessionId, currencyId, displayName)).Returns(mockAccountId);
+            // Act
+            var result = (RedirectToRouteResult)target.CreateAccount(model);
 
-            var actionResult = target.CreateAccount(currencyId, displayName);
-
-            Assert.IsInstanceOf(typeof(ViewResult), actionResult);
-
-            var viewResult = (ViewResult)actionResult;
-
-            Assert.AreEqual(viewResult.ViewName, "Index");
-            Assert.AreEqual(mockAccountId, viewResult.TempData["CreatedAccountId"]);
+            Assert.AreEqual("Index", result.RouteValues["action"]);
         }
 
         [Test]
         public void CreateAccountRedirectsWhenNotLoggedIn()
         {
-            var mockRequest = new Mock<HttpRequestBase>();
-
-            this.httpContextMock.SetupGet(c => c.Request).Returns(mockRequest.Object);
-            mockRequest.SetupGet(r => r.RawUrl).Returns("/Account/Index");
-
+            // Arrange
+            var controller = this.CreateController();
+            Mock.Get(controller.Request).SetupGet(r => r.RawUrl).Returns("/Account/Index");
             this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
-
-            var target = new AccountController();
-            this.container.BuildUp(target);
-
-            var actionResult = target.CreateAccount(123, "fghjkl");
-
-            Assert.IsInstanceOf(typeof(RedirectToRouteResult), actionResult);
-
-            var redirectResult = (RedirectToRouteResult)actionResult;
-
-            // Can't really expect the account name to be persisted here.
-            Assert.AreEqual("Auth", redirectResult.RouteValues["action"]);
-            Assert.AreEqual("Account", redirectResult.RouteValues["controller"]);
-            Assert.AreEqual("/Account/Index", redirectResult.RouteValues["returnUrl"]);
-        }
-
-        [Test]
-        public void RegisterStaysOnPageWhenEmailIsIncorrect()
-        {
-            var target = new AccountController();
-            var email = "noat";
-            var password = "password";
-
-            var actionResult = target.Register(email, password);
-            Assert.IsInstanceOf(typeof(ViewResult), actionResult);
-
-            var viewResult = (ViewResult)actionResult;
-            Assert.AreEqual("Auth", viewResult.ViewName);
-
-            Assert.IsInstanceOf(typeof(AuthViewModel), viewResult.Model);
-            var authViewModel = (AuthViewModel)viewResult.Model;
-
-            Assert.AreEqual(password, authViewModel.RegisterPassword);
-            Assert.AreEqual(email, authViewModel.RegisterEmail);
-            Assert.AreEqual(1, target.ModelState.Count);
-        }
-
-        [Test]
-        public void RegisterStaysOnPageWhenPasswordIsEmpty()
-        {
-            var target = new AccountController();
-
-            var actionResult = target.Register("email@email.com", string.Empty);
-            Assert.IsInstanceOf(typeof(ViewResult), actionResult);
-
-            var viewResult = (ViewResult)actionResult;
-            Assert.AreEqual("Auth", viewResult.ViewName);
-
-            Assert.IsInstanceOf(typeof(AuthViewModel), viewResult.Model);
-            var authViewModel = (AuthViewModel)viewResult.Model;
-
-            Assert.AreEqual(string.Empty, authViewModel.RegisterPassword);
-            Assert.AreEqual(1, target.ModelState.Count);
-        }
-
-        [Test]
-        public void AuthActionReturnsAuthView()
-        {
-            var controller = new AccountController();
-
-            var actionResult = controller.Auth();
-
-            Assert.IsInstanceOf(typeof(ViewResult), actionResult);
-
-            var viewResult = (ViewResult)actionResult;
-            Assert.AreEqual("Auth", viewResult.ViewName);
-
-            Assert.IsInstanceOf(typeof(AuthViewModel), viewResult.Model);
-            var viewModel = (AuthViewModel)viewResult.Model;
-
-            Assert.False(viewModel.LoginError);
-        }
-
-        [Test]
-        public void LoginActionRedirectsOnSuccess()
-        {
-            // Setup
-            var email = "andy@andy.com";
-            var password = "ghjk!dflkjh$gf";
-            var expectedSessionId = Guid.NewGuid();
-
-            var siteSessionPersister = this.container.Resolve<ISiteSession>();
-            var mockService = this.container.Resolve<IWebService>();
-
-            var controller = new AccountController();
-            this.container.BuildUp(controller);
-
-            this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
-            this.sessionMock.SetupGet(s => s.SessionId).Returns(Guid.Empty);
-            this.serviceMock.Setup(s => s.CreateSession(email, password)).Returns(expectedSessionId);
-            this.sessionMock.SetupSet(s => s.SessionId = expectedSessionId);
+            var model = new CreateAccountViewModel { CurrencyId = 1, DisplayName = "abc" };
 
             // Act
-            var actionResult = controller.Login(email, password);
-
+            var actionResult = (RedirectToRouteResult)controller.CreateAccount(model);
+            
             // Assert
-            Assert.IsInstanceOf(typeof(RedirectToRouteResult), actionResult);
-            var redirectActionResult = (RedirectToRouteResult)actionResult;
-            Assert.False(redirectActionResult.Permanent);
-            Assert.AreEqual("Account", redirectActionResult.RouteValues["controller"]);
-            Assert.AreEqual("Index", redirectActionResult.RouteValues["action"]);
+            Assert.AreEqual("Login", actionResult.RouteValues["action"]);
+            Assert.AreEqual("User", actionResult.RouteValues["controller"]);
+            Assert.AreEqual("/Account/Index", actionResult.RouteValues["returnUrl"]);
         }
 
-        [Test]
-        public void LoginActionRedirectsWithRedirectUrlOnSuccess()
-        {
-            // Setup
-            var email = "bob@jane.com";
-            var password = "ghjk!dflkjh$gf";
-            var expectedSessionId = Guid.NewGuid();
-            var redirectUrl = "/SomeController/Index";
-
-            var siteSessionPersister = this.container.Resolve<ISiteSession>();
-            var mockService = this.container.Resolve<IWebService>();
-
-            var controller = new AccountController();
-            this.container.BuildUp(controller);
-
-            this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
-            this.sessionMock.SetupGet(s => s.SessionId).Returns(Guid.Empty);
-            this.serviceMock.Setup(s => s.CreateSession(email, password)).Returns(expectedSessionId);
-            this.sessionMock.SetupSet(s => s.SessionId = expectedSessionId);
-
-            // Act
-            var actionResult = controller.Login(email, password, redirectUrl);
-
-            // Assert
-            Assert.IsInstanceOf(typeof(RedirectResult), actionResult);
-            var redirectActionResult = (RedirectResult)actionResult;
-            Assert.False(redirectActionResult.Permanent);
-            Assert.AreEqual(redirectActionResult.Url, redirectUrl);
-        }
-
-        [Test]
-        public void ReturnUrlIsValidatedToNotBeAbsolute()
-        {
-            Assert.Inconclusive("Not implemented.");
-
-            // Expected behavior is to ignore the bad redirect url.
-        }
 
         [Test]
         public void IndexWhenNotAuthenticatedRedirectsToLogin()
         {
-            var mockRequest = new Mock<HttpRequestBase>();
-            this.httpContextMock.SetupGet(s => s.Request).Returns(mockRequest.Object);
-            mockRequest.SetupGet(s => s.RawUrl).Returns("/Account/Index");
-
+            // Arrange
+            var controller = this.CreateController();
+            Mock.Get(controller.Request).SetupGet(r => r.RawUrl).Returns("/Account/Index");
             this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
-
-            var controller = new AccountController();
-            this.container.BuildUp(controller);
-
-            var actionResult = controller.Index();
-
-            Assert.IsInstanceOf(typeof(RedirectToRouteResult), actionResult);
-
-            var redirectResult = (RedirectToRouteResult)actionResult;
-
-            Assert.AreEqual("Auth", redirectResult.RouteValues["action"]);
-            Assert.AreEqual("Account", redirectResult.RouteValues["controller"]);
-            Assert.AreEqual("/Account/Index", redirectResult.RouteValues["returnUrl"]);
-        }
-
-        [Test]
-        public void LoginActionStaysWithErrorMessageOnFailure()
-        {
-            // Setup
-            var email = "bob@bob.com";
-            var password = "ghjk!dflkjh$gf";
-
-            var siteSessionPersister = this.container.Resolve<ISiteSession>();
-            var mockService = this.container.Resolve<IWebService>();
-
-            var controller = new AccountController();
-            this.container.BuildUp(controller);
-
-            this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
-            this.sessionMock.SetupGet(s => s.SessionId).Returns(Guid.Empty);
-            this.serviceMock.Setup(s => s.CreateSession(email, password)).Throws(new FaultException<AuthenticationFault>(new AuthenticationFault()));
+            var model = new CreateAccountViewModel { CurrencyId = 1, DisplayName = "abc" };
 
             // Act
-            var actionResult = controller.Login(email, password);
+            var actionResult = (RedirectToRouteResult)controller.Index();
 
             // Assert
-            Assert.IsInstanceOf(typeof(ViewResult), actionResult);
-            var viewResult = (ViewResult)actionResult;
-
-            Assert.IsInstanceOf(typeof(AuthViewModel), viewResult.Model);
-            Assert.AreEqual("Auth", viewResult.ViewName);
-
-            var viewModel = (AuthViewModel)viewResult.Model;
-
-            Assert.True(viewModel.LoginError);
+            Assert.AreEqual("Login", actionResult.RouteValues["action"]);
+            Assert.AreEqual("User", actionResult.RouteValues["controller"]);
+            Assert.AreEqual("/Account/Index", actionResult.RouteValues["returnUrl"]);
         }
     }
 }

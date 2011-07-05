@@ -46,7 +46,7 @@ namespace Olive.Services
             }
         }
 
-        public int CreateUser(string email, string password)
+        public void CreateUser(string email, string password)
         {
             // TODO: Verify with password policy.
             Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(email), "email");
@@ -61,7 +61,7 @@ namespace Olive.Services
                 context.Users.Add(user);
                 context.SaveChanges();
 
-                return user.UserId;
+                return; ////user.UserId;
             }
         }
 

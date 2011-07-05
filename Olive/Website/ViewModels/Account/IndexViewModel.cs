@@ -9,6 +9,6 @@ namespace Olive.Website.ViewModels.Account
 
     public class IndexViewModel
     {
-        public List<AccountOverview> Accounts { get; set; }
+        public AccountOverview Accounts { get; set; }
     }
 }

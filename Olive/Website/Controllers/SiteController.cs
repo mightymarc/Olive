@@ -10,6 +10,7 @@
 namespace Olive.Website.Controllers
 {
     using System;
+    using System.Diagnostics.Contracts;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -35,10 +36,12 @@ namespace Olive.Website.Controllers
 
         protected ActionResult RedirectToLogin()
         {
+            Contract.Requires(this.Request != null, "this.Context.Request");
+
             return RedirectToAction(
-                "Auth", 
-                "Account", 
-                new RouteValueDictionary { { "redirectUrl", this.Context.Request.RawUrl } });
+                "Login", 
+                "User", 
+                new RouteValueDictionary { { "returnUrl", this.Request.RawUrl } });
         }
 
         /// <summary>

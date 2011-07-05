@@ -15,10 +15,7 @@
         Guid CreateSession(string email, string password);
 
         [OperationContract]
-        int CreateUser(string email, string password);
-
-        [OperationContract]
-        AccountOverview GetAccounts(Guid sessionId);
+        void CreateUser(string email, string password);
 
         [OperationContract]
         List<GetAccountTransfersTransfer> GetAccountTransfers(Guid sessionId, int accountId);

@@ -22,18 +22,6 @@ namespace Olive.Website.Controllers
     /// </summary>
     public class AccountController : SiteController
     {
-        // GET: /Account/
-
-        /// <summary>
-        /// The auth.
-        /// </summary>
-        /// <returns>
-        /// </returns>
-        public ActionResult Auth()
-        {
-            return this.View("Auth", new AuthViewModel());
-        }
-
         /// <summary>
         /// The index.
         /// </summary>
@@ -49,63 +37,35 @@ namespace Olive.Website.Controllers
                 return this.RedirectToLogin();
             }
 
-            var accounts = this.Service.GetAccounts(this.SessionPersister.SessionId);
+            var accounts = this.Service.GetAccountOverview(this.SessionPersister.SessionId);
 
-            return View(accounts);
+            var viewModel = new IndexViewModel() { Accounts = accounts };
+
+            return View("Index", viewModel);
         }
 
-        /// <summary>
-        /// Logins the specified user id.
-        /// </summary>
-        /// <param name="userId">The identifier of the user trying to authenticate.</param>
-        /// <param name="password">The password to use for authentication.</param>
-        /// <returns>A redirect to the account index if the login was successful.</returns>
-        [HttpPost]
-        public ActionResult Login(string email, string password, string returnUrl = null)
-        {
-            Contract.Requires<ArgumentNullException>(this.SessionPersister != null, "this.SessionPersister");
-            Contract.Requires<ArgumentNullException>(this.Service != null, "this.Service");
 
-            try
+
+        [HttpPost]
+        public ActionResult CreateAccount(CreateAccountViewModel model)
+        {
+            Contract.Requires<InvalidOperationException>(this.Service != null);
+            Contract.Requires<InvalidOperationException>(this.SessionPersister != null);
+            Contract.Requires<ArgumentNullException>(model != null, "model");
+
+            if (!this.SessionPersister.HasSession)
             {
-                var sessionId = this.Service.CreateSession(email, password);
-                this.SessionPersister.SessionId = sessionId;
-
-                if (returnUrl == null)
-                {
-                    return this.RedirectToAction("Index", "Account");
-                }
-
-                return new RedirectResult(returnUrl);
+                return this.RedirectToLogin();
             }
-            catch (FaultException<AuthenticationFault>)
+
+            if (ModelState.IsValid)
             {
-                return this.View("Auth", new AuthViewModel() { LoginError = true });
+                var accountId = this.Service.CreateAccount(this.SessionPersister.SessionId, model.CurrencyId, model.DisplayName);
+
+                return RedirectToAction("Index");
             }
-        }
 
-        /// <summary>
-        /// The register.
-        /// </summary>
-        /// <param name="password">
-        ///   The password.
-        /// </param>
-        /// <param name="empty"></param>
-        /// <returns>
-        /// </returns>
-        [HttpPost]
-        public ActionResult Register(string email, string password)
-        {
-            var userId = this.Service.CreateUser(email, password);
-            this.SessionPersister.SessionId = this.Service.CreateSession(email, password);
-
-            return this.RedirectToAction("Index", "Account");
-        }
-
-        [HttpPost]
-        public ActionResult CreateAccount(int currencyId, string displayName)
-        {
-            throw new NotImplementedException();
+            return this.View(model);
         }
 
         public ActionResult Details(int accountId)

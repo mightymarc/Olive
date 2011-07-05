@@ -1,0 +1,32 @@
+﻿@model Olive.Website.ViewModels.User.LoginViewModel
+@{
+   ViewBag.Title = "Login";
+}
+<h2>@ViewBag.Title</h2>
+
+@Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
+
+<div id="login-account">
+   @using (Html.BeginForm())
+   {
+       <div>
+           <p>
+               @Html.LabelFor(m => m.Email)
+               @Html.TextBoxFor(m => m.Email)
+               @Html.ValidationMessageFor(m => m.Email)
+           </p>
+           <p>
+               @Html.LabelFor(m => m.Password)
+               @Html.PasswordFor(m => m.Password)
+               @Html.ValidationMessageFor(m => m.Password)
+           </p>
+           <p>
+               <input type="submit" value="Log On" />
+           </p>
+           <p>
+               Please enter your username and password. @Html.ActionLink("Register", "Register")
+               if you don't have an account.
+           </p>
+       </div>
+   }
+</div>

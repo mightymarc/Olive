@@ -1,0 +1,14 @@
+﻿@model Olive.Website.ViewModels.Account.CreateAccountViewModel
+
+@using (Html.BeginForm()) 
+{
+   @Html.ValidationSummary(true, "Please correct the errors and try again.")
+   <fieldset>
+       <div>
+           @Html.EditorForModel()
+           <p>
+               <input type="submit" value="Save" />
+           </p>
+       </div>
+   </fieldset>
+}
