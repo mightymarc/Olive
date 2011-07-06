@@ -2,12 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Runtime.Serialization;
     using System.ServiceModel;
     using System.Text;
 
     [ServiceContract]
+    [ContractClass(typeof(IWebServiceContract))]
     public interface IWebService
     {
         [OperationContract]
@@ -24,9 +26,9 @@
         GetAccountAccount GetAccount(Guid sessionId, int accountId);
 
         [OperationContract]
-        AccountOverview GetAccountOverview(Guid sessionId);
+        AccountOverview GetAccounts(Guid sessionId);
 
         [OperationContract]
-        int CreateAccount(Guid mockSessionId, int currencyId, string displayName);
+        int CreateAccount(Guid sessionId, int currencyId, string displayName);
     }
 }

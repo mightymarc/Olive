@@ -31,6 +31,11 @@ namespace Olive.Website.Tests.Controllers
             var session = new Mock<HttpSessionStateBase>();
             var server = new Mock<HttpServerUtilityBase>();
 
+            request.SetupGet(x => x.ApplicationPath).Returns("/");
+            ////request.SetupGet(x => x.Url).Returns(new Uri("http://localhost/a", UriKind.Absolute));
+            request.SetupGet(x => x.ServerVariables).Returns(new NameValueCollection());
+
+
             context.SetupGet(ctx => ctx.Request).Returns(request.Object);
             context.SetupGet(ctx => ctx.Response).Returns(response.Object);
             context.SetupGet(ctx => ctx.Session).Returns(session.Object);

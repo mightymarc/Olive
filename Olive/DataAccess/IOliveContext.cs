@@ -62,6 +62,6 @@ namespace Olive.DataAccess
         /// </returns>
         int VerifySession(Guid sessionId);
 
-        int SaveChanges();
+        void SaveChanges();
     }
 }

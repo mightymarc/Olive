@@ -8,39 +8,13 @@
 
     using Microsoft.Practices.Unity;
 
+    using Olive.DataAccess;
+    using Olive.Services;
+    using Olive.Website.Controllers;
+    using Olive.Website.Helpers;
+
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
-
-    public class UnityDependencyResolver : IDependencyResolver
-    {
-        readonly IUnityContainer _container;
-        public UnityDependencyResolver(IUnityContainer container)
-        {
-            this._container = container;
-        }
-        public object GetService(Type serviceType)
-        {
-            try
-            {
-                return _container.Resolve(serviceType);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        public IEnumerable<object> GetServices(Type serviceType)
-        {
-            try
-            {
-                return _container.ResolveAll(serviceType);
-            }
-            catch
-            {
-                return new List<object>();
-            }
-        }
-    }
 
     public class MvcApplication : System.Web.HttpApplication
     {
@@ -67,14 +41,74 @@
 
         protected void Application_Start()
         {
-            var container = new UnityContainer();
-            DependencyResolver.SetResolver(new UnityDependencyResolver(container));
-
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
-//            ((HttpContextBase)null).Request.
+
+            var container = this.GetUnityContainer();
+            DependencyResolver.SetResolver(new UnityDependencyResolver(container));    
         }
+
+        private IUnityContainer GetUnityContainer()
+        {
+            var container = new UnityContainer();
+            container.RegisterType<IWebService, WebService>();
+            container.RegisterType<ISiteSession, SiteSession>();
+            container.RegisterType<ICrypto, Crypto>();
+            container.RegisterInstance<IOliveContext>(new OliveContext());
+
+////            container.RegisterType<UserController>();
+
+            return container;
+        }
+    }
+
+    public class UnityDependencyResolver : IDependencyResolver
+    {
+        #region Members
+
+        private IUnityContainer _container;
+
+        #endregion
+
+        #region Ctor
+
+        public UnityDependencyResolver(IUnityContainer container)
+        {
+            _container = container;
+        }
+
+        #endregion
+
+        #region IDependencyResolver Members
+
+        public object GetService(Type serviceType)
+        {
+            try
+            {
+                var x =  _container.Resolve(serviceType);
+                //_container.BuildUp(x);
+                return x;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public IEnumerable<object> GetServices(Type serviceType)
+        {
+            try
+            {
+                return _container.ResolveAll(serviceType);
+            }
+            catch (Exception ex)
+            {
+                return new List<object>();
+            }
+        }
+
+        #endregion
     }
 }

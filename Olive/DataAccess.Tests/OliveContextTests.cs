@@ -32,22 +32,6 @@ namespace Olive.DataAccess.Tests
         }
 
         [Test]
-        public void AccountsWithBalancesEntitiesUsersNotNull()
-        {
-            using (var context = this.GetDbaContext())
-            {
-                var target = context.AccountsWithBalance.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
-
-                if (target == null)
-                {
-                    Assert.Inconclusive("The AccountWithBalance view is empty.");
-                }
-
-                Assert.NotNull(target.Users);
-            }
-        }
-
-        [Test]
         public void AccountsEntitiesUsersNotNull()
         {
             using (var context = this.GetDbaContext())

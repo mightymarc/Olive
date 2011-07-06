@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Olive.Website.Controllers
+﻿namespace Olive.Website.Controllers
 {
     using System.Diagnostics.Contracts;
     using System.ServiceModel;
@@ -12,6 +7,11 @@ namespace Olive.Website.Controllers
     using Olive.Services;
     using Olive.Website.ViewModels.Account;
     using Olive.Website.ViewModels.User;
+
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
 
     public class UserController : SiteController
     {
@@ -30,12 +30,11 @@ namespace Olive.Website.Controllers
         /// Logins the specified user id.
         /// </summary>
         /// <param name="model">The model.</param>
-        /// <param name="returnUrl">The return URL.</param>
         /// <returns>
         /// A redirect to the account index if the login was successful.
         /// </returns>
         [HttpPost]
-        public ActionResult Login(LoginViewModel model, string returnUrl = null)
+        public ActionResult Login(LoginViewModel model)
         {
             Contract.Requires<ArgumentNullException>(this.SessionPersister != null, "this.SessionPersister");
             Contract.Requires<ArgumentNullException>(this.Service != null, "this.Service");
@@ -48,12 +47,12 @@ namespace Olive.Website.Controllers
                     var sessionId = this.Service.CreateSession(model.Email, model.Password);
                     this.SessionPersister.SessionId = sessionId;
 
-                    if (returnUrl == null)
+                    if (string.IsNullOrEmpty(model.ReturnUrl) || !this.Url.IsLocalUrl(model.ReturnUrl))
                     {
                         return this.RedirectToAction("Index", "Account");
                     }
 
-                    return new RedirectResult(returnUrl);
+                    return new RedirectResult(model.ReturnUrl);
                 }
                 catch (FaultException<AuthenticationFault>)
                 {
@@ -84,6 +83,11 @@ namespace Olive.Website.Controllers
             }
 
             return this.View(model);
+        }
+
+        public ViewResult Register()
+        {
+            return this.View(new RegisterViewModel());
         }
     }
 }

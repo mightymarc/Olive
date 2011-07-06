@@ -13,49 +13,64 @@ namespace Olive.Services
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Runtime.Serialization;
     using System.ServiceModel;
     using System.Text;
+
+    using Microsoft.Practices.Unity;
 
     using Olive.DataAccess;
 
     public class WebService : IWebService
     {
-        private OliveContext GetContext()
+        [Microsoft.Practices.Unity.Dependency]
+        public IUnityContainer Container { get; set; }
+
+        public WebService()
         {
-            
-            return new OliveContext(@"server=.\SQLEXPRESS;database=OliveTest;user=ServiceUser;password=temp;");
+        }
+
+        private IOliveContext GetContext()
+        {
+            Contract.Requires(this.Container != null);
+            Contract.Ensures(Contract.Result<IOliveContext>() != null);
+
+            return this.Container.Resolve<IOliveContext>();
         }
 
         public Guid CreateSession(string email, string password)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(email), "email");
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(password), "password");
-
             using (var context = this.GetContext())
             {
-                var salt = context.Users.Where(u => u.Email == email).Select(u => u.PasswordSalt).FirstOrDefault();
+                var salt = context.Users.Where(u => u.Email.ToLower() == email.ToLower()).Select(u => u.PasswordSalt).FirstOrDefault();
 
                 if (salt == null)
                 {
-                    throw new FaultException<AuthenticationFault>(new AuthenticationFault());
+                    throw new AuthenticationException();
                 }
 
-                var hash = Crypto.GenerateHash(password, salt);
+                var crypto = this.Container.Resolve<ICrypto>();
+
+                var hash = crypto.GenerateHash(password, salt);
+
                 return context.CreateSession(email, hash);
             }
         }
 
         public void CreateUser(string email, string password)
         {
-            // TODO: Verify with password policy.
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(email), "email");
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(password), "password");
-
             using (var context = this.GetContext())
             {
-                var salt = Crypto.CreateSalt(64);
-                var hash = Crypto.GenerateHash(password, salt);
+                if (context.Users.Any(u => u.Email.ToLower() == email.ToLower()))
+                {
+                    throw new EmailAlreadyRegisteredException();
+                }
+
+                var crypto = this.Container.Resolve<ICrypto>();
+
+                var salt = crypto.CreateSalt(64);
+                var hash = crypto.GenerateHash(password, salt);
 
                 var user = new User { PasswordHash = hash, PasswordSalt = salt, Email = email };
                 context.Users.Add(user);
@@ -67,9 +82,6 @@ namespace Olive.Services
 
         public AccountOverview GetAccounts(Guid sessionId)
         {
-            Contract.Requires<ArgumentNullException>(sessionId != Guid.Empty, "sessionId");
-            Contract.Ensures(Contract.Result<List<AccountWithBalance>>() != null);
-
             var userId = this.VerifySession(sessionId);
 
             using (var context = this.GetContext())
@@ -101,13 +113,13 @@ namespace Olive.Services
             throw new NotImplementedException();
         }
 
-        public AccountOverview GetAccountOverview(Guid sessionId)
+        public int CreateAccount(Guid sessionId, int currencyId, string displayName)
         {
-            throw new NotImplementedException();
-        }
+            if (displayName == string.Empty)
+            {
+                displayName = null;
+            }
 
-        public int CreateAccount(Guid mockSessionId, int currencyId, string displayName)
-        {
             throw new NotImplementedException();
         }
 

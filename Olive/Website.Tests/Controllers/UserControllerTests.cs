@@ -8,6 +8,8 @@ namespace Olive.Website.Tests.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Globalization;
     using System.Linq;
     using System.ServiceModel;
     using System.Text;
@@ -34,6 +36,19 @@ namespace Olive.Website.Tests.Controllers
         }
 
         [Test]
+        public void RegisterEmptyActionReturnsDefaultViewModel()
+        {
+            // Arrange
+            var controller = this.CreateController();
+
+            // Act
+            var viewModel = (ViewResult)controller.Register();
+
+            // Assert
+            Assert.IsNotNull(viewModel.Model);
+        }
+
+        [Test]
         public void RegisterActionLogsInAndRegistersOnSuccess()
         {
             Assert.Inconclusive();
@@ -42,7 +57,28 @@ namespace Olive.Website.Tests.Controllers
         [Test]
         public void RegisterStaysOnPageWhenEmailIsIncorrect()
         {
-            Assert.Inconclusive();
+            // Arrange
+            var controller = this.CreateController();
+            var model = new RegisterViewModel { Email = "invalid", Password = "properpassword123", ConfirmPassword = "properpassword123" };
+            this.CreateModelStateFromModel(controller, model);
+
+            // Act
+            var viewResult = (ViewResult)controller.Register(model);
+
+            // Assert
+            Assert.AreEqual(string.Empty, viewResult.ViewName);
+        }
+
+        private void CreateModelStateFromModel(Controller controller, object model)
+        {
+            var modelBinder = new ModelBindingContext()
+            {
+                ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(() => model, model.GetType()),
+                ValueProvider = new NameValueCollectionValueProvider(new NameValueCollection(), CultureInfo.InvariantCulture)
+            };
+            var binder = new DefaultModelBinder().BindModel(new ControllerContext(), modelBinder);
+            controller.ModelState.Clear();
+            controller.ModelState.Merge(modelBinder.ModelState);
         }
 
         [Test]
@@ -50,14 +86,14 @@ namespace Olive.Website.Tests.Controllers
         public void RegisterStaysOnPageWhenPasswordIsEmpty(string email)
         {
             // Arrange
-            var target = this.CreateController();
+            var controller = this.CreateController();
+            var model = new RegisterViewModel { Email = email, Password = string.Empty, ConfirmPassword = string.Empty };
+            this.CreateModelStateFromModel(controller, model);
 
             // Act
-            var model = new RegisterViewModel { Email = email, Password = string.Empty, ConfirmPassword = string.Empty };
-            var viewResult = (ViewResult)target.Register(model);
+            var viewResult = (ViewResult)controller.Register(model);
 
             // Assert
-            Assert.Inconclusive("Not implemented.");
         }
 
         [Test]
@@ -92,20 +128,54 @@ namespace Olive.Website.Tests.Controllers
 
             // Assert
             this.serviceMock.Verify(s => s.CreateSession(email, password), Times.Once());
+            Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
+            Assert.AreEqual("Account", redirectResult.RouteValues["controller"]);
+        }
+
+        /// <summary>
+        /// Returns the URL is validated to not be absolute or outside the site.
+        /// When the url is bad, the redirect should be changed to the default.
+        /// </summary>
+        /// <param name="badReturnUrl">The bad return URL.</param>
+        [Test]
+        [TestCase("http://www.otherside.com/")]
+        [TestCase("javascript:DoSomething();")]
+        [TestCase("ftp://otherprotocol.com")]
+        public void ReturnUrlIsValidatedToNotBeAbsolute(string badReturnUrl)
+        {
+            // Arrange
+            var controller = this.CreateController(relativePath: "/User/Login");
+            this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
+            var sessionId = Guid.NewGuid();
+            this.sessionMock.SetupSet(s => s.SessionId = sessionId);
+
+            var email = "valid@email.com";
+            var password = "password";
+
+            this.serviceMock.Setup(s => s.CreateSession(email, password)).Returns(sessionId);
+
+            // Act
+            var redirectResult =
+                (RedirectToRouteResult)
+                controller.Login(new LoginViewModel { Email = email, Password = password, ReturnUrl = badReturnUrl });
+
+            // Assert
+            this.serviceMock.Verify(s => s.CreateSession(email, password), Times.Once());
+            Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
+            Assert.AreEqual("Account", redirectResult.RouteValues["controller"]);
         }
 
         [Test]
-        public void LoginActionRedirectsWithRedirectUrlOnSuccess()
+        public void UsingUrlHelperOnControllerDoesNotCauseIssues()
         {
-            Assert.Inconclusive();
-        }
+            // Arrange
+            var controller = this.CreateController(relativePath: "/User/Login");
 
-        [Test]
-        public void ReturnUrlIsValidatedToNotBeAbsolute()
-        {
-            Assert.Inconclusive("Not implemented.");
+            // Act
+            var isLocal = controller.Url.IsLocalUrl("http://www.someurl.com");
 
-            // Expected behavior is to ignore the bad redirect url.
+            // Assert
+            Assert.False(isLocal);
         }
 
         [Test]

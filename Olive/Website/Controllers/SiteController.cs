@@ -19,6 +19,7 @@ namespace Olive.Website.Controllers
 
     using Olive.DataAccess;
     using Olive.Services;
+    using Olive.Website.Helpers;
 
     /// <summary>
     /// The site controller.
@@ -30,9 +31,6 @@ namespace Olive.Website.Controllers
 
         [Dependency]
         public IWebService Service { get; set; }
-
-        [Dependency]
-        public HttpContextBase Context { get; set; }
 
         protected ActionResult RedirectToLogin()
         {

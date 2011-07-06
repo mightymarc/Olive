@@ -21,7 +21,10 @@ while @UserN < @UserCount
 begin
 	select @UserN += 1
 
-	insert into dbo.[User] (PasswordHash, PasswordSalt) values (left(cast(newid() as varchar(100)),20), left(cast(newid() as varchar(100)),20))
+	insert into dbo.[User] (PasswordHash, PasswordSalt, Email) values (left(cast(newid() as varchar(100)),20), left(cast(newid() as varchar(100)),20),
+		left(cast(newid() as varchar(100)),5) + '@' + left(cast(newid() as varchar(100)),5)
+	
+	)
 	
 	declare @UserId int = null
 	select @UserId = cast(scope_identity() as int)

@@ -23,6 +23,7 @@ namespace Olive.Website.Tests.Controllers
 
     using Olive.Services;
     using Olive.Website.Controllers;
+    using Olive.Website.Helpers;
 
     public abstract class ControllerTestBase<T>
         where T : Controller, new()
@@ -67,14 +68,19 @@ namespace Olive.Website.Tests.Controllers
             return viewModel;
         }
 
-        protected T CreateController(bool buildUp = true)
+        protected T CreateController(bool buildUp = true, string relativePath = null)
         {
             var controller = new T();
             this.container.BuildUp(controller);
 
+            var routes = new RouteCollection();
+            MvcApplication.RegisterRoutes(routes);
+
             var contextBase = MvcMockHelpers.FakeHttpContext(); ////new MockHttpContext();
             controller.ControllerContext = new ControllerContext(contextBase, new RouteData(), controller);
-            controller.Url = new UrlHelper(new RequestContext(contextBase, new RouteData()), new RouteCollection());
+            controller.Url = new UrlHelper(new RequestContext(contextBase, new RouteData()), routes);
+
+            Mock.Get(controller.Request).SetupGet(s => s.Url).Returns(new Uri("http://localhost/" + relativePath, UriKind.Absolute));
 
             return controller;
         }

@@ -22,6 +22,7 @@ namespace Olive.Website.ViewModels.User
         [Required]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "E-mail")]
+        [RegularExpression(@"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")]
         public string Email { get; set; }
 
         /// <summary>
@@ -32,6 +33,7 @@ namespace Olive.Website.ViewModels.User
         /// </value>
         [Required]
         [DataType(DataType.Password)]
+        [RegularExpression("^.{6,100}$")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [Display(Name = "Password")]
         public string Password { get; set; }

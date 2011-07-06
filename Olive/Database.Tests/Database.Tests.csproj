@@ -85,7 +85,19 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auth\CreateSessionTests.cs">
+      <SubType>Designer</SubType>
+    </Compile>
+    <Compile Include="Auth\DeleteSessionTests.cs">
+      <SubType>Designer</SubType>
+    </Compile>
+    <Compile Include="Auth\VerifySessionTests.cs">
+      <SubType>Designer</SubType>
+    </Compile>
     <Compile Include="Banking\AccountTableTests.cs">
+      <SubType>Designer</SubType>
+    </Compile>
+    <Compile Include="Banking\CreateTransfer.cs">
       <SubType>Designer</SubType>
     </Compile>
     <Compile Include="Banking\Transfer.cs">
@@ -108,16 +120,29 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Auth\CreateSessionTests.resx">
+      <DependentUpon>CreateSessionTests.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Auth\DeleteSessionTests.resx">
+      <DependentUpon>DeleteSessionTests.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Auth\VerifySessionTests.resx">
+      <DependentUpon>VerifySessionTests.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Banking\AccountTableTests.resx">
       <DependentUpon>AccountTableTests.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Banking\AccountWithBalance.resx">
       <DependentUpon>AccountWithBalance.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Banking\CreateTransfer.resx">
+      <DependentUpon>CreateTransfer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Banking\Transfer.resx">
       <DependentUpon>Transfer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

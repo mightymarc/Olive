@@ -30,14 +30,13 @@ namespace Olive.Website.Controllers
         {
             Contract.Requires<ArgumentNullException>(this.SessionPersister != null, "this.SessionPersister");
             Contract.Requires<ArgumentNullException>(this.Service != null, "this.Service");
-            Contract.Requires<ArgumentNullException>(this.Context != null, "this.Context != null");
 
             if (!this.SessionPersister.HasSession)
             {
                 return this.RedirectToLogin();
             }
 
-            var accounts = this.Service.GetAccountOverview(this.SessionPersister.SessionId);
+            var accounts = this.Service.GetAccounts(this.SessionPersister.SessionId);
 
             var viewModel = new IndexViewModel() { Accounts = accounts };
 

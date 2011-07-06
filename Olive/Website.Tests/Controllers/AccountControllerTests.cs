@@ -61,11 +61,11 @@ namespace Olive.Website.Tests.Controllers
                         }
                 };
 
-            this.serviceMock.Setup(s => s.GetAccountOverview(sessionId)).Returns(mockServiceResult).Verifiable();
+            this.serviceMock.Setup(s => s.GetAccounts(sessionId)).Returns(mockServiceResult).Verifiable();
 
             var actionResult = target.Index();
 
-            this.serviceMock.Verify(s => s.GetAccountOverview(sessionId), Times.Once());
+            this.serviceMock.Verify(s => s.GetAccounts(sessionId), Times.Once());
 
             Assert.IsInstanceOf(typeof(ViewResult), actionResult);
 

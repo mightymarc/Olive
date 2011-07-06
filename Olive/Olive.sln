@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website", "Website\Website.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{097B08CA-C807-4EB8-96F5-D08AD0A9126C}"
 	ProjectSection(SolutionItems) = preProject
+		Entity Rules.txt = Entity Rules.txt
 		Local.testsettings = Local.testsettings
 		Olive.snk = Olive.snk
 		Olive.vsmdi = Olive.vsmdi
@@ -32,9 +33,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website.Backbone", "Website
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Tests", "Services.Tests\Services.Tests.csproj", "{FBD8ABC6-285F-4231-A127-59756BF4D67C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Tests", "Core.Tests\Core.Tests.csproj", "{1DE053F9-6A52-49B4-9049-EB85995A1A26}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 12
+		SccNumberOfProjects = 13
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs18
 		SccLocalPath0 = .
@@ -71,6 +74,9 @@ Global
 		SccProjectUniqueName11 = Services.Tests\\Services.Tests.csproj
 		SccProjectName11 = Services.Tests
 		SccLocalPath11 = Services.Tests
+		SccProjectUniqueName12 = Core.Tests\\Core.Tests.csproj
+		SccProjectName12 = Core.Tests
+		SccLocalPath12 = Core.Tests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Olive.vsmdi
@@ -128,6 +134,10 @@ Global
 		{FBD8ABC6-285F-4231-A127-59756BF4D67C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBD8ABC6-285F-4231-A127-59756BF4D67C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBD8ABC6-285F-4231-A127-59756BF4D67C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DE053F9-6A52-49B4-9049-EB85995A1A26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DE053F9-6A52-49B4-9049-EB85995A1A26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DE053F9-6A52-49B4-9049-EB85995A1A26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DE053F9-6A52-49B4-9049-EB85995A1A26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

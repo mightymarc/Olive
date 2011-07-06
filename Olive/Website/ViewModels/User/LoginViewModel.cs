@@ -6,6 +6,7 @@ using System.Web;
 namespace Olive.Website.ViewModels.User
 {
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     /// <summary>
     /// Model used by the Login view.
@@ -21,5 +22,8 @@ namespace Olive.Website.ViewModels.User
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        public string ReturnUrl { get; set; }
     }
 }

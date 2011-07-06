@@ -16,6 +16,9 @@ namespace Olive.DataAccess
     using System.Data.Entity.ModelConfiguration.Conventions;
     using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Contracts;
+    using System.Linq;
+
+    using Microsoft.Practices.Unity;
 
     /// <summary>
     /// The entity framework database context.
@@ -28,8 +31,19 @@ namespace Olive.DataAccess
         /// Initializes a new instance of the <see cref="OliveContext"/> class.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
-        public OliveContext(string connectionString)
+        /*public OliveContext(string connectionString)
             : base(connectionString)
+        {
+        }*/
+
+        [InjectionConstructor]
+        public OliveContext()
+            : base("OliveConnectionString")
+        {
+        }
+
+        public OliveContext(string nameOrConnectionString)
+            : base(nameOrConnectionString)
         {
         }
 
@@ -128,6 +142,11 @@ namespace Olive.DataAccess
                         throw new UnknownReturnCodeException(command.GetReturnCode());
                 }
             }
+        }
+
+        public void SaveChanges()
+        {
+            base.SaveChanges();
         }
 
         /// <summary>

@@ -1,4 +1,8 @@
-﻿CREATE PROCEDURE [Auth].[CreateSession]
+﻿-- Returns:
+-- 0: Success
+-- 1: Unknown error
+-- 100: Bad user id/password hash.
+CREATE PROCEDURE [Auth].[CreateSession]
 (
 	@UserId int,
 	@PasswordHash varchar(100),
@@ -15,17 +19,18 @@ if @SessionId is not null raiserror('@SessionId is not null.', 16, 1);
 declare @CorrectPasswordHash varchar(100) = (select PasswordHash from dbo.[User] where UserId = @UserId)
 
 if @CorrectPasswordHash is null
-	raiserror('User account not found.', 16, 1);
+	return 100;
+
 
 if @CorrectPasswordHash <> @PasswordHash
-	raiserror('Incorrect password hash.', 16, 1);
+	return 100;
 
 select @SessionId = NEWID()
 
 insert into Auth.[Session] (SessionId, UserId) values (@SessionId, @UserId);
 
 if @@ROWCOUNT <> 1
-	raiserror('Failed to create session.', 16, 1);
+	return 1;
 
 return 0;
 

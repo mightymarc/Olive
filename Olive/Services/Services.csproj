@@ -73,6 +73,7 @@
       <HintPath>..\packages\EntityFramework.4.1.10331.0\lib\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -108,9 +109,11 @@
     <Compile Include="AccountOverview.svc.cs" />
     <Compile Include="AccountOverviewAccount.svc.cs" />
     <Compile Include="AuthenticationFault.cs" />
+    <Compile Include="EmailAlreadyRegisteredException.cs" />
     <Compile Include="GetAccountAccount.cs" />
     <Compile Include="GetAccountTransfersTransfer.cs" />
     <Compile Include="IWebService.cs" />
+    <Compile Include="IWebServiceContract.cs" />
     <Compile Include="Olive.svc.cs">
       <DependentUpon>Olive.svc</DependentUpon>
     </Compile>
