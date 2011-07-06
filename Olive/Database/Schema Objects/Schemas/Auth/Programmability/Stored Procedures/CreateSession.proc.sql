@@ -1,10 +1,11 @@
 ﻿-- Returns:
 -- 0: Success
 -- 1: Unknown error
--- 100: Bad email/password hash.
+-- 100: User not found.
 -- 101: E-mail is null
 -- 102: PasswordHash is null
 -- 103: SessionId not null
+-- 104: Hash is wrong.
 CREATE PROCEDURE [Auth].[CreateSession]
 (
 	@Email VARCHAR(100),
@@ -26,10 +27,16 @@ declare @CorrectPasswordHash varchar(100)
 select @CorrectPasswordHash = PasswordHash, @UserId = UserId from dbo.[User] where Email = @Email;
 
 if @CorrectPasswordHash is null or @UserId is null
-	return 100;
+begin
+	PRINT 'User not found.';
+	RETURN 100;
+END
 
-if @CorrectPasswordHash <> @PasswordHash
-	return 100;
+IF @CorrectPasswordHash <> @PasswordHash
+BEGIN
+	PRINT 'Hash is wrong.';
+	RETURN 104;
+END
 
 select @SessionId = NEWID()
 

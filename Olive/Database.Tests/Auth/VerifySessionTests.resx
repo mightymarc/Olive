@@ -127,7 +127,7 @@ DECLARE @PasswordSalt VARCHAR(100) = 'aaaaaaaaaaa';
 INSERT INTO dbo.[User] (Email, PasswordHash, PasswordSalt)
 VALUES (@Email, @PasswordHash, @PasswordSalt);
 
-DECLARE @UserId INT = CONVERT(INT, SCOPE_IDENTITY());
+DECLARE @UserId INT = CONVERT(INT, @@IDENTITY);
 DECLARE @RC INT
 DECLARE @SessionId UNIQUEIDENTIFIER;
 

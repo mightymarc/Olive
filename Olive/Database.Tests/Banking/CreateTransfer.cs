@@ -131,6 +131,24 @@ namespace Olive.Database.Tests.Banking
             System.Diagnostics.Trace.WriteLineIf((testActions.PosttestAction != null), "Executing post-test script...");
             ExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
         }
+        [TestMethod()]
+        public void FailsWithNullSourceAccountId()
+        {
+            DatabaseTestActions testActions = this.FailsWithNullSourceAccountIdData;
+            // Execute the pre-test script
+            // 
+            System.Diagnostics.Trace.WriteLineIf((testActions.PretestAction != null), "Executing pre-test script...");
+            ExecutionResult[] pretestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
+            // Execute the test script
+            // 
+            System.Diagnostics.Trace.WriteLineIf((testActions.TestAction != null), "Executing test script...");
+            ExecutionResult[] testResults = TestService.Execute(this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
+            // Execute the post-test script
+            // 
+            System.Diagnostics.Trace.WriteLineIf((testActions.PosttestAction != null), "Executing post-test script...");
+            ExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+        }
+
 
 
 
@@ -147,131 +165,241 @@ namespace Olive.Database.Tests.Banking
         {
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsWithNegativeAmount_TestAction;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateTransfer));
-            Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition inconclusiveCondition1;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition2;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction Success_TestAction;
-            Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition inconclusiveCondition2;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition6;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsWithUnknownSourceAccount_TestAction;
-            Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition inconclusiveCondition3;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition5;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsWithUnknownDestAccount_TestAction;
-            Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition inconclusiveCondition4;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition4;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsWithDifferentAccountCurrencies_TestAction;
-            Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition inconclusiveCondition5;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition1;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsWithNullDescription_TestAction;
-            Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition inconclusiveCondition6;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition3;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsWithDifferentAccountCurrencies_PretestAction;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsWithNegativeAmount_PretestAction;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsWithNullDescription_PretestAction;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsWithUnknownDestAccount_PretestAction;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsWithUnknownSourceAccount_PretestAction;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction Success_PretestAction;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsWithUnknownSourceAccount_PosttestAction;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsWithUnknownDestAccount_PosttestAction;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsWithNullSourceAccountId_TestAction;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition7;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsWithDifferentAccountCurrencies_PosttestAction;
             this.FailsWithNegativeAmountData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             this.SuccessData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             this.FailsWithUnknownSourceAccountData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             this.FailsWithUnknownDestAccountData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             this.FailsWithDifferentAccountCurrenciesData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             this.FailsWithNullDescriptionData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
+            this.FailsWithNullSourceAccountIdData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             FailsWithNegativeAmount_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
-            inconclusiveCondition1 = new Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition();
+            scalarValueCondition2 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             Success_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
-            inconclusiveCondition2 = new Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition();
+            scalarValueCondition6 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             FailsWithUnknownSourceAccount_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
-            inconclusiveCondition3 = new Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition();
+            scalarValueCondition5 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             FailsWithUnknownDestAccount_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
-            inconclusiveCondition4 = new Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition();
+            scalarValueCondition4 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             FailsWithDifferentAccountCurrencies_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
-            inconclusiveCondition5 = new Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition();
+            scalarValueCondition1 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             FailsWithNullDescription_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
-            inconclusiveCondition6 = new Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition();
+            scalarValueCondition3 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
+            FailsWithDifferentAccountCurrencies_PretestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            FailsWithNegativeAmount_PretestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            FailsWithNullDescription_PretestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            FailsWithUnknownDestAccount_PretestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            FailsWithUnknownSourceAccount_PretestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            Success_PretestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            FailsWithUnknownSourceAccount_PosttestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            FailsWithUnknownDestAccount_PosttestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            FailsWithNullSourceAccountId_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            scalarValueCondition7 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
+            FailsWithDifferentAccountCurrencies_PosttestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            // 
+            // FailsWithNegativeAmount_TestAction
+            // 
+            FailsWithNegativeAmount_TestAction.Conditions.Add(scalarValueCondition2);
+            resources.ApplyResources(FailsWithNegativeAmount_TestAction, "FailsWithNegativeAmount_TestAction");
+            // 
+            // scalarValueCondition2
+            // 
+            scalarValueCondition2.ColumnNumber = 1;
+            scalarValueCondition2.Enabled = true;
+            scalarValueCondition2.ExpectedValue = "0";
+            scalarValueCondition2.Name = "scalarValueCondition2";
+            scalarValueCondition2.NullExpected = false;
+            scalarValueCondition2.ResultSet = 1;
+            scalarValueCondition2.RowNumber = 1;
+            // 
+            // Success_TestAction
+            // 
+            Success_TestAction.Conditions.Add(scalarValueCondition6);
+            resources.ApplyResources(Success_TestAction, "Success_TestAction");
+            // 
+            // scalarValueCondition6
+            // 
+            scalarValueCondition6.ColumnNumber = 1;
+            scalarValueCondition6.Enabled = true;
+            scalarValueCondition6.ExpectedValue = "0";
+            scalarValueCondition6.Name = "scalarValueCondition6";
+            scalarValueCondition6.NullExpected = false;
+            scalarValueCondition6.ResultSet = 1;
+            scalarValueCondition6.RowNumber = 1;
+            // 
+            // FailsWithUnknownSourceAccount_TestAction
+            // 
+            FailsWithUnknownSourceAccount_TestAction.Conditions.Add(scalarValueCondition5);
+            resources.ApplyResources(FailsWithUnknownSourceAccount_TestAction, "FailsWithUnknownSourceAccount_TestAction");
+            // 
+            // scalarValueCondition5
+            // 
+            scalarValueCondition5.ColumnNumber = 1;
+            scalarValueCondition5.Enabled = true;
+            scalarValueCondition5.ExpectedValue = "0";
+            scalarValueCondition5.Name = "scalarValueCondition5";
+            scalarValueCondition5.NullExpected = false;
+            scalarValueCondition5.ResultSet = 1;
+            scalarValueCondition5.RowNumber = 1;
+            // 
+            // FailsWithUnknownDestAccount_TestAction
+            // 
+            FailsWithUnknownDestAccount_TestAction.Conditions.Add(scalarValueCondition4);
+            resources.ApplyResources(FailsWithUnknownDestAccount_TestAction, "FailsWithUnknownDestAccount_TestAction");
+            // 
+            // scalarValueCondition4
+            // 
+            scalarValueCondition4.ColumnNumber = 1;
+            scalarValueCondition4.Enabled = true;
+            scalarValueCondition4.ExpectedValue = "0";
+            scalarValueCondition4.Name = "scalarValueCondition4";
+            scalarValueCondition4.NullExpected = false;
+            scalarValueCondition4.ResultSet = 1;
+            scalarValueCondition4.RowNumber = 1;
+            // 
+            // FailsWithDifferentAccountCurrencies_TestAction
+            // 
+            FailsWithDifferentAccountCurrencies_TestAction.Conditions.Add(scalarValueCondition1);
+            resources.ApplyResources(FailsWithDifferentAccountCurrencies_TestAction, "FailsWithDifferentAccountCurrencies_TestAction");
+            // 
+            // scalarValueCondition1
+            // 
+            scalarValueCondition1.ColumnNumber = 1;
+            scalarValueCondition1.Enabled = true;
+            scalarValueCondition1.ExpectedValue = "0";
+            scalarValueCondition1.Name = "scalarValueCondition1";
+            scalarValueCondition1.NullExpected = false;
+            scalarValueCondition1.ResultSet = 1;
+            scalarValueCondition1.RowNumber = 1;
+            // 
+            // FailsWithNullDescription_TestAction
+            // 
+            FailsWithNullDescription_TestAction.Conditions.Add(scalarValueCondition3);
+            resources.ApplyResources(FailsWithNullDescription_TestAction, "FailsWithNullDescription_TestAction");
+            // 
+            // scalarValueCondition3
+            // 
+            scalarValueCondition3.ColumnNumber = 1;
+            scalarValueCondition3.Enabled = true;
+            scalarValueCondition3.ExpectedValue = "0";
+            scalarValueCondition3.Name = "scalarValueCondition3";
+            scalarValueCondition3.NullExpected = false;
+            scalarValueCondition3.ResultSet = 1;
+            scalarValueCondition3.RowNumber = 1;
+            // 
+            // FailsWithDifferentAccountCurrencies_PretestAction
+            // 
+            resources.ApplyResources(FailsWithDifferentAccountCurrencies_PretestAction, "FailsWithDifferentAccountCurrencies_PretestAction");
+            // 
+            // FailsWithNegativeAmount_PretestAction
+            // 
+            resources.ApplyResources(FailsWithNegativeAmount_PretestAction, "FailsWithNegativeAmount_PretestAction");
+            // 
+            // FailsWithNullDescription_PretestAction
+            // 
+            resources.ApplyResources(FailsWithNullDescription_PretestAction, "FailsWithNullDescription_PretestAction");
+            // 
+            // FailsWithUnknownDestAccount_PretestAction
+            // 
+            resources.ApplyResources(FailsWithUnknownDestAccount_PretestAction, "FailsWithUnknownDestAccount_PretestAction");
+            // 
+            // FailsWithUnknownSourceAccount_PretestAction
+            // 
+            resources.ApplyResources(FailsWithUnknownSourceAccount_PretestAction, "FailsWithUnknownSourceAccount_PretestAction");
+            // 
+            // Success_PretestAction
+            // 
+            resources.ApplyResources(Success_PretestAction, "Success_PretestAction");
             // 
             // FailsWithNegativeAmountData
             // 
             this.FailsWithNegativeAmountData.PosttestAction = null;
-            this.FailsWithNegativeAmountData.PretestAction = null;
+            this.FailsWithNegativeAmountData.PretestAction = FailsWithNegativeAmount_PretestAction;
             this.FailsWithNegativeAmountData.TestAction = FailsWithNegativeAmount_TestAction;
-            // 
-            // FailsWithNegativeAmount_TestAction
-            // 
-            FailsWithNegativeAmount_TestAction.Conditions.Add(inconclusiveCondition1);
-            resources.ApplyResources(FailsWithNegativeAmount_TestAction, "FailsWithNegativeAmount_TestAction");
-            // 
-            // inconclusiveCondition1
-            // 
-            inconclusiveCondition1.Enabled = true;
-            inconclusiveCondition1.Name = "inconclusiveCondition1";
             // 
             // SuccessData
             // 
             this.SuccessData.PosttestAction = null;
-            this.SuccessData.PretestAction = null;
+            this.SuccessData.PretestAction = Success_PretestAction;
             this.SuccessData.TestAction = Success_TestAction;
-            // 
-            // Success_TestAction
-            // 
-            Success_TestAction.Conditions.Add(inconclusiveCondition2);
-            resources.ApplyResources(Success_TestAction, "Success_TestAction");
-            // 
-            // inconclusiveCondition2
-            // 
-            inconclusiveCondition2.Enabled = true;
-            inconclusiveCondition2.Name = "inconclusiveCondition2";
             // 
             // FailsWithUnknownSourceAccountData
             // 
-            this.FailsWithUnknownSourceAccountData.PosttestAction = null;
-            this.FailsWithUnknownSourceAccountData.PretestAction = null;
+            this.FailsWithUnknownSourceAccountData.PosttestAction = FailsWithUnknownSourceAccount_PosttestAction;
+            this.FailsWithUnknownSourceAccountData.PretestAction = FailsWithUnknownSourceAccount_PretestAction;
             this.FailsWithUnknownSourceAccountData.TestAction = FailsWithUnknownSourceAccount_TestAction;
-            // 
-            // FailsWithUnknownSourceAccount_TestAction
-            // 
-            FailsWithUnknownSourceAccount_TestAction.Conditions.Add(inconclusiveCondition3);
-            resources.ApplyResources(FailsWithUnknownSourceAccount_TestAction, "FailsWithUnknownSourceAccount_TestAction");
-            // 
-            // inconclusiveCondition3
-            // 
-            inconclusiveCondition3.Enabled = true;
-            inconclusiveCondition3.Name = "inconclusiveCondition3";
             // 
             // FailsWithUnknownDestAccountData
             // 
-            this.FailsWithUnknownDestAccountData.PosttestAction = null;
-            this.FailsWithUnknownDestAccountData.PretestAction = null;
+            this.FailsWithUnknownDestAccountData.PosttestAction = FailsWithUnknownDestAccount_PosttestAction;
+            this.FailsWithUnknownDestAccountData.PretestAction = FailsWithUnknownDestAccount_PretestAction;
             this.FailsWithUnknownDestAccountData.TestAction = FailsWithUnknownDestAccount_TestAction;
-            // 
-            // FailsWithUnknownDestAccount_TestAction
-            // 
-            FailsWithUnknownDestAccount_TestAction.Conditions.Add(inconclusiveCondition4);
-            resources.ApplyResources(FailsWithUnknownDestAccount_TestAction, "FailsWithUnknownDestAccount_TestAction");
-            // 
-            // inconclusiveCondition4
-            // 
-            inconclusiveCondition4.Enabled = true;
-            inconclusiveCondition4.Name = "inconclusiveCondition4";
             // 
             // FailsWithDifferentAccountCurrenciesData
             // 
-            this.FailsWithDifferentAccountCurrenciesData.PosttestAction = null;
-            this.FailsWithDifferentAccountCurrenciesData.PretestAction = null;
+            this.FailsWithDifferentAccountCurrenciesData.PosttestAction = FailsWithDifferentAccountCurrencies_PosttestAction;
+            this.FailsWithDifferentAccountCurrenciesData.PretestAction = FailsWithDifferentAccountCurrencies_PretestAction;
             this.FailsWithDifferentAccountCurrenciesData.TestAction = FailsWithDifferentAccountCurrencies_TestAction;
-            // 
-            // FailsWithDifferentAccountCurrencies_TestAction
-            // 
-            FailsWithDifferentAccountCurrencies_TestAction.Conditions.Add(inconclusiveCondition5);
-            resources.ApplyResources(FailsWithDifferentAccountCurrencies_TestAction, "FailsWithDifferentAccountCurrencies_TestAction");
-            // 
-            // inconclusiveCondition5
-            // 
-            inconclusiveCondition5.Enabled = true;
-            inconclusiveCondition5.Name = "inconclusiveCondition5";
             // 
             // FailsWithNullDescriptionData
             // 
             this.FailsWithNullDescriptionData.PosttestAction = null;
-            this.FailsWithNullDescriptionData.PretestAction = null;
+            this.FailsWithNullDescriptionData.PretestAction = FailsWithNullDescription_PretestAction;
             this.FailsWithNullDescriptionData.TestAction = FailsWithNullDescription_TestAction;
             // 
-            // FailsWithNullDescription_TestAction
+            // FailsWithUnknownSourceAccount_PosttestAction
             // 
-            FailsWithNullDescription_TestAction.Conditions.Add(inconclusiveCondition6);
-            resources.ApplyResources(FailsWithNullDescription_TestAction, "FailsWithNullDescription_TestAction");
+            resources.ApplyResources(FailsWithUnknownSourceAccount_PosttestAction, "FailsWithUnknownSourceAccount_PosttestAction");
             // 
-            // inconclusiveCondition6
+            // FailsWithUnknownDestAccount_PosttestAction
             // 
-            inconclusiveCondition6.Enabled = true;
-            inconclusiveCondition6.Name = "inconclusiveCondition6";
+            resources.ApplyResources(FailsWithUnknownDestAccount_PosttestAction, "FailsWithUnknownDestAccount_PosttestAction");
+            // 
+            // FailsWithNullSourceAccountIdData
+            // 
+            this.FailsWithNullSourceAccountIdData.PosttestAction = null;
+            this.FailsWithNullSourceAccountIdData.PretestAction = null;
+            this.FailsWithNullSourceAccountIdData.TestAction = FailsWithNullSourceAccountId_TestAction;
+            // 
+            // FailsWithNullSourceAccountId_TestAction
+            // 
+            FailsWithNullSourceAccountId_TestAction.Conditions.Add(scalarValueCondition7);
+            resources.ApplyResources(FailsWithNullSourceAccountId_TestAction, "FailsWithNullSourceAccountId_TestAction");
+            // 
+            // scalarValueCondition7
+            // 
+            scalarValueCondition7.ColumnNumber = 1;
+            scalarValueCondition7.Enabled = true;
+            scalarValueCondition7.ExpectedValue = "0";
+            scalarValueCondition7.Name = "scalarValueCondition7";
+            scalarValueCondition7.NullExpected = false;
+            scalarValueCondition7.ResultSet = 1;
+            scalarValueCondition7.RowNumber = 1;
+            // 
+            // FailsWithDifferentAccountCurrencies_PosttestAction
+            // 
+            resources.ApplyResources(FailsWithDifferentAccountCurrencies_PosttestAction, "FailsWithDifferentAccountCurrencies_PosttestAction");
         }
 
         #endregion
@@ -297,5 +425,6 @@ namespace Olive.Database.Tests.Banking
         private DatabaseTestActions FailsWithUnknownDestAccountData;
         private DatabaseTestActions FailsWithDifferentAccountCurrenciesData;
         private DatabaseTestActions FailsWithNullDescriptionData;
+        private DatabaseTestActions FailsWithNullSourceAccountIdData;
     }
 }

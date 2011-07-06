@@ -127,15 +127,15 @@ DECLARE @PasswordSalt VARCHAR(100) = 'aaaaaaaaaaa';
 INSERT INTO dbo.[User] (Email, PasswordHash, PasswordSalt)
 VALUES (@Email, @PasswordHash, @PasswordSalt);
 
-DECLARE @UserId INT = CONVERT(INT, SCOPE_IDENTITY());
+DECLARE @UserId INT = CONVERT(INT, @@IDENTITY);
 DECLARE @RC INT
 DECLARE @SessionId UNIQUEIDENTIFIER;
 
-EXEC @RC = Auth.CreateSession @UserId, @PasswordHash, @SessionId OUTPUT;
+EXEC @RC = Auth.CreateSession @Email, @PasswordHash, @SessionId OUTPUT;
 
 IF @RC &lt;&gt; 0
 BEGIN
-	SELECT 'CreateSession did not return 0.';
+	SELECT 'CreateSession returned ' + CONVERT(VARCHAR, @RC) + '.';
 	RETURN
 END
 
@@ -167,7 +167,10 @@ SELECT 0;</value>
   </data>
   <data name="FailsOnUnknownSessionId_TestAction.SqlScript" xml:space="preserve">
     <value>DECLARE @RC INT
-EXEC @RC = Auth.DeleteSession NEWID();
+DECLARE @SessionId UNIQUEIDENTIFIER = NEWID();
+
+
+EXEC @RC = Auth.DeleteSession @SessionId;
 
 IF @RC = 0
 BEGIN
@@ -177,12 +180,9 @@ END
 
 SELECT 0;</value>
   </data>
-  <data name="FailsOnExpiredSession_PosttestAction.SqlScript" xml:space="preserve">
-    <value />
-  </data>
   <data name="FailsOnExpiredSession_PretestAction.SqlScript" xml:space="preserve">
     <value>INSERT INTO dbo.[User] (Email, PasswordHash, PasswordSalt) VALUES ('FailsOnExpiredSession@domain.com', 'hash', 'salt');
-DECLARE @UserId INT = CONVERT(INT, SCOPE_IDENTITY());
+DECLARE @UserId INT = CONVERT(INT, @@IDENTITY);
 
 DECLARE @SessionId UNIQUEIDENTIFIER = NEWID();
 
@@ -199,6 +199,9 @@ END
 
 SELECT 0;
 </value>
+  </data>
+  <data name="FailsOnExpiredSession_PosttestAction.SqlScript" xml:space="preserve">
+    <value />
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

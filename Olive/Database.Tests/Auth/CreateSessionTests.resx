@@ -125,7 +125,7 @@ DECLARE @Email VARCHAR(100) = 'test@email.com'
 INSERT INTO dbo.[User] (PasswordHash, PasswordSalt, Email)
 VALUES ('hash', 'salt', @Email);
 
---DECLARE @UserId int = CONVERT(int, SCOPE_IDENTITY());
+--DECLARE @UserId int = CONVERT(int, @@IDENTITY);
 
 DECLARE @RC int
 DECLARE @SessionId uniqueidentifier;
@@ -149,7 +149,7 @@ DECLARE @Email VARCHAR(100) = 'test@email.com'
 INSERT INTO dbo.[User] (PasswordHash, PasswordSalt, Email)
 VALUES ('hush', 'salt', @Email);
 
-DECLARE @UserId int = CONVERT(int, SCOPE_IDENTITY());
+DECLARE @UserId int = CONVERT(int, @@IDENTITY);
 
 DECLARE @RC int
 DECLARE @SessionId uniqueidentifier

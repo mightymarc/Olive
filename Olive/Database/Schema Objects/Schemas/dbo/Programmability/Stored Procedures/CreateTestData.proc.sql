@@ -26,7 +26,7 @@ begin
 	)
 	
 	declare @UserId int = null
-	select @UserId = cast(scope_identity() as int)
+	select @UserId = cast(@@IDENTITY as int) -- Must use @@IDENTITY because of the trigger (which doesn't set SCOPE_IDENTITY()).
 	declare @CurrentAccountCount int = round((5 - 1 - 1) * rand() + 1, 0) 
 	declare @CurrentAccountN int = 0
 	

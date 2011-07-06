@@ -122,7 +122,7 @@
 
 print 'Creating user.';
 insert into dbo.[User] (PasswordHash, Email, PasswordSalt) values ('hash', 'user@domain.com', 'salt');
-declare @UserId int = cast(scope_identity() as int)
+declare @UserId int = cast(@@IDENTITY as int)
 print 'User created with id ' + convert(varchar, @UserId) + '.'
 
 print 'Creating account one.'

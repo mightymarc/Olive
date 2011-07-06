@@ -118,119 +118,173 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="InsertSuccess_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>BEGIN TRAN
+	INSERT INTO dbo.[User] (Email, PasswordHash, PasswordSalt) VALUES ('test30101@domain.com', 'hash', 'salt');
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+	IF @@ROWCOUNT = 1
+		SELECT 0
 
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+ROLLBACK TRAN
+</value>
   </data>
   <data name="InsertWithNullEmailFails_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>BEGIN TRAN
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+BEGIN TRY
+	INSERT INTO dbo.[User] (Email, PasswordSalt, PasswordHash)
+		VALUES (null, 'salt', 'hash');
+END TRY
+BEGIN CATCH
+	SELECT 0
+END CATCH
 
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+ROLLBACK TRAN
+
+	</value>
   </data>
   <data name="InsertWithNullPasswordHashFails_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>BEGIN TRAN
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+BEGIN TRY
+	INSERT INTO dbo.[User] (Email, PasswordSalt, PasswordHash)
+		VALUES ('e@mail.com', 'salt', null);
+END TRY
+BEGIN CATCH
+	SELECT 0
+END CATCH
 
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+ROLLBACK TRAN
+</value>
   </data>
-  <data name="InsertWithPasswordSaltFails_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+  <data name="InsertWithNullPasswordSaltFails_TestAction.SqlScript" xml:space="preserve">
+    <value>BEGIN TRAN
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+BEGIN TRY
+	INSERT INTO dbo.[User] (Email, PasswordSalt, PasswordHash)
+		VALUES ('e@mail.com', null, 'hash');
+END TRY
+BEGIN CATCH
+	SELECT 0
+END CATCH
 
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+ROLLBACK TRAN
+</value>
   </data>
   <data name="InsertWithDuplicateEmailFails_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>BEGIN TRAN
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+INSERT INTO dbo.[User] (Email, PasswordHash, PasswordSalt)
+	VALUES ('test30102@domain.com', 'hash', 'salt');
 
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/
+IF @@ROWCOUNT &lt;&gt; 1
+BEGIN
+	ROLLBACK TRAN
+	RETURN
+END
 
--- TODO: Remember to use different casings on the e-mails.
+BEGIN TRY
+	INSERT INTO dbo.[User] (Email, PasswordHash, PasswordSalt)
+		VALUES ('TEST30102@domain.com', 'hash', 'salt');
+END TRY
+BEGIN CATCH
+	RETURN
+END
+
+IF @@ROWCOUNT = 1
+BEGIN
+	ROLLBACK TRAN
+	RETURN
+END
+
+SELECT 0
+
+ROLLBACK TRAN
 </value>
   </data>
   <data name="NotAllowedToDelete_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>BEGIN TRAN
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+BEGIN TRY
+	INSERT INTO dbo.[User] (Email, PasswordSalt, PasswordHash)
+		VALUES ('e@mail.com', null, 'hash');
 
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+	DECLARE @UserId = CONVERT(INT, @@IDENTITY);
+
+	DELETE FROM dbo.[User] WHERE UserId = @UserId
+END TRY
+BEGIN CATCH
+	SELECT 0
+END CATCH
+
+ROLLBACK TRAN
+</value>
   </data>
   <data name="NotAllowedToUpdateEmail_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>BEGIN TRAN
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+BEGIN TRY
+	INSERT INTO dbo.[User] (Email, PasswordSalt, PasswordHash)
+		VALUES ('e@mail.com', 'salt', 'hash');
 
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+	DECLARE @UserId = CONVERT(INT, @@IDENTITY);
+
+	UPDATE dbo.[User] SET Email = 'other@email.com' WHERE UserId = @UserId
+END TRY
+BEGIN CATCH
+	SELECT 0
+END CATCH
+
+ROLLBACK TRAN
+</value>
   </data>
   <data name="AllowedToUpdatePasswordHash_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>UPDATE dbo.[User] SET PasswordHash = 'newhash' WHERE UserId = 30100;
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
-
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+IF @@ROWCOUNT = 1
+BEGIN
+	SELECT 0
+	RETURN
+END
+</value>
   </data>
   <data name="NotAllowedToUpdatePasswordSalt_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>BEGIN TRAN
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+BEGIN TRY
+	INSERT INTO dbo.[User] (Email, PasswordSalt, PasswordHash)
+		VALUES ('e@mail.com', 'salt', 'hash');
+
+	DECLARE @UserId = CONVERT(INT, @@IDENTITY);
+
+	UPDATE dbo.[User] SET PasswordSalt = 'othersalt' WHERE UserId = @UserId
+END TRY
+BEGIN CATCH
+	SELECT 0
+END CATCH
+
+ROLLBACK TRAN
+</value>
+  </data>
+  <data name="AllowedToUpdatePasswordHash_PretestAction.SqlScript" xml:space="preserve">
+    <value>SET IDENTITY_INSERT dbo.[User] ON
+
+INSERT INTO dbo.[User] (UserId, Email, PasswordHash, PasswordSalt)
+	VALUES (30100, 'test3000@domain.com', 'hash', 'salt');
+
+SET IDENTITY_INSERT dbo.[User] OFF
+</value>
+  </data>
+  <data name="AllowedToUpdatePasswordHash_PosttestAction.SqlScript" xml:space="preserve">
+    <value>DELETE FROM dbo.[User] WHERE UserId = 30100;
+
+IF @@ROWCOUNT = 0
+	SELECT 0
+</value>
+  </data>
+  <data name="InsertWithDuplicateEmailFails_PretestAction.SqlScript" xml:space="preserve">
+    <value>/*
+Add SQL statements here that you want to run before
+the test script is run.
 
 In the lower pane, you can add test conditions that verify 
 whether the results of your SQL statements match what 

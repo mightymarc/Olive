@@ -118,82 +118,223 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="FailsWithNegativeAmount_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>DECLARE @SourceAccount INT = 95532;
+DECLARE @DestAccount INT = 95533;
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+DECLARE @RC INT
+DECLARE @TransferId BIGINT
 
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+EXEC @RC = Banking.CreateTransfer @SourceAccount, @DestAccount, 'Desc', 10, @TransferId OUTPUT;
+
+IF @RC = 105
+BEGIN
+	SELECT 0
+END
+</value>
   </data>
   <data name="Success_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>DECLARE @SourceAccount INT = 1342532;
+DECLARE @DestAccount INT = 1342533;
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+DECLARE @RC INT
+DECLARE @TransferId BIGINT
 
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+EXEC @RC = Banking.CreateTransfer @SourceAccount, @DestAccount, 'Desc', 10, @TransferId OUTPUT;
+
+IF @RC = 0 -- Success
+BEGIN
+	IF @TransferId IS NOT NULL
+	BEGIN
+		SELECT 0
+		RETURN
+	END
+END
+
+SELECT 'Returned ' + CONVERT(VARCHAR, @RC);
+</value>
   </data>
   <data name="FailsWithUnknownSourceAccount_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>DECLARE @SourceAccount INT = 4000; -- Unknown
+DECLARE @DestAccount INT = 3002;
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+DECLARE @RC INT
+DECLARE @TransferId BIGINT
 
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+BEGIN TRAN
+
+BEGIN TRY
+	EXEC @RC = Banking.CreateTransfer @SourceAccount, @DestAccount, 'Desc', 10, @TransferId OUTPUT;
+END TRY
+BEGIN CATCH
+	IF ERROR_NUMBER() = 51001
+		SELECT 0
+END CATCH
+
+ROLLBACK TRAN
+</value>
   </data>
   <data name="FailsWithUnknownDestAccount_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>DECLARE @SourceAccount INT = 4000; -- Unknown
+DECLARE @DestAccount INT = 3002;
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+DECLARE @RC INT
+DECLARE @TransferId BIGINT
 
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+BEGIN TRAN
+
+BEGIN TRY
+	EXEC @RC = Banking.CreateTransfer @SourceAccount, @DestAccount, 'Desc', 10, @TransferId OUTPUT;
+END TRY
+BEGIN CATCH
+	IF ERROR_NUMBER() = 51002
+		SELECT 0
+END CATCH
+
+ROLLBACK TRAN
+</value>
   </data>
   <data name="FailsWithDifferentAccountCurrencies_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>DECLARE @RC INT
+DECLARE @TransferId BIGINT
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+BEGIN TRAN
 
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+BEGIN TRY
+	EXEC @RC = Banking.CreateTransfer 3002, 3003, 'Desc', 10, @TransferId OUTPUT;
+END TRY
+BEGIN CATCH
+	IF ERROR_NUMBER() = 51008
+		SELECT 0
+END CATCH
+
+ROLLBACK TRAN
+</value>
   </data>
   <data name="FailsWithNullDescription_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>DECLARE @SourceAccount INT = 934532;
+DECLARE @DestAccount INT = 934533;
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+DECLARE @RC INT
+DECLARE @TransferId BIGINT
 
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+EXEC @RC = Banking.CreateTransfer @SourceAccount, @DestAccount, null, 10, @TransferId OUTPUT;
+
+IF @RC = 103
+BEGIN
+	SELECT 0
+END
+</value>
+  </data>
+  <data name="FailsWithDifferentAccountCurrencies_PretestAction.SqlScript" xml:space="preserve">
+    <value>SET IDENTITY_INSERT dbo.[User] ON
+INSERT INTO dbo.[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (3001, 'user@domain.com', 'hash', 'salt');
+SET IDENTITY_INSERT dbo.[User] OFF
+
+SET IDENTITY_INSERT Banking.[Account] ON
+INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (3002, 'USD', 1, 'Current');
+INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (3003, 'BTC', 1, 'Current');
+
+SET IDENTITY_INSERT Banking.[Account] OFF
+
+</value>
+  </data>
+  <data name="FailsWithNegativeAmount_PretestAction.SqlScript" xml:space="preserve">
+    <value>SET IDENTITY_INSERT dbo.[User] ON
+INSERT INTO dbo.[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (95737, 'z48597345@domain.com', 'hash', 'salt');
+SET IDENTITY_INSERT dbo.[User] OFF
+
+SET IDENTITY_INSERT Banking.[Account] ON
+INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (95532, 'USD', 0, 'Current');
+INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (95533, 'USD', 0, 'Current');
+
+SET IDENTITY_INSERT Banking.[Account] OFF
+
+</value>
+  </data>
+  <data name="FailsWithNullDescription_PretestAction.SqlScript" xml:space="preserve">
+    <value>SET IDENTITY_INSERT dbo.[User] ON
+INSERT INTO dbo.[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (957137, 'z48597345@domain.com', 'hash', 'salt');
+SET IDENTITY_INSERT dbo.[User] OFF
+
+SET IDENTITY_INSERT Banking.[Account] ON
+INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (934532, 'USD', 0, 'Current');
+INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (934533, 'USD', 0, 'Current');
+
+SET IDENTITY_INSERT Banking.[Account] OFF
+
+</value>
+  </data>
+  <data name="FailsWithUnknownDestAccount_PretestAction.SqlScript" xml:space="preserve">
+    <value>SET IDENTITY_INSERT dbo.[User] ON
+INSERT INTO dbo.[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (3001, 'z485p9s5@domain.com', 'hash', 'salt');
+SET IDENTITY_INSERT dbo.[User] OFF
+
+SET IDENTITY_INSERT Banking.[Account] ON
+INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (3002, 'USD', 1, 'Current');
+INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (3003, 'USD', 1, 'Current');
+
+SET IDENTITY_INSERT Banking.[Account] OFF
+
+</value>
+  </data>
+  <data name="FailsWithUnknownSourceAccount_PretestAction.SqlScript" xml:space="preserve">
+    <value>SET IDENTITY_INSERT dbo.[User] ON
+INSERT INTO dbo.[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (3001, 'z485p9s5@domain.com', 'hash', 'salt');
+SET IDENTITY_INSERT dbo.[User] OFF
+
+SET IDENTITY_INSERT Banking.[Account] ON
+INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (3002, 'USD', 1, 'Current');
+INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (3003, 'USD', 1, 'Current');
+
+SET IDENTITY_INSERT Banking.[Account] OFF
+
+</value>
+  </data>
+  <data name="Success_PretestAction.SqlScript" xml:space="preserve">
+    <value>SET IDENTITY_INSERT dbo.[User] ON
+INSERT INTO dbo.[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (817315, 'z485Pp9s5@domain.com', 'hash', 'salt');
+SET IDENTITY_INSERT dbo.[User] OFF
+
+SET IDENTITY_INSERT Banking.[Account] ON
+INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (1342532, 'USD', 1, 'Current');
+INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (1342533, 'USD', 1, 'Current');
+
+SET IDENTITY_INSERT Banking.[Account] OFF
+
+</value>
+  </data>
+  <data name="FailsWithUnknownSourceAccount_PosttestAction.SqlScript" xml:space="preserve">
+    <value>DELETE FROM dbo.[User] WHERE UserId = 3001;
+
+DELETE FROM Banking.Account WHERE AccountId &gt;= 3002 AND AccountId &lt;= 3003;
+</value>
+  </data>
+  <data name="FailsWithUnknownDestAccount_PosttestAction.SqlScript" xml:space="preserve">
+    <value>DELETE FROM dbo.[User] WHERE UserId = 3001;
+
+DELETE FROM Banking.Account WHERE AccountId &gt;= 3002 AND AccountId &lt;= 3003;
+</value>
+  </data>
+  <data name="FailsWithDifferentAccountCurrencies_PosttestAction.SqlScript" xml:space="preserve">
+    <value>DELETE FROM dbo.[User] WHERE UserId = 3001;
+
+DELETE FROM dbo.[Account] WHERE AccountId &gt;= 3002 AND AccountId &lt;= 3003;
+</value>
+  </data>
+  <data name="FailsWithNullSourceAccountId_TestAction.SqlScript" xml:space="preserve">
+    <value>BEGIN TRAN
+
+BEGIN TRY
+	DECLARE @TransferId BIGINT
+	EXEC Banking.CreateTransfer NULL, 1, '', 1, @TransferId OUTPUT
+END TRY
+BEGIN CATCH
+	IF ERROR_NUMBER() = 51003
+		SELECT 0
+END CATCH
+
+ROLLBACK TRAN
+</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
