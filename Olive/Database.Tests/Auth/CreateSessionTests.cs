@@ -64,9 +64,9 @@ namespace Olive.Database.Tests.Auth
             ExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
         }
         [TestMethod()]
-        public void UnknownUserIdReturnsErrorCode()
+        public void UnknownEmailReturnsErrorCode()
         {
-            DatabaseTestActions testActions = this.UnknownUserIdReturnsErrorCodeData;
+            DatabaseTestActions testActions = this.UnknownEmailReturnsErrorCodeData;
             // Execute the pre-test script
             // 
             System.Diagnostics.Trace.WriteLineIf((testActions.PretestAction != null), "Executing pre-test script...");
@@ -95,17 +95,17 @@ namespace Olive.Database.Tests.Auth
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateSessionTests));
             Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition1;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction IncorrectHashReturnsErrorCode_TestAction;
-            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction UnknownUserIdReturnsErrorCode_TestAction;
             Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition2;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction UnknownEmailReturnsErrorCode_TestAction;
             Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition3;
             this.CorrectHashReturnsSessionIdData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             this.IncorrectHashReturnsErrorCodeData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
-            this.UnknownUserIdReturnsErrorCodeData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
+            this.UnknownEmailReturnsErrorCodeData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             CorrectHashReturnsSessionId_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
             scalarValueCondition1 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             IncorrectHashReturnsErrorCode_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
-            UnknownUserIdReturnsErrorCode_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
             scalarValueCondition2 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
+            UnknownEmailReturnsErrorCode_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
             scalarValueCondition3 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             // 
             // CorrectHashReturnsSessionId_TestAction
@@ -128,10 +128,30 @@ namespace Olive.Database.Tests.Auth
             IncorrectHashReturnsErrorCode_TestAction.Conditions.Add(scalarValueCondition2);
             resources.ApplyResources(IncorrectHashReturnsErrorCode_TestAction, "IncorrectHashReturnsErrorCode_TestAction");
             // 
-            // UnknownUserIdReturnsErrorCode_TestAction
+            // scalarValueCondition2
             // 
-            UnknownUserIdReturnsErrorCode_TestAction.Conditions.Add(scalarValueCondition3);
-            resources.ApplyResources(UnknownUserIdReturnsErrorCode_TestAction, "UnknownUserIdReturnsErrorCode_TestAction");
+            scalarValueCondition2.ColumnNumber = 1;
+            scalarValueCondition2.Enabled = true;
+            scalarValueCondition2.ExpectedValue = "0";
+            scalarValueCondition2.Name = "scalarValueCondition2";
+            scalarValueCondition2.NullExpected = false;
+            scalarValueCondition2.ResultSet = 1;
+            scalarValueCondition2.RowNumber = 1;
+            // 
+            // UnknownEmailReturnsErrorCode_TestAction
+            // 
+            UnknownEmailReturnsErrorCode_TestAction.Conditions.Add(scalarValueCondition3);
+            resources.ApplyResources(UnknownEmailReturnsErrorCode_TestAction, "UnknownEmailReturnsErrorCode_TestAction");
+            // 
+            // scalarValueCondition3
+            // 
+            scalarValueCondition3.ColumnNumber = 1;
+            scalarValueCondition3.Enabled = true;
+            scalarValueCondition3.ExpectedValue = "0";
+            scalarValueCondition3.Name = "scalarValueCondition3";
+            scalarValueCondition3.NullExpected = false;
+            scalarValueCondition3.ResultSet = 1;
+            scalarValueCondition3.RowNumber = 1;
             // 
             // CorrectHashReturnsSessionIdData
             // 
@@ -145,31 +165,11 @@ namespace Olive.Database.Tests.Auth
             this.IncorrectHashReturnsErrorCodeData.PretestAction = null;
             this.IncorrectHashReturnsErrorCodeData.TestAction = IncorrectHashReturnsErrorCode_TestAction;
             // 
-            // UnknownUserIdReturnsErrorCodeData
+            // UnknownEmailReturnsErrorCodeData
             // 
-            this.UnknownUserIdReturnsErrorCodeData.PosttestAction = null;
-            this.UnknownUserIdReturnsErrorCodeData.PretestAction = null;
-            this.UnknownUserIdReturnsErrorCodeData.TestAction = UnknownUserIdReturnsErrorCode_TestAction;
-            // 
-            // scalarValueCondition2
-            // 
-            scalarValueCondition2.ColumnNumber = 1;
-            scalarValueCondition2.Enabled = true;
-            scalarValueCondition2.ExpectedValue = "0";
-            scalarValueCondition2.Name = "scalarValueCondition2";
-            scalarValueCondition2.NullExpected = false;
-            scalarValueCondition2.ResultSet = 1;
-            scalarValueCondition2.RowNumber = 1;
-            // 
-            // scalarValueCondition3
-            // 
-            scalarValueCondition3.ColumnNumber = 1;
-            scalarValueCondition3.Enabled = true;
-            scalarValueCondition3.ExpectedValue = "0";
-            scalarValueCondition3.Name = "scalarValueCondition3";
-            scalarValueCondition3.NullExpected = false;
-            scalarValueCondition3.ResultSet = 1;
-            scalarValueCondition3.RowNumber = 1;
+            this.UnknownEmailReturnsErrorCodeData.PosttestAction = null;
+            this.UnknownEmailReturnsErrorCodeData.PretestAction = null;
+            this.UnknownEmailReturnsErrorCodeData.TestAction = UnknownEmailReturnsErrorCode_TestAction;
         }
 
         #endregion
@@ -191,6 +191,6 @@ namespace Olive.Database.Tests.Auth
 
         private DatabaseTestActions CorrectHashReturnsSessionIdData;
         private DatabaseTestActions IncorrectHashReturnsErrorCodeData;
-        private DatabaseTestActions UnknownUserIdReturnsErrorCodeData;
+        private DatabaseTestActions UnknownEmailReturnsErrorCodeData;
     }
 }

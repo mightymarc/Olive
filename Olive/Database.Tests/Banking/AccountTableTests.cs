@@ -62,12 +62,6 @@ namespace Olive.DataAccess.Tests.Banking
             AllowNegativeEnforced_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
             scalarValueCondition1 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             // 
-            // AllowNegativeEnforcedData
-            // 
-            this.AllowNegativeEnforcedData.PosttestAction = null;
-            this.AllowNegativeEnforcedData.PretestAction = null;
-            this.AllowNegativeEnforcedData.TestAction = AllowNegativeEnforced_TestAction;
-            // 
             // AllowNegativeEnforced_TestAction
             // 
             AllowNegativeEnforced_TestAction.Conditions.Add(scalarValueCondition1);
@@ -82,6 +76,12 @@ namespace Olive.DataAccess.Tests.Banking
             scalarValueCondition1.NullExpected = false;
             scalarValueCondition1.ResultSet = 1;
             scalarValueCondition1.RowNumber = 1;
+            // 
+            // AllowNegativeEnforcedData
+            // 
+            this.AllowNegativeEnforcedData.PosttestAction = null;
+            this.AllowNegativeEnforcedData.PretestAction = null;
+            this.AllowNegativeEnforcedData.TestAction = AllowNegativeEnforced_TestAction;
         }
 
         #endregion

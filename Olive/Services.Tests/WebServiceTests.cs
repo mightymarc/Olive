@@ -150,6 +150,42 @@ namespace Olive.Services.Tests
             Assert.IsNotNull(contextMock.Object.Users.SingleOrDefault(u => u.Email == email));
         }
 
+        private static object[] editAccountWithBadArgumentsThrowsExceptionCases = {
+                                                                                      new object[]
+                                                                                          {
+                                                                                              Guid.Empty, 1, string.Empty
+                                                                                          },
+                                                                                      new object[]
+                                                                                          {
+                                                                                              Guid.NewGuid(), 0,
+                                                                                              string.Empty
+                                                                                          },
+                                                                                      new object[]
+                                                                                          { Guid.NewGuid(), -1, "" },
+                                                                                      new object[]
+                                                                                          { Guid.NewGuid(), -1, null }
+                                                                                  };
+
+        [Test]
+        [TestCaseSource("editAccountWithBadArgumentsThrowsExceptionCases")]
+        public void EditAccountWithBadArgumentsThrowsException(Guid sessionId, int accountId, string displayName)
+        {
+            Assert.Inconclusive();
+        }
+
+        private static object[] editAccountDoesNotThrowExceptionCases = {
+                                                                            new object[] { Guid.NewGuid(), 123, "Name" },
+                                                                            new object[] { Guid.NewGuid(), 1, string.Empty },
+                                                                            new object[] { Guid.NewGuid(), 333433434, null }
+                                                                        };
+
+        [Test]
+        [TestCaseSource("editAccountDoesNotThrowExceptionCases")]
+        public void EditAccountDoesNotThrowException(Guid sessionId, int accountId, string displayName)
+        {
+            Assert.Inconclusive();
+        }
+
         [Test]
         [TestCase("@email.com")]
         [TestCase(" @email.com")]

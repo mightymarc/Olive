@@ -19,16 +19,19 @@ namespace Core.Tests
         [Test]
         public void CreateSaltHasCorrectLength()
         {
+            Assert.Inconclusive();
         }
 
         [Test]
         public void CreateSaltDoesNotRepeat()
         {
+            Assert.Inconclusive();
         }
 
         [Test]
         public void GenerateHashMatchesPrecalculated()
         {
+            Assert.Inconclusive();
         }
     }
 }

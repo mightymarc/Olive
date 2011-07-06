@@ -38,15 +38,13 @@ namespace Olive.Website.Controllers
 
             var accounts = this.Service.GetAccounts(this.SessionPersister.SessionId);
 
-            var viewModel = new IndexViewModel() { Accounts = accounts };
+            var viewModel = new IndexViewModel { Accounts = accounts };
 
             return View("Index", viewModel);
         }
 
-
-
         [HttpPost]
-        public ActionResult CreateAccount(CreateAccountViewModel model)
+        public ActionResult Create(CreateViewModel model)
         {
             Contract.Requires<InvalidOperationException>(this.Service != null);
             Contract.Requires<InvalidOperationException>(this.SessionPersister != null);
@@ -67,9 +65,47 @@ namespace Olive.Website.Controllers
             return this.View(model);
         }
 
+        [HttpPost]
+        public ActionResult Edit(EditViewModel model)
+        {
+            Contract.Requires<InvalidOperationException>(this.Service != null);
+            Contract.Requires<InvalidOperationException>(this.SessionPersister != null);
+            Contract.Requires<ArgumentNullException>(model != null, "model");
+
+            if (!this.SessionPersister.HasSession)
+            {
+                return this.RedirectToLogin();
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                this.Service.EditAccount(this.SessionPersister.SessionId, model.AccountId, model.DisplayName);
+
+                return RedirectToAction("Index");
+            }
+
+            return this.View(model);
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int accountId)
+        {
+            Contract.Requires<InvalidOperationException>(this.Service != null);
+            Contract.Requires<InvalidOperationException>(this.SessionPersister != null);
+            Contract.Requires<ArgumentException>(accountId > 0, "accountId");
+
+            if (!this.SessionPersister.HasSession)
+            {
+                return this.RedirectToLogin();
+            }
+
+            return this.View();
+        }
+
         public ActionResult Details(int accountId)
         {
             Contract.Requires<InvalidOperationException>(this.SessionPersister != null, "this.SessionPersister == null");
+            Contract.Requires<InvalidOperationException>(this.Service != null);
 
             if (!this.SessionPersister.HasSession)
             {

@@ -120,15 +120,17 @@
   <data name="CorrectHashReturnsSessionId_TestAction.SqlScript" xml:space="preserve">
     <value>BEGIN TRAN
 
-INSERT INTO dbo.[User] (PasswordHash, PasswordSalt, Email)
-VALUES ('hash', 'salt', 'andreas@opuno.com');
+DECLARE @Email VARCHAR(100) = 'test@email.com'
 
-DECLARE @UserId int = CONVERT(int, SCOPE_IDENTITY());
+INSERT INTO dbo.[User] (PasswordHash, PasswordSalt, Email)
+VALUES ('hash', 'salt', @Email);
+
+--DECLARE @UserId int = CONVERT(int, SCOPE_IDENTITY());
 
 DECLARE @RC int
 DECLARE @SessionId uniqueidentifier;
 
-EXEC @RC = Auth.CreateSession @UserId, 'hash', @SessionId output
+EXEC @RC = Auth.CreateSession @Email, 'hash', @SessionId output
 
 IF @RC &lt;&gt; 0 RAISERROR('Unexpected return code.', 16, 1);
 
@@ -142,15 +144,17 @@ ROLLBACK TRAN;
   <data name="IncorrectHashReturnsErrorCode_TestAction.SqlScript" xml:space="preserve">
     <value>BEGIN TRAN
 
+DECLARE @Email VARCHAR(100) = 'test@email.com'
+
 INSERT INTO dbo.[User] (PasswordHash, PasswordSalt, Email)
-VALUES ('hush', 'salt', 'andreas@opuno.com');
+VALUES ('hush', 'salt', @Email);
 
 DECLARE @UserId int = CONVERT(int, SCOPE_IDENTITY());
 
 DECLARE @RC int
 DECLARE @SessionId uniqueidentifier
 
-EXEC @RC = Auth.CreateSession @UserId, 'hash', @SessionId output
+EXEC @RC = Auth.CreateSession @Email, 'hash', @SessionId output
 
 IF @RC &lt;&gt; 100 RAISERROR('Unexpected return code.', 16, 1);
 
@@ -161,18 +165,13 @@ SELECT 0;
 ROLLBACK TRAN;
 </value>
   </data>
-  <data name="UnknownUserIdReturnsErrorCode_TestAction.SqlScript" xml:space="preserve">
+  <data name="UnknownEmailReturnsErrorCode_TestAction.SqlScript" xml:space="preserve">
     <value>BEGIN TRAN
-
-INSERT INTO dbo.[User] (PasswordHash, PasswordSalt, Email)
-VALUES ('hush', 'salt', 'andreas@opuno.com');
-
-DECLARE @UserId int = CONVERT(int, SCOPE_IDENTITY());
 
 DECLARE @RC int
 DECLARE @SessionId uniqueidentifier
 
-EXEC @RC = Auth.CreateSession 9999999, 'hash', @SessionId output
+EXEC @RC = Auth.CreateSession 'ghjkjhghj@ghjhgfghjhg.com', 'hash', @SessionId output
 
 IF @RC = 0 RAISERROR('Unexpected return code.', 16, 1);
 

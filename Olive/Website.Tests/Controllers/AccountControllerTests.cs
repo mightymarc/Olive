@@ -49,14 +49,14 @@ namespace Olive.Website.Tests.Controllers
                         {
                             AccountId = Random.Next(1, 10000000),
                             Balance = (decimal)Random.Next(1, 10000000) / 100,
-                            CurrencyShortName = "ABC",
+                            CurrencyId = "ABC",
                             DisplayName = string.Empty
                         },
                     new AccountOverviewAccount
                         {
                             AccountId = Random.Next(1, 10000000),
                             Balance = (decimal)Random.Next(1, 10000000) / 100,
-                            CurrencyShortName = "NOK",
+                            CurrencyId = "NOK",
                             DisplayName = string.Empty
                         }
                 };
@@ -133,9 +133,9 @@ namespace Olive.Website.Tests.Controllers
         public void CreateAccountSuccessTest()
         {
             // Arrange
-            var model = new CreateAccountViewModel
+            var model = new CreateViewModel
             {
-                CurrencyId = Random.Next(1, 10000),
+                CurrencyId = "USD",
                 DisplayName = string.Empty
             };
 
@@ -145,7 +145,7 @@ namespace Olive.Website.Tests.Controllers
             var target = this.CreateController();
 
             // Act
-            var result = (RedirectToRouteResult)target.CreateAccount(model);
+            var result = (RedirectToRouteResult)target.Create(model);
 
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
@@ -157,10 +157,10 @@ namespace Olive.Website.Tests.Controllers
             var controller = this.CreateController();
             Mock.Get(controller.Request).SetupGet(r => r.RawUrl).Returns("/Account/Index");
             this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
-            var model = new CreateAccountViewModel { CurrencyId = 1, DisplayName = "abc" };
+            var model = new CreateViewModel { CurrencyId = "BTC", DisplayName = "abc" };
 
             // Act
-            var actionResult = (RedirectToRouteResult)controller.CreateAccount(model);
+            var actionResult = (RedirectToRouteResult)controller.Create(model);
             
             // Assert
             Assert.AreEqual("Login", actionResult.RouteValues["action"]);
@@ -176,7 +176,7 @@ namespace Olive.Website.Tests.Controllers
             var controller = this.CreateController();
             Mock.Get(controller.Request).SetupGet(r => r.RawUrl).Returns("/Account/Index");
             this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
-            var model = new CreateAccountViewModel { CurrencyId = 1, DisplayName = "abc" };
+            var model = new CreateViewModel { CurrencyId = "PPUSD", DisplayName = "abc" };
 
             // Act
             var actionResult = (RedirectToRouteResult)controller.Index();

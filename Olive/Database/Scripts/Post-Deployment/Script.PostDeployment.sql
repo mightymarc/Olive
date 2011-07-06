@@ -12,6 +12,7 @@ Post-Deployment Script Template
 -- Security
 EXEC sp_addrolemember N'BankServiceRole', N'ServiceUser'
 GRANT SELECT ON [Banking].[AccountWithBalance] TO [BankServiceRole]
+GRANT SELECT ON [Banking].[AccountUser] TO [BankServiceRole]
 GRANT SELECT ON [Banking].[Account] TO [BankServiceRole]
 GRANT SELECT ON [Banking].[Transfer] TO [BankServiceRole]
 GRANT INSERT ON [dbo].[User] TO [BankServiceRole]
@@ -26,11 +27,13 @@ GRANT EXECUTE ON [Auth].VerifySession TO [BankServiceRole];
 
 if '$(DatabaseName)' = 'OliveTest'
 begin
-	exec dbo.DestroyEverything
-	exec dbo.CreateTestData
+    exec dbo.DestroyEverything
+    exec dbo.CreateTestData
 end
 
+INSERT INTO dbo.[User] (Email,PasswordHash,PasswordSalt) Values ('andreas@opuno.com', 'a', 'b');
 
 -- Easy test password: "a"
 update dbo.[User] set PasswordHash = 'eJsSKba6/GAXbyZ5AhoRSgUkwojQLOYevHxVPrY8UCKZe0e9sH+YL3F7DfaYdsnKHIpGxIsIfCl/KJfZRDA0dg==',
 PasswordSalt = 'GIWdAnVlZAIt8REiQArFVWs+nJJb9f+5Br61pxLUpA9H5T0vCq7th2l+TPHl6WOGHqi+7GbxRc0r8tOdMf5Qrg==';
+

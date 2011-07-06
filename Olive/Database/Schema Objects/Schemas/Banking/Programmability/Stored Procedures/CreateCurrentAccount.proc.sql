@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE Banking.[CreateCurrentAccount]
 	@UserId int,
-	@CurrencyId int,
+	@CurrencyId varchar(100),
 	@AccountId int output
 AS
 

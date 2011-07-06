@@ -9,19 +9,16 @@
 
 namespace Olive.DataAccess
 {
+    using System.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// The currency.
     /// </summary>
     public class Currency
     {
         /// <summary>
-        /// Gets or sets CurrencyId.
+        /// Gets or sets the currency identifier (USD, BTC, PPUSD, ...).
         /// </summary>
-        public int CurrencyId { get; set; }
-
-        /// <summary>
-        /// Gets or sets ShortName.
-        /// </summary>
-        public string ShortName { get; set; }
+        public string CurrencyId { get; set; }
     }
 }

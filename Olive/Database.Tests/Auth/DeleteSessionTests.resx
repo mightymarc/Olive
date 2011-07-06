@@ -162,30 +162,43 @@ ROLLBACK TRAN;
 </value>
   </data>
   <data name="FailsOnExpiredSession_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
-
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
-
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+    <value>-- All work is performed in pre-test due to privileges.
+SELECT 0;</value>
   </data>
   <data name="FailsOnUnknownSessionId_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>DECLARE @RC INT
+EXEC @RC = Auth.DeleteSession NEWID();
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+IF @RC = 0
+BEGIN
+	SELECT 'Succeeded in deleting session which is expired.';
+	RETURN;
+END
 
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+SELECT 0;</value>
+  </data>
+  <data name="FailsOnExpiredSession_PosttestAction.SqlScript" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FailsOnExpiredSession_PretestAction.SqlScript" xml:space="preserve">
+    <value>INSERT INTO dbo.[User] (Email, PasswordHash, PasswordSalt) VALUES ('FailsOnExpiredSession@domain.com', 'hash', 'salt');
+DECLARE @UserId INT = CONVERT(INT, SCOPE_IDENTITY());
+
+DECLARE @SessionId UNIQUEIDENTIFIER = NEWID();
+
+INSERT INTO Auth.[Session] (SessionId, UserId, ExpiresAt) VALUES (@SessionId, @UserId, DATEADD(day, -1, GETUTCDATE()));
+
+DECLARE @RC INT
+EXEC @RC = Auth.DeleteSession @SessionId;
+
+IF @RC = 0
+BEGIN
+	SELECT 'Succeeded in deleting session which is expired.';
+	RETURN;
+END
+
+SELECT 0;
+</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

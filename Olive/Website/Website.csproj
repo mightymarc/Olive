@@ -67,7 +67,16 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.4.1.10331.0\lib\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.0\lib\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="PrecompiledMvcViewEngine">
+      <HintPath>..\packages\PrecompiledMvcViewEngine.1.0\lib\net40\PrecompiledMvcViewEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="PrecompiledMvcViews.Testing">
+      <HintPath>..\packages\PrecompiledMvcViews.Testing.1.0\lib\net40\PrecompiledMvcViews.Testing.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -92,8 +101,12 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebActivator">
+      <HintPath>..\packages\WebActivator.1.4.1\lib\net40\WebActivator.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\PrecompiledMvcViewEngineStart.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Helpers\ISiteSession.cs" />
     <Compile Include="Controllers\SiteController.cs" />
@@ -105,11 +118,42 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SiteIdentity.cs" />
     <Compile Include="SitePrincipal.cs" />
-    <Compile Include="ViewModels\Account\CreateAccountViewModel.cs" />
+    <Compile Include="ViewModels\Account\EditViewModel.cs" />
+    <Compile Include="ViewModels\Account\CreateViewModel.cs" />
     <Compile Include="ViewModels\User\LoginViewModel.cs" />
     <Compile Include="ViewModels\Account\DetailsViewModel.cs" />
     <Compile Include="ViewModels\Account\IndexViewModel.cs" />
     <Compile Include="ViewModels\User\RegisterViewModel.cs" />
+    <Compile Include="Views\Account\Create.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Create.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Account\Details.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Details.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Account\Edit.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Edit.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Account\Index.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Index.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\User\Login.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Login.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\User\Register.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Register.cshtml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -194,22 +238,40 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Auth.cshtml" />
+    <Content Include="Views\User\Register.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Register.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\Account\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\User\Login.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Login.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Account\Create.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Create.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Create.cshtml" />
+    <Content Include="Views\Account\Details.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Details.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Details.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Edit.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

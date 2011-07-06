@@ -30,7 +30,6 @@ namespace Olive.DataAccess
         /// <summary>
         /// Initializes a new instance of the <see cref="OliveContext"/> class.
         /// </summary>
-        /// <param name="connectionString">The connection string.</param>
         /*public OliveContext(string connectionString)
             : base(connectionString)
         {
@@ -144,7 +143,10 @@ namespace Olive.DataAccess
             }
         }
 
-        public void SaveChanges()
+        /// <summary>
+        /// Saves the changes.
+        /// </summary>
+        public new void SaveChanges()
         {
             base.SaveChanges();
         }
@@ -215,7 +217,10 @@ namespace Olive.DataAccess
             modelBuilder.Entity<User>().ToTable("User", "dbo");
 
             modelBuilder.Entity<Session>().ToTable("Session", "Auth");
+
+            // dbo.Currency
             modelBuilder.Entity<Currency>().ToTable("Currency", "dbo");
+            modelBuilder.Entity<Currency>().HasKey(c => c.CurrencyId);
 
             // Banking.Account
             modelBuilder.Entity<Account>().ToTable("Account", "Banking");

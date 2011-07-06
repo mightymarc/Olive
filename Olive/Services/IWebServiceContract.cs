@@ -58,13 +58,21 @@
             return default(AccountOverview);
         }
 
-        public int CreateAccount(Guid sessionId, int currencyId, string displayName)
+        public int CreateAccount(Guid sessionId, string currencyId, string displayName)
         {
             Contract.Requires<ArgumentException>(sessionId != Guid.Empty, "sessionId");
-            Contract.Requires<ArgumentException>(currencyId > 0, "currencyId");
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(currencyId), "currencyId");
             Contract.Ensures(Contract.Result<int>() > 0);
 
             return default(int);
+        }
+
+        public void EditAccount(Guid sessionId, int accountId, string displayName)
+        {
+            Contract.Requires<ArgumentException>(sessionId != Guid.Empty, "sessionId");
+            Contract.Requires<ArgumentException>(accountId > 0, "accountId");
+
+            return;
         }
     }
 }

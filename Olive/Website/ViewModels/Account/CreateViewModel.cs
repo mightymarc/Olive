@@ -7,16 +7,15 @@
     using System.Web;
     using System.Web.Mvc;
 
-    public class CreateAccountViewModel
+    public class CreateViewModel
     {
         /// <summary>
-        /// Gets or sets the currency id.
+        /// Gets or sets the currency.
         /// </summary>
         /// <value>
-        /// The currency id.
+        /// The currency.
         /// </value>
-        [HiddenInput(DisplayValue = false)]
-        public int CurrencyId { get; set; }
+        public string CurrencyId { get; set; }
 
         /// <summary>
         /// Gets or sets the display name.
@@ -25,5 +24,7 @@
         /// The display name.
         /// </value>
         public string DisplayName { get; set; }
+
+        public List<string> Currencies { get; set; }
     }
 }

@@ -93,7 +93,7 @@ namespace Olive.Services
                                     {
                                         AccountId = account.AccountId,
                                         Balance = accountWithBalance.Balance,
-                                        CurrencyShortName = accountWithBalance.Currency.ShortName,
+                                        CurrencyId = accountWithBalance.Currency.CurrencyId,
                                         DisplayName = account.DisplayName
                                     };
 
@@ -113,13 +113,18 @@ namespace Olive.Services
             throw new NotImplementedException();
         }
 
-        public int CreateAccount(Guid sessionId, int currencyId, string displayName)
+        public int CreateAccount(Guid sessionId, string currencyId, string displayName)
         {
             if (displayName == string.Empty)
             {
                 displayName = null;
             }
 
+            throw new NotImplementedException();
+        }
+
+        public void EditAccount(Guid sessionId, int accountId, string displayName)
+        {
             throw new NotImplementedException();
         }
 

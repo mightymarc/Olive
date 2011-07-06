@@ -29,6 +29,9 @@
         AccountOverview GetAccounts(Guid sessionId);
 
         [OperationContract]
-        int CreateAccount(Guid sessionId, int currencyId, string displayName);
+        int CreateAccount(Guid sessionId, string currencyId, string displayName);
+
+        [OperationContract]
+        void EditAccount(Guid sessionId, int accountId, string displayName);
     }
 }

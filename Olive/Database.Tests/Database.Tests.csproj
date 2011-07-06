@@ -97,6 +97,9 @@
     <Compile Include="Banking\AccountTableTests.cs">
       <SubType>Designer</SubType>
     </Compile>
+    <Compile Include="Banking\AccountUserTests.cs">
+      <SubType>Designer</SubType>
+    </Compile>
     <Compile Include="Banking\CreateTransfer.cs">
       <SubType>Designer</SubType>
     </Compile>
@@ -105,6 +108,9 @@
     </Compile>
     <Compile Include="DatabaseSetup.cs" />
     <Compile Include="Banking\AccountWithBalance.cs">
+      <SubType>Designer</SubType>
+    </Compile>
+    <Compile Include="dbo\UserTableTests.cs">
       <SubType>Designer</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,6 +138,9 @@
     <EmbeddedResource Include="Banking\AccountTableTests.resx">
       <DependentUpon>AccountTableTests.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Banking\AccountUserTests.resx">
+      <DependentUpon>AccountUserTests.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Banking\AccountWithBalance.resx">
       <DependentUpon>AccountWithBalance.cs</DependentUpon>
     </EmbeddedResource>
@@ -140,6 +149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Banking\Transfer.resx">
       <DependentUpon>Transfer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dbo\UserTableTests.resx">
+      <DependentUpon>UserTableTests.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

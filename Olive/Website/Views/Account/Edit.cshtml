@@ -1,0 +1,15 @@
+﻿@model Olive.Website.ViewModels.Account.EditViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit account #@Model.AccountId</h2>
+<p>Introduction.</p>
+
+@using (Html.BeginForm())
+{ 
+    @Html.DisplayFor(m => m)
+
+    <input type="submit" value="Edit" />
+}

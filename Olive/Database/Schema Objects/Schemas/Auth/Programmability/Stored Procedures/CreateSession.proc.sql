@@ -1,10 +1,13 @@
 ﻿-- Returns:
 -- 0: Success
 -- 1: Unknown error
--- 100: Bad user id/password hash.
+-- 100: Bad email/password hash.
+-- 101: E-mail is null
+-- 102: PasswordHash is null
+-- 103: SessionId not null
 CREATE PROCEDURE [Auth].[CreateSession]
 (
-	@UserId int,
+	@Email VARCHAR(100),
 	@PasswordHash varchar(100),
 	@SessionId varchar(100) output
 )
@@ -12,15 +15,18 @@ CREATE PROCEDURE [Auth].[CreateSession]
 AS
 
 -- Check params
-if @UserId is null raiserror('@UserId is null.', 16, 1);
-if @PasswordHash is null raiserror('@PasswordHash is null.', 16, 1);
-if @SessionId is not null raiserror('@SessionId is not null.', 16, 1);
+if @Email is null return 101;
+if @PasswordHash is null return 102;
+if @SessionId is not null return 103;
 
-declare @CorrectPasswordHash varchar(100) = (select PasswordHash from dbo.[User] where UserId = @UserId)
+declare @UserId int
 
-if @CorrectPasswordHash is null
+declare @CorrectPasswordHash varchar(100)
+
+select @CorrectPasswordHash = PasswordHash, @UserId = UserId from dbo.[User] where Email = @Email;
+
+if @CorrectPasswordHash is null or @UserId is null
 	return 100;
-
 
 if @CorrectPasswordHash <> @PasswordHash
 	return 100;

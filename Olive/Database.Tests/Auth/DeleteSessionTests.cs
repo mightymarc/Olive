@@ -98,6 +98,9 @@ namespace Olive.Database.Tests.Auth
             Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition inconclusiveCondition2;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsOnUnknownSessionId_TestAction;
             Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition inconclusiveCondition3;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsOnExpiredSession_PretestAction;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsOnExpiredSession_PosttestAction;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition1;
             this.SuccessData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             this.FailsOnExpiredSessionData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             this.FailsOnUnknownSessionIdData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
@@ -107,12 +110,9 @@ namespace Olive.Database.Tests.Auth
             inconclusiveCondition2 = new Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition();
             FailsOnUnknownSessionId_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
             inconclusiveCondition3 = new Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition();
-            // 
-            // SuccessData
-            // 
-            this.SuccessData.PosttestAction = null;
-            this.SuccessData.PretestAction = null;
-            this.SuccessData.TestAction = Success_TestAction;
+            FailsOnExpiredSession_PretestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            FailsOnExpiredSession_PosttestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            scalarValueCondition1 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             // 
             // Success_TestAction
             // 
@@ -124,12 +124,6 @@ namespace Olive.Database.Tests.Auth
             inconclusiveCondition1.Enabled = true;
             inconclusiveCondition1.Name = "inconclusiveCondition1";
             // 
-            // FailsOnExpiredSessionData
-            // 
-            this.FailsOnExpiredSessionData.PosttestAction = null;
-            this.FailsOnExpiredSessionData.PretestAction = null;
-            this.FailsOnExpiredSessionData.TestAction = FailsOnExpiredSession_TestAction;
-            // 
             // FailsOnExpiredSession_TestAction
             // 
             FailsOnExpiredSession_TestAction.Conditions.Add(inconclusiveCondition2);
@@ -140,12 +134,6 @@ namespace Olive.Database.Tests.Auth
             inconclusiveCondition2.Enabled = true;
             inconclusiveCondition2.Name = "inconclusiveCondition2";
             // 
-            // FailsOnUnknownSessionIdData
-            // 
-            this.FailsOnUnknownSessionIdData.PosttestAction = null;
-            this.FailsOnUnknownSessionIdData.PretestAction = null;
-            this.FailsOnUnknownSessionIdData.TestAction = FailsOnUnknownSessionId_TestAction;
-            // 
             // FailsOnUnknownSessionId_TestAction
             // 
             FailsOnUnknownSessionId_TestAction.Conditions.Add(inconclusiveCondition3);
@@ -155,6 +143,43 @@ namespace Olive.Database.Tests.Auth
             // 
             inconclusiveCondition3.Enabled = true;
             inconclusiveCondition3.Name = "inconclusiveCondition3";
+            // 
+            // SuccessData
+            // 
+            this.SuccessData.PosttestAction = null;
+            this.SuccessData.PretestAction = null;
+            this.SuccessData.TestAction = Success_TestAction;
+            // 
+            // FailsOnExpiredSessionData
+            // 
+            this.FailsOnExpiredSessionData.PosttestAction = FailsOnExpiredSession_PosttestAction;
+            this.FailsOnExpiredSessionData.PretestAction = FailsOnExpiredSession_PretestAction;
+            this.FailsOnExpiredSessionData.TestAction = FailsOnExpiredSession_TestAction;
+            // 
+            // FailsOnUnknownSessionIdData
+            // 
+            this.FailsOnUnknownSessionIdData.PosttestAction = null;
+            this.FailsOnUnknownSessionIdData.PretestAction = null;
+            this.FailsOnUnknownSessionIdData.TestAction = FailsOnUnknownSessionId_TestAction;
+            // 
+            // FailsOnExpiredSession_PretestAction
+            // 
+            FailsOnExpiredSession_PretestAction.Conditions.Add(scalarValueCondition1);
+            resources.ApplyResources(FailsOnExpiredSession_PretestAction, "FailsOnExpiredSession_PretestAction");
+            // 
+            // FailsOnExpiredSession_PosttestAction
+            // 
+            resources.ApplyResources(FailsOnExpiredSession_PosttestAction, "FailsOnExpiredSession_PosttestAction");
+            // 
+            // scalarValueCondition1
+            // 
+            scalarValueCondition1.ColumnNumber = 1;
+            scalarValueCondition1.Enabled = true;
+            scalarValueCondition1.ExpectedValue = "0";
+            scalarValueCondition1.Name = "scalarValueCondition1";
+            scalarValueCondition1.NullExpected = false;
+            scalarValueCondition1.ResultSet = 1;
+            scalarValueCondition1.RowNumber = 1;
         }
 
         #endregion

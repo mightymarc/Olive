@@ -15,6 +15,6 @@
         public decimal Balance { get; set; }
 
         [DataMember]
-        public string CurrencyShortName { get; set; }
+        public string CurrencyId { get; set; }
     }
 }

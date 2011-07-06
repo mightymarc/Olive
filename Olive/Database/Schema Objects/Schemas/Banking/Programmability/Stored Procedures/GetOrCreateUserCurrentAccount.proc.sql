@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [Banking].[GetOrCreateUserCurrentAccount]
 (
 	@UserId int,
-	@CurrencyId int,
+	@CurrencyId varchar(10),
 	@AccountId int output
 )
 

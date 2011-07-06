@@ -29,7 +29,7 @@ namespace Olive.DataAccess
         /// <summary>
         /// Gets or sets CurrencyId.
         /// </summary>
-        public int CurrencyId { get; set; }
+        public string CurrencyId { get; set; }
 
         /// <summary>
         /// Gets or sets DisplayName.

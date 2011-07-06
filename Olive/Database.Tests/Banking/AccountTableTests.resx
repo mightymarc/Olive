@@ -121,21 +121,18 @@
     <value>begin tran
 
 print 'Creating user.';
-insert into dbo.[User] (PasswordHash) values ('hash');
+insert into dbo.[User] (PasswordHash, Email, PasswordSalt) values ('hash', 'user@domain.com', 'salt');
 declare @UserId int = cast(scope_identity() as int)
 print 'User created with id ' + convert(varchar, @UserId) + '.'
 
-declare @CurrencyId int = (select CurrencyId from dbo.Currency where ShortName = 'USD')
-print 'Located USD currency with id ' + convert(varchar, @CurrencyId) + '.'
-
 print 'Creating account one.'
 declare @AccountOneId int
-exec Banking.CreateCurrentAccount @UserId, @CurrencyId, @AccountOneId output
+exec Banking.CreateCurrentAccount @UserId, 'USD', @AccountOneId output
 print 'Created account one with id ' + convert(varchar, @AccountOneId) + '.'
 
 print 'Creating account two.'
 declare @AccountTwoId int
-exec Banking.CreateCurrentAccount @UserId, @CurrencyId, @AccountTwoId output
+exec Banking.CreateCurrentAccount @UserId, 'USD', @AccountTwoId output
 print 'Created account two with id ' + convert(varchar, @AccountTwoId) + '.'
 
 declare @TransferId bigint

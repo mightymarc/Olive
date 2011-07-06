@@ -10,8 +10,8 @@ IF @UserId IS NOT NULL RAISERROR('@UserId must be null.', 16, 1);
 IF @SessionId IS NULL RAISERROR('@SessionId is null.', 16, 1);
 
 SELECT @UserId = UserId 
-FROM Auth.[Session]
-WHERE SessionId = @SessionId AND ExpiresAt > GETUTCDATE();
+FROM Auth.[ActiveSession]
+WHERE SessionId = @SessionId;
 
 IF @UserId IS NULL
 BEGIN

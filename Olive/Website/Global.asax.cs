@@ -56,7 +56,7 @@
             container.RegisterType<IWebService, WebService>();
             container.RegisterType<ISiteSession, SiteSession>();
             container.RegisterType<ICrypto, Crypto>();
-            container.RegisterInstance<IOliveContext>(new OliveContext());
+            container.RegisterType<IOliveContext, OliveContext>();
 
 ////            container.RegisterType<UserController>();
 
@@ -68,42 +68,59 @@
     {
         #region Members
 
-        private IUnityContainer _container;
+        private IUnityContainer container;
 
         #endregion
 
         #region Ctor
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UnityDependencyResolver"/> class.
+        /// </summary>
+        /// <param name="container">The container.</param>
         public UnityDependencyResolver(IUnityContainer container)
         {
-            _container = container;
+            this.container = container;
         }
 
         #endregion
 
         #region IDependencyResolver Members
 
+        /// <summary>
+        /// Resolves singly registered services that support arbitrary object creation.
+        /// </summary>
+        /// <param name="serviceType">The type of the requested service or object.</param>
+        /// <returns>
+        /// The requested service or object.
+        /// </returns>
         public object GetService(Type serviceType)
         {
             try
             {
-                var x =  _container.Resolve(serviceType);
-                //_container.BuildUp(x);
+                var x =  this.container.Resolve(serviceType);
                 return x;
             }
-            catch (Exception ex)
+            catch
             {
                 return null;
             }
         }
 
+        /// <summary>
+        /// Resolves multiply registered services.
+        /// </summary>
+        /// <param name="serviceType">The type of the requested services.</param>
+        /// <returns>
+        /// The requested services.
+        /// </returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {
             try
             {
-                return _container.ResolveAll(serviceType);
+                return this.container.ResolveAll(serviceType);
             }
-            catch (Exception ex)
+            catch
             {
                 return new List<object>();
             }
