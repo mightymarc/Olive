@@ -112,12 +112,13 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="AuthorizationException.cs" />
     <Compile Include="Domain\Account.cs" />
     <Compile Include="AccountType.cs" />
     <Compile Include="Domain\AccountUser.cs" />
     <Compile Include="AccountWithBalance.cs" />
     <Compile Include="AuthenticationException.cs" />
-    <Compile Include="DbConnectionExtensions.cs" />
+    <Compile Include="IDbConnectionExtensions.cs" />
     <Compile Include="Domain\Currency.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IOliveContext.cs" />

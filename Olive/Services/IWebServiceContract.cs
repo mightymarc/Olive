@@ -80,5 +80,15 @@
             Contract.Ensures(Contract.Result<List<string>>() != null);
             return default(List<string>);
         }
+
+        public long CreateTransfer(Guid sessionId, int sourceAccountId, int destAccountId, decimal amount, string description)
+        {
+            Contract.Requires<ArgumentException>(sessionId != Guid.Empty, "sessionId");
+            Contract.Requires<ArgumentException>(sourceAccountId > 0, "sourceAccountId");
+            Contract.Requires<ArgumentException>(destAccountId > 0, "destAccountId");
+            Contract.Requires<ArgumentException>(amount > 0, "amount");
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(description), "description");
+            return default(long);
+        }
     }
 }

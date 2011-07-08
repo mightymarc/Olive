@@ -94,7 +94,7 @@
 
         public int CreateCurrentAccount(int userId, string currencyId, string displayName)
         {
-            Contract.Requires<ArgumentException>(userId < 0, "userId");
+            Contract.Requires<ArgumentException>(userId > 0, "userId");
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(currencyId), "currencyId");
             Contract.Ensures(Contract.Result<int>() > 0);
             return default(int);

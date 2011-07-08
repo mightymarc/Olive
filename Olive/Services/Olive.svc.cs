@@ -141,6 +141,32 @@ namespace Olive.Services
             }
         }
 
+        public virtual bool UserCanWithdrawFromAccount(int userId, int accountId)
+        {
+            using (var context = this.GetContext())
+            {
+                return context.Users.Find(userId).AccountAccess.Any(
+                    x => x.CanWithdraw && x.AccountId == accountId);
+            }
+        }
+
+        public long CreateTransfer(Guid sessionId, int sourceAccountId, int destAccountId, decimal amount, string description)
+        {
+            var userId = this.VerifySession(sessionId);
+
+            using (var context = this.GetContext())
+            {
+                var hasAccess = this.UserCanWithdrawFromAccount(userId, sourceAccountId);
+
+                if (!hasAccess)
+                {
+                    throw new FaultException("The user does not have permission to withdraw from the specified account.");
+                }
+
+                return context.CreateTransfer(sourceAccountId, destAccountId, description, amount);
+            }
+        }
+
         private int VerifySession(Guid sessionId)
         {
             Contract.Requires<ArgumentNullException>(sessionId != Guid.Empty, "sessionId");

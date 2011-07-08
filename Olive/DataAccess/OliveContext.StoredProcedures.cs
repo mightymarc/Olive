@@ -53,6 +53,32 @@ namespace Olive.DataAccess
         }
 
         /// <summary>
+        /// Creates a current account.
+        /// </summary>
+        /// <param name="userId">The user id.</param>
+        /// <param name="currencyId">The currency of the account.</param>
+        /// <param name="displayName">The display name of the account (USD, BTC, PPUSD, ...)</param>
+        /// <returns>The account id of the new account</returns>
+        public int CreateCurrentAccount(int userId, string currencyId, string displayName)
+        {
+            var command = this.CommandConnection.CreateCommand("Banking.CreateCurrentAccount");
+            command.AddParam("@UserId", DbType.Int32, userId);
+            command.AddParam("@CurrencyId", DbType.AnsiString, currencyId);
+            command.AddParam("@DisplayName", DbType.String, displayName);
+            command.AddParam("@AccountId", DbType.Int32, direction: ParameterDirection.Output);
+
+            switch (this.ExecuteCommand(command))
+            {
+                case 0:
+                    var accountId = (int)command.GetParameter("@AccountId").Value;
+                    Contract.Assume(accountId > 0);
+                    return accountId;
+                default:
+                    throw new UnknownReturnCodeException(command.GetReturnCode());
+            }
+        }
+
+        /// <summary>
         /// Creates the transfer.
         /// </summary>
         /// <param name="sourceAccountId">The source account id.</param>

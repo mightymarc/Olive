@@ -36,5 +36,8 @@
 
         [OperationContract]
         List<string> GetCurrencies();
+
+        [OperationContract]
+        long CreateTransfer(Guid sessionId, int sourceAccountId, int destAccountId, decimal amount, string description);
     }
 }

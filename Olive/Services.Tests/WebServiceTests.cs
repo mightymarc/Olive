@@ -12,6 +12,8 @@ namespace Olive.Services.Tests
     using System;
     using System.Globalization;
     using System.Linq;
+    using System.ServiceModel;
+    using System.Threading;
 
     using Microsoft.Practices.Unity;
 
@@ -25,6 +27,21 @@ namespace Olive.Services.Tests
     [TestFixture]
     public sealed class WebServiceTests
     {
+        private static object[] createTransferWithBadArgumentsThrowsExceptionCases = {
+                                                                                         new object[] { 0, 1, 100m, "cc" }
+                                                                                         , new object[] { 1, 1, 100m, "" }
+                                                                                         ,
+                                                                                         new object[]
+                                                                                             { -1, 1, 100m, "cc" },
+                                                                                         new object[] { 1, 1, -100m, "" },
+                                                                                         new object[]
+                                                                                             { 1, -1, 100m, "cc" },
+                                                                                         new object[] { 1, 1, 0m, "cc" },
+                                                                                         new object[] { 1, 1, 1m, "cc" },
+                                                                                         new object[]
+                                                                                             { 1, 0, 100m, "des" }
+                                                                                     };
+
         private static object[] editAccountDoesNotThrowExceptionCases = {
                                                                             new object[] { Guid.NewGuid(), 123, "Name" }, 
                                                                             new object[]
@@ -122,35 +139,8 @@ namespace Olive.Services.Tests
             this.container.RegisterInstance<IOliveContext>(context);
             var service = new WebService { Container = this.container };
 
-            Assert.Throws<AuthenticationException>(() => service.CreateSession(email, passwordHash));
+            Assert.Throws<FaultException>(() => service.CreateSession(email, passwordHash));
         }
-
-        /*[Test]
-        public void CreateSessionWithWrongPasswordThrowsAuthenticationFault()
-        {
-            var email = "email@pass.com";
-            var passwordHash = "passwordHash";
-
-            var service = new WebService { Container = this.container };
-
-            var context = new Mock<IOliveContext>().Object;
-            this.container.RegisterInstance(context);
-
-            var mockUsers = new MockDbSet<User> { new User { Email = email, PasswordSalt = "salt" } };
-            Mock.Get(context).SetupProperty(c => c.Users, mockUsers);
-
-            Mock.Get(context).Setup(c => c.CreateSession(email, It.IsAny<string>())).Throws(
-                new AuthenticationException());
-
-            // Mock ICrypto.
-            var mockCrypto = new Mock<ICrypto>();
-            mockCrypto.Setup(c => c.CreateSalt()).Returns("salt");
-            mockCrypto.Setup(c => c.GenerateHash(It.IsAny<string>(), It.IsAny<string>())).Returns(passwordHash);
-            this.container.RegisterInstance(mockCrypto.Object);
-
-            Assert.Throws<AuthenticationException>(() => service.CreateSession(email, passwordHash));
-            Mock.Get(context).Verify(c => c.CreateSession(email, It.IsAny<string>()), Times.Once());
-        }*/
 
         [Test]
         public void CreateUserDoesNotThrowException()
@@ -195,7 +185,7 @@ namespace Olive.Services.Tests
             var service = new WebService { Container = this.container };
 
             // Assert
-            Assert.Throws<EmailAlreadyRegisteredException>(() => service.CreateUser(email, password));
+            Assert.Throws<FaultException>(() => service.CreateUser(email, password));
         }
 
         [Test]
@@ -217,7 +207,7 @@ namespace Olive.Services.Tests
 
             // Assert
             Assert.Throws<ArgumentException>(
-                () => service.CreateUser(email, password), 
+                () => service.CreateUser(email, password),
                 string.Format(
                     CultureInfo.CurrentCulture, "E-mail '{0}' should not have been allowed to register.", email));
         }
@@ -243,9 +233,13 @@ namespace Olive.Services.Tests
         }
 
         [Test]
-        public void CreateAccountWithoutCredentialsThrowsException()
+        public void CreateCurrentAccountWithoutCredentialsThrowsException()
         {
-            Assert.Inconclusive();
+            // Arrange
+            var service = new WebService { Container = this.container };
+
+            // Act and assert
+            Assert.Throws<ArgumentException>(() => service.CreateCurrentAccount(Guid.Empty, "a@b.com", null));
         }
 
         [Test]
@@ -271,14 +265,32 @@ namespace Olive.Services.Tests
         }
 
         [Test]
+        [TestCase("USD", null)]
+        [TestCase("USD", "")]
+        [TestCase("BTC", "Name of account to create")]
         public void CreateAccountWithGoodCredentialsDoesNotThrowException(string currencyId, string displayName)
         {
-            var service = new WebService() { Container = this.container };
+            // Arrange
+            var context = new Mock<IOliveContext>();
+            this.container.RegisterInstance(context.Object);
+
+            var service = new WebService { Container = this.container };
             var sessionId = Guid.NewGuid();
 
-            service.CreateCurrentAccount(sessionId, currencyId, displayName);
+            var expectedAccountId = 53;
 
-            Assert.Inconclusive();
+            var userId = 512;
+
+            context.Setup(c => c.VerifySession(sessionId)).Returns(userId);
+
+            // Create account should convert empty strings to null because it's not appropriate in the database.
+            context.Setup(c => c.CreateCurrentAccount(userId, currencyId, displayName == string.Empty ? null : displayName)).Returns(expectedAccountId);
+
+            // Act
+            var actualAccountId = service.CreateCurrentAccount(sessionId, currencyId, displayName);
+
+            // Assert
+            Assert.AreEqual(expectedAccountId, actualAccountId);
         }
 
         [Test]
@@ -320,43 +332,116 @@ namespace Olive.Services.Tests
         [Test]
         public void GetCurrenciesTest()
         {
-            Assert.Inconclusive();
-        }
+            // Arrange
+            var service = new WebService { Container = this.container };
 
-        [Test]
-        public void GetCurrenciesWithIncorrectCredentialsTest()
-        {
-            Assert.Inconclusive();
+            Assert.Inconclusive("Requires mock DbSet, postponed.");
         }
 
         [Test]
         public void CreateTransferWithoutAuthenticationThrowsException()
         {
-            
+            // Arrange
+            var context = new Mock<IOliveContext>();
+            this.container.RegisterInstance(context.Object);
+
+            IWebService service = new WebService() { Container = this.container };
+
+            var sesionId = Guid.NewGuid();
+            var sourceAccountId = 1;
+            var destAccountId = 2;
+            var amount = 100.5m;
+            var description = "Because";
+
+            context.Setup(c => c.VerifySession(sesionId)).Throws(new SessionDoesNotExistException());
+
+            Assert.Throws<FaultException>(() => service.CreateTransfer(sesionId, sourceAccountId, destAccountId, amount, description));
+
+            // Assert
+            context.Verify(c => c.VerifySession(sesionId), Times.Once());
         }
 
         [Test]
-        public void CreateTransferWithBadArgumentsThrowsException()
+        [TestCaseSource("createTransferWithBadArgumentsThrowsExceptionCases")]
+        public void CreateTransferWithBadArgumentsThrowsException(int sourceAccountId, int destAccountId, decimal amount, string description)
         {
-            Assert.Inconclusive();
-        }
+            // Arrange
+            var context = new Mock<IOliveContext>();
+            this.container.RegisterInstance(context.Object);
 
-        [Test]
-        public void CreateTransferBetweenSameAccountThrowsException()
-        {
-            Assert.Inconclusive();
+            context.Setup(c => c.VerifySession(It.IsAny<Guid>())).Returns(1);
+
+            IWebService service = new WebService() { Container = this.container };
+
+            try
+            {
+                service.CreateTransfer(Guid.NewGuid(), sourceAccountId, destAccountId, amount, description);
+            }
+            catch (ArgumentException)
+            {
+                return;
+            }
+
+
+            Assert.Fail("Unsupported case did not throw exception.");
         }
 
         [Test]
         public void CreateTransferWithoutAccessThrowsException()
         {
-            Assert.Inconclusive();
+            // Arrange
+            var userId = 1001;
+            var sourceAccountId = 15;
+            var destAccountId = 12;
+            var description = "desc";
+            var amount = 13.54m;
+
+            var context = new Mock<IOliveContext>(MockBehavior.Strict);
+            context.Setup(c => c.Dispose());
+            context.Setup(c => c.VerifySession(It.IsAny<Guid>())).Returns(userId);
+            this.container.RegisterInstance(context.Object);
+
+            var service = new Mock<WebService>(MockBehavior.Strict);
+            service.CallBase = true;
+            service.Object.Container = this.container;
+            service.Setup(s => s.UserCanWithdrawFromAccount(userId, sourceAccountId)).Returns(false);
+
+            // Act
+            Assert.Throws<FaultException>(() => service.Object.CreateTransfer(Guid.NewGuid(), sourceAccountId, destAccountId, amount, description));
+
+            // Assert
+            service.Verify(s => s.UserCanWithdrawFromAccount(userId, sourceAccountId), Times.Once());
         }
 
         [Test]
         public void CreateTransferSuccessDoesNotThrowException()
         {
-            Assert.Inconclusive();
+            // Arrange
+            var userId = 1001;
+            var sourceAccountId = 15;
+            var destAccountId = 12;
+            var description = "desc";
+            var amount = 13.54m;
+            var transferId = 10002L;
+
+            var context = new Mock<IOliveContext>(MockBehavior.Strict);
+            context.Setup(c => c.Dispose());
+            context.Setup(c => c.VerifySession(It.IsAny<Guid>())).Returns(userId);
+            context.Setup(c => c.CreateTransfer(sourceAccountId, destAccountId, description, amount)).Returns(transferId);
+            this.container.RegisterInstance(context.Object);
+
+            var service = new Mock<WebService>(MockBehavior.Strict);
+            service.CallBase = true;
+            service.Object.Container = this.container;
+            service.Setup(s => s.UserCanWithdrawFromAccount(userId, sourceAccountId)).Returns(true);
+
+            // Act
+            var actualTransferId = service.Object.CreateTransfer(Guid.NewGuid(), sourceAccountId, destAccountId, amount, description);
+
+            // Assert
+            service.Verify(s => s.UserCanWithdrawFromAccount(userId, sourceAccountId), Times.Once());
+            context.Verify(c => c.CreateTransfer(sourceAccountId, destAccountId, description, amount), Times.Once());
+            Assert.AreEqual(transferId, actualTransferId);
         }
 
         [SetUp]
