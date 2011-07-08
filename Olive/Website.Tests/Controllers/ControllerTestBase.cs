@@ -36,15 +36,21 @@ namespace Olive.Website.Tests.Controllers
 
         protected Mock<HttpContextBase> httpContextMock;
 
+        protected Mock<ICurrencyCache> currencyCache;
+
         [SetUp]
         public virtual void SetUp()
         {
             this.sessionMock = new Mock<ISiteSession>();
             this.serviceMock = new Mock<IWebService>();
             this.httpContextMock = new Mock<HttpContextBase>();
+            this.sessionMock = new Mock<ISiteSession>();
+            this.currencyCache = new Mock<ICurrencyCache>();
+            this.currencyCache.Setup(c => c.Currencies).Returns(new List<string> { "USD", "BTC" });
 
             // Register mocks with unity
             this.container.RegisterInstance(this.sessionMock.Object);
+            this.container.RegisterInstance(this.currencyCache.Object);
             this.container.RegisterInstance(this.serviceMock.Object);
             this.container.RegisterInstance(this.httpContextMock.Object);
         }

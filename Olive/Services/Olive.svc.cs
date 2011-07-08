@@ -64,7 +64,9 @@ namespace Olive.Services
             {
                 if (context.Users.Any(u => u.Email.ToLower() == email.ToLower()))
                 {
-                    throw new EmailAlreadyRegisteredException();
+                    throw new FaultException(
+                        new FaultReason("The specified e-mail is already in use."),
+                        new FaultCode("EmailAlreadyRegistered"));
                 }
 
                 var crypto = this.Container.Resolve<ICrypto>();
@@ -152,7 +154,9 @@ namespace Olive.Services
 
         public long CreateTransfer(Guid sessionId, int sourceAccountId, int destAccountId, decimal amount, string description)
         {
-            var userId = this.VerifySession(sessionId);
+            var userId = default(int);
+
+            userId = this.VerifySession(sessionId);
 
             using (var context = this.GetContext())
             {
@@ -160,10 +164,22 @@ namespace Olive.Services
 
                 if (!hasAccess)
                 {
-                    throw new FaultException("The user does not have permission to withdraw from the specified account.");
+                    // This exception has to be the same as the one below to avoid people guessing account names.
+                    throw new FaultException(
+                        new FaultReason("The user does not have permission to withdraw from the specified account."),
+                        new FaultCode("AccountMissingWithdrawPermission"));
                 }
 
-                return context.CreateTransfer(sourceAccountId, destAccountId, description, amount);
+                try
+                {
+                    return context.CreateTransfer(sourceAccountId, destAccountId, description, amount);
+                }
+                catch (AuthorizationException)
+                {
+                    throw new FaultException(
+                        new FaultReason("The user does not have permission to withdraw from the specified account."),
+                        new FaultCode("AccountMissingWithdrawPermission"));
+                }
             }
         }
 
@@ -174,7 +190,15 @@ namespace Olive.Services
 
             using (var context = this.GetContext())
             {
-                return context.VerifySession(sessionId);
+                try
+                {
+                    return context.VerifySession(sessionId);
+                }
+                catch (SessionDoesNotExistException)
+                {
+                    throw new FaultException(
+                        new FaultReason("The specified session does not exist or has expired."), new FaultCode("SessionDoesNotExist"));
+                }
             }
         }
     }

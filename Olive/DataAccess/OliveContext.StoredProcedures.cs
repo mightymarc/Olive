@@ -101,6 +101,8 @@ namespace Olive.DataAccess
                     var transactionId = (long)command.GetParameter("@TransferId").Value;
                     Contract.Assume(transactionId > 0);
                     return transactionId;
+                case 51001:
+                    throw new AuthorizationException("The user does not have withdraw access to the specified source account.");
                 default:
                     throw new UnknownReturnCodeException(command.GetReturnCode());
             }
