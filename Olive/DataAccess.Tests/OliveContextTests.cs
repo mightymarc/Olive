@@ -7,174 +7,228 @@
 namespace Olive.DataAccess.Tests
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using System.Collections;
+    using System.Data;
+    using System.Data.Common;
+    using System.Data.SqlClient;
+    using System.Globalization;
+    using System.Runtime.InteropServices;
     using System.Text;
+    using Olive.DataAccess;
+
+    using Moq;
 
     using NUnit.Framework;
 
     public class OliveContextTests : TestBase
     {
         [Test]
-        public void AccountsWithBalancesEntitiesCurrencyNotNull()
+        public void CreateSessionThrowsExceptionOnUnknownReturnCode()
         {
-            using (var context = this.GetDbaContext())
-            {
-                var target = context.AccountsWithBalance.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+            // Arrange
+            var mockCommand = UnitTestHelper.CreateMockDbCommand();
+            var mockContext = new Mock<OliveContext>();
+            mockContext.Setup(c => c.CommandConnection).Returns(mockCommand.Object.Connection);
+            mockContext.Setup(c => c.ExecuteCommand(It.IsAny<IDbCommand>())).Returns(
+                () =>
+                    {
+                        mockCommand.Object.GetParameter("@ReturnCode").Value = 123;
+                        return 123;
+                    });
 
-                if (target == null)
-                {
-                    Assert.Inconclusive("The AccountWithBalance view is empty.");
-                }
-
-                Assert.NotNull(target.Currency);
-            }
+            // Act and assert
+            Assert.Throws<UnknownReturnCodeException>(() => mockContext.Object.CreateSession("email@pass.com", "hash"));
         }
 
         [Test]
-        public void AccountsEntitiesUsersNotNull()
+        public void CreatesSessionReturnsSessionId()
         {
-            using (var context = this.GetDbaContext())
-            {
-                var target = context.Accounts.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+            var sessionId = Guid.NewGuid();
 
-                if (target == null)
-                {
-                    Assert.Inconclusive("The Account table is empty.");
-                }
+            // Arrange
+            var mockCommand = UnitTestHelper.CreateMockDbCommand();
+            var mockContext = new Mock<OliveContext>();
+            mockContext.Setup(c => c.CommandConnection).Returns(mockCommand.Object.Connection);
+            mockContext.Setup(c => c.ExecuteCommand(It.IsAny<IDbCommand>())).Returns(
+                () =>
+                    {
+                        mockCommand.Object.GetParameter("@SessionId").Value = sessionId;
 
-                Assert.NotNull(target.Users);
-            }
+                        return 0;
+                    });
+
+            // Act and assert
+            Assert.AreEqual(sessionId, mockContext.Object.CreateSession("email@pass.com", "hash"));
         }
 
         [Test]
-        public void AccountsEntitiesCurrencyNotNull()
+        public void VerifySessionWithNonExistingSession()
         {
-            using (var context = this.GetDbaContext())
-            {
-                var target = context.Accounts.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
-
-                if (target == null)
+            // Arrange
+            var mockCommand = UnitTestHelper.CreateMockDbCommand();
+            var mockContext = new Mock<OliveContext>();
+            mockContext.Setup(c => c.CommandConnection).Returns(mockCommand.Object.Connection);
+            mockContext.Setup(c => c.ExecuteCommand(It.IsAny<IDbCommand>())).Returns(
+                () =>
                 {
-                    Assert.Inconclusive("The Account table is empty.");
-                }
+                    mockCommand.Object.GetParameter("@ReturnCode").Value = 51009;
+                    return 51009;
+                });
 
-                Assert.NotNull(target.Currency);
-            }
+            // Act and assert
+            Assert.Throws<UnknownReturnCodeException>(() => mockContext.Object.VerifySession(Guid.NewGuid()));
         }
 
         [Test]
-        public void UsersEntitiesAccountAccessNotNull()
+        public void VerifySessionThrowsExceptionOnUnknownReturnCode()
         {
-            using (var context = this.GetDbaContext())
-            {
-                var target = context.Users.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
-
-                if (target == null)
+            // Arrange
+            var mockCommand = UnitTestHelper.CreateMockDbCommand();
+            var mockContext = new Mock<OliveContext>();
+            mockContext.Setup(c => c.CommandConnection).Returns(mockCommand.Object.Connection);
+            mockContext.Setup(c => c.ExecuteCommand(It.IsAny<IDbCommand>())).Returns(
+                () =>
                 {
-                    Assert.Inconclusive("The User table is empty.");
-                }
+                    mockCommand.Object.GetParameter("@ReturnCode").Value = 123;
+                    return 123;
+                });
 
-                Assert.NotNull(target.AccountAccess);
-            }
+            // Act and assert
+            Assert.Throws<UnknownReturnCodeException>(() => mockContext.Object.CreateSession("email@pass.com", "hash"));
         }
 
         [Test]
-        public void TransfersEntitiesSourceAccountNotNull()
+        public void VerifySessionReturnsUserId()
         {
-            using (var context = this.GetDbaContext())
-            {
-                var target = context.Transfers.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+            var userId = 100;
 
-                if (target == null)
+            // Arrange
+            var mockCommand = UnitTestHelper.CreateMockDbCommand();
+            var mockContext = new Mock<OliveContext>();
+            mockContext.Setup(c => c.CommandConnection).Returns(mockCommand.Object.Connection);
+            mockContext.Setup(c => c.ExecuteCommand(It.IsAny<IDbCommand>())).Returns(
+                () =>
                 {
-                    Assert.Inconclusive("The Transfer table is empty.");
-                }
+                    mockCommand.Object.GetParameter("@UserId").Value = userId;
 
-                Assert.NotNull(target.SourceAccount);
-            }
+                    return 0;
+                });
+
+            // Act and assert
+            Assert.AreEqual(userId, mockContext.Object.VerifySession(Guid.NewGuid()));
         }
 
         [Test]
-        public void TransfersEntitiesDestAccountNotNull()
+        public void CreateTransferReturnsTransferId()
         {
-            using (var context = this.GetDbaContext())
-            {
-                var target = context.Transfers.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+            var transferId = 100L;
 
-                if (target == null)
+            // Arrange
+            var mockCommand = UnitTestHelper.CreateMockDbCommand();
+            var mockContext = new Mock<OliveContext>();
+            mockContext.Setup(c => c.CommandConnection).Returns(mockCommand.Object.Connection);
+            mockContext.Setup(c => c.ExecuteCommand(It.IsAny<IDbCommand>())).Returns(
+                () =>
                 {
-                    Assert.Inconclusive("The Transfer table is empty.");
-                }
+                    mockCommand.Object.GetParameter("@TransferId").Value = transferId;
 
-                Assert.NotNull(target.SourceAccount);
-            }
+                    return 0;
+                });
+
+            // Act and assert
+            Assert.AreEqual(transferId, mockContext.Object.CreateTransfer(1, 2, "test", 15));
         }
 
-
         [Test]
-        public void SessionsEntitiesDestAccountNotNull()
+        public void CreateTransferThrowsExceptionOnUnknownReturnCode()
         {
-            using (var context = this.GetDbaContext())
-            {
-                var target = context.Sessions.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
-
-                if (target == null)
+            // Arrange
+            var mockCommand = UnitTestHelper.CreateMockDbCommand();
+            var mockContext = new Mock<OliveContext>();
+            mockContext.Setup(c => c.CommandConnection).Returns(mockCommand.Object.Connection);
+            mockContext.Setup(c => c.ExecuteCommand(It.IsAny<IDbCommand>())).Returns(
+                () =>
                 {
-                    Assert.Inconclusive("The Session table is empty.");
-                }
+                    mockCommand.Object.GetParameter("@ReturnCode").Value = 12345;
+                    return 123;
+                });
 
-                Assert.NotNull(target.User);
-            }
+            // Act and assert
+            Assert.Throws<UnknownReturnCodeException>(() => mockContext.Object.CreateTransfer(1, 2, "test", 100));
         }
 
-        private static readonly Random Random = new Random();
+        [Test]
+        public void CreateCurrentAccountThrowsExceptionOnUnknownReturnCode()
+        {
+            // Arrange
+            var mockCommand = UnitTestHelper.CreateMockDbCommand();
+            var mockContext = new Mock<OliveContext>();
+            mockContext.Setup(c => c.CommandConnection).Returns(mockCommand.Object.Connection);
+            mockContext.Setup(c => c.ExecuteCommand(It.IsAny<IDbCommand>())).Returns(
+                () =>
+                {
+                    mockCommand.Object.GetParameter("@ReturnCode").Value = 12345;
+                    return 12345;
+                });
+
+            // Act and assert
+            Assert.Throws<UnknownReturnCodeException>(() => mockContext.Object.CreateCurrentAccount(1, "BTC", null));
+        }
+
+        /// <summary>
+        /// Creates a current account with bad arguments, expecting that an exception is thrown.
+        /// Note that empty sting display names are not allowed at this point, null should be used instead.
+        /// </summary>
+        /// <param name="userId">The user id.</param>
+        /// <param name="currencyId">The currency id.</param>
+        /// <param name="displayName">The display name.</param>
+        [Test]
+        [TestCase(0, "USD", null)]
+        [TestCase(-5, "USD", null)]
+        [TestCase(1, "", null)]
+        [TestCase(1, null, null)]
+        [TestCase(1, null, "")]
+        public void CreateCurrentAccountWithBadArgumentsThrowsException(int userId, string currencyId, string displayName)
+        {
+            var mockContext = new Mock<OliveContext>();
+
+            try
+            {
+                mockContext.Object.CreateCurrentAccount(userId, currencyId, displayName);
+            }
+            catch (ArgumentException)
+            {
+                return;
+            }
+
+            Assert.Fail(string.Format(
+                CultureInfo.CurrentCulture, 
+                "Expected exception with UserId={0}; CurrencyId={1}; DisplayName={2}", 
+                userId, 
+                currencyId, 
+                displayName));
+        }
 
         [Test]
-        public void CreateTransfer_ReturnsCorrectTransfer()
+        [TestCase(1, "USD", null)]
+        [TestCase(5, "BTC", null)]
+        [TestCase(1000, "MBUSD", "")]
+        public void CreateCurrentAccountSuccessTest(int userId, string currencyId, string displayName)
         {
-            using (var context = this.GetDbaContext())
-            {
-                var sourceAccountQuery = from a in context.Accounts
-                               where a.AccountType == AccountType.IncomingMoneybookersUsd
-                               select a;
-
-                var sourceAccount = sourceAccountQuery.FirstOrDefault();
-
-                if (sourceAccount == null)
+            // Arrange
+            var mockCommand = UnitTestHelper.CreateMockDbCommand();
+            var mockContext = new Mock<OliveContext>();
+            mockContext.Setup(c => c.CommandConnection).Returns(mockCommand.Object.Connection);
+            mockContext.Setup(c => c.ExecuteCommand(It.IsAny<IDbCommand>())).Returns(
+                () =>
                 {
-                    Assert.Inconclusive("Unable to find a source account.");
-                }
+                    mockCommand.Object.GetParameter("@AccountId").Value = 100;
+                    mockCommand.Object.GetParameter("@ReturnCode").Value = 0;
+                    return 0;
+                });
 
-                var destAccountQuery = from a in context.Accounts
-                                       where a.AccountType == AccountType.Current && a.CurrencyId == sourceAccount.CurrencyId &&
-                                       a.AccountId != sourceAccount.AccountId
-                                       orderby Guid.NewGuid()
-                                       select a;
-
-                var destAccount = destAccountQuery.FirstOrDefault();
-
-                if (destAccount == null)
-                {
-                    Assert.Inconclusive("Unable to find a destination account.");
-                }
-
-                var amount = ((decimal)Random.Next(1, 10000000)) / 100000;
-                const string Description = "The transfer description";
-
-                var transferId = context.CreateTransfer(
-                    sourceAccount.AccountId, destAccount.AccountId, Description, amount);
-
-                var transfer = context.Transfers.Find(transferId);
-
-                Assert.NotNull(transfer);
-                Assert.AreEqual(amount, transfer.Amount);
-                Assert.AreEqual(Description, transfer.Description);
-                Assert.AreEqual(sourceAccount, transfer.SourceAccount);
-                Assert.AreEqual(destAccount, transfer.DestAccount);
-                Assert.AreEqual(transfer.TransferId, transferId);
-                Assert.True((transfer.CreatedAt - DateTime.UtcNow).Duration().TotalMinutes < 5);
-            }
+            // Act and assert
+            Assert.AreEqual(100, mockContext.Object.CreateCurrentAccount(userId, currencyId, displayName));
         }
     }
 }

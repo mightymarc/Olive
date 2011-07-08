@@ -14,6 +14,7 @@ namespace Olive.DataAccess.Tests
     using System.Reflection;
     using System.Text;
 
+    using Olive.Services.Tests;
 
     public partial class MockOliveContext : IOliveContext, IDisposable
     {
@@ -119,17 +120,17 @@ namespace Olive.DataAccess.Tests
             throw new NotImplementedException();
         }
 
+        public int VerifySession(Guid sessionId)
+        {
+            throw new NotImplementedException();
+        }
+
         public int VerifySession(IDbCommand command)
         {
             throw new NotImplementedException();
         }
 
         public IDbCommand GetVerifySessionCommand(Guid sessionId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int VerifySession(Guid sessionId)
         {
             throw new NotImplementedException();
         }
@@ -169,7 +170,6 @@ namespace Olive.DataAccess.Tests
 
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
     }
 }

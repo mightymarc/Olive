@@ -113,19 +113,32 @@ namespace Olive.Services
             throw new NotImplementedException();
         }
 
-        public int CreateAccount(Guid sessionId, string currencyId, string displayName)
+        public int CreateCurrentAccount(Guid sessionId, string currencyId, string displayName)
         {
             if (displayName == string.Empty)
             {
                 displayName = null;
             }
 
-            throw new NotImplementedException();
+            var userId = this.VerifySession(sessionId);
+
+            using (var context = this.GetContext())
+            {
+                return context.CreateCurrentAccount(userId, currencyId, displayName);
+            }
         }
 
         public void EditAccount(Guid sessionId, int accountId, string displayName)
         {
             throw new NotImplementedException();
+        }
+
+        public List<string> GetCurrencies()
+        {
+            using (var context = this.GetContext())
+            {
+                return context.Currencies.Select(x => x.CurrencyId).ToList();
+            }
         }
 
         private int VerifySession(Guid sessionId)

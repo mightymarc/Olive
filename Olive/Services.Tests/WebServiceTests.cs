@@ -1,8 +1,11 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="WebServiceTests.cs" company="Olive">
-//  [Copyright]
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="WebServiceTests.cs" company="">
+//   
 // </copyright>
-// -----------------------------------------------------------------------
+// <summary>
+//   Defines the WebServiceTests type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive.Services.Tests
 {
@@ -18,18 +21,80 @@ namespace Olive.Services.Tests
 
     using Olive.DataAccess;
     using Olive.DataAccess.Tests;
-    using Olive.Services;
 
     [TestFixture]
     public sealed class WebServiceTests
     {
+        private static object[] editAccountDoesNotThrowExceptionCases = {
+                                                                            new object[] { Guid.NewGuid(), 123, "Name" }, 
+                                                                            new object[]
+                                                                                {
+                                                                                   Guid.NewGuid(), 1, string.Empty 
+                                                                                }, 
+                                                                            new object[]
+                                                                                {
+                                                                                   Guid.NewGuid(), 333433434, null 
+                                                                                }
+                                                                        };
+
+        private static object[] editAccountWithBadArgumentsThrowsExceptionCases = {
+                                                                                      new object[]
+                                                                                          {
+                                                                                              Guid.Empty, 1, string.Empty
+                                                                                          }, 
+                                                                                      new object[]
+                                                                                          {
+                                                                                              Guid.NewGuid(), 0, 
+                                                                                              string.Empty
+                                                                                          }, 
+                                                                                      new object[]
+                                                                                          {
+                                                                                             Guid.NewGuid(), -1, string.Empty 
+                                                                                          }, 
+                                                                                      new object[]
+                                                                                          {
+                                                                                             Guid.NewGuid(), -1, null 
+                                                                                          }
+                                                                                  };
+
         private IUnityContainer container;
 
-        [SetUp]
-        public void SetUp()
+        [Test]
+        public void CreateSessionWitInvalidEmailThrowsException()
         {
-            this.container = new UnityContainer();
+            var service = new WebService();
+
+            Assert.Throws<ArgumentException>(() => service.CreateSession("@bademail.com", "password"));
         }
+
+        /*[Test]
+        public void CreateSessionWithCorrectCredentialsReturnsSessionId()
+        {
+            var email = "email@pass.com";
+            var passwordHash = "passwordHash";
+            var sessionId = Guid.NewGuid();
+
+            // Mock a IOliveContext which contains pre-defined users.
+            var context = new Mock<IOliveContext>().Object;
+            Mock.Get(context).SetupProperty(
+                c => c.Users, 
+                new MockDbSet<User> { new User { Email = email, PasswordHash = "hash", PasswordSalt = "salt" } });
+
+            // Mock the ICrypto service to always create the same salt and hashes.
+            var mockCrypto = new Mock<ICrypto>();
+            mockCrypto.Setup(c => c.CreateSalt()).Returns("salt");
+            mockCrypto.Setup(c => c.GenerateHash(It.IsAny<string>(), It.IsAny<string>())).Returns("hash");
+
+            this.container.RegisterInstance(mockCrypto.Object);
+            this.container.RegisterInstance(context);
+
+            var service = new WebService { Container = this.container };
+
+            Mock.Get(context).Setup(c => c.CreateSession(email, It.IsAny<string>())).Returns(sessionId);
+
+            Assert.AreEqual(sessionId, service.CreateSession(email, passwordHash));
+            Mock.Get(context).Verify(c => c.CreateSession(email, It.IsAny<string>()), Times.Once());
+        }*/
 
         [Test]
         public void CreateSessionWithNullEmailThrowsException()
@@ -48,28 +113,34 @@ namespace Olive.Services.Tests
         }
 
         [Test]
-        public void CreateSessionWitInvalidEmailThrowsException()
+        public void CreateSessionWithUnknownEmailThrowsAuthenticationFault()
         {
-            var service = new WebService();
+            var email = "email@pass.com";
+            var passwordHash = "passwordHash";
 
-            Assert.Throws<ArgumentException>(() => service.CreateSession("@bademail.com", "password"));
+            var context = new MockOliveContext();
+            this.container.RegisterInstance<IOliveContext>(context);
+            var service = new WebService { Container = this.container };
+
+            Assert.Throws<AuthenticationException>(() => service.CreateSession(email, passwordHash));
         }
 
-        [Test]
+        /*[Test]
         public void CreateSessionWithWrongPasswordThrowsAuthenticationFault()
         {
             var email = "email@pass.com";
             var passwordHash = "passwordHash";
 
-            var service = new WebService() { Container = this.container };
-            
+            var service = new WebService { Container = this.container };
+
             var context = new Mock<IOliveContext>().Object;
             this.container.RegisterInstance(context);
 
-            var mockUsers = new MockDbSet<User>() { new User() { Email = email, PasswordSalt = "salt" } };
+            var mockUsers = new MockDbSet<User> { new User { Email = email, PasswordSalt = "salt" } };
             Mock.Get(context).SetupProperty(c => c.Users, mockUsers);
 
-            Mock.Get(context).Setup(c => c.CreateSession(email, It.IsAny<string>())).Throws(new AuthenticationException());
+            Mock.Get(context).Setup(c => c.CreateSession(email, It.IsAny<string>())).Throws(
+                new AuthenticationException());
 
             // Mock ICrypto.
             var mockCrypto = new Mock<ICrypto>();
@@ -79,49 +150,7 @@ namespace Olive.Services.Tests
 
             Assert.Throws<AuthenticationException>(() => service.CreateSession(email, passwordHash));
             Mock.Get(context).Verify(c => c.CreateSession(email, It.IsAny<string>()), Times.Once());
-        }
-
-        [Test]
-        public void CreateSessionWithCorrectCredentialsReturnsSessionId()
-        {
-            var email = "email@pass.com";
-            var passwordHash = "passwordHash";
-            var sessionId = Guid.NewGuid();
-
-            // Mock a IOliveContext which contains pre-defined users.
-            var context = new Mock<IOliveContext>().Object;
-            Mock.Get(context).SetupProperty(
-                c => c.Users,
-                new MockDbSet<User> { new User { Email = email, PasswordHash = "hash", PasswordSalt = "salt" } });
-
-            // Mock the ICrypto service to always create the same salt and hashes.
-            var mockCrypto = new Mock<ICrypto>();
-            mockCrypto.Setup(c => c.CreateSalt()).Returns("salt");
-            mockCrypto.Setup(c => c.GenerateHash(It.IsAny<string>(), It.IsAny<string>())).Returns("hash");
-
-            this.container.RegisterInstance(mockCrypto.Object);
-            this.container.RegisterInstance(context);
-
-            var service = new WebService() { Container = this.container };
-
-            Mock.Get(context).Setup(c => c.CreateSession(email, It.IsAny<string>())).Returns(sessionId);
-
-            Assert.AreEqual(sessionId, service.CreateSession(email, passwordHash));
-            Mock.Get(context).Verify(c => c.CreateSession(email, It.IsAny<string>()), Times.Once());
-        }
-
-        [Test]
-        public void CreateSessionWithUnknownEmailThrowsAuthenticationFault()
-        {
-            var email = "email@pass.com";
-            var passwordHash = "passwordHash";
-
-            var context = new MockOliveContext();
-            this.container.RegisterInstance<IOliveContext>(context);
-            var service = new WebService() { Container = this.container };
-
-            Assert.Throws<AuthenticationException>(() => service.CreateSession(email, passwordHash));
-        }
+        }*/
 
         [Test]
         public void CreateUserDoesNotThrowException()
@@ -150,40 +179,23 @@ namespace Olive.Services.Tests
             Assert.IsNotNull(contextMock.Object.Users.SingleOrDefault(u => u.Email == email));
         }
 
-        private static object[] editAccountWithBadArgumentsThrowsExceptionCases = {
-                                                                                      new object[]
-                                                                                          {
-                                                                                              Guid.Empty, 1, string.Empty
-                                                                                          },
-                                                                                      new object[]
-                                                                                          {
-                                                                                              Guid.NewGuid(), 0,
-                                                                                              string.Empty
-                                                                                          },
-                                                                                      new object[]
-                                                                                          { Guid.NewGuid(), -1, "" },
-                                                                                      new object[]
-                                                                                          { Guid.NewGuid(), -1, null }
-                                                                                  };
-
         [Test]
-        [TestCaseSource("editAccountWithBadArgumentsThrowsExceptionCases")]
-        public void EditAccountWithBadArgumentsThrowsException(Guid sessionId, int accountId, string displayName)
+        public void CreateUserWithAlreadyRegisteredEmailThrowsException()
         {
-            Assert.Inconclusive();
-        }
+            // Arrange
+            var email = "user@email.com";
+            var password = "passwordHash";
+            var context = new MockOliveContext();
+            this.container.RegisterInstance<IOliveContext>(context);
 
-        private static object[] editAccountDoesNotThrowExceptionCases = {
-                                                                            new object[] { Guid.NewGuid(), 123, "Name" },
-                                                                            new object[] { Guid.NewGuid(), 1, string.Empty },
-                                                                            new object[] { Guid.NewGuid(), 333433434, null }
-                                                                        };
+            context.Users.Add(
+                new User { Email = "USER@EMAIL.com", PasswordHash = "hash", PasswordSalt = "salt", UserId = 100 });
 
-        [Test]
-        [TestCaseSource("editAccountDoesNotThrowExceptionCases")]
-        public void EditAccountDoesNotThrowException(Guid sessionId, int accountId, string displayName)
-        {
-            Assert.Inconclusive();
+            // Act
+            var service = new WebService { Container = this.container };
+
+            // Assert
+            Assert.Throws<EmailAlreadyRegisteredException>(() => service.CreateUser(email, password));
         }
 
         [Test]
@@ -205,28 +217,9 @@ namespace Olive.Services.Tests
 
             // Assert
             Assert.Throws<ArgumentException>(
-                () => service.CreateUser(email, password),
-                string.Format(CultureInfo.CurrentCulture, "E-mail '{0}' should not have been allowed to register.", email));
-        }
-
-        [Test]
-        public void CreateUserWithTooShortPasswordThrowsException()
-        {
-            // Arrange
-            var service = new WebService { Container = this.container };
-
-            // Act and assert
-            Assert.Throws<ArgumentException>(() => service.CreateUser("a@b.c", "ab"));
-        }
-
-        [Test]
-        public void CreateUserWithNullPasswordThrowsException()
-        {
-            // Arrange
-            var service = new WebService { Container = this.container };
-
-            // Act and assert
-            Assert.Throws<ArgumentException>(() => service.CreateUser("a@b.com", null));
+                () => service.CreateUser(email, password), 
+                string.Format(
+                    CultureInfo.CurrentCulture, "E-mail '{0}' should not have been allowed to register.", email));
         }
 
         [Test]
@@ -240,21 +233,136 @@ namespace Olive.Services.Tests
         }
 
         [Test]
-        public void CreateUserWithAlreadyRegisteredEmailThrowsException()
+        public void CreateUserWithNullPasswordThrowsException()
         {
             // Arrange
-            var email = "user@email.com";
-            var password = "passwordHash";
-            var context = new MockOliveContext();
-            this.container.RegisterInstance<IOliveContext>(context);
-
-            context.Users.Add(new User { Email = "USER@EMAIL.com", PasswordHash = "hash", PasswordSalt = "salt", UserId = 100 });
-
-            // Act
             var service = new WebService { Container = this.container };
 
-            // Assert
-            Assert.Throws<EmailAlreadyRegisteredException>(() => service.CreateUser(email, password));
+            // Act and assert
+            Assert.Throws<ArgumentException>(() => service.CreateUser("a@b.com", null));
+        }
+
+        [Test]
+        public void CreateAccountWithoutCredentialsThrowsException()
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        [TestCase(null, null)]
+        [TestCase("", null)]
+        [TestCase(null, "name")]
+        [TestCase("", "name")]
+        public void CreateCurrentAccountWithBadArgumentsThrowsException(string currencyId, string displayName)
+        {
+            var service = new WebService() { Container = this.container };
+            var sessionId = Guid.NewGuid();
+
+            try
+            {
+                service.CreateCurrentAccount(sessionId, currencyId, displayName);
+            }
+            catch (ArgumentException)
+            {
+                return;
+            }
+
+            Assert.Fail();
+        }
+
+        [Test]
+        public void CreateAccountWithGoodCredentialsDoesNotThrowException(string currencyId, string displayName)
+        {
+            var service = new WebService() { Container = this.container };
+            var sessionId = Guid.NewGuid();
+
+            service.CreateCurrentAccount(sessionId, currencyId, displayName);
+
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void CreateUserWithTooShortPasswordThrowsException()
+        {
+            // Arrange
+            var service = new WebService { Container = this.container };
+
+            // Act and assert
+            Assert.Throws<ArgumentException>(() => service.CreateUser("a@b.c", "ab"));
+        }
+
+        [Test]
+        [TestCaseSource("editAccountDoesNotThrowExceptionCases")]
+        public void EditCurrentAccountDoesNotThrowException(Guid sessionId, int accountId, string displayName)
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        [TestCaseSource("editAccountWithBadArgumentsThrowsExceptionCases")]
+        public void EditCurrentAccountWithBadArgumentsThrowsException(Guid sessionId, int accountId, string displayName)
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void EditCurrentAccountWithoutAuthenticationTest()
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void EditCurrentAccountWithoutHavingAccessTest()
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void GetCurrenciesTest()
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void GetCurrenciesWithIncorrectCredentialsTest()
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void CreateTransferWithoutAuthenticationThrowsException()
+        {
+            
+        }
+
+        [Test]
+        public void CreateTransferWithBadArgumentsThrowsException()
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void CreateTransferBetweenSameAccountThrowsException()
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void CreateTransferWithoutAccessThrowsException()
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void CreateTransferSuccessDoesNotThrowException()
+        {
+            Assert.Inconclusive();
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.container = new UnityContainer();
         }
     }
 }

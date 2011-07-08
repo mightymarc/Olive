@@ -29,8 +29,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Tests", "DataAcc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website.Tests", "Website.Tests\Website.Tests.csproj", "{AC179D6C-1A86-4695-84BA-E8DF4114B87D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website.Backbone", "Website.Backbone\Website.Backbone.csproj", "{5BF6D0A4-EDB3-4E8D-BBFC-049A6A3D9550}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Tests", "Services.Tests\Services.Tests.csproj", "{FBD8ABC6-285F-4231-A127-59756BF4D67C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Tests", "Core.Tests\Core.Tests.csproj", "{1DE053F9-6A52-49B4-9049-EB85995A1A26}"
@@ -126,10 +124,6 @@ Global
 		{AC179D6C-1A86-4695-84BA-E8DF4114B87D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC179D6C-1A86-4695-84BA-E8DF4114B87D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC179D6C-1A86-4695-84BA-E8DF4114B87D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5BF6D0A4-EDB3-4E8D-BBFC-049A6A3D9550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5BF6D0A4-EDB3-4E8D-BBFC-049A6A3D9550}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5BF6D0A4-EDB3-4E8D-BBFC-049A6A3D9550}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5BF6D0A4-EDB3-4E8D-BBFC-049A6A3D9550}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FBD8ABC6-285F-4231-A127-59756BF4D67C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FBD8ABC6-285F-4231-A127-59756BF4D67C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBD8ABC6-285F-4231-A127-59756BF4D67C}.Release|Any CPU.ActiveCfg = Release|Any CPU

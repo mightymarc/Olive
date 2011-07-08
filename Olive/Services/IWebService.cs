@@ -29,9 +29,12 @@
         AccountOverview GetAccounts(Guid sessionId);
 
         [OperationContract]
-        int CreateAccount(Guid sessionId, string currencyId, string displayName);
+        int CreateCurrentAccount(Guid sessionId, string currencyId, string displayName);
 
         [OperationContract]
         void EditAccount(Guid sessionId, int accountId, string displayName);
+
+        [OperationContract]
+        List<string> GetCurrencies();
     }
 }

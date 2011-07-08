@@ -108,6 +108,8 @@
   <ItemGroup>
     <Compile Include="App_Start\PrecompiledMvcViewEngineStart.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Helpers\CurrencyCache.cs" />
+    <Compile Include="Helpers\ICurrencyCache.cs" />
     <Compile Include="Helpers\ISiteSession.cs" />
     <Compile Include="Controllers\SiteController.cs" />
     <Compile Include="Helpers\SiteSession.cs" />

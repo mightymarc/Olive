@@ -9,6 +9,7 @@ IF @CurrencyId IS NULL RAISERROR(51003, 16, 1, '@CurrencyId');
 IF @AccountId IS NOT NULL RAISERROR(51004, 16, 1, '@AccountId');
 
 BEGIN TRAN
+
 BEGIN TRY
 	INSERT INTO Banking.Account (CurrencyId, [Type]) VALUES (@CurrencyId, 'Current');
 	SELECT @AccountId = CAST(SCOPE_IDENTITY() as int)

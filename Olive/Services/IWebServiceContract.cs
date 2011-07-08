@@ -58,7 +58,7 @@
             return default(AccountOverview);
         }
 
-        public int CreateAccount(Guid sessionId, string currencyId, string displayName)
+        public int CreateCurrentAccount(Guid sessionId, string currencyId, string displayName)
         {
             Contract.Requires<ArgumentException>(sessionId != Guid.Empty, "sessionId");
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(currencyId), "currencyId");
@@ -73,6 +73,12 @@
             Contract.Requires<ArgumentException>(accountId > 0, "accountId");
 
             return;
+        }
+
+        public List<string> GetCurrencies()
+        {
+            Contract.Ensures(Contract.Result<List<string>>() != null);
+            return default(List<string>);
         }
     }
 }

@@ -21,13 +21,14 @@ AS
 
 if @SourceAccountId is null RAISERROR(51003, 16, 1, '@SourceAccountId');
 if @DestAccountId is null RAISERROR(51003, 16, 1, '@DestAccountId');
-if @Amount is null return RAISERROR(51003, 16, 1, '@Amount');
+if @Amount is null RAISERROR(51003, 16, 1, '@Amount');
 if @Description is null RAISERROR(51003, 16, 1, '@Description');
 if @TransferId is not null RAISERROR(51004, 16, 1, '@TransferId');
 IF @SourceAccountId = @DestAccountId RAISERROR(51007, 16, 1);
 if @Amount <= 0 RAISERROR(51005, 16, 1);
 
 BEGIN TRAN
+BEGIN TRY
 
 -- Make sure the source account has enough funds.
 DECLARE @SourceAccountBeforeBalance decimal(18, 8)
@@ -36,10 +37,7 @@ SELECT @SourceAccountBeforeBalance = [Balance], @SourceAccountAllowsNegativeBala
 	WHERE AccountId = @SourceAccountId
 		
 IF @SourceAccountAllowsNegativeBalance = 0 AND @SourceAccountBeforeBalance < @Amount
-BEGIN
-	ROLLBACK TRAN;
 	RAISERROR(51006, 16, 1);
-END
 
 -- Make sure the accounts have the same currency.
 DECLARE @SourceAccountCurrencyId VARCHAR(10) = (SELECT CurrencyId FROM Banking.Account WHERE AccountId = @SourceAccountId);
@@ -53,10 +51,7 @@ IF @DestAccountCurrencyId IS NULL
 	RAISERROR(51002, 16, 1);
 
 IF @SourceAccountCurrencyId <> @DestAccountCurrencyId
-BEGIN
-	ROLLBACK TRAN;
 	RAISERROR(51008, 16, 1);
-END
 	
 INSERT INTO Banking.[Transfer]
 (
@@ -72,13 +67,15 @@ INSERT INTO Banking.[Transfer]
 )
 	
 IF @@ROWCOUNT <> 1
-BEGIN
-	ROLLBACK TRAN
 	RAISERROR(51010, 16, 1);
-END
 
 SELECT @TransferId = CONVERT(BIGINT, SCOPE_IDENTITY());
 
 COMMIT TRAN
 
 RETURN 0
+END TRY
+BEGIN CATCH
+	ROLLBACK TRAN
+	EXEC dbo.RethrowError
+END CATCH

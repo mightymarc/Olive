@@ -93,29 +93,39 @@ namespace Olive.Database.Tests.Auth
         {
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction Success_TestAction;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DeleteSessionTests));
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition3;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsOnExpiredSession_TestAction;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsOnUnknownSessionId_TestAction;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition2;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsOnExpiredSession_PretestAction;
             Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition1;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction FailsOnExpiredSession_PosttestAction;
-            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition2;
-            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition3;
             this.SuccessData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             this.FailsOnExpiredSessionData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             this.FailsOnUnknownSessionIdData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             Success_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            scalarValueCondition3 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             FailsOnExpiredSession_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
             FailsOnUnknownSessionId_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            scalarValueCondition2 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             FailsOnExpiredSession_PretestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
             scalarValueCondition1 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             FailsOnExpiredSession_PosttestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
-            scalarValueCondition2 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
-            scalarValueCondition3 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             // 
             // Success_TestAction
             // 
             Success_TestAction.Conditions.Add(scalarValueCondition3);
             resources.ApplyResources(Success_TestAction, "Success_TestAction");
+            // 
+            // scalarValueCondition3
+            // 
+            scalarValueCondition3.ColumnNumber = 1;
+            scalarValueCondition3.Enabled = true;
+            scalarValueCondition3.ExpectedValue = "0";
+            scalarValueCondition3.Name = "scalarValueCondition3";
+            scalarValueCondition3.NullExpected = false;
+            scalarValueCondition3.ResultSet = 1;
+            scalarValueCondition3.RowNumber = 1;
             // 
             // FailsOnExpiredSession_TestAction
             // 
@@ -125,6 +135,16 @@ namespace Olive.Database.Tests.Auth
             // 
             FailsOnUnknownSessionId_TestAction.Conditions.Add(scalarValueCondition2);
             resources.ApplyResources(FailsOnUnknownSessionId_TestAction, "FailsOnUnknownSessionId_TestAction");
+            // 
+            // scalarValueCondition2
+            // 
+            scalarValueCondition2.ColumnNumber = 1;
+            scalarValueCondition2.Enabled = true;
+            scalarValueCondition2.ExpectedValue = "0";
+            scalarValueCondition2.Name = "scalarValueCondition2";
+            scalarValueCondition2.NullExpected = false;
+            scalarValueCondition2.ResultSet = 1;
+            scalarValueCondition2.RowNumber = 1;
             // 
             // FailsOnExpiredSession_PretestAction
             // 
@@ -162,26 +182,6 @@ namespace Olive.Database.Tests.Auth
             this.FailsOnUnknownSessionIdData.PosttestAction = null;
             this.FailsOnUnknownSessionIdData.PretestAction = null;
             this.FailsOnUnknownSessionIdData.TestAction = FailsOnUnknownSessionId_TestAction;
-            // 
-            // scalarValueCondition2
-            // 
-            scalarValueCondition2.ColumnNumber = 1;
-            scalarValueCondition2.Enabled = true;
-            scalarValueCondition2.ExpectedValue = "0";
-            scalarValueCondition2.Name = "scalarValueCondition2";
-            scalarValueCondition2.NullExpected = false;
-            scalarValueCondition2.ResultSet = 1;
-            scalarValueCondition2.RowNumber = 1;
-            // 
-            // scalarValueCondition3
-            // 
-            scalarValueCondition3.ColumnNumber = 1;
-            scalarValueCondition3.Enabled = true;
-            scalarValueCondition3.ExpectedValue = "0";
-            scalarValueCondition3.Name = "scalarValueCondition3";
-            scalarValueCondition3.NullExpected = false;
-            scalarValueCondition3.ResultSet = 1;
-            scalarValueCondition3.RowNumber = 1;
         }
 
         #endregion

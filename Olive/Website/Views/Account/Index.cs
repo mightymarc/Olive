@@ -47,12 +47,13 @@ WriteLiteral("\r\n");
             
             #line default
             #line hidden
-WriteLiteral("\r\n<h2>Overview</h2>\r\n<table>\r\n    <tr>\r\n        <th>#</th>\r\n        <th>Currency<" +
-"/th>\r\n        <th>Balance</th>\r\n        <th>Name</th>\r\n    </tr>\r\n\r\n");
+WriteLiteral("\r\n<h2>Overview</h2>\r\n\r\n<div>\r\n    <a href=\"/Account/Create\">Create account</a>\r\n<" +
+"/div>\r\n\r\n<table>\r\n    <tr>\r\n        <th>#</th>\r\n        <th>Currency</th>\r\n     " +
+"   <th>Balance</th>\r\n        <th>Name</th>\r\n    </tr>\r\n\r\n");
 
 
             
-            #line 16 "C:\Users\Andy\AppData\Local\TFS\Tests\Olive\Website\Views\Account\Index.cshtml"
+            #line 21 "C:\Users\Andy\AppData\Local\TFS\Tests\Olive\Website\Views\Account\Index.cshtml"
      foreach (var account in this.Model.Accounts)
     {
 
@@ -63,7 +64,7 @@ WriteLiteral("        <tr>\r\n            <td>");
 
 
             
-            #line 19 "C:\Users\Andy\AppData\Local\TFS\Tests\Olive\Website\Views\Account\Index.cshtml"
+            #line 24 "C:\Users\Andy\AppData\Local\TFS\Tests\Olive\Website\Views\Account\Index.cshtml"
            Write(account.AccountId);
 
             
@@ -73,7 +74,7 @@ WriteLiteral("</td>\r\n            <td>");
 
 
             
-            #line 20 "C:\Users\Andy\AppData\Local\TFS\Tests\Olive\Website\Views\Account\Index.cshtml"
+            #line 25 "C:\Users\Andy\AppData\Local\TFS\Tests\Olive\Website\Views\Account\Index.cshtml"
            Write(account.CurrencyId);
 
             
@@ -83,7 +84,7 @@ WriteLiteral("</td>\r\n            <td>");
 
 
             
-            #line 21 "C:\Users\Andy\AppData\Local\TFS\Tests\Olive\Website\Views\Account\Index.cshtml"
+            #line 26 "C:\Users\Andy\AppData\Local\TFS\Tests\Olive\Website\Views\Account\Index.cshtml"
            Write(account.Balance);
 
             
@@ -93,7 +94,7 @@ WriteLiteral("</td>\r\n            <td>");
 
 
             
-            #line 22 "C:\Users\Andy\AppData\Local\TFS\Tests\Olive\Website\Views\Account\Index.cshtml"
+            #line 27 "C:\Users\Andy\AppData\Local\TFS\Tests\Olive\Website\Views\Account\Index.cshtml"
            Write(account.DisplayName);
 
             
@@ -103,13 +104,13 @@ WriteLiteral("</td>\r\n        </tr>\r\n");
 
 
             
-            #line 24 "C:\Users\Andy\AppData\Local\TFS\Tests\Olive\Website\Views\Account\Index.cshtml"
+            #line 29 "C:\Users\Andy\AppData\Local\TFS\Tests\Olive\Website\Views\Account\Index.cshtml"
     }
 
             
             #line default
             #line hidden
-WriteLiteral("</table>");
+WriteLiteral("</table>\r\n");
 
 
         }

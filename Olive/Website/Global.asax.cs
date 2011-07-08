@@ -57,8 +57,7 @@
             container.RegisterType<ISiteSession, SiteSession>();
             container.RegisterType<ICrypto, Crypto>();
             container.RegisterType<IOliveContext, OliveContext>();
-
-////            container.RegisterType<UserController>();
+            container.RegisterType<ICurrencyCache, CurrencyCache>();
 
             return container;
         }

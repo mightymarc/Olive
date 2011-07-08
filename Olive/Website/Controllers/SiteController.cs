@@ -32,6 +32,9 @@ namespace Olive.Website.Controllers
         [Dependency]
         public IWebService Service { get; set; }
 
+        [Dependency]
+        public ICurrencyCache CurrencyCache { get; set; }
+
         protected ActionResult RedirectToLogin()
         {
             Contract.Requires(this.Request != null, "this.Context.Request");

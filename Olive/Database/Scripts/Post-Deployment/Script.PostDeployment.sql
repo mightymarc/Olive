@@ -24,6 +24,7 @@ GRANT EXECUTE ON [Banking].[CreateCurrentAccount] TO [BankServiceRole]
 GRANT EXECUTE ON [Auth].[CreateSession] TO [BankServiceRole];
 GRANT EXECUTE ON [Auth].VerifySession TO [BankServiceRole];
 GRANT EXECUTE ON [Auth].DeleteSession TO [BankServiceRole];
+--GRANT EXECUTE ON [dbo].RethrowError TO [BankServiceRole];
 
 -- Errors
 --USE master
@@ -35,7 +36,9 @@ EXEC master..sp_addmessage 51005, 16, N'Transfer amount must be > 0.', @replace 
 EXEC master..sp_addmessage 51006, 16, N'Transfer may not be set balance below zero when source account AllowNegative is false.', @replace = 'replace';
 EXEC master..sp_addmessage 51007, 16, N'Source and destination account may not be the same for a transfer.', @replace = 'replace';
 EXEC master..sp_addmessage 51008, 16, N'Source and destination account must have the same currency.', @replace = 'replace';
+EXEC master..sp_addmessage 51009, 16, N'Authentication failed.', @replace = 'replace';
 EXEC master..sp_addmessage 51010, 16, N'Failed to insert.', @replace = 'replace';
+EXEC master..sp_addmessage 51011, 16, N'The specified session does not exist.', @replace = 'replace';
 
 USE OliveTest
 

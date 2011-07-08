@@ -332,6 +332,33 @@ namespace Olive.Database.Tests.Banking
             // 
             resources.ApplyResources(Success_PretestAction, "Success_PretestAction");
             // 
+            // FailsWithUnknownSourceAccount_PosttestAction
+            // 
+            resources.ApplyResources(FailsWithUnknownSourceAccount_PosttestAction, "FailsWithUnknownSourceAccount_PosttestAction");
+            // 
+            // FailsWithUnknownDestAccount_PosttestAction
+            // 
+            resources.ApplyResources(FailsWithUnknownDestAccount_PosttestAction, "FailsWithUnknownDestAccount_PosttestAction");
+            // 
+            // FailsWithNullSourceAccountId_TestAction
+            // 
+            FailsWithNullSourceAccountId_TestAction.Conditions.Add(scalarValueCondition7);
+            resources.ApplyResources(FailsWithNullSourceAccountId_TestAction, "FailsWithNullSourceAccountId_TestAction");
+            // 
+            // scalarValueCondition7
+            // 
+            scalarValueCondition7.ColumnNumber = 1;
+            scalarValueCondition7.Enabled = true;
+            scalarValueCondition7.ExpectedValue = "0";
+            scalarValueCondition7.Name = "scalarValueCondition7";
+            scalarValueCondition7.NullExpected = false;
+            scalarValueCondition7.ResultSet = 1;
+            scalarValueCondition7.RowNumber = 1;
+            // 
+            // FailsWithDifferentAccountCurrencies_PosttestAction
+            // 
+            resources.ApplyResources(FailsWithDifferentAccountCurrencies_PosttestAction, "FailsWithDifferentAccountCurrencies_PosttestAction");
+            // 
             // FailsWithNegativeAmountData
             // 
             this.FailsWithNegativeAmountData.PosttestAction = null;
@@ -368,38 +395,11 @@ namespace Olive.Database.Tests.Banking
             this.FailsWithNullDescriptionData.PretestAction = FailsWithNullDescription_PretestAction;
             this.FailsWithNullDescriptionData.TestAction = FailsWithNullDescription_TestAction;
             // 
-            // FailsWithUnknownSourceAccount_PosttestAction
-            // 
-            resources.ApplyResources(FailsWithUnknownSourceAccount_PosttestAction, "FailsWithUnknownSourceAccount_PosttestAction");
-            // 
-            // FailsWithUnknownDestAccount_PosttestAction
-            // 
-            resources.ApplyResources(FailsWithUnknownDestAccount_PosttestAction, "FailsWithUnknownDestAccount_PosttestAction");
-            // 
             // FailsWithNullSourceAccountIdData
             // 
             this.FailsWithNullSourceAccountIdData.PosttestAction = null;
             this.FailsWithNullSourceAccountIdData.PretestAction = null;
             this.FailsWithNullSourceAccountIdData.TestAction = FailsWithNullSourceAccountId_TestAction;
-            // 
-            // FailsWithNullSourceAccountId_TestAction
-            // 
-            FailsWithNullSourceAccountId_TestAction.Conditions.Add(scalarValueCondition7);
-            resources.ApplyResources(FailsWithNullSourceAccountId_TestAction, "FailsWithNullSourceAccountId_TestAction");
-            // 
-            // scalarValueCondition7
-            // 
-            scalarValueCondition7.ColumnNumber = 1;
-            scalarValueCondition7.Enabled = true;
-            scalarValueCondition7.ExpectedValue = "0";
-            scalarValueCondition7.Name = "scalarValueCondition7";
-            scalarValueCondition7.NullExpected = false;
-            scalarValueCondition7.ResultSet = 1;
-            scalarValueCondition7.RowNumber = 1;
-            // 
-            // FailsWithDifferentAccountCurrencies_PosttestAction
-            // 
-            resources.ApplyResources(FailsWithDifferentAccountCurrencies_PosttestAction, "FailsWithDifferentAccountCurrencies_PosttestAction");
         }
 
         #endregion

@@ -188,7 +188,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
 	RETURN
-END
+END CATCH
 
 IF @@ROWCOUNT = 1
 BEGIN
@@ -208,7 +208,7 @@ BEGIN TRY
 	INSERT INTO dbo.[User] (Email, PasswordSalt, PasswordHash)
 		VALUES ('e@mail.com', null, 'hash');
 
-	DECLARE @UserId = CONVERT(INT, @@IDENTITY);
+	DECLARE @UserId INT = CONVERT(INT, @@IDENTITY);
 
 	DELETE FROM dbo.[User] WHERE UserId = @UserId
 END TRY
@@ -226,7 +226,7 @@ BEGIN TRY
 	INSERT INTO dbo.[User] (Email, PasswordSalt, PasswordHash)
 		VALUES ('e@mail.com', 'salt', 'hash');
 
-	DECLARE @UserId = CONVERT(INT, @@IDENTITY);
+	DECLARE @UserId INT = CONVERT(INT, @@IDENTITY);
 
 	UPDATE dbo.[User] SET Email = 'other@email.com' WHERE UserId = @UserId
 END TRY
@@ -238,13 +238,15 @@ ROLLBACK TRAN
 </value>
   </data>
   <data name="AllowedToUpdatePasswordHash_TestAction.SqlScript" xml:space="preserve">
-    <value>UPDATE dbo.[User] SET PasswordHash = 'newhash' WHERE UserId = 30100;
+    <value>UPDATE dbo.[User] SET PasswordHash = 'newhash' WHERE UserId = 3001;
 
 IF @@ROWCOUNT = 1
 BEGIN
 	SELECT 0
 	RETURN
 END
+
+SELECT 'Apparently, nothing happened.'
 </value>
   </data>
   <data name="NotAllowedToUpdatePasswordSalt_TestAction.SqlScript" xml:space="preserve">
@@ -254,7 +256,7 @@ BEGIN TRY
 	INSERT INTO dbo.[User] (Email, PasswordSalt, PasswordHash)
 		VALUES ('e@mail.com', 'salt', 'hash');
 
-	DECLARE @UserId = CONVERT(INT, @@IDENTITY);
+	DECLARE @UserId INT = CONVERT(INT, @@IDENTITY);
 
 	UPDATE dbo.[User] SET PasswordSalt = 'othersalt' WHERE UserId = @UserId
 END TRY
@@ -269,15 +271,15 @@ ROLLBACK TRAN
     <value>SET IDENTITY_INSERT dbo.[User] ON
 
 INSERT INTO dbo.[User] (UserId, Email, PasswordHash, PasswordSalt)
-	VALUES (30100, 'test3000@domain.com', 'hash', 'salt');
+	VALUES (3001, 'test3000@domain.com', 'hash', 'salt');
 
 SET IDENTITY_INSERT dbo.[User] OFF
 </value>
   </data>
   <data name="AllowedToUpdatePasswordHash_PosttestAction.SqlScript" xml:space="preserve">
-    <value>DELETE FROM dbo.[User] WHERE UserId = 30100;
+    <value>DELETE FROM dbo.[User] WHERE UserId = 3001;
 
-IF @@ROWCOUNT = 0
+IF @@ROWCOUNT = 1
 	SELECT 0
 </value>
   </data>

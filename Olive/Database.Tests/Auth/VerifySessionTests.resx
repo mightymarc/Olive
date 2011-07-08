@@ -131,7 +131,7 @@ DECLARE @UserId INT = CONVERT(INT, @@IDENTITY);
 DECLARE @RC INT
 DECLARE @SessionId UNIQUEIDENTIFIER;
 
-EXEC @RC = Auth.CreateSession @UserId, @PasswordHash, @SessionId OUTPUT;
+EXEC @RC = Auth.CreateSession @Email, @PasswordHash, @SessionId OUTPUT;
 
 IF @RC &lt;&gt; 0
 BEGIN
@@ -165,36 +165,55 @@ ROLLBACK TRAN;
     <value>DECLARE @RC INT
 DECLARE @UserId INT
 
-EXEC @RC = Auth.VerifySession newid(), @UserId OUTPUT
+DECLARE @UnknownSessionId UNIQUEIDENTIFIER = NEWID();
 
-IF @RC &lt;&gt; 100
-BEGIN
-	SELECT 'Unexpected return code from VerifySession.'
-	RETURN
-END
+BEGIN TRAN
 
-IF @UserId IS NOT NULL
-BEGIN
-	SELECT '@UserId was returned as not null.'
-	RETURN
-END
+BEGIN TRY
+	EXEC @RC = Auth.VerifySession @UnknownSessionId, @UserId OUTPUT
+END TRY
+BEGIN CATCH
+	IF ERROR_NUMBER() = 51011
+		SELECT 0
+END CATCH
 
-SELECT 0
+ROLLBACK TRAN
 
 </value>
   </data>
   <data name="VerifyFailsOnExpiredSession_TestAction.SqlScript" xml:space="preserve">
-    <value>/*
-Add SQL statements here to exercise the database object 
-that you want to test.
+    <value>-- Session is created in Pre-Test
+DECLARE @SessionId UNIQUEIDENTIFIER = '{5E1E723C-78E6-4BBB-9D26-C4AB0D2AD971}';
 
-To test a stored procedure, invoke it here by adding 
-an EXEC statement that has appropriate parameters.
+BEGIN TRY
+	DECLARE @UserId INT
+	EXEC Auth.VerifySession @SessionId, @UserId OUTPUT
+END TRY
+BEGIN CATCH
+	IF ERROR_NUMBER() = 51011
+		SELECT 0
+END CATCH
+</value>
+  </data>
+  <data name="VerifyFailsOnExpiredSession_PosttestAction.SqlScript" xml:space="preserve">
+    <value>DECLARE @SessionId UNIQUEIDENTIFIER = '{5E1E723C-78E6-4BBB-9D26-C4AB0D2AD971}';
+DECLARE @UserId INT = 3001
 
-In the lower pane, you can add test conditions that verify 
-whether the results of your SQL statements match what 
-you expect.
-*/</value>
+DELETE FROM Auth.[Session] WHERE SessionId = @SessionId;
+DELETE FROM dbo.[User] WHERE UserId = @UserId;
+</value>
+  </data>
+  <data name="VerifyFailsOnExpiredSession_PretestAction.SqlScript" xml:space="preserve">
+    <value>DECLARE @SessionId UNIQUEIDENTIFIER = '{5E1E723C-78E6-4BBB-9D26-C4AB0D2AD971}';
+DECLARE @UserId INT = 3001
+
+SET IDENTITY_INSERT dbo.[User] ON
+INSERT INTO dbo.[User] (UserId, Email, PasswordSalt, PasswordHash) VALUES (@UserId, 'user@domain.com', 'salt', 'hash');
+SET IDENTITY_INSERT dbo.[User] OFF
+
+INSERT INTO Auth.[Session] (SessionId, ExpiresAt, UserId) VALUES (@SessionId, DATEADD(day, -1, GETUTCDATE()), @UserId);
+
+</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

@@ -1,8 +1,12 @@
 namespace Olive.DataAccess
 {
     using System;
+    using System.Data;
+    using System.Data.Common;
     using System.Data.Entity;
+    using System.Diagnostics.Contracts;
 
+    [ContractClass(typeof(IOliveContextContract))]
     public interface IOliveContext : IDisposable
     {
         /// <summary>
@@ -36,22 +40,14 @@ namespace Olive.DataAccess
         IDbSet<User> Users { get; set; }
 
         /// <summary>
-        /// Creates the session.
-        /// </summary>
-        /// <param name="email">The email.</param>
-        /// <param name="passwordHash">The password hash.</param>
-        /// <returns>The session identifier.</returns>
-        Guid CreateSession(string email, string passwordHash);
-
-        /// <summary>
         /// Creates the transfer.
         /// </summary>
         /// <param name="sourceAccountId">The source account id.</param>
         /// <param name="destAccountId">The dest account id.</param>
         /// <param name="description">The description.</param>
         /// <param name="amount">The amount.</param>
-        /// <returns>The identifier for the transfer that was created.</returns>
         long CreateTransfer(int sourceAccountId, int destAccountId, string description, decimal amount);
+
 
         /// <summary>
         /// Verifies that specified session exists and is not expired.
@@ -63,5 +59,9 @@ namespace Olive.DataAccess
         int VerifySession(Guid sessionId);
 
         void SaveChanges();
+
+        Guid CreateSession(string email, string passwordHash);
+
+        int CreateCurrentAccount(int userId, string currencyId, string displayName);
     }
 }

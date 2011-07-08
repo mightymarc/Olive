@@ -154,13 +154,13 @@ DECLARE @UserId int = CONVERT(int, @@IDENTITY);
 DECLARE @RC int
 DECLARE @SessionId uniqueidentifier
 
-EXEC @RC = Auth.CreateSession @Email, 'hash', @SessionId output
-
-IF @RC &lt;&gt; 100 RAISERROR('Unexpected return code.', 16, 1);
-
-IF @SessionId IS NOT NULL RAISERROR('Got a session id.', 16, 1);
-
-SELECT 0;
+BEGIN TRY
+	EXEC @RC = Auth.CreateSession @Email, 'hash', @SessionId output
+END TRY
+BEGIN CATCH
+	IF ERROR_NUMBER() = 51009
+		SELECT 0
+END CATCH
 
 ROLLBACK TRAN;
 </value>
@@ -171,13 +171,12 @@ ROLLBACK TRAN;
 DECLARE @RC int
 DECLARE @SessionId uniqueidentifier
 
-EXEC @RC = Auth.CreateSession 'ghjkjhghj@ghjhgfghjhg.com', 'hash', @SessionId output
-
-IF @RC = 0 RAISERROR('Unexpected return code.', 16, 1);
-
-IF @SessionId IS NOT NULL RAISERROR('Got a session id.', 16, 1);
-
-SELECT 0;
+BEGIN TRY
+	EXEC @RC = Auth.CreateSession 'ghjkjhghj@ghjhgfghjhg.com', 'hash', @SessionId output
+END TRY
+BEGIN CATCH
+	SELECT 0
+END CATCH
 
 ROLLBACK TRAN;
 </value>

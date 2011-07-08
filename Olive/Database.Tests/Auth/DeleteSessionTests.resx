@@ -163,22 +163,20 @@ ROLLBACK TRAN;
   </data>
   <data name="FailsOnExpiredSession_TestAction.SqlScript" xml:space="preserve">
     <value>-- All work is performed in pre-test due to privileges.
-SELECT 0;</value>
+SELECT 0;
+</value>
   </data>
   <data name="FailsOnUnknownSessionId_TestAction.SqlScript" xml:space="preserve">
     <value>DECLARE @RC INT
 DECLARE @SessionId UNIQUEIDENTIFIER = NEWID();
 
-
-EXEC @RC = Auth.DeleteSession @SessionId;
-
-IF @RC = 0
-BEGIN
-	SELECT 'Succeeded in deleting session which is expired.';
-	RETURN;
-END
-
-SELECT 0;</value>
+BEGIN TRY
+	EXEC @RC = Auth.DeleteSession @SessionId;
+END TRY
+BEGIN CATCH
+	SELECT 0
+END CATCH
+</value>
   </data>
   <data name="FailsOnExpiredSession_PretestAction.SqlScript" xml:space="preserve">
     <value>INSERT INTO dbo.[User] (Email, PasswordHash, PasswordSalt) VALUES ('FailsOnExpiredSession@domain.com', 'hash', 'salt');
@@ -188,8 +186,13 @@ DECLARE @SessionId UNIQUEIDENTIFIER = NEWID();
 
 INSERT INTO Auth.[Session] (SessionId, UserId, ExpiresAt) VALUES (@SessionId, @UserId, DATEADD(day, -1, GETUTCDATE()));
 
-DECLARE @RC INT
-EXEC @RC = Auth.DeleteSession @SessionId;
+BEGIN TRY
+	DECLARE @RC INT
+	EXEC @RC = Auth.DeleteSession @SessionId;
+END TRY
+BEGIN CATCH
+	SELECT 0
+END CATCH
 
 IF @RC = 0
 BEGIN

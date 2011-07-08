@@ -57,7 +57,7 @@ namespace Olive.Website.Controllers
 
             if (ModelState.IsValid)
             {
-                var accountId = this.Service.CreateAccount(this.SessionPersister.SessionId, model.CurrencyId, model.DisplayName);
+                var accountId = this.Service.CreateCurrentAccount(this.SessionPersister.SessionId, model.CurrencyId, model.DisplayName);
 
                 return RedirectToAction("Index");
             }
@@ -119,6 +119,16 @@ namespace Olive.Website.Controllers
                 };
 
             return this.View("Details", viewModel);
+        }
+
+        public ActionResult Create()
+        {
+            if (!this.SessionPersister.HasSession)
+            {
+                return this.RedirectToLogin();
+            }
+
+            return this.View(new CreateViewModel { Currencies = this.CurrencyCache.Currencies } );
         }
     }
 }

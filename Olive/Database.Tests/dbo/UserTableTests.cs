@@ -203,25 +203,25 @@ namespace Olive.Database.Tests.dbo
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserTableTests));
             Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition3;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction InsertWithNullEmailFails_TestAction;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition5;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction InsertWithNullPasswordHashFails_TestAction;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition6;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction InsertWithNullPasswordSaltFails_TestAction;
-            Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition inconclusiveCondition4;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction InsertWithDuplicateEmailFails_TestAction;
             Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition4;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction NotAllowedToDelete_TestAction;
-            Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition inconclusiveCondition6;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction NotAllowedToUpdateEmail_TestAction;
-            Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition inconclusiveCondition7;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction AllowedToUpdatePasswordHash_TestAction;
             Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition1;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction NotAllowedToUpdatePasswordSalt_TestAction;
-            Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition inconclusiveCondition9;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction AllowedToUpdatePasswordHash_PretestAction;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction AllowedToUpdatePasswordHash_PosttestAction;
             Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition2;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction InsertWithDuplicateEmailFails_PretestAction;
-            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition5;
-            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition6;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition7;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition8;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition9;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition10;
             this.InsertSuccessData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             this.InsertWithNullEmailFailsData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             this.InsertWithNullPasswordHashFailsData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
@@ -234,25 +234,25 @@ namespace Olive.Database.Tests.dbo
             InsertSuccess_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
             scalarValueCondition3 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             InsertWithNullEmailFails_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            scalarValueCondition5 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             InsertWithNullPasswordHashFails_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            scalarValueCondition6 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             InsertWithNullPasswordSaltFails_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
-            inconclusiveCondition4 = new Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition();
             InsertWithDuplicateEmailFails_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
             scalarValueCondition4 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             NotAllowedToDelete_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
-            inconclusiveCondition6 = new Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition();
             NotAllowedToUpdateEmail_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
-            inconclusiveCondition7 = new Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition();
             AllowedToUpdatePasswordHash_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
             scalarValueCondition1 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             NotAllowedToUpdatePasswordSalt_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
-            inconclusiveCondition9 = new Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition();
             AllowedToUpdatePasswordHash_PretestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
             AllowedToUpdatePasswordHash_PosttestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
             scalarValueCondition2 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             InsertWithDuplicateEmailFails_PretestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
-            scalarValueCondition5 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
-            scalarValueCondition6 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
+            scalarValueCondition7 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
+            scalarValueCondition8 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
+            scalarValueCondition9 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
+            scalarValueCondition10 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             // 
             // InsertSuccess_TestAction
             // 
@@ -274,20 +274,35 @@ namespace Olive.Database.Tests.dbo
             InsertWithNullEmailFails_TestAction.Conditions.Add(scalarValueCondition5);
             resources.ApplyResources(InsertWithNullEmailFails_TestAction, "InsertWithNullEmailFails_TestAction");
             // 
+            // scalarValueCondition5
+            // 
+            scalarValueCondition5.ColumnNumber = 1;
+            scalarValueCondition5.Enabled = true;
+            scalarValueCondition5.ExpectedValue = "0";
+            scalarValueCondition5.Name = "scalarValueCondition5";
+            scalarValueCondition5.NullExpected = false;
+            scalarValueCondition5.ResultSet = 1;
+            scalarValueCondition5.RowNumber = 1;
+            // 
             // InsertWithNullPasswordHashFails_TestAction
             // 
             InsertWithNullPasswordHashFails_TestAction.Conditions.Add(scalarValueCondition6);
             resources.ApplyResources(InsertWithNullPasswordHashFails_TestAction, "InsertWithNullPasswordHashFails_TestAction");
             // 
+            // scalarValueCondition6
+            // 
+            scalarValueCondition6.ColumnNumber = 1;
+            scalarValueCondition6.Enabled = true;
+            scalarValueCondition6.ExpectedValue = "0";
+            scalarValueCondition6.Name = "scalarValueCondition6";
+            scalarValueCondition6.NullExpected = false;
+            scalarValueCondition6.ResultSet = 1;
+            scalarValueCondition6.RowNumber = 1;
+            // 
             // InsertWithNullPasswordSaltFails_TestAction
             // 
-            InsertWithNullPasswordSaltFails_TestAction.Conditions.Add(inconclusiveCondition4);
+            InsertWithNullPasswordSaltFails_TestAction.Conditions.Add(scalarValueCondition7);
             resources.ApplyResources(InsertWithNullPasswordSaltFails_TestAction, "InsertWithNullPasswordSaltFails_TestAction");
-            // 
-            // inconclusiveCondition4
-            // 
-            inconclusiveCondition4.Enabled = true;
-            inconclusiveCondition4.Name = "inconclusiveCondition4";
             // 
             // InsertWithDuplicateEmailFails_TestAction
             // 
@@ -306,23 +321,13 @@ namespace Olive.Database.Tests.dbo
             // 
             // NotAllowedToDelete_TestAction
             // 
-            NotAllowedToDelete_TestAction.Conditions.Add(inconclusiveCondition6);
+            NotAllowedToDelete_TestAction.Conditions.Add(scalarValueCondition8);
             resources.ApplyResources(NotAllowedToDelete_TestAction, "NotAllowedToDelete_TestAction");
-            // 
-            // inconclusiveCondition6
-            // 
-            inconclusiveCondition6.Enabled = true;
-            inconclusiveCondition6.Name = "inconclusiveCondition6";
             // 
             // NotAllowedToUpdateEmail_TestAction
             // 
-            NotAllowedToUpdateEmail_TestAction.Conditions.Add(inconclusiveCondition7);
+            NotAllowedToUpdateEmail_TestAction.Conditions.Add(scalarValueCondition9);
             resources.ApplyResources(NotAllowedToUpdateEmail_TestAction, "NotAllowedToUpdateEmail_TestAction");
-            // 
-            // inconclusiveCondition7
-            // 
-            inconclusiveCondition7.Enabled = true;
-            inconclusiveCondition7.Name = "inconclusiveCondition7";
             // 
             // AllowedToUpdatePasswordHash_TestAction
             // 
@@ -341,13 +346,8 @@ namespace Olive.Database.Tests.dbo
             // 
             // NotAllowedToUpdatePasswordSalt_TestAction
             // 
-            NotAllowedToUpdatePasswordSalt_TestAction.Conditions.Add(inconclusiveCondition9);
+            NotAllowedToUpdatePasswordSalt_TestAction.Conditions.Add(scalarValueCondition10);
             resources.ApplyResources(NotAllowedToUpdatePasswordSalt_TestAction, "NotAllowedToUpdatePasswordSalt_TestAction");
-            // 
-            // inconclusiveCondition9
-            // 
-            inconclusiveCondition9.Enabled = true;
-            inconclusiveCondition9.Name = "inconclusiveCondition9";
             // 
             // AllowedToUpdatePasswordHash_PretestAction
             // 
@@ -426,25 +426,45 @@ namespace Olive.Database.Tests.dbo
             this.NotAllowedToUpdatePasswordSaltData.PretestAction = null;
             this.NotAllowedToUpdatePasswordSaltData.TestAction = NotAllowedToUpdatePasswordSalt_TestAction;
             // 
-            // scalarValueCondition5
+            // scalarValueCondition7
             // 
-            scalarValueCondition5.ColumnNumber = 1;
-            scalarValueCondition5.Enabled = true;
-            scalarValueCondition5.ExpectedValue = "0";
-            scalarValueCondition5.Name = "scalarValueCondition5";
-            scalarValueCondition5.NullExpected = false;
-            scalarValueCondition5.ResultSet = 1;
-            scalarValueCondition5.RowNumber = 1;
+            scalarValueCondition7.ColumnNumber = 1;
+            scalarValueCondition7.Enabled = true;
+            scalarValueCondition7.ExpectedValue = "0";
+            scalarValueCondition7.Name = "scalarValueCondition7";
+            scalarValueCondition7.NullExpected = false;
+            scalarValueCondition7.ResultSet = 1;
+            scalarValueCondition7.RowNumber = 1;
             // 
-            // scalarValueCondition6
+            // scalarValueCondition8
             // 
-            scalarValueCondition6.ColumnNumber = 1;
-            scalarValueCondition6.Enabled = true;
-            scalarValueCondition6.ExpectedValue = "0";
-            scalarValueCondition6.Name = "scalarValueCondition6";
-            scalarValueCondition6.NullExpected = false;
-            scalarValueCondition6.ResultSet = 1;
-            scalarValueCondition6.RowNumber = 1;
+            scalarValueCondition8.ColumnNumber = 1;
+            scalarValueCondition8.Enabled = true;
+            scalarValueCondition8.ExpectedValue = "0";
+            scalarValueCondition8.Name = "scalarValueCondition8";
+            scalarValueCondition8.NullExpected = false;
+            scalarValueCondition8.ResultSet = 1;
+            scalarValueCondition8.RowNumber = 1;
+            // 
+            // scalarValueCondition9
+            // 
+            scalarValueCondition9.ColumnNumber = 1;
+            scalarValueCondition9.Enabled = true;
+            scalarValueCondition9.ExpectedValue = "0";
+            scalarValueCondition9.Name = "scalarValueCondition9";
+            scalarValueCondition9.NullExpected = false;
+            scalarValueCondition9.ResultSet = 1;
+            scalarValueCondition9.RowNumber = 1;
+            // 
+            // scalarValueCondition10
+            // 
+            scalarValueCondition10.ColumnNumber = 1;
+            scalarValueCondition10.Enabled = true;
+            scalarValueCondition10.ExpectedValue = "0";
+            scalarValueCondition10.Name = "scalarValueCondition10";
+            scalarValueCondition10.NullExpected = false;
+            scalarValueCondition10.ResultSet = 1;
+            scalarValueCondition10.RowNumber = 1;
         }
 
         #endregion

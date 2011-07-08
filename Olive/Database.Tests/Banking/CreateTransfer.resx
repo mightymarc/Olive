@@ -124,12 +124,26 @@ DECLARE @DestAccount INT = 95533;
 DECLARE @RC INT
 DECLARE @TransferId BIGINT
 
-EXEC @RC = Banking.CreateTransfer @SourceAccount, @DestAccount, 'Desc', 10, @TransferId OUTPUT;
+BEGIN TRAN
 
-IF @RC = 105
-BEGIN
-	SELECT 0
-END
+BEGIN TRY
+	EXEC @RC = Banking.CreateTransfer @SourceAccount, @DestAccount, 'Desc', -10, @TransferId OUTPUT;
+END TRY
+BEGIN CATCH
+	IF ERROR_NUMBER() = 51005
+	BEGIN
+		SELECT 0
+		RETURN
+	END
+
+	SELECT ERROR_MESSAGE();
+	SELECT ERROR_NUMBER();
+END CATCH
+
+IF @@TRANCOUNT &gt; 0
+	ROLLBACK TRAN
+
+SELECT 'RC = ' + CONVERT(VARCHAR, @RC);
 </value>
   </data>
   <data name="Success_TestAction.SqlScript" xml:space="preserve">
@@ -155,7 +169,7 @@ SELECT 'Returned ' + CONVERT(VARCHAR, @RC);
   </data>
   <data name="FailsWithUnknownSourceAccount_TestAction.SqlScript" xml:space="preserve">
     <value>DECLARE @SourceAccount INT = 4000; -- Unknown
-DECLARE @DestAccount INT = 3002;
+DECLARE @DestAccount INT = 3003;
 
 DECLARE @RC INT
 DECLARE @TransferId BIGINT
@@ -166,16 +180,24 @@ BEGIN TRY
 	EXEC @RC = Banking.CreateTransfer @SourceAccount, @DestAccount, 'Desc', 10, @TransferId OUTPUT;
 END TRY
 BEGIN CATCH
-	IF ERROR_NUMBER() = 51001
+	IF ERROR_NUMBER() = 50000 AND CHARINDEX('51001', ERROR_MESSAGE()) &gt; 0
 		SELECT 0
+	ELSE
+	BEGIN
+		SELECT ERROR_MESSAGE()
+		SELECT ERROR_NUMBER()
+	END
 END CATCH
 
-ROLLBACK TRAN
+IF @@TRANCOUNT &gt; 0
+	ROLLBACK TRAN
+
+SELECT 'RC = ' + CONVERT(VARCHAR, @RC);
 </value>
   </data>
   <data name="FailsWithUnknownDestAccount_TestAction.SqlScript" xml:space="preserve">
-    <value>DECLARE @SourceAccount INT = 4000; -- Unknown
-DECLARE @DestAccount INT = 3002;
+    <value>DECLARE @SourceAccount INT = 3002; -- Unknown
+DECLARE @DestAccount INT = 4000;
 
 DECLARE @RC INT
 DECLARE @TransferId BIGINT
@@ -186,11 +208,19 @@ BEGIN TRY
 	EXEC @RC = Banking.CreateTransfer @SourceAccount, @DestAccount, 'Desc', 10, @TransferId OUTPUT;
 END TRY
 BEGIN CATCH
-	IF ERROR_NUMBER() = 51002
+	IF ERROR_NUMBER() = 50000 AND CHARINDEX('51002', ERROR_MESSAGE()) &gt; 0
 		SELECT 0
+	ELSE
+	BEGIN
+		SELECT ERROR_MESSAGE()
+		SELECT ERROR_NUMBER()
+	END
 END CATCH
 
-ROLLBACK TRAN
+IF @@TRANCOUNT &gt; 0
+	ROLLBACK TRAN
+
+SELECT 'RC = ' + CONVERT(VARCHAR, @RC);
 </value>
   </data>
   <data name="FailsWithDifferentAccountCurrencies_TestAction.SqlScript" xml:space="preserve">
@@ -203,12 +233,20 @@ BEGIN TRY
 	EXEC @RC = Banking.CreateTransfer 3002, 3003, 'Desc', 10, @TransferId OUTPUT;
 END TRY
 BEGIN CATCH
-	IF ERROR_NUMBER() = 51008
+	-- Cannot detect specific error number (51008) because of rethrow.
+	IF ERROR_NUMBER() = 50000 AND CHARINDEX('51008', CONVERT(VARCHAR, ERROR_MESSAGE())) &gt; 0
+	BEGIN
 		SELECT 0
+		RETURN
+	END
+
+	SELECT ERROR_NUMBER();
 END CATCH
 
-ROLLBACK TRAN
-</value>
+IF @@TRANCOUNT &gt; 0
+	ROLLBACK TRAN
+
+SELECT 'Return code ' + CONVERT(VARCHAR, @RC);</value>
   </data>
   <data name="FailsWithNullDescription_TestAction.SqlScript" xml:space="preserve">
     <value>DECLARE @SourceAccount INT = 934532;
@@ -217,12 +255,16 @@ DECLARE @DestAccount INT = 934533;
 DECLARE @RC INT
 DECLARE @TransferId BIGINT
 
-EXEC @RC = Banking.CreateTransfer @SourceAccount, @DestAccount, null, 10, @TransferId OUTPUT;
-
-IF @RC = 103
-BEGIN
-	SELECT 0
-END
+BEGIN TRY
+	EXEC @RC = Banking.CreateTransfer @SourceAccount, @DestAccount, null, 10, @TransferId OUTPUT;
+END TRY
+BEGIN CATCH
+	IF ERROR_NUMBER() = 51003
+	BEGIN
+		SELECT 0
+		RETURN
+	END
+END CATCH
 </value>
   </data>
   <data name="FailsWithDifferentAccountCurrencies_PretestAction.SqlScript" xml:space="preserve">
@@ -315,12 +357,6 @@ DELETE FROM Banking.Account WHERE AccountId &gt;= 3002 AND AccountId &lt;= 3003;
 DELETE FROM Banking.Account WHERE AccountId &gt;= 3002 AND AccountId &lt;= 3003;
 </value>
   </data>
-  <data name="FailsWithDifferentAccountCurrencies_PosttestAction.SqlScript" xml:space="preserve">
-    <value>DELETE FROM dbo.[User] WHERE UserId = 3001;
-
-DELETE FROM dbo.[Account] WHERE AccountId &gt;= 3002 AND AccountId &lt;= 3003;
-</value>
-  </data>
   <data name="FailsWithNullSourceAccountId_TestAction.SqlScript" xml:space="preserve">
     <value>BEGIN TRAN
 
@@ -334,6 +370,12 @@ BEGIN CATCH
 END CATCH
 
 ROLLBACK TRAN
+</value>
+  </data>
+  <data name="FailsWithDifferentAccountCurrencies_PosttestAction.SqlScript" xml:space="preserve">
+    <value>DELETE FROM dbo.[User] WHERE UserId = 3001;
+
+DELETE FROM Banking.[Account] WHERE AccountId &gt;= 3002 AND AccountId &lt;= 3003;
 </value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

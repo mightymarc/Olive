@@ -15,10 +15,12 @@ CREATE PROCEDURE [Auth].[CreateSession]
 
 AS
 
+BEGIN TRY
+
 -- Check params
-if @Email is null return 101;
-if @PasswordHash is null return 102;
-if @SessionId is not null return 103;
+if @Email is null BEGIN RAISERROR(51003, 16, 1, '@Email'); END;
+if @PasswordHash IS NULL BEGIN RAISERROR(51003, 16, 1, '@PasswordHash'); END;
+if @SessionId is not null BEGIN RAISERROR(51004, 16, 1, '@SessionId'); END;
 
 declare @UserId int
 
@@ -28,14 +30,14 @@ select @CorrectPasswordHash = PasswordHash, @UserId = UserId from dbo.[User] whe
 
 if @CorrectPasswordHash is null or @UserId is null
 begin
-	PRINT 'User not found.';
-	RETURN 100;
+	RAISERROR(51009, 16, 1);
+	RETURN;
 END
 
 IF @CorrectPasswordHash <> @PasswordHash
 BEGIN
-	PRINT 'Hash is wrong.';
-	RETURN 104;
+	RAISERROR(51009, 16, 1);
+	RETURN;
 END
 
 select @SessionId = NEWID()
@@ -43,7 +45,15 @@ select @SessionId = NEWID()
 insert into Auth.[Session] (SessionId, UserId) values (@SessionId, @UserId);
 
 if @@ROWCOUNT <> 1
-	return 1;
+BEGIN
+	RAISERROR(51010, 16, 1);
+	RETURN;
+END
 
-return 0;
+END TRY
+BEGIN CATCH
+	RETURN ERROR_NUMBER();
+END CATCH
+
+RETURN 0;
 

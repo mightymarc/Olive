@@ -95,24 +95,22 @@ namespace Olive.Database.Tests.Auth
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VerifySessionTests));
             Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition1;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction UnknownSessionId_TestAction;
-            Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition inconclusiveCondition1;
             Microsoft.Data.Schema.UnitTesting.DatabaseTestAction VerifyFailsOnExpiredSession_TestAction;
-            Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition inconclusiveCondition2;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition2;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction VerifyFailsOnExpiredSession_PretestAction;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction VerifyFailsOnExpiredSession_PosttestAction;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition3;
             this.SuccessData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             this.UnknownSessionIdData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             this.VerifyFailsOnExpiredSessionData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
             Success_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
             scalarValueCondition1 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             UnknownSessionId_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
-            inconclusiveCondition1 = new Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition();
             VerifyFailsOnExpiredSession_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
-            inconclusiveCondition2 = new Microsoft.Data.Schema.UnitTesting.Conditions.InconclusiveCondition();
-            // 
-            // SuccessData
-            // 
-            this.SuccessData.PosttestAction = null;
-            this.SuccessData.PretestAction = null;
-            this.SuccessData.TestAction = Success_TestAction;
+            scalarValueCondition2 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
+            VerifyFailsOnExpiredSession_PretestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            VerifyFailsOnExpiredSession_PosttestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            scalarValueCondition3 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
             // 
             // Success_TestAction
             // 
@@ -129,37 +127,61 @@ namespace Olive.Database.Tests.Auth
             scalarValueCondition1.ResultSet = 1;
             scalarValueCondition1.RowNumber = 1;
             // 
+            // UnknownSessionId_TestAction
+            // 
+            UnknownSessionId_TestAction.Conditions.Add(scalarValueCondition2);
+            resources.ApplyResources(UnknownSessionId_TestAction, "UnknownSessionId_TestAction");
+            // 
+            // VerifyFailsOnExpiredSession_TestAction
+            // 
+            VerifyFailsOnExpiredSession_TestAction.Conditions.Add(scalarValueCondition3);
+            resources.ApplyResources(VerifyFailsOnExpiredSession_TestAction, "VerifyFailsOnExpiredSession_TestAction");
+            // 
+            // SuccessData
+            // 
+            this.SuccessData.PosttestAction = null;
+            this.SuccessData.PretestAction = null;
+            this.SuccessData.TestAction = Success_TestAction;
+            // 
             // UnknownSessionIdData
             // 
             this.UnknownSessionIdData.PosttestAction = null;
             this.UnknownSessionIdData.PretestAction = null;
             this.UnknownSessionIdData.TestAction = UnknownSessionId_TestAction;
             // 
-            // UnknownSessionId_TestAction
-            // 
-            UnknownSessionId_TestAction.Conditions.Add(inconclusiveCondition1);
-            resources.ApplyResources(UnknownSessionId_TestAction, "UnknownSessionId_TestAction");
-            // 
-            // inconclusiveCondition1
-            // 
-            inconclusiveCondition1.Enabled = true;
-            inconclusiveCondition1.Name = "inconclusiveCondition1";
-            // 
             // VerifyFailsOnExpiredSessionData
             // 
-            this.VerifyFailsOnExpiredSessionData.PosttestAction = null;
-            this.VerifyFailsOnExpiredSessionData.PretestAction = null;
+            this.VerifyFailsOnExpiredSessionData.PosttestAction = VerifyFailsOnExpiredSession_PosttestAction;
+            this.VerifyFailsOnExpiredSessionData.PretestAction = VerifyFailsOnExpiredSession_PretestAction;
             this.VerifyFailsOnExpiredSessionData.TestAction = VerifyFailsOnExpiredSession_TestAction;
             // 
-            // VerifyFailsOnExpiredSession_TestAction
+            // scalarValueCondition2
             // 
-            VerifyFailsOnExpiredSession_TestAction.Conditions.Add(inconclusiveCondition2);
-            resources.ApplyResources(VerifyFailsOnExpiredSession_TestAction, "VerifyFailsOnExpiredSession_TestAction");
+            scalarValueCondition2.ColumnNumber = 1;
+            scalarValueCondition2.Enabled = true;
+            scalarValueCondition2.ExpectedValue = "0";
+            scalarValueCondition2.Name = "scalarValueCondition2";
+            scalarValueCondition2.NullExpected = false;
+            scalarValueCondition2.ResultSet = 1;
+            scalarValueCondition2.RowNumber = 1;
             // 
-            // inconclusiveCondition2
+            // VerifyFailsOnExpiredSession_PretestAction
             // 
-            inconclusiveCondition2.Enabled = true;
-            inconclusiveCondition2.Name = "inconclusiveCondition2";
+            resources.ApplyResources(VerifyFailsOnExpiredSession_PretestAction, "VerifyFailsOnExpiredSession_PretestAction");
+            // 
+            // VerifyFailsOnExpiredSession_PosttestAction
+            // 
+            resources.ApplyResources(VerifyFailsOnExpiredSession_PosttestAction, "VerifyFailsOnExpiredSession_PosttestAction");
+            // 
+            // scalarValueCondition3
+            // 
+            scalarValueCondition3.ColumnNumber = 1;
+            scalarValueCondition3.Enabled = true;
+            scalarValueCondition3.ExpectedValue = "0";
+            scalarValueCondition3.Name = "scalarValueCondition3";
+            scalarValueCondition3.NullExpected = false;
+            scalarValueCondition3.ResultSet = 1;
+            scalarValueCondition3.RowNumber = 1;
         }
 
         #endregion

@@ -141,7 +141,7 @@ namespace Olive.Website.Tests.Controllers
 
             var newAccountId = Random.Next(1, 10000000);
             var sessionId = this.SetupHasSession();
-            this.serviceMock.Setup(s => s.CreateAccount(sessionId, model.CurrencyId, model.DisplayName)).Returns(newAccountId);
+            this.serviceMock.Setup(s => s.CreateCurrentAccount(sessionId, model.CurrencyId, model.DisplayName)).Returns(newAccountId);
             var target = this.CreateController();
 
             // Act
@@ -151,11 +151,10 @@ namespace Olive.Website.Tests.Controllers
         }
 
         [Test]
-        public void CreateAccountRedirectsWhenNotLoggedIn()
+        public void CreateAccountPostRedirectsWhenNotLoggedIn()
         {
             // Arrange
-            var controller = this.CreateController();
-            Mock.Get(controller.Request).SetupGet(r => r.RawUrl).Returns("/Account/Index");
+            var controller = this.CreateController(relativePath: "/Account/Create");
             this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
             var model = new CreateViewModel { CurrencyId = "BTC", DisplayName = "abc" };
 
@@ -165,9 +164,64 @@ namespace Olive.Website.Tests.Controllers
             // Assert
             Assert.AreEqual("Login", actionResult.RouteValues["action"]);
             Assert.AreEqual("User", actionResult.RouteValues["controller"]);
-            Assert.AreEqual("/Account/Index", actionResult.RouteValues["returnUrl"]);
+            Assert.AreEqual("/Account/Create", actionResult.RouteValues["returnUrl"]);
         }
 
+        [Test]
+        public void CreateAccountRedirectsWhenNotLoggedIn()
+        {
+            // Arrange
+            var controller = this.CreateController(relativePath: "/Account/Create");
+            this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
+            var model = new CreateViewModel { CurrencyId = "BTC", DisplayName = "abc" };
+
+            // Act
+            var actionResult = (RedirectToRouteResult)controller.Create(model);
+
+            // Assert
+            Assert.AreEqual("Login", actionResult.RouteValues["action"]);
+            Assert.AreEqual("User", actionResult.RouteValues["controller"]);
+            Assert.AreEqual("/Account/Create", actionResult.RouteValues["returnUrl"]);
+        }
+
+        [Test]
+        public void CreateAccountWithoutArguments()
+        {
+            // Arrange
+            var controller = this.CreateController(relativePath: "/Account/Create");
+            this.SetupHasSession();
+
+            // Act
+            var actionResult = (ViewResult)controller.Create();
+
+            // Assert
+            Assert.AreEqual(string.Empty, actionResult.ViewName);
+            Assert.IsNotNull(actionResult.Model);
+        }
+
+        [Test]
+        public void EditAccountWithModelRedirectsWhenNotLoggedIn()
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void EditAccountWithoutModelRedirectsWhenNotLoggedIn()
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void EditAccountWithoutModel()
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void EditAccountWithModel()
+        {
+            Assert.Inconclusive();
+        }
 
         [Test]
         public void IndexWhenNotAuthenticatedRedirectsToLogin()

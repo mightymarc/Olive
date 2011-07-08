@@ -13,6 +13,7 @@ namespace Olive.Website.Tests.Views.Account
 
     using NUnit.Framework;
 
+    using Olive.Website.ViewModels.Account;
     using Olive.Website.Views.Account;
 
     using PrecompiledMvcViews.Testing;
@@ -24,8 +25,9 @@ namespace Olive.Website.Tests.Views.Account
         public void WithoutViewModelRendersWithoutExceptions()
         {
             var view = new Edit();
+            var viewModel = new EditViewModel { AccountId = 612345 };
 
-            var html = view.RenderAsHtml();
+            var html = view.RenderAsHtml(viewModel);
         }
 
         [Test]
