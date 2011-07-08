@@ -1,12 +1,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SolutionInfo.cs" company="Olive">
-//   [Copyright]
+//   
 // </copyright>
 // <summary>
 //   Shared assembly information values for the solution.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;

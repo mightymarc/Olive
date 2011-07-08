@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SiteSession.cs" company="Olive">
-//   Olive
+//   
 // </copyright>
 // <summary>
 //   Defines the SiteSession type.
@@ -13,17 +13,17 @@ namespace Olive.Website.Helpers
     using System.Web;
 
     /// <summary>
-    /// The site session persister.
+    ///   The site session persister.
     /// </summary>
     public class SiteSession : ISiteSession
     {
         /// <summary>
-        /// The session id key.
+        ///   The session id key.
         /// </summary>
         private const string SessionIdKey = "SessionId";
 
         /// <summary>
-        /// Gets a value indicating whether there is a session.
+        ///   Gets a value indicating whether there is a session.
         /// </summary>
         public bool HasSession
         {
@@ -34,7 +34,7 @@ namespace Olive.Website.Helpers
         }
 
         /// <summary>
-        /// Gets or sets the session id.
+        ///   Gets or sets the session id.
         /// </summary>
         public Guid SessionId
         {

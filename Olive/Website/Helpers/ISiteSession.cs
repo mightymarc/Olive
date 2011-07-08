@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ISiteSession.cs" company="Olive">
-//   [Copyright]
+//   
 // </copyright>
 // <summary>
 //   Defines the ISiteSession type.
@@ -12,17 +12,17 @@ namespace Olive.Website.Helpers
     using System;
 
     /// <summary>
-    /// Helper class to access session information.
+    ///   Helper class to access session information.
     /// </summary>
     public interface ISiteSession
     {
         /// <summary>
-        /// Gets a value indicating whether there is a session.
+        ///   Gets a value indicating whether there is a session.
         /// </summary>
         bool HasSession { get; }
 
         /// <summary>
-        /// Gets or sets the session id.
+        ///   Gets or sets the session id.
         /// </summary>
         Guid SessionId { get; set; }
     }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Currency.cs" company="">
+// <copyright file="Currency.cs" company="Olive">
 //   
 // </copyright>
 // <summary>
@@ -9,15 +9,13 @@
 
 namespace Olive.DataAccess
 {
-    using System.ComponentModel.DataAnnotations;
-
     /// <summary>
-    /// The currency.
+    ///   The currency.
     /// </summary>
     public class Currency
     {
         /// <summary>
-        /// Gets or sets the currency identifier (USD, BTC, PPUSD, ...).
+        ///   Gets or sets the currency identifier (USD, BTC, PPUSD, ...).
         /// </summary>
         public string CurrencyId { get; set; }
     }

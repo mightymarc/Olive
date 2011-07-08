@@ -1,18 +1,17 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Details.cs" company="Microsoft">
-// TODO: Update copyright text.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DetailsTests.cs" company="Olive">
+//   
 // </copyright>
-// -----------------------------------------------------------------------
+// <summary>
+//   Defines the DetailsTests type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive.Website.Tests.Views.Account
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     using NUnit.Framework;
 
+    using Olive.Website.ViewModels.Account;
     using Olive.Website.Views.Account;
 
     using PrecompiledMvcViews.Testing;
@@ -24,7 +23,7 @@ namespace Olive.Website.Tests.Views.Account
         public void RendersWithoutExceptions()
         {
             var view = new Details();
-            var viewModel = new Olive.Website.ViewModels.Account.DetailsViewModel();
+            var viewModel = new DetailsViewModel();
 
             view.RenderAsHtml(viewModel);
         }

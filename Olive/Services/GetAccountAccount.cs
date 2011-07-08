@@ -1,7 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="GetAccountAccount.cs" company="Olive">
+//   
+// </copyright>
+// <summary>
+//   Defines the GetAccountAccount type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive.Services
 {

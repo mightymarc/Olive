@@ -1,15 +1,15 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="AccountUserTests.cs" company="Microsoft">
-// TODO: Update copyright text.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AccountUserTests.cs" company="Olive">
+//   
 // </copyright>
-// -----------------------------------------------------------------------
+// <summary>
+//   Defines the AccountUserTests type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive.DataAccess.Tests
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     using NUnit.Framework;
 
@@ -17,9 +17,15 @@ namespace Olive.DataAccess.Tests
     {
         private static readonly Random Random = new Random();
 
-        private static void AssertIsDefault<T>(T target)
+        [Test]
+        public void AccountId_GetSet()
         {
-            Assert.AreEqual(default(T), target);
+            var target = new AccountUser();
+            var expected = Random.Next(1, 100000);
+
+            target.AccountId = expected;
+
+            Assert.AreEqual(expected, target.AccountId);
         }
 
         [Test]
@@ -35,17 +41,6 @@ namespace Olive.DataAccess.Tests
         }
 
         [Test]
-        public void AccountId_GetSet()
-        {
-            var target = new AccountUser();
-            var expected = Random.Next(1, 100000);
-
-            target.AccountId = expected;
-
-            Assert.AreEqual(expected, target.AccountId);
-        }
-
-        [Test]
         public void UserId_GetSet()
         {
             var target = new AccountUser();
@@ -54,6 +49,11 @@ namespace Olive.DataAccess.Tests
             target.UserId = expected;
 
             Assert.AreEqual(expected, target.UserId);
+        }
+
+        private static void AssertIsDefault<T>(T target)
+        {
+            Assert.AreEqual(default(T), target);
         }
     }
 }

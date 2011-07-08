@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AccountType.cs" company="">
+// <copyright file="AccountType.cs" company="Olive">
 //   
 // </copyright>
 // <summary>
@@ -10,7 +10,7 @@
 namespace Olive.DataAccess
 {
     /// <summary>
-    /// The account type.
+    ///   The account type.
     /// </summary>
     public static class AccountType
     {

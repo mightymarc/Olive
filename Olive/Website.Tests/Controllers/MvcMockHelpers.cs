@@ -1,16 +1,17 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="MvcMockHelpers.cs" company="Microsoft">
-// TODO: Update copyright text.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MvcMockHelpers.cs" company="Olive">
+//   
 // </copyright>
-// -----------------------------------------------------------------------
+// <summary>
+//   Adapted from http://www.hanselman.com/blog/ASPNETMVCSessionAtMix08TDDAndMvcMockHelpers.aspx
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive.Website.Tests.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
-    using System.Text;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -18,7 +19,7 @@ namespace Olive.Website.Tests.Controllers
     using Moq;
 
     /// <summary>
-    /// Adapted from http://www.hanselman.com/blog/ASPNETMVCSessionAtMix08TDDAndMvcMockHelpers.aspx
+    ///   Adapted from http://www.hanselman.com/blog/ASPNETMVCSessionAtMix08TDDAndMvcMockHelpers.aspx
     /// </summary>
     /// <returns></returns>
     public static class MvcMockHelpers
@@ -32,9 +33,9 @@ namespace Olive.Website.Tests.Controllers
             var server = new Mock<HttpServerUtilityBase>();
 
             request.SetupGet(x => x.ApplicationPath).Returns("/");
+
             ////request.SetupGet(x => x.Url).Returns(new Uri("http://localhost/a", UriKind.Absolute));
             request.SetupGet(x => x.ServerVariables).Returns(new NameValueCollection());
-
 
             context.SetupGet(ctx => ctx.Request).Returns(request.Object);
             context.SetupGet(ctx => ctx.Response).Returns(response.Object);
@@ -58,12 +59,31 @@ namespace Olive.Website.Tests.Controllers
             controller.ControllerContext = context;
         }
 
-        static string GetUrlFileName(string url)
+        public static void SetHttpMethodResult(this HttpRequestBase request, string httpMethod)
         {
-            return url.Contains("?") ? url.Substring(0, url.IndexOf("?")) : url;
+            Mock.Get(request).Setup(req => req.HttpMethod).Returns(httpMethod);
         }
 
-        static NameValueCollection GetQueryStringParameters(string url)
+        public static void SetupRequestUrl(this HttpRequestBase request, string url)
+        {
+            if (url == null)
+            {
+                throw new ArgumentNullException("url");
+            }
+
+            if (!url.StartsWith("~/"))
+            {
+                throw new ArgumentException("Sorry, we expect a virtual url starting with \"~/\".");
+            }
+
+            var mock = Mock.Get(request);
+
+            mock.Setup(req => req.QueryString).Returns(GetQueryStringParameters(url));
+            mock.Setup(req => req.AppRelativeCurrentExecutionFilePath).Returns(GetUrlFileName(url));
+            mock.Setup(req => req.PathInfo).Returns(string.Empty);
+        }
+
+        private static NameValueCollection GetQueryStringParameters(string url)
         {
             if (url.Contains("?"))
             {
@@ -83,29 +103,9 @@ namespace Olive.Website.Tests.Controllers
             return null;
         }
 
-        public static void SetHttpMethodResult(this HttpRequestBase request, string httpMethod)
+        private static string GetUrlFileName(string url)
         {
-            Mock.Get(request)
-                .Setup(req => req.HttpMethod)
-                .Returns(httpMethod);
-        }
-
-        public static void SetupRequestUrl(this HttpRequestBase request, string url)
-        {
-            if (url == null)
-                throw new ArgumentNullException("url");
-
-            if (!url.StartsWith("~/"))
-                throw new ArgumentException("Sorry, we expect a virtual url starting with \"~/\".");
-
-            var mock = Mock.Get(request);
-
-            mock.Setup(req => req.QueryString)
-                .Returns(GetQueryStringParameters(url));
-            mock.Setup(req => req.AppRelativeCurrentExecutionFilePath)
-                .Returns(GetUrlFileName(url));
-            mock.Setup(req => req.PathInfo)
-                .Returns(string.Empty);
+            return url.Contains("?") ? url.Substring(0, url.IndexOf("?")) : url;
         }
     }
 }

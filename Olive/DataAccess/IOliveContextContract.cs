@@ -1,23 +1,28 @@
-﻿namespace Olive.DataAccess
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IOliveContextContract.cs" company="Olive">
+//   
+// </copyright>
+// <summary>
+//   Defines the IOliveContextContract type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Olive.DataAccess
 {
     using System;
-    using System.Data;
     using System.Data.Entity;
     using System.Diagnostics.Contracts;
 
     [ContractClassFor(typeof(IOliveContext))]
     public abstract class IOliveContextContract : IOliveContext
     {
-        public void Dispose()
-        {
-        }
-
         public IDbSet<Account> Accounts
         {
             get
             {
                 return default(IDbSet<Account>);
             }
+
             set
             {
                 return;
@@ -30,6 +35,7 @@
             {
                 return default(IDbSet<AccountWithBalance>);
             }
+
             set
             {
                 return;
@@ -42,6 +48,7 @@
             {
                 return default(IDbSet<Currency>);
             }
+
             set
             {
                 return;
@@ -52,9 +59,9 @@
         {
             get
             {
-
                 return default(IDbSet<Session>);
             }
+
             set
             {
                 return;
@@ -67,6 +74,7 @@
             {
                 return default(IDbSet<Transfer>);
             }
+
             set
             {
                 return;
@@ -79,17 +87,11 @@
             {
                 return default(IDbSet<User>);
             }
+
             set
             {
                 return;
             }
-        }
-
-        public Guid CreateSession(string email, string passwordHash)
-        {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(passwordHash), "passwordHash");
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(email), "email");
-            return Guid.Empty;
         }
 
         public int CreateCurrentAccount(int userId, string currencyId, string displayName)
@@ -98,6 +100,13 @@
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(currencyId), "currencyId");
             Contract.Ensures(Contract.Result<int>() > 0);
             return default(int);
+        }
+
+        public Guid CreateSession(string email, string passwordHash)
+        {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(passwordHash), "passwordHash");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(email), "email");
+            return Guid.Empty;
         }
 
         public long CreateTransfer(int sourceAccountId, int destAccountId, string description, decimal amount)
@@ -111,17 +120,21 @@
             return default(long);
         }
 
+        public void Dispose()
+        {
+        }
+
+        public void SaveChanges()
+        {
+            return;
+        }
+
         public int VerifySession(Guid sessionId)
         {
             Contract.Requires<ArgumentException>(sessionId != Guid.Empty, "sessionId");
             Contract.Ensures(Contract.Result<int>() > 0);
 
             return default(int);
-        }
-
-        public void SaveChanges()
-        {
-            return;
         }
     }
 }

@@ -1,7 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LoginViewModel.cs" company="Olive">
+//   
+// </copyright>
+// <summary>
+//   Model used by the Login view.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive.Website.ViewModels.User
 {
@@ -9,7 +13,7 @@ namespace Olive.Website.ViewModels.User
     using System.Web.Mvc;
 
     /// <summary>
-    /// Model used by the Login view.
+    ///   Model used by the Login view.
     /// </summary>
     public class LoginViewModel
     {

@@ -1,16 +1,14 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Register.cs" company="Microsoft">
-// TODO: Update copyright text.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Register.cs" company="Olive">
+//   
 // </copyright>
-// -----------------------------------------------------------------------
+// <summary>
+//   Defines the RegisterTests type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive.Website.Tests.Views.User
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     using NUnit.Framework;
 
     using Olive.Website.ViewModels.User;
@@ -34,12 +32,7 @@ namespace Olive.Website.Tests.Views.User
         {
             var view = new Register();
 
-            var viewModel = new RegisterViewModel
-                {
-                    ConfirmPassword = "abc",
-                    Password = "123",
-                    Email = "incorrect"
-                };
+            var viewModel = new RegisterViewModel { ConfirmPassword = "abc", Password = "123", Email = "incorrect" };
 
             var html = view.RenderAsHtml(viewModel);
         }

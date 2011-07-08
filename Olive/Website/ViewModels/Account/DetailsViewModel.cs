@@ -1,10 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DetailsViewModel.cs" company="Olive">
+//   
+// </copyright>
+// <summary>
+//   Defines the DetailsViewModel type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive.Website.ViewModels.Account
 {
+    using System.Collections.Generic;
+
     using Olive.Services;
 
     public class DetailsViewModel

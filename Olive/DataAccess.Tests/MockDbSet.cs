@@ -1,79 +1,74 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="MockDbSet.cs" company="Microsoft">
-// TODO: Update copyright text.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MockDbSet.cs" company="Olive">
+//   
 // </copyright>
-// -----------------------------------------------------------------------
+// <summary>
+//   Defines the MockDbSet type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive.DataAccess.Tests
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Text;
 
-    public class MockDbSet<T> : IDbSet<T> where T : class
+    public class MockDbSet<T> : IDbSet<T>
+        where T : class
     {
-        private HashSet<T> _data;
+        private readonly HashSet<T> _data;
 
         public MockDbSet()
         {
-            _data = new HashSet<T>();
+            this._data = new HashSet<T>();
         }
 
-        public virtual T Find(params object[] keyValues)
+        public ObservableCollection<T> Local
         {
-            throw new NotImplementedException();
+            get
+            {
+                return new ObservableCollection<T>(this._data);
+            }
+        }
+
+        Type IQueryable.ElementType
+        {
+            get
+            {
+                return this._data.AsQueryable().ElementType;
+            }
+        }
+
+        Expression IQueryable.Expression
+        {
+            get
+            {
+                return this._data.AsQueryable().Expression;
+            }
+        }
+
+        IQueryProvider IQueryable.Provider
+        {
+            get
+            {
+                return this._data.AsQueryable().Provider;
+            }
         }
 
         public T Add(T item)
         {
-            _data.Add(item);
-            return item;
-        }
-
-        public T Remove(T item)
-        {
-            _data.Remove(item);
+            this._data.Add(item);
             return item;
         }
 
         public T Attach(T item)
         {
-            _data.Add(item);
+            this._data.Add(item);
             return item;
-        }
-
-        public void Detach(T item)
-        {
-            _data.Remove(item);
-        }
-
-        Type IQueryable.ElementType
-        {
-            get { return _data.AsQueryable().ElementType; }
-        }
-
-        Expression IQueryable.Expression
-        {
-            get { return _data.AsQueryable().Expression; }
-        }
-
-        IQueryProvider IQueryable.Provider
-        {
-            get { return _data.AsQueryable().Provider; }
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return _data.GetEnumerator();
-        }
-
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
-        {
-            return _data.GetEnumerator();
         }
 
         public T Create()
@@ -81,18 +76,35 @@ namespace Olive.DataAccess.Tests
             return Activator.CreateInstance<T>();
         }
 
-        public ObservableCollection<T> Local
-        {
-            get
-            {
-                return new ObservableCollection<T>(_data);
-            }
-        }
-
         public TDerivedEntity Create<TDerivedEntity>() where TDerivedEntity : class, T
         {
             return Activator.CreateInstance<TDerivedEntity>();
         }
-    }
 
+        public void Detach(T item)
+        {
+            this._data.Remove(item);
+        }
+
+        public virtual T Find(params object[] keyValues)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T Remove(T item)
+        {
+            this._data.Remove(item);
+            return item;
+        }
+
+        IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this._data.GetEnumerator();
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return this._data.GetEnumerator();
+        }
+    }
 }

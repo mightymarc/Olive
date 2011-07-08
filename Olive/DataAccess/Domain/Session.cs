@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Session.cs" company="">
+// <copyright file="Session.cs" company="Olive">
 //   
 // </copyright>
 // <summary>
@@ -12,32 +12,32 @@ namespace Olive.DataAccess
     using System;
 
     /// <summary>
-    /// The session.
+    ///   The session.
     /// </summary>
     public class Session
     {
         /// <summary>
-        /// Gets or sets CreatedAt.
+        ///   Gets or sets CreatedAt.
         /// </summary>
         public DateTime CreatedAt { get; set; }
 
         /// <summary>
-        /// Gets or sets ExpiresAt.
+        ///   Gets or sets ExpiresAt.
         /// </summary>
         public DateTime ExpiresAt { get; set; }
 
         /// <summary>
-        /// Gets or sets SessionId.
+        ///   Gets or sets SessionId.
         /// </summary>
         public Guid SessionId { get; set; }
 
         /// <summary>
-        /// Gets or sets User.
+        ///   Gets or sets User.
         /// </summary>
         public virtual User User { get; set; }
 
         /// <summary>
-        /// Gets or sets UserId.
+        ///   Gets or sets UserId.
         /// </summary>
         public int UserId { get; set; }
     }

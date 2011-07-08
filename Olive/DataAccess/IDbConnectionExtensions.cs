@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AdoHelper.cs" company="">
+// <copyright file="IDbConnectionExtensions.cs" company="Olive">
 //   
 // </copyright>
 // <summary>
@@ -11,27 +11,25 @@ namespace Olive.DataAccess
 {
     using System;
     using System.Data;
-    using System.Data.Common;
-    using System.Data.SqlClient;
     using System.Diagnostics.Contracts;
 
     public static class IDbConnectionExtensions
     {
         /// <summary>
-        /// Creates a parameter with the specified properties and adds it to the specified command.
+        ///   Creates a parameter with the specified properties and adds it to the specified command.
         /// </summary>
-        /// <param name="command">The command.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="type">The type.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="direction">The direction.</param>
-        /// <param name="size">The size.</param>
+        /// <param name = "command">The command.</param>
+        /// <param name = "name">The name.</param>
+        /// <param name = "type">The type.</param>
+        /// <param name = "value">The value.</param>
+        /// <param name = "direction">The direction.</param>
+        /// <param name = "size">The size.</param>
         public static void AddParam(
-            this IDbCommand command,
-            string name,
-            DbType type,
-            object value = null,
-            ParameterDirection direction = ParameterDirection.Input,
+            this IDbCommand command, 
+            string name, 
+            DbType type, 
+            object value = null, 
+            ParameterDirection direction = ParameterDirection.Input, 
             int? size = null)
         {
             Contract.Requires<ArgumentNullException>(command != null, "command");
@@ -45,48 +43,12 @@ namespace Olive.DataAccess
         }
 
         /// <summary>
-        /// Creates a parameter for the specified command.
+        ///   Creates a command.
         /// </summary>
-        /// <param name="command">The command.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="type">The type.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="direction">The direction of the parameter.</param>
-        /// <param name="size">The size of the type in bytes.</param>
-        /// <returns>The parameter.</returns>
-        private static IDbDataParameter CreateParam(
-            this IDbCommand command,
-            string name,
-            DbType type,
-            object value = null,
-            ParameterDirection direction = ParameterDirection.Input,
-            int? size = null)
-        {
-            Contract.Requires<ArgumentNullException>(command != null, "command");
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(name), "name");
-            Contract.Ensures(Contract.Result<IDbDataParameter>() != null);
-
-            var param = command.CreateParameter();
-            param.ParameterName = name;
-            param.DbType = type;
-            param.Value = value;
-            param.Direction = direction;
-
-            if (size.HasValue)
-            {
-                param.Size = size.Value;
-            }
-
-            return param;
-        }
-
-        /// <summary>
-        /// Creates a command.
-        /// </summary>
-        /// <param name="connection">The connection.</param>
-        /// <param name="procedureName">The name of the stored procedure.</param>
+        /// <param name = "connection">The connection.</param>
+        /// <param name = "procedureName">The name of the stored procedure.</param>
         /// <returns>
-        /// The command that was created.
+        ///   The command that was created.
         /// </returns>
         public static IDbCommand CreateCommand(this IDbConnection connection, string procedureName)
         {
@@ -104,9 +66,9 @@ namespace Olive.DataAccess
         }
 
         /// <summary>
-        /// Executes the specified command.
+        ///   Executes the specified command.
         /// </summary>
-        /// <param name="command">The command to execute.</param>
+        /// <param name = "command">The command to execute.</param>
         /// <returns>The return code from the procedure (RETURN statement)</returns>
         public static int ExecuteCommand(this IDbCommand command)
         {
@@ -127,17 +89,54 @@ namespace Olive.DataAccess
         }
 
         /// <summary>
-        /// Gets the return code from the specified command's @ReturnCode parameter.
+        ///   Gets the return code from the specified command's @ReturnCode parameter.
         /// </summary>
-        /// <param name="command">The command.</param>
+        /// <param name = "command">The command.</param>
         /// <returns>The return code.</returns>
         public static int GetReturnCode(this IDbCommand command)
         {
             Contract.Requires<ArgumentNullException>(command != null, "command");
             Contract.Assume(command.Parameters["@ReturnCode"] != null);
-            Contract.Assume(command.GetParameter("@ReturnCode").Value is int, "The procedure did not return a return code.");
+            Contract.Assume(
+                command.GetParameter("@ReturnCode").Value is int, "The procedure did not return a return code.");
 
             return (int)command.GetParameter("@ReturnCode").Value;
+        }
+
+        /// <summary>
+        ///   Creates a parameter for the specified command.
+        /// </summary>
+        /// <param name = "command">The command.</param>
+        /// <param name = "name">The name.</param>
+        /// <param name = "type">The type.</param>
+        /// <param name = "value">The value.</param>
+        /// <param name = "direction">The direction of the parameter.</param>
+        /// <param name = "size">The size of the type in bytes.</param>
+        /// <returns>The parameter.</returns>
+        private static IDbDataParameter CreateParam(
+            this IDbCommand command, 
+            string name, 
+            DbType type, 
+            object value = null, 
+            ParameterDirection direction = ParameterDirection.Input, 
+            int? size = null)
+        {
+            Contract.Requires<ArgumentNullException>(command != null, "command");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(name), "name");
+            Contract.Ensures(Contract.Result<IDbDataParameter>() != null);
+
+            var param = command.CreateParameter();
+            param.ParameterName = name;
+            param.DbType = type;
+            param.Value = value;
+            param.Direction = direction;
+
+            if (size.HasValue)
+            {
+                param.Size = size.Value;
+            }
+
+            return param;
         }
     }
 }

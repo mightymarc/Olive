@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Olive.svc.cs" company="Olive">
-//   [Copyright]
+//   
 // </copyright>
 // <summary>
 //   Defines the Olive type.
@@ -13,10 +13,7 @@ namespace Olive.Services
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
-    using System.Runtime.CompilerServices;
-    using System.Runtime.Serialization;
     using System.ServiceModel;
-    using System.Text;
 
     using Microsoft.Practices.Unity;
 
@@ -27,23 +24,28 @@ namespace Olive.Services
         [Microsoft.Practices.Unity.Dependency]
         public IUnityContainer Container { get; set; }
 
-        public WebService()
+        public int CreateCurrentAccount(Guid sessionId, string currencyId, string displayName)
         {
-        }
+            if (displayName == string.Empty)
+            {
+                displayName = null;
+            }
 
-        private IOliveContext GetContext()
-        {
-            Contract.Requires(this.Container != null);
-            Contract.Ensures(Contract.Result<IOliveContext>() != null);
+            var userId = this.VerifySession(sessionId);
 
-            return this.Container.Resolve<IOliveContext>();
+            using (var context = this.GetContext())
+            {
+                return context.CreateCurrentAccount(userId, currencyId, displayName);
+            }
         }
 
         public Guid CreateSession(string email, string password)
         {
             using (var context = this.GetContext())
             {
-                var salt = context.Users.Where(u => u.Email.ToLower() == email.ToLower()).Select(u => u.PasswordSalt).FirstOrDefault();
+                var salt =
+                    context.Users.Where(u => u.Email.ToLower() == email.ToLower()).Select(u => u.PasswordSalt).
+                        FirstOrDefault();
 
                 if (salt == null)
                 {
@@ -65,6 +67,38 @@ namespace Olive.Services
             }
         }
 
+        public long CreateTransfer(
+            Guid sessionId, int sourceAccountId, int destAccountId, decimal amount, string description)
+        {
+            var userId = default(int);
+
+            userId = this.VerifySession(sessionId);
+
+            using (var context = this.GetContext())
+            {
+                var hasAccess = this.UserCanWithdrawFromAccount(userId, sourceAccountId);
+
+                if (!hasAccess)
+                {
+                    // This exception has to be the same as the one below to avoid people guessing account names.
+                    throw new FaultException(
+                        new FaultReason("The user does not have permission to withdraw from the specified account."), 
+                        new FaultCode("AccountMissingWithdrawPermission"));
+                }
+
+                try
+                {
+                    return context.CreateTransfer(sourceAccountId, destAccountId, description, amount);
+                }
+                catch (AuthorizationException)
+                {
+                    throw new FaultException(
+                        new FaultReason("The user does not have permission to withdraw from the specified account."), 
+                        new FaultCode("AccountMissingWithdrawPermission"));
+                }
+            }
+        }
+
         public void CreateUser(string email, string password)
         {
             using (var context = this.GetContext())
@@ -72,7 +106,7 @@ namespace Olive.Services
                 if (context.Users.Any(u => u.Email.ToLower() == email.ToLower()))
                 {
                     throw new FaultException(
-                        new FaultReason("The specified e-mail is already in use."),
+                        new FaultReason("The specified e-mail is already in use."), 
                         new FaultCode("EmailAlreadyRegistered"));
                 }
 
@@ -89,6 +123,21 @@ namespace Olive.Services
             }
         }
 
+        public void EditAccount(Guid sessionId, int accountId, string displayName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public GetAccountAccount GetAccount(Guid sessionId, int accountId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<GetAccountTransfersTransfer> GetAccountTransfers(Guid sessionId, int accountId)
+        {
+            throw new NotImplementedException();
+        }
+
         public AccountOverview GetAccounts(Guid sessionId)
         {
             var userId = this.VerifySession(sessionId);
@@ -100,9 +149,9 @@ namespace Olive.Services
                             select
                                 new AccountOverviewAccount
                                     {
-                                        AccountId = account.AccountId,
-                                        Balance = accountWithBalance.Balance,
-                                        CurrencyId = accountWithBalance.Currency.CurrencyId,
+                                        AccountId = account.AccountId, 
+                                        Balance = accountWithBalance.Balance, 
+                                        CurrencyId = accountWithBalance.Currency.CurrencyId, 
                                         DisplayName = account.DisplayName
                                     };
 
@@ -110,36 +159,6 @@ namespace Olive.Services
                 result.AddRange(query);
                 return result;
             }
-        }
-
-        public List<GetAccountTransfersTransfer> GetAccountTransfers(Guid sessionId, int accountId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public GetAccountAccount GetAccount(Guid sessionId, int accountId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int CreateCurrentAccount(Guid sessionId, string currencyId, string displayName)
-        {
-            if (displayName == string.Empty)
-            {
-                displayName = null;
-            }
-
-            var userId = this.VerifySession(sessionId);
-
-            using (var context = this.GetContext())
-            {
-                return context.CreateCurrentAccount(userId, currencyId, displayName);
-            }
-        }
-
-        public void EditAccount(Guid sessionId, int accountId, string displayName)
-        {
-            throw new NotImplementedException();
         }
 
         public List<string> GetCurrencies()
@@ -154,40 +173,16 @@ namespace Olive.Services
         {
             using (var context = this.GetContext())
             {
-                return context.Users.Find(userId).AccountAccess.Any(
-                    x => x.CanWithdraw && x.AccountId == accountId);
+                return context.Users.Find(userId).AccountAccess.Any(x => x.CanWithdraw && x.AccountId == accountId);
             }
         }
 
-        public long CreateTransfer(Guid sessionId, int sourceAccountId, int destAccountId, decimal amount, string description)
+        private IOliveContext GetContext()
         {
-            var userId = default(int);
+            Contract.Requires(this.Container != null);
+            Contract.Ensures(Contract.Result<IOliveContext>() != null);
 
-            userId = this.VerifySession(sessionId);
-
-            using (var context = this.GetContext())
-            {
-                var hasAccess = this.UserCanWithdrawFromAccount(userId, sourceAccountId);
-
-                if (!hasAccess)
-                {
-                    // This exception has to be the same as the one below to avoid people guessing account names.
-                    throw new FaultException(
-                        new FaultReason("The user does not have permission to withdraw from the specified account."),
-                        new FaultCode("AccountMissingWithdrawPermission"));
-                }
-
-                try
-                {
-                    return context.CreateTransfer(sourceAccountId, destAccountId, description, amount);
-                }
-                catch (AuthorizationException)
-                {
-                    throw new FaultException(
-                        new FaultReason("The user does not have permission to withdraw from the specified account."),
-                        new FaultCode("AccountMissingWithdrawPermission"));
-                }
-            }
+            return this.Container.Resolve<IOliveContext>();
         }
 
         private int VerifySession(Guid sessionId)
@@ -204,7 +199,8 @@ namespace Olive.Services
                 catch (SessionDoesNotExistException)
                 {
                     throw new FaultException(
-                        new FaultReason("The specified session does not exist or has expired."), new FaultCode("SessionDoesNotExist"));
+                        new FaultReason("The specified session does not exist or has expired."), 
+                        new FaultCode("SessionDoesNotExist"));
                 }
             }
         }

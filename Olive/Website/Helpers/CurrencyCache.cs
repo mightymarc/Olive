@@ -1,4 +1,13 @@
-﻿namespace Olive.Website.Helpers
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CurrencyCache.cs" company="Olive">
+//   
+// </copyright>
+// <summary>
+//   Defines the CurrencyCache type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Olive.Website.Helpers
 {
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
@@ -9,9 +18,6 @@
 
     public class CurrencyCache : ICurrencyCache
     {
-        [Dependency]
-        public IWebService Service { get; set; }
-
         public List<string> Currencies
         {
             get
@@ -21,5 +27,8 @@
                 return this.Service.GetCurrencies();
             }
         }
+
+        [Dependency]
+        public IWebService Service { get; set; }
     }
 }

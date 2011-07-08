@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="User.cs" company="">
+// <copyright file="User.cs" company="Olive">
 //   
 // </copyright>
 // <summary>
@@ -12,36 +12,36 @@ namespace Olive.DataAccess
     using System.Collections.Generic;
 
     /// <summary>
-    /// The user.
+    ///   The user.
     /// </summary>
     public class User
     {
         /// <summary>
-        /// Gets or sets AccountAccess.
+        ///   Gets or sets AccountAccess.
         /// </summary>
         public virtual ICollection<AccountUser> AccountAccess { get; set; }
 
         /// <summary>
-        /// Gets or sets PasswordHash.
+        ///   Gets or sets the email.
+        /// </summary>
+        /// <value>
+        ///   The email.
+        /// </value>
+        public string Email { get; set; }
+
+        /// <summary>
+        ///   Gets or sets PasswordHash.
         /// </summary>
         public string PasswordHash { get; set; }
 
         /// <summary>
-        /// Gets or sets PasswordSalt.
+        ///   Gets or sets PasswordSalt.
         /// </summary>
         public string PasswordSalt { get; set; }
 
         /// <summary>
-        /// Gets or sets UserId.
+        ///   Gets or sets UserId.
         /// </summary>
         public int UserId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the email.
-        /// </summary>
-        /// <value>
-        /// The email.
-        /// </value>
-        public string Email { get; set; }
     }
 }

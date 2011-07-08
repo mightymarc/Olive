@@ -1,43 +1,49 @@
-﻿namespace Olive.Services
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IWebService.cs" company="Olive">
+//   
+// </copyright>
+// <summary>
+//   Defines the IWebService type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Olive.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
-    using System.Linq;
-    using System.Runtime.Serialization;
     using System.ServiceModel;
-    using System.Text;
 
     [ServiceContract]
     [ContractClass(typeof(IWebServiceContract))]
     public interface IWebService
     {
         [OperationContract]
+        int CreateCurrentAccount(Guid sessionId, string currencyId, string displayName);
+
+        [OperationContract]
         [FaultContract(typeof(AuthenticationFault))]
         Guid CreateSession(string email, string password);
+
+        [OperationContract]
+        long CreateTransfer(Guid sessionId, int sourceAccountId, int destAccountId, decimal amount, string description);
 
         [OperationContract]
         void CreateUser(string email, string password);
 
         [OperationContract]
-        List<GetAccountTransfersTransfer> GetAccountTransfers(Guid sessionId, int accountId);
+        void EditAccount(Guid sessionId, int accountId, string displayName);
 
         [OperationContract]
         GetAccountAccount GetAccount(Guid sessionId, int accountId);
 
         [OperationContract]
+        List<GetAccountTransfersTransfer> GetAccountTransfers(Guid sessionId, int accountId);
+
+        [OperationContract]
         AccountOverview GetAccounts(Guid sessionId);
 
         [OperationContract]
-        int CreateCurrentAccount(Guid sessionId, string currencyId, string displayName);
-
-        [OperationContract]
-        void EditAccount(Guid sessionId, int accountId, string displayName);
-
-        [OperationContract]
         List<string> GetCurrencies();
-
-        [OperationContract]
-        long CreateTransfer(Guid sessionId, int sourceAccountId, int destAccountId, decimal amount, string description);
     }
 }

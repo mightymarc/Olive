@@ -1,28 +1,42 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="MockOliveContext.cs" company="Microsoft">
-// TODO: Update copyright text.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MockOliveContext.cs" company="Olive">
+//   
 // </copyright>
-// -----------------------------------------------------------------------
+// <summary>
+//   Defines the MockOliveContext type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive.DataAccess.Tests
 {
     using System;
-    using System.Collections.Generic;
     using System.Data;
     using System.Data.Entity;
-    using System.Linq;
-    using System.Reflection;
-    using System.Text;
 
-
-    public partial class MockOliveContext : IOliveContext, IDisposable
+    public class MockOliveContext : IOliveContext, IDisposable
     {
+        public MockOliveContext()
+        {
+            // Set up your collections
+            this.Users = new MockDbSet<User> {
+                    new User
+                        {
+                            Email = "andreas@opuno.com", 
+                            PasswordHash =
+                                "eJsSKba6/GAXbyZ5AhoRSgUkwojQLOYevHxVPrY8UCKZe0e9sH+YL3F7DfaYdsnKHIpGxIsIfCl/KJfZRDA0dg==", 
+                            PasswordSalt =
+                                "GIWdAnVlZAIt8REiQArFVWs+nJJb9f+5Br61pxLUpA9H5T0vCq7th2l+TPHl6WOGHqi+7GbxRc0r8tOdMf5Qrg=="
+                        }
+                };
+        }
+
         public IDbSet<Account> Accounts
         {
             get
             {
                 throw new NotImplementedException();
             }
+
             set
             {
                 throw new NotImplementedException();
@@ -35,6 +49,7 @@ namespace Olive.DataAccess.Tests
             {
                 throw new NotImplementedException();
             }
+
             set
             {
                 throw new NotImplementedException();
@@ -47,6 +62,7 @@ namespace Olive.DataAccess.Tests
             {
                 throw new NotImplementedException();
             }
+
             set
             {
                 throw new NotImplementedException();
@@ -59,6 +75,7 @@ namespace Olive.DataAccess.Tests
             {
                 throw new NotImplementedException();
             }
+
             set
             {
                 throw new NotImplementedException();
@@ -71,6 +88,7 @@ namespace Olive.DataAccess.Tests
             {
                 throw new NotImplementedException();
             }
+
             set
             {
                 throw new NotImplementedException();
@@ -79,32 +97,17 @@ namespace Olive.DataAccess.Tests
 
         public IDbSet<User> Users { get; set; }
 
-        public Guid CreateSession(string email, string passwordHash)
-        {
-            throw new NotImplementedException();
-        }
-
         public int CreateCurrentAccount(int userId, string currencyId, string displayName)
         {
             throw new NotImplementedException();
         }
 
-        public string GetUserSaltFromEmail(string email)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IDbCommand GetCreateSessionCommand(string email, string passwordHash)
+        public Guid CreateSession(string email, string passwordHash)
         {
             throw new NotImplementedException();
         }
 
         public Guid CreateSession(IDbCommand command)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IDbCommand GetCreateTransferCommand(int sourceAccountId, int destAccountId, string description, decimal amount)
         {
             throw new NotImplementedException();
         }
@@ -119,7 +122,23 @@ namespace Olive.DataAccess.Tests
             throw new NotImplementedException();
         }
 
-        public int VerifySession(IDbCommand command)
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDbCommand GetCreateSessionCommand(string email, string passwordHash)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDbCommand GetCreateTransferCommand(
+            int sourceAccountId, int destAccountId, string description, decimal amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetUserSaltFromEmail(string email)
         {
             throw new NotImplementedException();
         }
@@ -129,9 +148,8 @@ namespace Olive.DataAccess.Tests
             throw new NotImplementedException();
         }
 
-        public int VerifySession(Guid sessionId)
+        public void SaveChanges()
         {
-            throw new NotImplementedException();
         }
 
         public IDbSet<T> Set<T>() where T : class
@@ -147,27 +165,12 @@ namespace Olive.DataAccess.Tests
             throw new Exception("Type collection not found.");
         }
 
-        public void SaveChanges()
+        public int VerifySession(IDbCommand command)
         {
+            throw new NotImplementedException();
         }
 
-        public MockOliveContext()
-        {
-            // Set up your collections
-            this.Users = new MockDbSet<User>
-            {
-                new User
-                    {
-                        Email = "andreas@opuno.com",
-                        PasswordHash =
-                            "eJsSKba6/GAXbyZ5AhoRSgUkwojQLOYevHxVPrY8UCKZe0e9sH+YL3F7DfaYdsnKHIpGxIsIfCl/KJfZRDA0dg==",
-                        PasswordSalt =
-                            "GIWdAnVlZAIt8REiQArFVWs+nJJb9f+5Br61pxLUpA9H5T0vCq7th2l+TPHl6WOGHqi+7GbxRc0r8tOdMf5Qrg=="
-                    }
-            };
-        }
-
-        public void Dispose()
+        public int VerifySession(Guid sessionId)
         {
             throw new NotImplementedException();
         }

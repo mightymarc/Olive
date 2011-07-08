@@ -1,16 +1,14 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="CryptoTests.cs" company="Microsoft">
-// TODO: Update copyright text.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CryptoTests.cs" company="Olive">
+//   
 // </copyright>
-// -----------------------------------------------------------------------
+// <summary>
+//   Defines the CryptoTests type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Core.Tests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     using NUnit.Framework;
 
     using Olive;
@@ -18,12 +16,6 @@ namespace Core.Tests
     [TestFixture]
     public class CryptoTests
     {
-        [Test]
-        public void CreateSaltHasCorrectLength()
-        {
-            Assert.Inconclusive("Is this predictable?");
-        }
-
         [Test]
         public void CreateSaltDoesNotRepeat()
         {
@@ -36,11 +28,19 @@ namespace Core.Tests
         }
 
         [Test]
+        public void CreateSaltHasCorrectLength()
+        {
+            Assert.Inconclusive("Is this predictable?");
+        }
+
+        [Test]
         public void GenerateHashMatchesPrecalculated()
         {
             var crypto = new Crypto();
 
-            Assert.AreEqual("+mohhbPgqahe9B/7Z+88H7b3SYD46/lw5OcuNT7ZU31ZMIPCAd/W5D4cinqsK8jbsRnH37fUuPExEROVvXDpfw==", crypto.GenerateHash("password", "salt"));
+            Assert.AreEqual(
+                "+mohhbPgqahe9B/7Z+88H7b3SYD46/lw5OcuNT7ZU31ZMIPCAd/W5D4cinqsK8jbsRnH37fUuPExEROVvXDpfw==", 
+                crypto.GenerateHash("password", "salt"));
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AccountTests.cs" company="Olive">
-//   [Copyright]
+//   
 // </copyright>
 // <summary>
 //   Defines the AccountTests type.
@@ -14,17 +14,9 @@ namespace Olive.DataAccess.Tests
 
     using NUnit.Framework;
 
-    using Olive.DataAccess;
-
     public class AccountTests : TestBase
     {
         private readonly Random random = new Random();
-
-        [Test]
-        public void EmptyConstructor()
-        {
-            var account = new Account();
-        }
 
         [Test]
         public void AccountId_GetSet()
@@ -38,6 +30,12 @@ namespace Olive.DataAccess.Tests
             accountId = this.random.Next(1, 1000000000);
             account.AccountId = accountId;
             Assert.AreEqual(accountId, account.AccountId);
+        }
+
+        [Test]
+        public void EmptyConstructor()
+        {
+            var account = new Account();
         }
 
         [Test]

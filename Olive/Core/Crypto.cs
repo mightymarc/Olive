@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Crypto.cs" company="Olive">
-//   [Copyright]
+//   
 // </copyright>
 // <summary>
 //   Defines the Crypto class.
@@ -17,36 +17,36 @@ namespace Olive
     public interface ICrypto
     {
         /// <summary>
-        /// Creates a salt.
+        ///   Creates a salt.
         /// </summary>
-        /// <param name="length">The number of bytes to use in the salt.</param>
+        /// <param name = "length">The number of bytes to use in the salt.</param>
         /// <returns>The salt that was created.</returns>
         string CreateSalt(int length);
 
         /// <summary>
-        /// Creates a salt.
+        ///   Creates a salt.
         /// </summary>
         /// <returns>The salt that was created.</returns>
         string CreateSalt();
 
         /// <summary>
-        /// Generates a hash from the specified password and salt.
+        ///   Generates a hash from the specified password and salt.
         /// </summary>
-        /// <param name="password">The password.</param>
-        /// <param name="salt">The salt to use for hashing.</param>
+        /// <param name = "password">The password.</param>
+        /// <param name = "salt">The salt to use for hashing.</param>
         /// <returns>The hash that was generated.</returns>
         string GenerateHash(string password, string salt);
     }
 
     /// <summary>
-    /// Contains helpers to perform hashing.
+    ///   Contains helpers to perform hashing.
     /// </summary>
     public class Crypto : ICrypto
     {
         /// <summary>
-        /// Creates a salt.
+        ///   Creates a salt.
         /// </summary>
-        /// <param name="length">The number of bytes to use in the salt.</param>
+        /// <param name = "length">The number of bytes to use in the salt.</param>
         /// <returns>The salt that was created.</returns>
         public string CreateSalt(int length)
         {
@@ -67,21 +67,21 @@ namespace Olive
         }
 
         /// <summary>
-        /// Creates a salt.
+        ///   Creates a salt.
         /// </summary>
         /// <returns>The salt that was created.</returns>
         public string CreateSalt()
         {
             Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-            return CreateSalt(128);
+            return this.CreateSalt(128);
         }
 
         /// <summary>
-        /// Generates a hash from the specified password and salt.
+        ///   Generates a hash from the specified password and salt.
         /// </summary>
-        /// <param name="password">The password.</param>
-        /// <param name="salt">The salt to use for hashing.</param>
+        /// <param name = "password">The password.</param>
+        /// <param name = "salt">The salt to use for hashing.</param>
         /// <returns>The hash that was generated.</returns>
         public string GenerateHash(string password, string salt)
         {

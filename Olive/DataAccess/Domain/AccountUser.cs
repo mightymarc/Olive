@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AccountUser.cs" company="">
+// <copyright file="AccountUser.cs" company="Olive">
 //   
 // </copyright>
 // <summary>
@@ -10,7 +10,7 @@
 namespace Olive.DataAccess
 {
     /// <summary>
-    /// The account user.
+    ///   The account user.
     /// </summary>
     public class AccountUser
     {

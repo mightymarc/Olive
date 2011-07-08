@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OliveContext.cs" company="">
+// <copyright file="OliveContext.cs" company="Olive">
 //   
 // </copyright>
 // <summary>
@@ -9,7 +9,6 @@
 
 namespace Olive.DataAccess
 {
-    using System;
     using System.Data;
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
@@ -23,7 +22,7 @@ namespace Olive.DataAccess
     public partial class OliveContext : DbContext, IOliveContext
     {
         /// <summary>
-        /// The connection used to execute stored procedures.
+        ///   The connection used to execute stored procedures.
         /// </summary>
         private IDbConnection commandConnection;
 
@@ -53,10 +52,10 @@ namespace Olive.DataAccess
         public IDbSet<AccountWithBalance> AccountsWithBalance { get; set; }
 
         /// <summary>
-        /// Gets or sets the connection used to execute stored procedures.
+        ///   Gets or sets the connection used to execute stored procedures.
         /// </summary>
         /// <value>
-        /// The command connection.
+        ///   The command connection.
         /// </value>
         public virtual IDbConnection CommandConnection
         {

@@ -1,16 +1,17 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="ControllerTestBase.cs" company="Microsoft">
-// TODO: Update copyright text.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ControllerTestBase.cs" company="Olive">
+//   
 // </copyright>
-// -----------------------------------------------------------------------
+// <summary>
+//   Defines the ControllerTestBase type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive.Website.Tests.Controllers
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
-    using System.Linq;
-    using System.Text;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -22,7 +23,6 @@ namespace Olive.Website.Tests.Controllers
     using NUnit.Framework;
 
     using Olive.Services;
-    using Olive.Website.Controllers;
     using Olive.Website.Helpers;
 
     public abstract class ControllerTestBase<T>
@@ -30,13 +30,13 @@ namespace Olive.Website.Tests.Controllers
     {
         protected IUnityContainer container = new UnityContainer();
 
-        protected Mock<ISiteSession> sessionMock;
-
-        protected Mock<IWebService> serviceMock;
+        protected Mock<ICurrencyCache> currencyCache;
 
         protected Mock<HttpContextBase> httpContextMock;
 
-        protected Mock<ICurrencyCache> currencyCache;
+        protected Mock<IWebService> serviceMock;
+
+        protected Mock<ISiteSession> sessionMock;
 
         [SetUp]
         public virtual void SetUp()
@@ -55,15 +55,6 @@ namespace Olive.Website.Tests.Controllers
             this.container.RegisterInstance(this.httpContextMock.Object);
         }
 
-        protected ViewResult AssertViewResult(ActionResult actionResult)
-        {
-            Contract.Requires<ArgumentNullException>(actionResult != null, "actionResult");
-            Contract.Ensures(Contract.Result<ViewResult>() != null);
-
-            Assert.IsInstanceOf(typeof(ViewResult), actionResult);
-            return (ViewResult)actionResult;
-        }
-
         protected VM AssertViewModel<VM>(ActionResult actionResult)
         {
             var viewResult = this.AssertViewResult(actionResult);
@@ -72,6 +63,15 @@ namespace Olive.Website.Tests.Controllers
             var viewModel = (VM)viewResult.Model;
 
             return viewModel;
+        }
+
+        protected ViewResult AssertViewResult(ActionResult actionResult)
+        {
+            Contract.Requires<ArgumentNullException>(actionResult != null, "actionResult");
+            Contract.Ensures(Contract.Result<ViewResult>() != null);
+
+            Assert.IsInstanceOf(typeof(ViewResult), actionResult);
+            return (ViewResult)actionResult;
         }
 
         protected T CreateController(bool buildUp = true, string relativePath = null)
@@ -86,7 +86,8 @@ namespace Olive.Website.Tests.Controllers
             controller.ControllerContext = new ControllerContext(contextBase, new RouteData(), controller);
             controller.Url = new UrlHelper(new RequestContext(contextBase, new RouteData()), routes);
 
-            Mock.Get(controller.Request).SetupGet(s => s.Url).Returns(new Uri("http://localhost/" + relativePath, UriKind.Absolute));
+            Mock.Get(controller.Request).SetupGet(s => s.Url).Returns(
+                new Uri("http://localhost/" + relativePath, UriKind.Absolute));
 
             return controller;
         }

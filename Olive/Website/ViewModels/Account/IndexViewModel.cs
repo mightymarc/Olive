@@ -1,7 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IndexViewModel.cs" company="Olive">
+//   
+// </copyright>
+// <summary>
+//   Defines the IndexViewModel type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive.Website.ViewModels.Account
 {

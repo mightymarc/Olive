@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AccountController.cs" company="">
+// <copyright file="AccountController.cs" company="Olive">
 //   
 // </copyright>
 // <summary>
@@ -11,38 +11,15 @@ namespace Olive.Website.Controllers
 {
     using System;
     using System.Diagnostics.Contracts;
-    using System.ServiceModel;
     using System.Web.Mvc;
 
-    using Olive.Services;
     using Olive.Website.ViewModels.Account;
 
     /// <summary>
-    /// The account controller.
+    ///   The account controller.
     /// </summary>
     public class AccountController : SiteController
     {
-        /// <summary>
-        /// The index.
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Index()
-        {
-            Contract.Requires<ArgumentNullException>(this.SessionPersister != null, "this.SessionPersister");
-            Contract.Requires<ArgumentNullException>(this.Service != null, "this.Service");
-
-            if (!this.SessionPersister.HasSession)
-            {
-                return this.RedirectToLogin();
-            }
-
-            var accounts = this.Service.GetAccounts(this.SessionPersister.SessionId);
-
-            var viewModel = new IndexViewModel { Accounts = accounts };
-
-            return View("Index", viewModel);
-        }
-
         [HttpPost]
         public ActionResult Create(CreateViewModel model)
         {
@@ -55,14 +32,44 @@ namespace Olive.Website.Controllers
                 return this.RedirectToLogin();
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                var accountId = this.Service.CreateCurrentAccount(this.SessionPersister.SessionId, model.CurrencyId, model.DisplayName);
+                var accountId = this.Service.CreateCurrentAccount(
+                    this.SessionPersister.SessionId, model.CurrencyId, model.DisplayName);
 
-                return RedirectToAction("Index");
+                return this.RedirectToAction("Index");
             }
 
             return this.View(model);
+        }
+
+        public ActionResult Create()
+        {
+            if (!this.SessionPersister.HasSession)
+            {
+                return this.RedirectToLogin();
+            }
+
+            return this.View(new CreateViewModel { Currencies = this.CurrencyCache.Currencies });
+        }
+
+        public ActionResult Details(int accountId)
+        {
+            Contract.Requires<InvalidOperationException>(this.SessionPersister != null, "this.SessionPersister == null");
+            Contract.Requires<InvalidOperationException>(this.Service != null);
+
+            if (!this.SessionPersister.HasSession)
+            {
+                return this.RedirectToLogin();
+            }
+
+            var viewModel = new DetailsViewModel
+                {
+                    AccountDisplayName = this.Service.GetAccount(this.SessionPersister.SessionId, accountId).DisplayName, 
+                    Transfers = this.Service.GetAccountTransfers(this.SessionPersister.SessionId, accountId)
+                };
+
+            return this.View("Details", viewModel);
         }
 
         [HttpPost]
@@ -81,7 +88,7 @@ namespace Olive.Website.Controllers
             {
                 this.Service.EditAccount(this.SessionPersister.SessionId, model.AccountId, model.DisplayName);
 
-                return RedirectToAction("Index");
+                return this.RedirectToAction("Index");
             }
 
             return this.View(model);
@@ -102,33 +109,25 @@ namespace Olive.Website.Controllers
             return this.View();
         }
 
-        public ActionResult Details(int accountId)
+        /// <summary>
+        ///   The index.
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Index()
         {
-            Contract.Requires<InvalidOperationException>(this.SessionPersister != null, "this.SessionPersister == null");
-            Contract.Requires<InvalidOperationException>(this.Service != null);
+            Contract.Requires<ArgumentNullException>(this.SessionPersister != null, "this.SessionPersister");
+            Contract.Requires<ArgumentNullException>(this.Service != null, "this.Service");
 
             if (!this.SessionPersister.HasSession)
             {
                 return this.RedirectToLogin();
             }
 
-            var viewModel = new DetailsViewModel
-                {
-                    AccountDisplayName = this.Service.GetAccount(this.SessionPersister.SessionId, accountId).DisplayName,
-                    Transfers = this.Service.GetAccountTransfers(this.SessionPersister.SessionId, accountId)
-                };
+            var accounts = this.Service.GetAccounts(this.SessionPersister.SessionId);
 
-            return this.View("Details", viewModel);
-        }
+            var viewModel = new IndexViewModel { Accounts = accounts };
 
-        public ActionResult Create()
-        {
-            if (!this.SessionPersister.HasSession)
-            {
-                return this.RedirectToLogin();
-            }
-
-            return this.View(new CreateViewModel { Currencies = this.CurrencyCache.Currencies } );
+            return View("Index", viewModel);
         }
     }
 }

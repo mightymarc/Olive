@@ -1,17 +1,17 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="OliveContext.cs" company="Microsoft">
-// TODO: Update copyright text.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="OliveContext.StoredProcedures.cs" company="Olive">
+//   
 // </copyright>
-// -----------------------------------------------------------------------
+// <summary>
+//   The entity framework database context.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive.DataAccess
 {
     using System;
-    using System.Collections.Generic;
     using System.Data;
     using System.Diagnostics.Contracts;
-    using System.Linq;
-    using System.Text;
 
     /// <summary>
     ///   The entity framework database context.
@@ -19,17 +19,33 @@ namespace Olive.DataAccess
     public partial class OliveContext
     {
         /// <summary>
-        /// Executes the specified command.
+        ///   Creates a current account.
         /// </summary>
-        /// <param name="command">The command to execute.</param>
-        /// <returns>The result code returned by the RETURN command of Transact SQL.</returns>
-        public virtual int ExecuteCommand(IDbCommand command)
+        /// <param name = "userId">The user id.</param>
+        /// <param name = "currencyId">The currency of the account.</param>
+        /// <param name = "displayName">The display name of the account (USD, BTC, PPUSD, ...)</param>
+        /// <returns>The account id of the new account</returns>
+        public int CreateCurrentAccount(int userId, string currencyId, string displayName)
         {
-            return command.ExecuteCommand();
+            var command = this.CommandConnection.CreateCommand("Banking.CreateCurrentAccount");
+            command.AddParam("@UserId", DbType.Int32, userId);
+            command.AddParam("@CurrencyId", DbType.AnsiString, currencyId);
+            command.AddParam("@DisplayName", DbType.String, (object)displayName ?? DBNull.Value);
+            command.AddParam("@AccountId", DbType.Int32, direction: ParameterDirection.Output);
+
+            switch (this.ExecuteCommand(command))
+            {
+                case 0:
+                    var accountId = (int)command.GetParameter("@AccountId").Value;
+                    Contract.Assume(accountId > 0);
+                    return accountId;
+                default:
+                    throw new UnknownReturnCodeException(command.GetReturnCode());
+            }
         }
 
         /// <summary>
-        /// Creates the session.
+        ///   Creates the session.
         /// </summary>
         /// <returns>The session identifier.</returns>
         public Guid CreateSession(string email, string passwordHash)
@@ -53,39 +69,15 @@ namespace Olive.DataAccess
         }
 
         /// <summary>
-        /// Creates a current account.
-        /// </summary>
-        /// <param name="userId">The user id.</param>
-        /// <param name="currencyId">The currency of the account.</param>
-        /// <param name="displayName">The display name of the account (USD, BTC, PPUSD, ...)</param>
-        /// <returns>The account id of the new account</returns>
-        public int CreateCurrentAccount(int userId, string currencyId, string displayName)
-        {
-            var command = this.CommandConnection.CreateCommand("Banking.CreateCurrentAccount");
-            command.AddParam("@UserId", DbType.Int32, userId);
-            command.AddParam("@CurrencyId", DbType.AnsiString, currencyId);
-            command.AddParam("@DisplayName", DbType.String, (object)displayName ?? DBNull.Value);
-            command.AddParam("@AccountId", DbType.Int32, direction: ParameterDirection.Output);
-
-            switch (this.ExecuteCommand(command))
-            {
-                case 0:
-                    var accountId = (int)command.GetParameter("@AccountId").Value;
-                    Contract.Assume(accountId > 0);
-                    return accountId;
-                default:
-                    throw new UnknownReturnCodeException(command.GetReturnCode());
-            }
-        }
-
-        /// <summary>
         /// Creates the transfer.
         /// </summary>
         /// <param name="sourceAccountId">The source account id.</param>
         /// <param name="destAccountId">The dest account id.</param>
         /// <param name="description">The description.</param>
         /// <param name="amount">The amount.</param>
-        /// <returns>The identifier for the transfer that was created.</returns>
+        /// <returns>
+        /// The identifier for the transfer that was created.
+        /// </returns>
         public long CreateTransfer(int sourceAccountId, int destAccountId, string description, decimal amount)
         {
             var command = this.CommandConnection.CreateCommand("Banking.CreateTransfer");
@@ -102,18 +94,29 @@ namespace Olive.DataAccess
                     Contract.Assume(transactionId > 0);
                     return transactionId;
                 case 51001:
-                    throw new AuthorizationException("The user does not have withdraw access to the specified source account.");
+                    throw new AuthorizationException(
+                        "The user does not have withdraw access to the specified source account.");
                 default:
                     throw new UnknownReturnCodeException(command.GetReturnCode());
             }
         }
 
         /// <summary>
-        /// Verifies that specified session exists and is not expired.
+        ///   Executes the specified command.
         /// </summary>
-        /// <param name="sessionId">The session id.</param>
+        /// <param name = "command">The command to execute.</param>
+        /// <returns>The result code returned by the RETURN command of Transact SQL.</returns>
+        public virtual int ExecuteCommand(IDbCommand command)
+        {
+            return command.ExecuteCommand();
+        }
+
+        /// <summary>
+        ///   Verifies that specified session exists and is not expired.
+        /// </summary>
+        /// <param name = "sessionId">The session id.</param>
         /// <returns>
-        /// The user id of the user that owns the session.
+        ///   The user id of the user that owns the session.
         /// </returns>
         public int VerifySession(Guid sessionId)
         {

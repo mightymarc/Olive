@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UnitTestHelper.cs" company="">
+// <copyright file="UnitTestHelper.cs" company="Olive">
 //   
 // </copyright>
 // <summary>
@@ -22,6 +22,47 @@ namespace Olive
     {
         private UnitTestHelper()
         {
+        }
+
+        public static IDbCommand CreateMockDbCommand(
+            IDbConnection connection, params Tuple<string, object>[] parameterValues)
+        {
+            var mockCommand = new Mock<IDbCommand>();
+            mockCommand.SetupAllProperties();
+            mockCommand.Object.Connection = connection;
+
+            var mockParams = new Mock<IDataParameterCollection>();
+            var mockReturnParam = new Mock<IDbDataParameter>();
+            mockReturnParam.SetupGet(p => p.Value).Returns(0);
+
+            foreach (var parameterValue in parameterValues)
+            {
+                var param = new Mock<IDbDataParameter>();
+                param.SetupGet(p => p.Value).Returns(parameterValue.Item2);
+
+                mockParams.SetupGet(c => c[parameterValue.Item1]).Returns(param.Object);
+            }
+
+            mockCommand.Setup(c => c.Parameters).Returns(mockParams.Object);
+
+            return mockCommand.Object;
+        }
+
+        public static Mock<IDbCommand> CreateMockDbCommand()
+        {
+            var mockParams = new MockDataParameterCollection();
+
+            var mockCommand = new Mock<IDbCommand>();
+            mockCommand.SetupAllProperties();
+            mockCommand.SetupGet(x => x.Parameters).Returns(mockParams);
+            mockCommand.Setup(c => c.CreateParameter()).Returns(
+                () => new Mock<IDbDataParameter>().SetupAllProperties().Object);
+
+            var mockConnection = new Mock<IDbConnection>();
+            mockConnection.Setup(c => c.CreateCommand()).Returns(mockCommand.Object);
+            mockCommand.SetupGet(c => c.Connection).Returns(mockConnection.Object);
+
+            return mockCommand;
         }
 
         // end of method
@@ -70,49 +111,8 @@ namespace Olive
             }
         }
 
-        public static IDbCommand CreateMockDbCommand(IDbConnection connection, params Tuple<string, object>[] parameterValues)
-        {
-            var mockCommand = new Mock<IDbCommand>();
-            mockCommand.SetupAllProperties();
-            mockCommand.Object.Connection = connection;
-
-            var mockParams = new Mock<IDataParameterCollection>();
-            var mockReturnParam = new Mock<IDbDataParameter>();
-            mockReturnParam.SetupGet(p => p.Value).Returns(0);
-
-            foreach (var parameterValue in parameterValues)
-            {
-                var param = new Mock<IDbDataParameter>();
-                param.SetupGet(p => p.Value).Returns(parameterValue.Item2);
-
-                mockParams.SetupGet(c => c[parameterValue.Item1]).Returns(param.Object);
-            }
-
-            mockCommand.Setup(c => c.Parameters).Returns(mockParams.Object);
-
-            return mockCommand.Object;
-        }
-
-        public static Mock<IDbCommand> CreateMockDbCommand()
-        {
-            var mockParams = new MockDataParameterCollection();
-
-            var mockCommand = new Mock<IDbCommand>();
-            mockCommand.SetupAllProperties();
-            mockCommand.SetupGet(x => x.Parameters).Returns(mockParams);
-            mockCommand.Setup(c => c.CreateParameter()).Returns(() => new Mock<IDbDataParameter>().SetupAllProperties().Object);
-
-            var mockConnection = new Mock<IDbConnection>();
-            mockConnection.Setup(c => c.CreateCommand()).Returns(mockCommand.Object);
-            mockCommand.SetupGet(c => c.Connection).Returns(mockConnection.Object);
-
-            return mockCommand;
-        }
-
-
         // end of method
     }
-
     // end of class
 }
 

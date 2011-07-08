@@ -1,12 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AssemblyInfo.cs" company="Olive">
-//   [Copyright]
+//   
 // </copyright>
 // <summary>
 //   AssemblyInfo.cs
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 using System.Reflection;
 
 [assembly: AssemblyTitle("Core")]

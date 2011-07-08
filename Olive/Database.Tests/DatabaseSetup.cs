@@ -1,25 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
-using System.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Data.Schema.UnitTesting;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DatabaseSetup.cs" company="Olive">
+//   
+// </copyright>
+// <summary>
+//   Defines the DatabaseSetup type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive.DataAccess.Tests
 {
-    [TestClass()]
+    using Microsoft.Data.Schema.UnitTesting;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [TestClass]
     public class DatabaseSetup
     {
-
-        [AssemblyInitialize()]
+        [AssemblyInitialize]
         public static void InitializeAssembly(TestContext ctx)
         {
-            //   Setup the test database based on setting in the
+            // Setup the test database based on setting in the
             // configuration file
             DatabaseTestClass.TestService.DeployDatabaseProject();
             DatabaseTestClass.TestService.GenerateData();
         }
-
     }
 }

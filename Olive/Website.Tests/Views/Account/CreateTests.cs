@@ -1,18 +1,19 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="CreateTests.cs" company="Microsoft">
-// TODO: Update copyright text.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CreateTests.cs" company="Olive">
+//   
 // </copyright>
-// -----------------------------------------------------------------------
+// <summary>
+//   Defines the CreateTests type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Olive.Website.Tests.Views.Account
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     using NUnit.Framework;
 
+    using Olive.Website.ViewModels.Account;
     using Olive.Website.Views.Account;
 
     using PrecompiledMvcViews.Testing;
@@ -21,23 +22,13 @@ namespace Olive.Website.Tests.Views.Account
     public class CreateTests
     {
         [Test]
-        public void WithoutViewModelRendersWithoutExceptions()
-        {
-            var view = new Create();
-
-            var html = view.RenderAsHtml();
-        }
-
-        [Test]
         public void WithViewModelRendersWithoutExceptions1()
         {
             var view = new Create();
 
-            var viewModel = new Olive.Website.ViewModels.Account.CreateViewModel
+            var viewModel = new CreateViewModel
                 {
-                    Currencies = new List<string> { "USD", "BTC", "MBUSD" },
-                    CurrencyId = "BTC",
-                    DisplayName = null
+                   Currencies = new List<string> { "USD", "BTC", "MBUSD" }, CurrencyId = "BTC", DisplayName = null 
                 };
 
             var html = view.RenderAsHtml(viewModel);
@@ -48,14 +39,22 @@ namespace Olive.Website.Tests.Views.Account
         {
             var view = new Create();
 
-            var viewModel = new Olive.Website.ViewModels.Account.CreateViewModel
-            {
-                Currencies = new List<string> { "USD", "BTC", "MBUSD" },
-                CurrencyId = "BTC",
-                DisplayName = "QUITEUNIQUE"
-            };
+            var viewModel = new CreateViewModel
+                {
+                    Currencies = new List<string> { "USD", "BTC", "MBUSD" }, 
+                    CurrencyId = "BTC", 
+                    DisplayName = "QUITEUNIQUE"
+                };
 
             var html = view.RenderAsHtml(viewModel);
+        }
+
+        [Test]
+        public void WithoutViewModelRendersWithoutExceptions()
+        {
+            var view = new Create();
+
+            var html = view.RenderAsHtml();
         }
     }
 }
