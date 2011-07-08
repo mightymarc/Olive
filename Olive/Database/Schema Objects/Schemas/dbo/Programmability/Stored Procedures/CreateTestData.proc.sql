@@ -10,7 +10,7 @@ insert into dbo.Currency (CurrencyId) values ('GBP')
 
 insert into Banking.[Account] ([Type], CurrencyId, AllowNegative, DisplayName)
 	values ('IncomingMoneybookersUSD', 'USD', 1, 'Incoming Moneybookers (USD)')
-
+	
 declare @UserCount int = round((100 - 50) * rand() + 50, 0)
 print 'Creating ' + cast(@UserCount as nvarchar) + ' users.'
 
@@ -44,7 +44,7 @@ begin
 				where [Type] = 'IncomingMoneybookersUSD')
 				
 			declare @DestAccountId int = null
-			exec [Banking].[GetOrCreateUserCurrentAccount] @UserId, 'USD', @DestAccountId output
+			exec [Banking].[GetOrCreateUserCurrentAccount] @UserId, 'USD', null, @DestAccountId output
 			
 			declare @Amount decimal(18, 8) = round(rand() * 100000, 8)
 			declare @TransferId bigint = null

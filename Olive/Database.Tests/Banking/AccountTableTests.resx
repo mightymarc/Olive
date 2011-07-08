@@ -127,12 +127,12 @@ print 'User created with id ' + convert(varchar, @UserId) + '.'
 
 print 'Creating account one.'
 declare @AccountOneId int
-exec Banking.CreateCurrentAccount @UserId, 'USD', @AccountOneId output
+exec Banking.CreateCurrentAccount @UserId, 'USD', null, @AccountOneId output
 print 'Created account one with id ' + convert(varchar, @AccountOneId) + '.'
 
 print 'Creating account two.'
 declare @AccountTwoId int
-exec Banking.CreateCurrentAccount @UserId, 'USD', @AccountTwoId output
+exec Banking.CreateCurrentAccount @UserId, 'USD', null, @AccountTwoId output
 print 'Created account two with id ' + convert(varchar, @AccountTwoId) + '.'
 
 declare @TransferId bigint

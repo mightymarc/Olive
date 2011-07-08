@@ -47,14 +47,21 @@ namespace Olive.Services
 
                 if (salt == null)
                 {
-                    throw new AuthenticationException();
+                    throw new FaultException("UnrecognizedEmailPasswordCombination");
                 }
 
                 var crypto = this.Container.Resolve<ICrypto>();
 
                 var hash = crypto.GenerateHash(password, salt);
 
-                return context.CreateSession(email, hash);
+                try
+                {
+                    return context.CreateSession(email, hash);
+                }
+                catch (AuthenticationException)
+                {
+                    throw new FaultException("UnrecognizedEmailPasswordCombination");
+                }
             }
         }
 

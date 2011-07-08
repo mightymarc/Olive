@@ -64,7 +64,7 @@ namespace Olive.DataAccess
             var command = this.CommandConnection.CreateCommand("Banking.CreateCurrentAccount");
             command.AddParam("@UserId", DbType.Int32, userId);
             command.AddParam("@CurrencyId", DbType.AnsiString, currencyId);
-            command.AddParam("@DisplayName", DbType.String, displayName);
+            command.AddParam("@DisplayName", DbType.String, (object)displayName ?? DBNull.Value);
             command.AddParam("@AccountId", DbType.Int32, direction: ParameterDirection.Output);
 
             switch (this.ExecuteCommand(command))
@@ -92,7 +92,7 @@ namespace Olive.DataAccess
             command.AddParam("@SourceAccountId", DbType.Int32, sourceAccountId);
             command.AddParam("@DestAccountId", DbType.Int32, destAccountId);
             command.AddParam("@Amount", DbType.Decimal, amount);
-            command.AddParam("@Description", DbType.String, description);
+            command.AddParam("@Description", DbType.String, (object)description ?? DBNull.Value);
             command.AddParam("@TransferId", DbType.Int64, direction: ParameterDirection.Output);
 
             switch (this.ExecuteCommand(command))
