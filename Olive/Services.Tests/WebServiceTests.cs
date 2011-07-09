@@ -53,33 +53,57 @@ namespace Olive.Services.Tests
     using Olive.DataAccess;
     using Olive.DataAccess.Tests;
 
+    /// <summary>
+    /// The web service tests.
+    /// </summary>
     [TestFixture]
     public sealed class WebServiceTests
     {
+        #region Constants and Fields
+
+        /// <summary>
+        /// The create transfer with bad arguments throws exception cases.
+        /// </summary>
         private static object[] createTransferWithBadArgumentsThrowsExceptionCases = {
                                                                                          new object[] { 0, 1, 100m, "cc" }
-                                                                                         ,
+                                                                                         , 
                                                                                          new object[]
-                                                                                             { 1, 1, 101m, string.Empty },
+                                                                                             {
+                                                                                                1, 1, 101m, string.Empty 
+                                                                                             }, 
                                                                                          new object[]
-                                                                                             { -1, 1, 102m, "cc" },
+                                                                                             {
+                                                                                                -1, 1, 102m, "cc" 
+                                                                                             }, 
                                                                                          new object[]
-                                                                                             { 1, 1, -103m, string.Empty }
-                                                                                         ,
+                                                                                             {
+                                                                                                1, 1, -103m, string.Empty 
+                                                                                             }
+                                                                                         , 
                                                                                          new object[]
-                                                                                             { 1, -1, 104m, "cc" },
-                                                                                         new object[] { 1, 1, 0m, "cc" },
-                                                                                         new object[] { 1, 1, 6m, "cc" },
+                                                                                             {
+                                                                                                1, -1, 104m, "cc" 
+                                                                                             }, 
+                                                                                         new object[] { 1, 1, 0m, "cc" }, 
+                                                                                         new object[] { 1, 1, 6m, "cc" }, 
                                                                                          new object[]
-                                                                                             { 1, 0, 105m, "des" }
+                                                                                             {
+                                                                                                1, 0, 105m, "des" 
+                                                                                             }
                                                                                      };
 
+        /// <summary>
+        /// The edit account does not throw exception cases.
+        /// </summary>
         private static object[] editAccountDoesNotThrowExceptionCases = {
                                                                             new object[] { Guid.NewGuid(), 123, "Name" }, 
-                                                                            new object[] { Guid.NewGuid(), 1, (string)null }, 
-                                                                            new object[] { Guid.NewGuid(), 333434, (string)null }
+                                                                            new object[] { Guid.NewGuid(), 1, null }, 
+                                                                            new object[] { Guid.NewGuid(), 333434, null }
                                                                         };
 
+        /// <summary>
+        /// The edit account with bad arguments throws exception cases.
+        /// </summary>
         private static object[] editAccountWithBadArgumentsThrowsExceptionCases = {
                                                                                       new object[]
                                                                                           {
@@ -101,8 +125,29 @@ namespace Olive.Services.Tests
                                                                                           }
                                                                                   };
 
+        /// <summary>
+        /// The container.
+        /// </summary>
         private IUnityContainer container;
 
+        /// <summary>
+        /// The fault factory.
+        /// </summary>
+        private IFaultFactory faultFactory;
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// The create account with good credentials does not throw exception.
+        /// </summary>
+        /// <param name="currencyId">
+        /// The currency id.
+        /// </param>
+        /// <param name="displayName">
+        /// The display name.
+        /// </param>
         [Test]
         [TestCase("USD", null)]
         [TestCase("USD", "")]
@@ -134,6 +179,15 @@ namespace Olive.Services.Tests
             Assert.AreEqual(expectedAccountId, actualAccountId);
         }
 
+        /// <summary>
+        /// The create current account with bad arguments throws exception.
+        /// </summary>
+        /// <param name="currencyId">
+        /// The currency id.
+        /// </param>
+        /// <param name="displayName">
+        /// The display name.
+        /// </param>
         [Test]
         [TestCase(null, null)]
         [TestCase("", null)]
@@ -156,6 +210,9 @@ namespace Olive.Services.Tests
             Assert.Fail();
         }
 
+        /// <summary>
+        /// The create current account without credentials throws exception.
+        /// </summary>
         [Test]
         public void CreateCurrentAccountWithoutCredentialsThrowsException()
         {
@@ -166,6 +223,9 @@ namespace Olive.Services.Tests
             Assert.Throws<ArgumentException>(() => service.CreateCurrentAccount(Guid.Empty, "a@b.com", null));
         }
 
+        /// <summary>
+        /// The create session wit invalid email throws exception.
+        /// </summary>
         [Test]
         public void CreateSessionWitInvalidEmailThrowsException()
         {
@@ -203,6 +263,9 @@ namespace Olive.Services.Tests
             Mock.Get(context).Verify(c => c.CreateSession(email, It.IsAny<string>()), Times.Once());
         }*/
 
+        /// <summary>
+        /// The create session with null email throws exception.
+        /// </summary>
         [Test]
         public void CreateSessionWithNullEmailThrowsException()
         {
@@ -210,6 +273,9 @@ namespace Olive.Services.Tests
             Assert.Throws<ArgumentException>(() => service.CreateSession(null, "password"));
         }
 
+        /// <summary>
+        /// The create session with null password throws exception.
+        /// </summary>
         [Test]
         public void CreateSessionWithNullPasswordThrowsException()
         {
@@ -218,6 +284,9 @@ namespace Olive.Services.Tests
             Assert.Throws<ArgumentException>(() => service.CreateSession("valid@email.com", null));
         }
 
+        /// <summary>
+        /// The create session with unknown email throws authentication fault.
+        /// </summary>
         [Test]
         public void CreateSessionWithUnknownEmailThrowsAuthenticationFault()
         {
@@ -231,6 +300,9 @@ namespace Olive.Services.Tests
             Assert.Throws<FaultException>(() => service.CreateSession(email, passwordHash));
         }
 
+        /// <summary>
+        /// The create transfer success does not throw exception.
+        /// </summary>
         [Test]
         public void CreateTransferSuccessDoesNotThrowException()
         {
@@ -262,6 +334,21 @@ namespace Olive.Services.Tests
             Assert.AreEqual(transferId, actualTransferId);
         }
 
+        /// <summary>
+        /// The create transfer with bad arguments throws exception.
+        /// </summary>
+        /// <param name="sourceAccountId">
+        /// The source account id.
+        /// </param>
+        /// <param name="destAccountId">
+        /// The dest account id.
+        /// </param>
+        /// <param name="amount">
+        /// The amount.
+        /// </param>
+        /// <param name="description">
+        /// The description.
+        /// </param>
         [Test]
         [TestCaseSource("createTransferWithBadArgumentsThrowsExceptionCases")]
         public void CreateTransferWithBadArgumentsThrowsException(
@@ -281,7 +368,9 @@ namespace Olive.Services.Tests
             }
             catch (ArgumentException)
             {
-                return;// Assert.Pass(string.Format("Source={0}; Dest={1}; Amount={2}; Desc={3}", sourceAccountId, destAccountId, amount, description));
+                return;
+                    
+                    // Assert.Pass(string.Format("Source={0}; Dest={1}; Amount={2}; Desc={3}", sourceAccountId, destAccountId, amount, description));
             }
             catch
             {
@@ -291,6 +380,9 @@ namespace Olive.Services.Tests
             Assert.Fail("Unsupported case did not throw exception.");
         }
 
+        /// <summary>
+        /// The create transfer without access throws exception.
+        /// </summary>
         [Test]
         public void CreateTransferWithoutAccessThrowsException()
         {
@@ -317,6 +409,9 @@ namespace Olive.Services.Tests
             Mock.Get(service).Verify(s => s.UserCanWithdrawFromAccount(userId, sourceAccountId), Times.Once());
         }
 
+        /// <summary>
+        /// The create transfer without authentication throws exception.
+        /// </summary>
         [Test]
         public void CreateTransferWithoutAuthenticationThrowsException()
         {
@@ -341,6 +436,9 @@ namespace Olive.Services.Tests
             context.Verify(c => c.VerifySession(sesionId), Times.Once());
         }
 
+        /// <summary>
+        /// The create user does not throw exception.
+        /// </summary>
         [Test]
         public void CreateUserDoesNotThrowException()
         {
@@ -368,6 +466,9 @@ namespace Olive.Services.Tests
             Assert.IsNotNull(contextMock.Object.Users.SingleOrDefault(u => u.Email == email));
         }
 
+        /// <summary>
+        /// The create user with already registered email throws exception.
+        /// </summary>
         [Test]
         public void CreateUserWithAlreadyRegisteredEmailThrowsException()
         {
@@ -399,6 +500,12 @@ namespace Olive.Services.Tests
             Assert.Fail();
         }
 
+        /// <summary>
+        /// The create user with bad email format throws exception.
+        /// </summary>
+        /// <param name="email">
+        /// The email.
+        /// </param>
         [Test]
         [TestCase("@email.com")]
         [TestCase(" @email.com")]
@@ -423,6 +530,9 @@ namespace Olive.Services.Tests
                     CultureInfo.CurrentCulture, "E-mail '{0}' should not have been allowed to register.", email));
         }
 
+        /// <summary>
+        /// The create user with null email throws exception.
+        /// </summary>
         [Test]
         public void CreateUserWithNullEmailThrowsException()
         {
@@ -433,6 +543,9 @@ namespace Olive.Services.Tests
             Assert.Throws<ArgumentException>(() => service.CreateUser(null, "password"));
         }
 
+        /// <summary>
+        /// The create user with null password throws exception.
+        /// </summary>
         [Test]
         public void CreateUserWithNullPasswordThrowsException()
         {
@@ -443,6 +556,9 @@ namespace Olive.Services.Tests
             Assert.Throws<ArgumentException>(() => service.CreateUser("a@b.com", null));
         }
 
+        /// <summary>
+        /// The create user with too short password throws exception.
+        /// </summary>
         [Test]
         public void CreateUserWithTooShortPasswordThrowsException()
         {
@@ -453,6 +569,18 @@ namespace Olive.Services.Tests
             Assert.Throws<ArgumentException>(() => service.CreateUser("a@b.c", "ab"));
         }
 
+        /// <summary>
+        /// The edit current account does not throw exception.
+        /// </summary>
+        /// <param name="sessionId">
+        /// The session id.
+        /// </param>
+        /// <param name="accountId">
+        /// The account id.
+        /// </param>
+        /// <param name="displayName">
+        /// The display name.
+        /// </param>
         [Test]
         [TestCaseSource("editAccountDoesNotThrowExceptionCases")]
         public void EditCurrentAccountDoesNotThrowException(Guid sessionId, int accountId, string displayName)
@@ -482,6 +610,18 @@ namespace Olive.Services.Tests
             context.Verify(c => c.EditCurrentAccount(accountId, displayName == string.Empty ? null : displayName));
         }
 
+        /// <summary>
+        /// The edit current account with bad arguments throws exception.
+        /// </summary>
+        /// <param name="sessionId">
+        /// The session id.
+        /// </param>
+        /// <param name="accountId">
+        /// The account id.
+        /// </param>
+        /// <param name="displayName">
+        /// The display name.
+        /// </param>
         [Test]
         [TestCaseSource("editAccountWithBadArgumentsThrowsExceptionCases")]
         public void EditCurrentAccountWithBadArgumentsThrowsException(Guid sessionId, int accountId, string displayName)
@@ -502,6 +642,9 @@ namespace Olive.Services.Tests
             Assert.Fail("ArgumentException was expected to be thrown.");
         }
 
+        /// <summary>
+        /// The edit current account with invalid session id throws exception.
+        /// </summary>
         [Test]
         public void EditCurrentAccountWithInvalidSessionIdThrowsException()
         {
@@ -531,15 +674,9 @@ namespace Olive.Services.Tests
             }
         }
 
-        private WebService GetMockWebService()
-        {
-            var mockService = new Mock<WebService> { CallBase = true };
-            mockService.Object.Container = this.container;
-            mockService.Object.FaultFactory = this.faultFactory;
-
-            return mockService.Object;
-        }
-
+        /// <summary>
+        /// The edit current account without having access test.
+        /// </summary>
         [Test]
         public void EditCurrentAccountWithoutHavingAccessTest()
         {
@@ -572,27 +709,27 @@ namespace Olive.Services.Tests
             Assert.Fail();
         }
 
-        [Test]
-        public void GetCurrenciesTest()
-        {
-            // Arrange
-            var service = new WebService { Container = this.container };
-
-            Assert.Inconclusive("Requires mock DbSet, postponed.");
-        }
-
-        [Test]
-        public void GetAccountThrowsExceptionForNonExistingAccount()
-        {
-            Assert.Inconclusive();
-        }
-
+        /// <summary>
+        /// The get account does not throw exception.
+        /// </summary>
         [Test]
         public void GetAccountDoesNotThrowException()
         {
             Assert.Inconclusive();
         }
 
+        /// <summary>
+        /// The get account throws exception for non existing account.
+        /// </summary>
+        [Test]
+        public void GetAccountThrowsExceptionForNonExistingAccount()
+        {
+            Assert.Inconclusive();
+        }
+
+        /// <summary>
+        /// The get account throws exception when user does not have access.
+        /// </summary>
         [Test]
         public void GetAccountThrowsExceptionWhenUserDoesNotHaveAccess()
         {
@@ -603,7 +740,7 @@ namespace Olive.Services.Tests
 
             var mockContext = new Mock<IOliveContext>();
             mockContext.Setup(c => c.VerifySession(sessionId)).Returns(userId);
-            this.container.RegisterInstance<IOliveContext>(mockContext.Object);
+            this.container.RegisterInstance(mockContext.Object);
 
             var service = this.GetMockWebService();
             Mock.Get(service).Setup(s => s.UserCanViewAccount(userId, accountId)).Returns(false);
@@ -623,8 +760,21 @@ namespace Olive.Services.Tests
             Assert.Fail();
         }
 
-        private IFaultFactory faultFactory;
+        /// <summary>
+        /// The get currencies test.
+        /// </summary>
+        [Test]
+        public void GetCurrenciesTest()
+        {
+            // Arrange
+            var service = new WebService { Container = this.container };
 
+            Assert.Inconclusive("Requires mock DbSet, postponed.");
+        }
+
+        /// <summary>
+        /// The set up.
+        /// </summary>
         [SetUp]
         public void SetUp()
         {
@@ -632,5 +782,25 @@ namespace Olive.Services.Tests
             this.faultFactory = new FaultFactory();
             this.container.RegisterInstance(this.faultFactory);
         }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The get mock web service.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        private WebService GetMockWebService()
+        {
+            var mockService = new Mock<WebService> { CallBase = true };
+            mockService.Object.Container = this.container;
+            mockService.Object.FaultFactory = this.faultFactory;
+
+            return mockService.Object;
+        }
+
+        #endregion
     }
 }

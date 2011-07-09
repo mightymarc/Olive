@@ -1,6 +1,36 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="UserTableTests.cs" company="Olive">
-//   
+//   Microsoft Public License (Ms-PL)
+//
+//    This license governs use of the accompanying software. If you use the software, you accept this license. If you do not accept the license, do not use the software.
+//    
+//    1. Definitions
+//    
+//    The terms "reproduce," "reproduction," "derivative works," and "distribution" have the same meaning here as under U.S. copyright law.
+//    
+//    A "contribution" is the original software, or any additions or changes to the software.
+//    
+//    A "contributor" is any person that distributes its contribution under this license.
+//    
+//    "Licensed patents" are a contributor's patent claims that read directly on its contribution.
+//    
+//    2. Grant of Rights
+//    
+//    (A) Copyright Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free copyright license to reproduce its contribution, prepare derivative works of its contribution, and distribute its contribution or any derivative works that you create.
+//    
+//    (B) Patent Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free license under its licensed patents to make, have made, use, sell, offer for sale, import, and/or otherwise dispose of its contribution in the software or derivative works of the contribution in the software.
+//    
+//    3. Conditions and Limitations
+//    
+//    (A) No Trademark License- This license does not grant you rights to use any contributors' name, logo, or trademarks.
+//    
+//    (B) If you bring a patent claim against any contributor over patents that you claim are infringed by the software, your patent license from such contributor to the software ends automatically.
+//    
+//    (C) If you distribute any portion of the software, you must retain all copyright, patent, trademark, and attribution notices that are present in the software.
+//    
+//    (D) If you distribute any portion of the software in source code form, you may do so only under this license by including a complete copy of this license with your distribution. If you distribute any portion of the software in compiled or object code form, you may only do so under a license that complies with this license.
+//    
+//    (E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties of merchantability, fitness for a particular purpose and non-infringement.
 // </copyright>
 // <summary>
 //   Defines the UserTableTests type.
@@ -15,32 +45,78 @@ namespace Olive.Database.Tests.dbo
     using Microsoft.Data.Schema.UnitTesting.Conditions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// The user table tests.
+    /// </summary>
     [TestClass]
     public class UserTableTests : DatabaseTestClass
     {
+        #region Constants and Fields
+
+        /// <summary>
+        /// The allowed to update password hash data.
+        /// </summary>
         private DatabaseTestActions AllowedToUpdatePasswordHashData;
 
+        /// <summary>
+        /// The insert success data.
+        /// </summary>
         private DatabaseTestActions InsertSuccessData;
 
+        /// <summary>
+        /// The insert with duplicate email fails data.
+        /// </summary>
         private DatabaseTestActions InsertWithDuplicateEmailFailsData;
 
+        /// <summary>
+        /// The insert with null email fails data.
+        /// </summary>
         private DatabaseTestActions InsertWithNullEmailFailsData;
 
+        /// <summary>
+        /// The insert with null password hash fails data.
+        /// </summary>
         private DatabaseTestActions InsertWithNullPasswordHashFailsData;
 
+        /// <summary>
+        /// The insert with null password salt fails data.
+        /// </summary>
         private DatabaseTestActions InsertWithNullPasswordSaltFailsData;
 
+        /// <summary>
+        /// The not allowed to delete data.
+        /// </summary>
         private DatabaseTestActions NotAllowedToDeleteData;
 
+        /// <summary>
+        /// The not allowed to update email data.
+        /// </summary>
         private DatabaseTestActions NotAllowedToUpdateEmailData;
 
+        /// <summary>
+        /// The not allowed to update password salt data.
+        /// </summary>
         private DatabaseTestActions NotAllowedToUpdatePasswordSaltData;
 
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserTableTests"/> class.
+        /// </summary>
         public UserTableTests()
         {
             this.InitializeComponent();
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// The allowed to update password hash.
+        /// </summary>
         [TestMethod]
         public void AllowedToUpdatePasswordHash()
         {
@@ -62,6 +138,9 @@ namespace Olive.Database.Tests.dbo
                 this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
         }
 
+        /// <summary>
+        /// The insert success.
+        /// </summary>
         [TestMethod]
         public void InsertSuccess()
         {
@@ -83,6 +162,9 @@ namespace Olive.Database.Tests.dbo
                 this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
         }
 
+        /// <summary>
+        /// The insert with duplicate email fails.
+        /// </summary>
         [TestMethod]
         public void InsertWithDuplicateEmailFails()
         {
@@ -104,6 +186,9 @@ namespace Olive.Database.Tests.dbo
                 this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
         }
 
+        /// <summary>
+        /// The insert with null email fails.
+        /// </summary>
         [TestMethod]
         public void InsertWithNullEmailFails()
         {
@@ -125,6 +210,9 @@ namespace Olive.Database.Tests.dbo
                 this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
         }
 
+        /// <summary>
+        /// The insert with null password hash fails.
+        /// </summary>
         [TestMethod]
         public void InsertWithNullPasswordHashFails()
         {
@@ -146,6 +234,9 @@ namespace Olive.Database.Tests.dbo
                 this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
         }
 
+        /// <summary>
+        /// The insert with null password salt fails.
+        /// </summary>
         [TestMethod]
         public void InsertWithNullPasswordSaltFails()
         {
@@ -167,6 +258,9 @@ namespace Olive.Database.Tests.dbo
                 this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
         }
 
+        /// <summary>
+        /// The not allowed to delete.
+        /// </summary>
         [TestMethod]
         public void NotAllowedToDelete()
         {
@@ -188,6 +282,9 @@ namespace Olive.Database.Tests.dbo
                 this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
         }
 
+        /// <summary>
+        /// The not allowed to update email.
+        /// </summary>
         [TestMethod]
         public void NotAllowedToUpdateEmail()
         {
@@ -209,6 +306,9 @@ namespace Olive.Database.Tests.dbo
                 this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
         }
 
+        /// <summary>
+        /// The not allowed to update password salt.
+        /// </summary>
         [TestMethod]
         public void NotAllowedToUpdatePasswordSalt()
         {
@@ -230,20 +330,30 @@ namespace Olive.Database.Tests.dbo
                 this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
         }
 
+        /// <summary>
+        /// The test cleanup.
+        /// </summary>
         [TestCleanup]
         public void TestCleanup()
         {
             this.CleanupTest();
         }
 
+        /// <summary>
+        /// The test initialize.
+        /// </summary>
         [TestInitialize]
         public void TestInitialize()
         {
             this.InitializeTest();
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        ///   Required method for Designer support - do not modify 
+        /// Required method for Designer support - do not modify 
         ///   the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
@@ -491,6 +601,8 @@ namespace Olive.Database.Tests.dbo
             scalarValueCondition10.ResultSet = 1;
             scalarValueCondition10.RowNumber = 1;
         }
+
+        #endregion
 
         // You can use the following additional attributes as you write your tests:
         // Use ClassInitialize to run code before running the first test in the class

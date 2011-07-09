@@ -1,6 +1,36 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="UnitTestHelper.cs" company="Olive">
-//   
+//   Microsoft Public License (Ms-PL)
+//
+//    This license governs use of the accompanying software. If you use the software, you accept this license. If you do not accept the license, do not use the software.
+//    
+//    1. Definitions
+//    
+//    The terms "reproduce," "reproduction," "derivative works," and "distribution" have the same meaning here as under U.S. copyright law.
+//    
+//    A "contribution" is the original software, or any additions or changes to the software.
+//    
+//    A "contributor" is any person that distributes its contribution under this license.
+//    
+//    "Licensed patents" are a contributor's patent claims that read directly on its contribution.
+//    
+//    2. Grant of Rights
+//    
+//    (A) Copyright Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free copyright license to reproduce its contribution, prepare derivative works of its contribution, and distribute its contribution or any derivative works that you create.
+//    
+//    (B) Patent Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free license under its licensed patents to make, have made, use, sell, offer for sale, import, and/or otherwise dispose of its contribution in the software or derivative works of the contribution in the software.
+//    
+//    3. Conditions and Limitations
+//    
+//    (A) No Trademark License- This license does not grant you rights to use any contributors' name, logo, or trademarks.
+//    
+//    (B) If you bring a patent claim against any contributor over patents that you claim are infringed by the software, your patent license from such contributor to the software ends automatically.
+//    
+//    (C) If you distribute any portion of the software, you must retain all copyright, patent, trademark, and attribution notices that are present in the software.
+//    
+//    (D) If you distribute any portion of the software in source code form, you may do so only under this license by including a complete copy of this license with your distribution. If you distribute any portion of the software in compiled or object code form, you may only do so under a license that complies with this license.
+//    
+//    (E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties of merchantability, fitness for a particular purpose and non-infringement.
 // </copyright>
 // <summary>
 //   Summary description for Class1.
@@ -16,14 +46,34 @@ namespace Olive
     using Moq;
 
     /// <summary>
-    ///   Summary description for Class1.
+    /// Summary description for Class1.
     /// </summary>
     public class UnitTestHelper
     {
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="UnitTestHelper"/> class from being created.
+        /// </summary>
         private UnitTestHelper()
         {
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// The create mock db command.
+        /// </summary>
+        /// <param name="connection">
+        /// The connection.
+        /// </param>
+        /// <param name="parameterValues">
+        /// The parameter values.
+        /// </param>
+        /// <returns>
+        /// </returns>
         public static IDbCommand CreateMockDbCommand(
             IDbConnection connection, params Tuple<string, object>[] parameterValues)
         {
@@ -48,6 +98,11 @@ namespace Olive
             return mockCommand.Object;
         }
 
+        /// <summary>
+        /// The create mock db command.
+        /// </summary>
+        /// <returns>
+        /// </returns>
         public static Mock<IDbCommand> CreateMockDbCommand()
         {
             var mockParams = new MockDataParameterCollection();
@@ -66,6 +121,24 @@ namespace Olive
         }
 
         // end of method
+        /// <summary>
+        /// The run instance method.
+        /// </summary>
+        /// <param name="t">
+        /// The t.
+        /// </param>
+        /// <param name="strMethod">
+        /// The str method.
+        /// </param>
+        /// <param name="objInstance">
+        /// The obj instance.
+        /// </param>
+        /// <param name="aobjParams">
+        /// The aobj params.
+        /// </param>
+        /// <returns>
+        /// The run instance method.
+        /// </returns>
         public static object RunInstanceMethod(Type t, string strMethod, object objInstance, object[] aobjParams)
         {
             BindingFlags eFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
@@ -73,14 +146,20 @@ namespace Olive
         }
 
         /// <summary>
-        ///   Runs a method on a type, given its parameters. This is useful for
+        /// Runs a method on a type, given its parameters. This is useful for
         ///   calling private methods.
         /// </summary>
-        /// <param name = "t">The t.</param>
-        /// <param name = "strMethod">The STR method.</param>
-        /// <param name = "aobjParams">The aobj params.</param>
+        /// <param name="t">
+        /// The t.
+        /// </param>
+        /// <param name="strMethod">
+        /// The STR method.
+        /// </param>
+        /// <param name="aobjParams">
+        /// The aobj params.
+        /// </param>
         /// <returns>
-        ///   The return value of the called method.
+        /// The return value of the called method.
         /// </returns>
         public static object RunStaticMethod(Type t, string strMethod, object[] aobjParams)
         {
@@ -88,8 +167,34 @@ namespace Olive
             return RunMethod(t, strMethod, null, aobjParams, eFlags);
         }
 
-        // end of method
+        #endregion
 
+        // end of method
+        #region Methods
+
+        /// <summary>
+        /// The run method.
+        /// </summary>
+        /// <param name="t">
+        /// The t.
+        /// </param>
+        /// <param name="strMethod">
+        /// The str method.
+        /// </param>
+        /// <param name="objInstance">
+        /// The obj instance.
+        /// </param>
+        /// <param name="aobjParams">
+        /// The aobj params.
+        /// </param>
+        /// <param name="eFlags">
+        /// The e flags.
+        /// </param>
+        /// <returns>
+        /// The run method.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// </exception>
         private static object RunMethod(
             Type t, string strMethod, object objInstance, object[] aobjParams, BindingFlags eFlags)
         {
@@ -110,6 +215,8 @@ namespace Olive
                 throw;
             }
         }
+
+        #endregion
 
         // end of method
     }

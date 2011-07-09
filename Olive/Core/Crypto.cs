@@ -45,15 +45,21 @@ namespace Olive
     using System.Text;
 
     /// <summary>
-    ///   Defines helper methods to perform hashing.
+    /// Defines helper methods to perform hashing.
     /// </summary>
     public class Crypto : ICrypto
     {
+        #region Public Methods
+
         /// <summary>
-        ///   Creates a salt.
+        /// Creates a salt.
         /// </summary>
-        /// <param name = "length">The number of bytes to use in the salt.</param>
-        /// <returns>The salt that was created.</returns>
+        /// <param name="length">
+        /// The number of bytes to use in the salt.
+        /// </param>
+        /// <returns>
+        /// The salt that was created.
+        /// </returns>
         public string CreateSalt(int length)
         {
             Contract.Requires<ArgumentException>(length > 0, "length");
@@ -73,9 +79,11 @@ namespace Olive
         }
 
         /// <summary>
-        ///   Creates a salt.
+        /// Creates a salt.
         /// </summary>
-        /// <returns>The salt that was created.</returns>
+        /// <returns>
+        /// The salt that was created.
+        /// </returns>
         public string CreateSalt()
         {
             Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
@@ -84,11 +92,17 @@ namespace Olive
         }
 
         /// <summary>
-        ///   Generates a hash from the specified password and salt.
+        /// Generates a hash from the specified password and salt.
         /// </summary>
-        /// <param name = "password">The password.</param>
-        /// <param name = "salt">The salt to use for hashing.</param>
-        /// <returns>The hash that was generated.</returns>
+        /// <param name="password">
+        /// The password.
+        /// </param>
+        /// <param name="salt">
+        /// The salt to use for hashing.
+        /// </param>
+        /// <returns>
+        /// The hash that was generated.
+        /// </returns>
         public string GenerateHash(string password, string salt)
         {
             using (var hashAlgo = new SHA512Managed())
@@ -96,5 +110,7 @@ namespace Olive
                 return Convert.ToBase64String(hashAlgo.ComputeHash(Encoding.UTF8.GetBytes(password + salt)));
             }
         }
+
+        #endregion
     }
 }
