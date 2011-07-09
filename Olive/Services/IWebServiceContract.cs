@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IWebServiceContract.cs" company="Olive">
+// <copyright file="e.cs" company="Olive">
 //   
 // </copyright>
 // <summary>
@@ -52,6 +52,7 @@ namespace Olive.Services
             Contract.Requires<ArgumentException>(sessionId != Guid.Empty, "sessionId");
             Contract.Requires<ArgumentException>(sourceAccountId > 0, "sourceAccountId");
             Contract.Requires<ArgumentException>(destAccountId > 0, "destAccountId");
+            Contract.Requires<ArgumentException>(sourceAccountId != destAccountId, "sourceAccount != destAccount");
             Contract.Requires<ArgumentException>(amount > 0, "amount");
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(description), "description");
             return default(long);
@@ -66,14 +67,6 @@ namespace Olive.Services
                     email, 
                     @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"));
             Contract.Requires<ArgumentException>(Regex.IsMatch(password, "^.{8,50}$"));
-        }
-
-        public void EditAccount(Guid sessionId, int accountId, string displayName)
-        {
-            Contract.Requires<ArgumentException>(sessionId != Guid.Empty, "sessionId");
-            Contract.Requires<ArgumentException>(accountId > 0, "accountId");
-
-            return;
         }
 
         public GetAccountAccount GetAccount(Guid sessionId, int accountId)
@@ -106,6 +99,13 @@ namespace Olive.Services
         {
             Contract.Ensures(Contract.Result<List<string>>() != null);
             return default(List<string>);
+        }
+
+        public void EditCurrentAccount(Guid sessionId, int accountId, string displayName)
+        {
+            Contract.Requires<ArgumentException>(sessionId != Guid.Empty, "sessionId");
+            Contract.Requires<ArgumentException>(accountId > 0, "accountId");
+            Contract.Requires<ArgumentException>(displayName != string.Empty, "displayName");
         }
     }
 }

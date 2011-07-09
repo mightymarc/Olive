@@ -69,5 +69,7 @@ namespace Olive.DataAccess
         ///   The user id of the user that owns the session.
         /// </returns>
         int VerifySession(Guid sessionId);
+
+        void EditCurrentAccount(int accountId, string displayName);
     }
 }

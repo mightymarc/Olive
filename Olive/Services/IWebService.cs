@@ -22,7 +22,6 @@ namespace Olive.Services
         int CreateCurrentAccount(Guid sessionId, string currencyId, string displayName);
 
         [OperationContract]
-        [FaultContract(typeof(AuthenticationFault))]
         Guid CreateSession(string email, string password);
 
         [OperationContract]
@@ -30,9 +29,6 @@ namespace Olive.Services
 
         [OperationContract]
         void CreateUser(string email, string password);
-
-        [OperationContract]
-        void EditAccount(Guid sessionId, int accountId, string displayName);
 
         [OperationContract]
         GetAccountAccount GetAccount(Guid sessionId, int accountId);
@@ -45,5 +41,8 @@ namespace Olive.Services
 
         [OperationContract]
         List<string> GetCurrencies();
+
+        [OperationContract]
+        void EditCurrentAccount(Guid sessionId, int accountId, string displayName);
     }
 }

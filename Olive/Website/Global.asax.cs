@@ -34,13 +34,8 @@ namespace Olive.Website
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                "Default", 
-                // Route name
-                "{controller}/{action}/{id}", 
-                // URL with parameters
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
-                );
+            routes.MapRoute("Default",  "{controller}/{action}", new { controller = "Home", action = "Index" });
+            routes.MapRoute("Account/Edit", "{controller}/{action}/{AccountId}", new { controller = "Account", action = "Edit", AccountId = UrlParameter.Optional });
         }
 
         protected void Application_Start()
@@ -60,6 +55,7 @@ namespace Olive.Website
             container.RegisterType<IWebService, WebService>();
             container.RegisterType<ISiteSession, SiteSession>();
             container.RegisterType<ICrypto, Crypto>();
+            container.RegisterType<IFaultFactory, FaultFactory>();
             container.RegisterType<IOliveContext, OliveContext>();
             container.RegisterType<ICurrencyCache, CurrencyCache>();
             return container;

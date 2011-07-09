@@ -33,6 +33,8 @@ namespace Olive.Website.ViewModels.Account
         ///   The display name.
         /// </value>
         [StringLength(150)]
+        [Display(Name = "Name", Description = "Account name")]
+        [DisplayFormat(ConvertEmptyStringToNull = true)]
         public string DisplayName { get; set; }
     }
 }

@@ -9,6 +9,7 @@
 
 namespace Olive.Services
 {
+    using System;
     using System.Runtime.Serialization;
 
     [DataContract]
@@ -16,5 +17,14 @@ namespace Olive.Services
     {
         [DataMember]
         public string DisplayName { get; set; }
+
+        [DataMember]
+        public int AccountId { get; set; }
+
+        [DataMember]
+        public string CurrencyId { get; set; }
+
+        [DataMember]
+        public string AccountType { get; set; }
     }
 }

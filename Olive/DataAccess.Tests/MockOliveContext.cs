@@ -174,5 +174,10 @@ namespace Olive.DataAccess.Tests
         {
             throw new NotImplementedException();
         }
+
+        public void EditCurrentAccount(int accountId, string displayName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

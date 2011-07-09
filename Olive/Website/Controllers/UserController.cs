@@ -58,9 +58,14 @@ namespace Olive.Website.Controllers
 
                     return new RedirectResult(model.ReturnUrl);
                 }
-                catch (FaultException<AuthenticationFault>)
+                catch (FaultException fe)
                 {
-                    this.ModelState.AddModelError(string.Empty, "The e-mail or password provided is incorrect.");
+                    if (fe.Code.Name == this.FaultFactory.UnrecognizedCredentialsFaultCode.Name)
+                    {
+                        this.ModelState.AddModelError(string.Empty, "The e-mail or password provided is incorrect.");
+                    }
+
+                    throw;
                 }
             }
 

@@ -136,5 +136,10 @@ namespace Olive.DataAccess
 
             return default(int);
         }
+
+        public void EditCurrentAccount(int accountId, string displayName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

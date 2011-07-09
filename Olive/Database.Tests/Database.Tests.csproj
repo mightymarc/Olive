@@ -103,6 +103,9 @@
     <Compile Include="Banking\CreateTransfer.cs">
       <SubType>Designer</SubType>
     </Compile>
+    <Compile Include="Banking\EditCurrentAccountTest.cs">
+      <SubType>Designer</SubType>
+    </Compile>
     <Compile Include="Banking\Transfer.cs">
       <SubType>Designer</SubType>
     </Compile>
@@ -146,6 +149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Banking\CreateTransfer.resx">
       <DependentUpon>CreateTransfer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Banking\EditCurrentAccountTest.resx">
+      <DependentUpon>EditCurrentAccountTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Banking\Transfer.resx">
       <DependentUpon>Transfer.cs</DependentUpon>

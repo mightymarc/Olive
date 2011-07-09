@@ -213,6 +213,38 @@ namespace Olive.DataAccess.Tests
         }
 
         [Test]
+        [TestCase(100, "Desc")]
+        [TestCase(2, null)]
+        public void EditAccountWithBadArgumentsThrowsException(int accountId, string displayName)
+        {
+            // Arrange
+            var mockCommand = UnitTestHelper.CreateMockDbCommand();
+            var mockContext = new Mock<OliveContext>();
+            mockContext.Setup(c => c.CommandConnection).Returns(mockCommand.Object.Connection);
+            mockContext.Setup(c => c.ExecuteCommand(It.IsAny<IDbCommand>())).Returns(
+                () => (int)(mockCommand.Object.GetParameter("@ReturnCode").Value = 51009));
+
+            // Act and assert
+            Assert.Throws<UnknownReturnCodeException>(() => mockContext.Object.EditCurrentAccount(accountId, displayName));
+        }
+
+        [Test]
+        [TestCase(100, "Desc")]
+        [TestCase(2, null)]
+        public void EditAccountWithDoesNotThrowException(int accountId, string displayName)
+        {
+            // Arrange
+            var mockCommand = UnitTestHelper.CreateMockDbCommand();
+            var mockContext = new Mock<OliveContext>();
+            mockContext.Setup(c => c.CommandConnection).Returns(mockCommand.Object.Connection);
+            mockContext.Setup(c => c.ExecuteCommand(It.IsAny<IDbCommand>())).Returns(
+                () => (int)(mockCommand.Object.GetParameter("@ReturnCode").Value = 0));
+
+            // Act
+            mockContext.Object.EditCurrentAccount(accountId, displayName);
+        }
+
+        [Test]
         public void VerifySessionWithNonExistingSession()
         {
             // Arrange
@@ -220,11 +252,7 @@ namespace Olive.DataAccess.Tests
             var mockContext = new Mock<OliveContext>();
             mockContext.Setup(c => c.CommandConnection).Returns(mockCommand.Object.Connection);
             mockContext.Setup(c => c.ExecuteCommand(It.IsAny<IDbCommand>())).Returns(
-                () =>
-                    {
-                        mockCommand.Object.GetParameter("@ReturnCode").Value = 51009;
-                        return 51009;
-                    });
+                () => (int)(mockCommand.Object.GetParameter("@ReturnCode").Value = 51009));
 
             // Act and assert
             Assert.Throws<UnknownReturnCodeException>(() => mockContext.Object.VerifySession(Guid.NewGuid()));

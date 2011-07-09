@@ -39,7 +39,7 @@ namespace Olive.Website.Tests.Views.Account
                                     }, 
                                 new AccountOverviewAccount
                                     {
-                                        AccountId = 100, 
+                                        AccountId = 102, 
                                         Balance = 150.06m, 
                                         CurrencyId = "UBTC", 
                                         DisplayName = "First account"
@@ -48,6 +48,10 @@ namespace Olive.Website.Tests.Views.Account
                 };
 
             var html = view.RenderAsHtml(viewModel);
+
+            Assert.IsNotNull(html.DocumentNode.SelectSingleNode(".//a[@href='/Account/Create']"), "Create current account link missing.");
+            Assert.IsNotNull(html.DocumentNode.SelectSingleNode(".//a[@href='/Account/Edit/102']"), "Edit account link missing.");
+            Assert.IsNotNull(html.DocumentNode.SelectSingleNode(".//a[@href='/Account/Transfer/?SourceAccountId=100']"), "Transfer from account link missing.");
         }
     }
 }

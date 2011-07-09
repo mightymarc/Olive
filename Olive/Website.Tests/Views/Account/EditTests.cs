@@ -36,10 +36,14 @@ namespace Olive.Website.Tests.Views.Account
 
             var viewModel = new EditViewModel
                 {
-                   AccountId = 123, DisplayName = "QUITEUNIQUE" 
+                   AccountId = 123, DisplayName = "Quite Unique" 
                 };
 
             var html = view.RenderAsHtml(viewModel);
+            Assert.IsNotNull(html.DocumentNode.SelectSingleNode("//form"), "Form missing");
+            Assert.IsNotNull(html.DocumentNode.SelectSingleNode("//input[@type='text' and @name='DisplayName']"), "DisplayName textbox missing.");
+            Assert.IsNotNull(html.DocumentNode.SelectSingleNode("//input[@type='submit']"), "Submit button missing");
+            Assert.IsNotNull(html.DocumentNode.SelectSingleNode("//a[@href='/Account']"), "Cancel link missing");
         }
 
         [Test]
@@ -49,6 +53,11 @@ namespace Olive.Website.Tests.Views.Account
             var viewModel = new EditViewModel { AccountId = 612345 };
 
             var html = view.RenderAsHtml(viewModel);
+
+            Assert.IsNotNull(html.DocumentNode.SelectSingleNode("//form"), "Form missing");
+            Assert.IsNotNull(html.DocumentNode.SelectSingleNode("//input[@type='text' and @name='DisplayName' and @value='']"), "DisplayName textbox missing.");
+            Assert.IsNotNull(html.DocumentNode.SelectSingleNode("//input[@type='submit']"), "Submit button missing");
+            Assert.IsNotNull(html.DocumentNode.SelectSingleNode("//a[@href='/Account']"), "Cancel link missing");
         }
     }
 }

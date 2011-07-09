@@ -73,25 +73,26 @@ namespace Olive.Website.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(EditViewModel model)
+        public ActionResult Edit(int accountId, EditViewModel model)
         {
             Contract.Requires<InvalidOperationException>(this.Service != null);
             Contract.Requires<InvalidOperationException>(this.SessionPersister != null);
             Contract.Requires<ArgumentNullException>(model != null, "model");
+
+            model.AccountId = accountId;
 
             if (!this.SessionPersister.HasSession)
             {
                 return this.RedirectToLogin();
             }
 
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                this.Service.EditAccount(this.SessionPersister.SessionId, model.AccountId, model.DisplayName);
-
-                return this.RedirectToAction("Index");
+                return this.View(model);
             }
 
-            return this.View(model);
+            this.Service.EditCurrentAccount(this.SessionPersister.SessionId, model.AccountId, model.DisplayName);
+            return this.RedirectToAction("", "Account");
         }
 
         [HttpGet]
@@ -106,7 +107,11 @@ namespace Olive.Website.Controllers
                 return this.RedirectToLogin();
             }
 
-            return this.View();
+            var account = this.Service.GetAccount(this.SessionPersister.SessionId, accountId);
+
+            var viewModel = new EditViewModel { AccountId = accountId, DisplayName = account.DisplayName };
+
+            return this.View(viewModel);
         }
 
         /// <summary>

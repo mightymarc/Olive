@@ -7,9 +7,14 @@
 <h2>Edit account #@Model.AccountId</h2>
 <p>Introduction.</p>
 
-@using (Html.BeginForm())
+@using (Html.BeginRouteForm("Account/Edit", new { accountId = @Model.AccountId }))
 { 
-    @Html.DisplayFor(m => m)
+    <div>
+        @Html.LabelFor(m => m.DisplayName)
+        @Html.TextBoxFor(m => m.DisplayName)
+        @Html.ValidationMessageFor(m => m.DisplayName)
+    </div>
 
-    <input type="submit" value="Edit" />
+    <input type="submit" value="Save changes" />
+    <a href="/Account">Cancel</a>
 }

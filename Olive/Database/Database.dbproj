@@ -294,6 +294,9 @@
     <Build Include="Schema Objects\Schemas\Auth\Views\ActiveSession.view.sql">
       <SubType>Code</SubType>
     </Build>
+    <Build Include="Schema Objects\Schemas\Banking\Programmability\Stored Procedures\EditCurrentAccount.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatabaseServer\DatabaseServer.dbproj">

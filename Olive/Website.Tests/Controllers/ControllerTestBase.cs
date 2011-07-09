@@ -53,6 +53,7 @@ namespace Olive.Website.Tests.Controllers
             this.container.RegisterInstance(this.currencyCache.Object);
             this.container.RegisterInstance(this.serviceMock.Object);
             this.container.RegisterInstance(this.httpContextMock.Object);
+            this.container.RegisterInstance<IFaultFactory>(new FaultFactory());
         }
 
         protected VM AssertViewModel<VM>(ActionResult actionResult)
@@ -77,17 +78,23 @@ namespace Olive.Website.Tests.Controllers
         protected T CreateController(bool buildUp = true, string relativePath = null)
         {
             var controller = new T();
-            this.container.BuildUp(controller);
+
+            if (buildUp)
+            {
+                this.container.BuildUp(controller);
+            }
 
             var routes = new RouteCollection();
             MvcApplication.RegisterRoutes(routes);
 
-            var contextBase = MvcMockHelpers.FakeHttpContext(); ////new MockHttpContext();
+            var contextBase = relativePath == null
+                                  ? MvcMockHelpers.FakeHttpContext()
+                                  : MvcMockHelpers.FakeHttpContext("~" + relativePath);
             controller.ControllerContext = new ControllerContext(contextBase, new RouteData(), controller);
             controller.Url = new UrlHelper(new RequestContext(contextBase, new RouteData()), routes);
 
             Mock.Get(controller.Request).SetupGet(s => s.Url).Returns(
-                new Uri("http://localhost/" + relativePath, UriKind.Absolute));
+                new Uri("http://localhost" + relativePath, UriKind.Absolute));
 
             return controller;
         }

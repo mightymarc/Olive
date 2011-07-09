@@ -146,13 +146,36 @@ namespace Olive.Website.Tests.Controllers
         [Test]
         public void EditAccountWithModel()
         {
-            Assert.Inconclusive();
+            // Arrange
+            var controller = this.CreateController();
+            this.SetupHasSession();
+
+            var viewModel = new EditViewModel { AccountId = 100, DisplayName = "Display name" };
+
+            // Act
+            var actionResult = (RedirectToRouteResult)controller.Edit(viewModel.AccountId, viewModel);
+
+            // Assert
+            Assert.AreEqual(null, actionResult.RouteValues["controller"]);
+            Assert.AreEqual(null, actionResult.RouteValues["action"]);
         }
 
         [Test]
         public void EditAccountWithModelRedirectsWhenNotLoggedIn()
         {
-            Assert.Inconclusive();
+            // Arrange
+            var controller = this.CreateController(relativePath: "/Account/Edit/100");
+            this.sessionMock.Setup(s => s.HasSession).Returns(false);
+
+            var viewModel = new EditViewModel { AccountId = 100, DisplayName = "Display name" };
+
+            // Act
+            var actionResult = (RedirectToRouteResult)controller.Edit(viewModel.AccountId, viewModel);
+
+            // Assert
+            Assert.AreEqual("Login", actionResult.RouteValues["action"]);
+            Assert.AreEqual("User", actionResult.RouteValues["controller"]);
+            Assert.AreEqual("/Account/Edit/100", actionResult.RouteValues["returnUrl"]);
         }
 
         [Test]
@@ -218,8 +241,7 @@ namespace Olive.Website.Tests.Controllers
         public void IndexWhenNotAuthenticatedRedirectsToLogin()
         {
             // Arrange
-            var controller = this.CreateController();
-            Mock.Get(controller.Request).SetupGet(r => r.RawUrl).Returns("/Account/Index");
+            var controller = this.CreateController(relativePath: "/Account");
             this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
             var model = new CreateViewModel { CurrencyId = "PPUSD", DisplayName = "abc" };
 
@@ -227,9 +249,9 @@ namespace Olive.Website.Tests.Controllers
             var actionResult = (RedirectToRouteResult)controller.Index();
 
             // Assert
-            Assert.AreEqual("Login", actionResult.RouteValues["action"]);
             Assert.AreEqual("User", actionResult.RouteValues["controller"]);
-            Assert.AreEqual("/Account/Index", actionResult.RouteValues["returnUrl"]);
+            Assert.AreEqual("Login", actionResult.RouteValues["action"]);
+            Assert.AreEqual("/Account", actionResult.RouteValues["returnUrl"]);
         }
 
         [SetUp]

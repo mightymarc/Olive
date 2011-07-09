@@ -117,68 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CorrectHashReturnsSessionId_TestAction.SqlScript" xml:space="preserve">
-    <value>BEGIN TRAN
+  <data name="ReturnsErrorCodeWhenAccountDoesNotExist_TestAction.SqlScript" xml:space="preserve">
+    <value>DECLARE @RC INT;
 
-DECLARE @Email VARCHAR(100) = 'test@email.com'
+EXEC @RC = Banking.EditCurrentAccount 30434545, null;
 
-INSERT INTO dbo.[User] (PasswordHash, PasswordSalt, Email)
-VALUES ('hash', 'salt', @Email);
-
---DECLARE @UserId int = CONVERT(int, @@IDENTITY);
-
-DECLARE @RC int
-DECLARE @SessionId uniqueidentifier;
-
-EXEC @RC = Auth.CreateSession @Email, 'hash', @SessionId output
-
-IF @RC &lt;&gt; 0 RAISERROR('Unexpected return code.', 16, 1);
-
-IF @SessionId IS NULL RAISERROR('Did not get a session id.', 16, 1);
-
-SELECT 0;
-
-ROLLBACK TRAN;
-</value>
-  </data>
-  <data name="IncorrectHashReturnsErrorCode_TestAction.SqlScript" xml:space="preserve">
-    <value>BEGIN TRAN
-
-DECLARE @Email VARCHAR(100) = 'test@email.com'
-
-INSERT INTO dbo.[User] (PasswordHash, PasswordSalt, Email)
-VALUES ('hush', 'salt', @Email);
-
-DECLARE @UserId int = CONVERT(int, @@IDENTITY);
-
-DECLARE @RC int
-DECLARE @SessionId uniqueidentifier
-
-EXEC @RC = Auth.CreateSession @Email, 'hash', @SessionId output
-
-IF @RC = 51009
+IF @RC = 51012
 	SELECT 0
 ELSE
-	SELECT 'Unexpected return code ' + CONVERT(varchar, @RC);
-
-ROLLBACK TRAN;
-
-</value>
-  </data>
-  <data name="UnknownEmailReturnsErrorCode_TestAction.SqlScript" xml:space="preserve">
-    <value>BEGIN TRAN
-
-DECLARE @RC int
-DECLARE @SessionId uniqueidentifier
-
-EXEC @RC = Auth.CreateSession 'ghjkjhghj@ghjhgfghjhg.com', 'hash', @SessionId output
-
-IF @RC = 51009
-	SELECT 0
-ELSE
-	SELECT 'Unexpected return code ' + CONVERT(varchar, @RC);
-
-ROLLBACK TRAN;
+	SELECT 'Unknown return code ' + CONVERT(VARCHAR, @RC);
 </value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

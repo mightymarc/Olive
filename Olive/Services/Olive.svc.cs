@@ -22,7 +22,7 @@ namespace Olive.Services
     public class WebService : IWebService
     {
         [Microsoft.Practices.Unity.Dependency]
-        public IUnityContainer Container { get; set; }
+        public virtual IUnityContainer Container { get; set; }
 
         public int CreateCurrentAccount(Guid sessionId, string currencyId, string displayName)
         {
@@ -44,12 +44,11 @@ namespace Olive.Services
             using (var context = this.GetContext())
             {
                 var salt =
-                    context.Users.Where(u => u.Email.ToLower() == email.ToLower()).Select(u => u.PasswordSalt).
-                        FirstOrDefault();
+                    context.Users.Where(u => u.Email.ToLower() == email.ToLower()).Select(u => u.PasswordSalt).FirstOrDefault();
 
                 if (salt == null)
                 {
-                    throw new FaultException("UnrecognizedEmailPasswordCombination");
+                    throw this.FaultFactory.CreateUnrecognizedCredentialsException(email);
                 }
 
                 var crypto = this.Container.Resolve<ICrypto>();
@@ -62,7 +61,7 @@ namespace Olive.Services
                 }
                 catch (AuthenticationException)
                 {
-                    throw new FaultException("UnrecognizedEmailPasswordCombination");
+                    throw this.FaultFactory.CreateUnrecognizedCredentialsException(email);
                 }
             }
         }
@@ -80,10 +79,7 @@ namespace Olive.Services
 
                 if (!hasAccess)
                 {
-                    // This exception has to be the same as the one below to avoid people guessing account names.
-                    throw new FaultException(
-                        new FaultReason("The user does not have permission to withdraw from the specified account."), 
-                        new FaultCode("AccountMissingWithdrawPermission"));
+                    throw this.FaultFactory.CreateUnauthorizedAccountWithdrawFaultException(userId, sourceAccountId);
                 }
 
                 try
@@ -92,22 +88,29 @@ namespace Olive.Services
                 }
                 catch (AuthorizationException)
                 {
-                    throw new FaultException(
-                        new FaultReason("The user does not have permission to withdraw from the specified account."), 
-                        new FaultCode("AccountMissingWithdrawPermission"));
+                    throw this.FaultFactory.CreateUnauthorizedAccountWithdrawFaultException(userId, sourceAccountId);
                 }
             }
         }
 
-        public void CreateUser(string email, string password)
+        public virtual bool EmailIsRegistered(string email)
         {
             using (var context = this.GetContext())
             {
-                if (context.Users.Any(u => u.Email.ToLower() == email.ToLower()))
+                return context.Users.Any(u => u.Email.ToLower() == email.ToLower());
+            }
+        }
+
+        [Dependency]
+        public IFaultFactory FaultFactory { get; set; }
+
+        public virtual void CreateUser(string email, string password)
+        {
+            using (var context = this.GetContext())
+            {
+                if (this.EmailIsRegistered(email))
                 {
-                    throw new FaultException(
-                        new FaultReason("The specified e-mail is already in use."), 
-                        new FaultCode("EmailAlreadyRegistered"));
+                    throw this.FaultFactory.CreateEmailAlreadyRegisteredFaultException(email);
                 }
 
                 var crypto = this.Container.Resolve<ICrypto>();
@@ -123,14 +126,62 @@ namespace Olive.Services
             }
         }
 
-        public void EditAccount(Guid sessionId, int accountId, string displayName)
+        public void EditCurrentAccount(Guid sessionId, int accountId, string displayName)
         {
-            throw new NotImplementedException();
+            var userId = default(int);
+
+            try
+            {
+                userId = this.VerifySession(sessionId);
+            }
+            catch (AuthenticationException)
+            {
+                throw this.FaultFactory.CreateSessionDoesNotExistFaultException(sessionId);
+            }
+
+            using (var context = this.GetContext())
+            {
+                var hasAccess = this.UserCanEditAccount(userId, accountId);
+
+                if (!hasAccess)
+                {
+                    throw this.FaultFactory.CreateUnauthorizedAccountEditFaultException(userId, accountId);
+                }
+
+                try
+                {
+                    context.EditCurrentAccount(accountId, displayName);
+                }
+                catch (AuthorizationException)
+                {
+                    throw this.FaultFactory.CreateUnauthorizedAccountEditFaultException(userId, accountId);
+                }
+            }
         }
 
         public GetAccountAccount GetAccount(Guid sessionId, int accountId)
         {
-            throw new NotImplementedException();
+                var userId = this.VerifySession(sessionId);
+
+                using (var context = this.GetContext())
+                {
+                    var hasAccess = this.UserCanViewAccount(userId, accountId);
+
+                    if (!hasAccess)
+                    {
+                        throw this.FaultFactory.CreateUnauthorizedAccountAccessFaultException(userId, accountId);
+                    }
+
+                    var account = context.Accounts.Find(accountId);
+
+                    return new GetAccountAccount
+                        {
+                            AccountId = account.AccountId,
+                            DisplayName = account.DisplayName,
+                            CurrencyId = account.CurrencyId,
+                            AccountType = account.AccountType
+                        };
+                }
         }
 
         public List<GetAccountTransfersTransfer> GetAccountTransfers(Guid sessionId, int accountId)
@@ -169,6 +220,17 @@ namespace Olive.Services
             }
         }
 
+        public virtual bool UserCanEditAccount(int userId, int accountId)
+        {
+            return this.UserCanWithdrawFromAccount(userId, accountId);
+        }
+
+        /// <summary>
+        /// Returns whether the specified user has access to withdraw money from the specified account.
+        /// </summary>
+        /// <param name="userId">The user whose access is being checked.</param>
+        /// <param name="accountId">The account to which access is required.</param>
+        /// <returns>True if the account exists and the user can withdraw from it else False.</returns>
         public virtual bool UserCanWithdrawFromAccount(int userId, int accountId)
         {
             using (var context = this.GetContext())
@@ -198,10 +260,16 @@ namespace Olive.Services
                 }
                 catch (SessionDoesNotExistException)
                 {
-                    throw new FaultException(
-                        new FaultReason("The specified session does not exist or has expired."), 
-                        new FaultCode("SessionDoesNotExist"));
+                    throw this.FaultFactory.CreateSessionDoesNotExistFaultException(sessionId);
                 }
+            }
+        }
+
+        public virtual bool UserCanViewAccount(int userId, int accountId)
+        {
+            using (var context = this.GetContext())
+            {
+                return context.Users.Find(userId).AccountAccess.Any(x => x.AccountId == accountId);
             }
         }
     }

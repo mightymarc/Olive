@@ -34,6 +34,9 @@ namespace Olive.Website.Controllers
         [Dependency]
         public ISiteSession SessionPersister { get; set; }
 
+        [Dependency]
+        public IFaultFactory FaultFactory { get; set; }
+
         /// <summary>
         ///   Called when an unhandled exception occurs in the action.
         /// </summary>
@@ -56,7 +59,7 @@ namespace Olive.Website.Controllers
             Contract.Requires(this.Request != null, "this.Context.Request");
 
             return this.RedirectToAction(
-                "Login", "User", new RouteValueDictionary { { "returnUrl", this.Request.RawUrl } });
+                "Login", "User", new RouteValueDictionary { { "returnUrl", this.Request.Url.PathAndQuery } });
         }
     }
 }

@@ -240,40 +240,40 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\User\Register.cshtml">
+    <None Include="Views\User\Register.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Register.cs</LastGenOutput>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>Index.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\User\Login.cshtml">
+    <None Include="Views\User\Login.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Login.cs</LastGenOutput>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Create.cshtml">
+    <None Include="Views\Account\Create.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.cs</LastGenOutput>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Details.cshtml">
+    <None Include="Views\Account\Details.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Details.cs</LastGenOutput>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Edit.cshtml">
+    <None Include="Views\Account\Edit.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Edit.cs</LastGenOutput>
-    </Content>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Views\Account\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

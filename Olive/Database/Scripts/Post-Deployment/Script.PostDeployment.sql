@@ -21,6 +21,7 @@ GRANT UPDATE ON [dbo].[User] ([PasswordHash]) TO [BankServiceRole]
 GRANT SELECT ON [dbo].[Currency] TO [BankServiceRole]
 GRANT EXECUTE ON [Banking].[CreateTransfer] TO [BankServiceRole]
 GRANT EXECUTE ON [Banking].[CreateCurrentAccount] TO [BankServiceRole]
+GRANT EXECUTE ON [Banking].[EditCurrentAccount] TO [BankServiceRole]
 GRANT EXECUTE ON [Auth].[CreateSession] TO [BankServiceRole];
 GRANT EXECUTE ON [Auth].VerifySession TO [BankServiceRole];
 GRANT EXECUTE ON [Auth].DeleteSession TO [BankServiceRole];
@@ -39,6 +40,7 @@ EXEC master..sp_addmessage 51008, 16, N'Source and destination account must have
 EXEC master..sp_addmessage 51009, 16, N'Authentication failed.', @replace = 'replace';
 EXEC master..sp_addmessage 51010, 16, N'Failed to insert.', @replace = 'replace';
 EXEC master..sp_addmessage 51011, 16, N'The specified session does not exist.', @replace = 'replace';
+EXEC master..sp_addmessage 51012, 16, N'The specified account does not exist.', @replace = 'replace';
 
 USE OliveTest
 
