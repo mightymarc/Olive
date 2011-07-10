@@ -39,8 +39,6 @@
 
 namespace Olive.Website
 {
-    using System;
-    using System.Collections.Generic;
     using System.Web.Mvc;
     using System.Web.Routing;
 
@@ -121,83 +119,6 @@ namespace Olive.Website
             container.RegisterType<IOliveContext, OliveContext>();
             container.RegisterType<ICurrencyCache, CurrencyCache>();
             return container;
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// The unity dependency resolver.
-    /// </summary>
-    public class UnityDependencyResolver : IDependencyResolver
-    {
-        #region Constants and Fields
-
-        /// <summary>
-        /// The container.
-        /// </summary>
-        private readonly IUnityContainer container;
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UnityDependencyResolver"/> class.
-        /// </summary>
-        /// <param name="container">
-        /// The container.
-        /// </param>
-        public UnityDependencyResolver(IUnityContainer container)
-        {
-            this.container = container;
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Resolves singly registered services that support arbitrary object creation.
-        /// </summary>
-        /// <param name="serviceType">
-        /// The type of the requested service or object.
-        /// </param>
-        /// <returns>
-        /// The requested service or object.
-        /// </returns>
-        public object GetService(Type serviceType)
-        {
-            try
-            {
-                var x = this.container.Resolve(serviceType);
-                return x;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Resolves multiply registered services.
-        /// </summary>
-        /// <param name="serviceType">
-        /// The type of the requested services.
-        /// </param>
-        /// <returns>
-        /// The requested services.
-        /// </returns>
-        public IEnumerable<object> GetServices(Type serviceType)
-        {
-            try
-            {
-                return this.container.ResolveAll(serviceType);
-            }
-            catch
-            {
-                return new List<object>();
-            }
         }
 
         #endregion

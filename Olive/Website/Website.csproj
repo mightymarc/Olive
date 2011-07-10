@@ -116,6 +116,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SiteIdentity.cs" />
     <Compile Include="SitePrincipal.cs" />
+    <Compile Include="Helpers\UnityDependencyResolver.cs" />
     <Compile Include="ViewModels\Account\EditViewModel.cs" />
     <Compile Include="ViewModels\Account\CreateViewModel.cs" />
     <Compile Include="ViewModels\User\LoginViewModel.cs" />
