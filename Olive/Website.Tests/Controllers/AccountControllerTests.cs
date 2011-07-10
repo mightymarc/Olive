@@ -247,7 +247,18 @@ namespace Olive.Website.Tests.Controllers
         [Test]
         public void EditAccountWithoutModel()
         {
-            Assert.Inconclusive();
+            // Arrange
+            var accountId = UnitTestHelper.Random.Next(1, int.MaxValue);
+
+            var controller = this.CreateController();
+            this.SetupHasSession();
+
+            // Act
+            var actionResult = (ViewResult)controller.Edit(accountId);
+
+            // Assert
+            Assert.IsInstanceOf(typeof(EditViewModel), actionResult.Model);
+            Assert.AreEqual("Edit", actionResult.ViewName);
         }
 
         /// <summary>
@@ -256,7 +267,19 @@ namespace Olive.Website.Tests.Controllers
         [Test]
         public void EditAccountWithoutModelRedirectsWhenNotLoggedIn()
         {
-            Assert.Inconclusive();
+            // Arrange
+            var accountId = UnitTestHelper.Random.Next(1, int.MaxValue);
+
+            var controller = this.CreateController(relativePath: "/Account/Edit/100");
+            this.sessionMock.Setup(s => s.HasSession).Returns(false);
+
+            // Act
+            var actionResult = (RedirectToRouteResult)controller.Edit(accountId);
+
+            // Assert
+            Assert.AreEqual("Login", actionResult.RouteValues["action"]);
+            Assert.AreEqual("User", actionResult.RouteValues["controller"]);
+            Assert.AreEqual("/Account/Edit/100", actionResult.RouteValues["returnUrl"]);
         }
 
         /// <summary>

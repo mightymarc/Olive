@@ -46,22 +46,11 @@ namespace Olive
     using Moq;
 
     /// <summary>
-    /// Summary description for Class1.
+    /// Static methods and extension methods to help unit testing.
     /// </summary>
-    public class UnitTestHelper
+    public static class UnitTestHelper
     {
-        #region Constructors and Destructors
-
-        /// <summary>
-        /// Prevents a default instance of the <see cref="UnitTestHelper"/> class from being created.
-        /// </summary>
-        private UnitTestHelper()
-        {
-        }
-
-        #endregion
-
-        #region Public Methods
+        public static Random Random = new Random();
 
         /// <summary>
         /// The create mock db command.
@@ -166,8 +155,6 @@ namespace Olive
             BindingFlags eFlags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
             return RunMethod(t, strMethod, null, aobjParams, eFlags);
         }
-
-        #endregion
 
         // end of method
         #region Methods

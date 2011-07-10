@@ -80,6 +80,10 @@
     <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{D3889083-4413-4DCE-B732-1A9EB46AFC8A}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Services\Services.csproj">
       <Project>{4AE734C3-6DB3-489F-B4F2-5D049011F846}</Project>
       <Name>Services</Name>
