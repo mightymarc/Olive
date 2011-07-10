@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Olive.Website
+namespace Olive.Website.Helpers
 {
     using System;
     using System.Collections.Generic;
