@@ -51,8 +51,6 @@ namespace Olive.DataAccess.Tests
     [TestFixture]
     public class DbConnectionExtensionsTests
     {
-        #region Public Methods
-
         /// <summary>
         /// Tests the AddParam method.
         ///   This test requires a lot of mocking, especially because of the final Contract.Ensures which
@@ -154,7 +152,5 @@ namespace Olive.DataAccess.Tests
 
             Assert.AreEqual(1001, mockCommand.Object.GetReturnCode());
         }
-
-        #endregion
     }
 }

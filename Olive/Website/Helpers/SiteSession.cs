@@ -47,16 +47,10 @@ namespace Olive.Website.Helpers
     /// </summary>
     public class SiteSession : ISiteSession
     {
-        #region Constants and Fields
-
         /// <summary>
         ///   The session id key.
         /// </summary>
         private const string SessionIdKey = "SessionId";
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         ///   Gets a value indicating whether there is a session.
@@ -86,7 +80,5 @@ namespace Olive.Website.Helpers
                 HttpContext.Current.Session[SessionIdKey] = value;
             }
         }
-
-        #endregion
     }
 }

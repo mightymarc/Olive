@@ -51,38 +51,28 @@ namespace Olive.Database.Tests.Auth
     [TestClass]
     public class DeleteSessionTests : DatabaseTestClass
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The fails on expired session data.
+        ///   The fails on expired session data.
         /// </summary>
         private DatabaseTestActions FailsOnExpiredSessionData;
 
         /// <summary>
-        /// The fails on unknown session id data.
+        ///   The fails on unknown session id data.
         /// </summary>
         private DatabaseTestActions FailsOnUnknownSessionIdData;
 
         /// <summary>
-        /// The success data.
+        ///   The success data.
         /// </summary>
         private DatabaseTestActions SuccessData;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteSessionTests"/> class.
+        ///   Initializes a new instance of the <see cref = "DeleteSessionTests" /> class.
         /// </summary>
         public DeleteSessionTests()
         {
             this.InitializeComponent();
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The fails on expired session.
@@ -174,10 +164,6 @@ namespace Olive.Database.Tests.Auth
             this.InitializeTest();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Required method for Designer support - do not modify 
         ///   the contents of this method with the code editor.
@@ -265,8 +251,6 @@ namespace Olive.Database.Tests.Auth
             this.FailsOnUnknownSessionIdData.PretestAction = null;
             this.FailsOnUnknownSessionIdData.TestAction = FailsOnUnknownSessionId_TestAction;
         }
-
-        #endregion
 
         // You can use the following additional attributes as you write your tests:
         // Use ClassInitialize to run code before running the first test in the class

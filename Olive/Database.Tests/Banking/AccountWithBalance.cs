@@ -51,33 +51,23 @@ namespace Olive.DataAccess.Tests
     [TestClass]
     public class DbTest1 : DatabaseTestClass
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The banking_ account with balance_ balance_ matches acount transfer sums data.
+        ///   The banking_ account with balance_ balance_ matches acount transfer sums data.
         /// </summary>
         private DatabaseTestActions Banking_AccountWithBalance_Balance_MatchesAcountTransferSumsData;
 
         /// <summary>
-        /// The banking_ account with balance_ row count_ equals account table row count data.
+        ///   The banking_ account with balance_ row count_ equals account table row count data.
         /// </summary>
         private DatabaseTestActions Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCountData;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="DbTest1"/> class.
+        ///   Initializes a new instance of the <see cref = "DbTest1" /> class.
         /// </summary>
         public DbTest1()
         {
             this.InitializeComponent();
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The banking_ account with balance_ balance_ matches acount transfer sums.
@@ -145,10 +135,6 @@ namespace Olive.DataAccess.Tests
             this.InitializeTest();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Required method for Designer support - do not modify 
         ///   the contents of this method with the code editor.
@@ -211,8 +197,6 @@ namespace Olive.DataAccess.Tests
             scalarValueCondition2.ResultSet = 1;
             scalarValueCondition2.RowNumber = 1;
         }
-
-        #endregion
 
         // You can use the following additional attributes as you write your tests:
         // Use ClassInitialize to run code before running the first test in the class

@@ -52,8 +52,6 @@ namespace Olive.Website.Tests.Views.Account
     [TestFixture]
     public class DetailsTests
     {
-        #region Public Methods
-
         /// <summary>
         /// The renders without exceptions.
         /// </summary>
@@ -65,7 +63,5 @@ namespace Olive.Website.Tests.Views.Account
 
             view.RenderAsHtml(viewModel);
         }
-
-        #endregion
     }
 }

@@ -49,8 +49,6 @@ namespace Olive
     /// </summary>
     public class Crypto : ICrypto
     {
-        #region Public Methods
-
         /// <summary>
         /// Creates a salt.
         /// </summary>
@@ -110,7 +108,5 @@ namespace Olive
                 return Convert.ToBase64String(hashAlgo.ComputeHash(Encoding.UTF8.GetBytes(password + salt)));
             }
         }
-
-        #endregion
     }
 }

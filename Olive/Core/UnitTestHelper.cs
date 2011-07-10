@@ -50,6 +50,9 @@ namespace Olive
     /// </summary>
     public static class UnitTestHelper
     {
+        /// <summary>
+        /// The random.
+        /// </summary>
         public static Random Random = new Random();
 
         /// <summary>
@@ -157,7 +160,6 @@ namespace Olive
         }
 
         // end of method
-        #region Methods
 
         /// <summary>
         /// The run method.
@@ -202,8 +204,6 @@ namespace Olive
                 throw;
             }
         }
-
-        #endregion
 
         // end of method
     }

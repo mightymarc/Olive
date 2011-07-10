@@ -47,8 +47,6 @@ namespace Olive.Website
     /// </summary>
     public class SitePrincipal : IPrincipal
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SitePrincipal"/> class.
         /// </summary>
@@ -60,18 +58,10 @@ namespace Olive.Website
             this.Identity = identity;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        /// Gets Identity.
+        ///   Gets Identity.
         /// </summary>
         public IIdentity Identity { get; private set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The is in role.
@@ -88,7 +78,5 @@ namespace Olive.Website
         {
             throw new NotImplementedException("IsInRole is not implemented.");
         }
-
-        #endregion
     }
 }

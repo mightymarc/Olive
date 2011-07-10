@@ -44,13 +44,9 @@ namespace Olive.DataAccess
     /// </summary>
     public class Currency
     {
-        #region Public Properties
-
         /// <summary>
         ///   Gets or sets the currency identifier (USD, BTC, PPUSD, ...).
         /// </summary>
         public string CurrencyId { get; set; }
-
-        #endregion
     }
 }

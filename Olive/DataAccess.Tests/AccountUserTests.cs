@@ -48,16 +48,10 @@ namespace Olive.DataAccess.Tests
     /// </summary>
     public class AccountUserTests
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The random.
+        ///   The random.
         /// </summary>
         private static readonly Random Random = new Random();
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The account id_ get set.
@@ -102,10 +96,6 @@ namespace Olive.DataAccess.Tests
             Assert.AreEqual(expected, target.UserId);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The assert is default.
         /// </summary>
@@ -118,7 +108,5 @@ namespace Olive.DataAccess.Tests
         {
             Assert.AreEqual(default(T), target);
         }
-
-        #endregion
     }
 }

@@ -47,8 +47,6 @@ namespace Olive.Website.ViewModels.User
     /// </summary>
     public sealed class RegisterViewModel
     {
-        #region Public Properties
-
         /// <summary>
         ///   Gets or sets the password confirmation.
         /// </summary>
@@ -87,7 +85,5 @@ namespace Olive.Website.ViewModels.User
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [Display(Name = "Password")]
         public string Password { get; set; }
-
-        #endregion
     }
 }

@@ -47,41 +47,35 @@ namespace Olive.Services
     /// </summary>
     public interface IFaultFactory
     {
-        #region Public Properties
-
         /// <summary>
-        /// Gets EmailAlreadyRegisteredFaultCode.
+        ///   Gets EmailAlreadyRegisteredFaultCode.
         /// </summary>
         FaultCode EmailAlreadyRegisteredFaultCode { get; }
 
         /// <summary>
-        /// Gets SessionDoesNotExistFaultCode.
+        ///   Gets SessionDoesNotExistFaultCode.
         /// </summary>
         FaultCode SessionDoesNotExistFaultCode { get; }
 
         /// <summary>
-        /// Gets UnauthorizedAccountAccessFaultCode.
+        ///   Gets UnauthorizedAccountAccessFaultCode.
         /// </summary>
         FaultCode UnauthorizedAccountAccessFaultCode { get; }
 
         /// <summary>
-        /// Gets UnauthorizedAccountEditFaultCode.
+        ///   Gets UnauthorizedAccountEditFaultCode.
         /// </summary>
         FaultCode UnauthorizedAccountEditFaultCode { get; }
 
         /// <summary>
-        /// Gets UnauthorizedAccountWithdrawFaultCode.
+        ///   Gets UnauthorizedAccountWithdrawFaultCode.
         /// </summary>
         FaultCode UnauthorizedAccountWithdrawFaultCode { get; }
 
         /// <summary>
-        /// Gets UnrecognizedCredentialsFaultCode.
+        ///   Gets UnrecognizedCredentialsFaultCode.
         /// </summary>
         FaultCode UnrecognizedCredentialsFaultCode { get; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The create email already registered fault exception.
@@ -151,7 +145,5 @@ namespace Olive.Services
         /// <returns>
         /// </returns>
         FaultException CreateUnrecognizedCredentialsException(string email);
-
-        #endregion
     }
 }

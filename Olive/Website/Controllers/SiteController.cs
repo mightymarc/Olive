@@ -55,35 +55,29 @@ namespace Olive.Website.Controllers
     /// </summary>
     public abstract class SiteController : Controller
     {
-        #region Public Properties
-
         /// <summary>
-        /// Gets or sets CurrencyCache.
+        ///   Gets or sets CurrencyCache.
         /// </summary>
         [Dependency]
         public ICurrencyCache CurrencyCache { get; set; }
 
         /// <summary>
-        /// Gets or sets FaultFactory.
+        ///   Gets or sets FaultFactory.
         /// </summary>
         [Dependency]
         public IFaultFactory FaultFactory { get; set; }
 
         /// <summary>
-        /// Gets or sets Service.
+        ///   Gets or sets Service.
         /// </summary>
         [Dependency]
         public IWebService Service { get; set; }
 
         /// <summary>
-        /// Gets or sets SessionPersister.
+        ///   Gets or sets SessionPersister.
         /// </summary>
         [Dependency]
         public ISiteSession SessionPersister { get; set; }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Called when an unhandled exception occurs in the action.
@@ -116,7 +110,5 @@ namespace Olive.Website.Controllers
             return this.RedirectToAction(
                 "Login", "User", new RouteValueDictionary { { "returnUrl", this.Request.Url.PathAndQuery } });
         }
-
-        #endregion
     }
 }

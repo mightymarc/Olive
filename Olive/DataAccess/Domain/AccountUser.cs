@@ -44,8 +44,6 @@ namespace Olive.DataAccess
     /// </summary>
     public class AccountUser
     {
-        #region Public Properties
-
         /// <summary>
         ///   Gets or sets the account.
         /// </summary>
@@ -75,7 +73,5 @@ namespace Olive.DataAccess
         ///   Gets or sets user's id.
         /// </summary>
         public int UserId { get; set; }
-
-        #endregion
     }
 }

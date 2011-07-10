@@ -56,8 +56,6 @@ namespace Olive.Website
     /// </summary>
     public class MvcApplication : System.Web.HttpApplication
     {
-        #region Public Methods
-
         /// <summary>
         /// The register global filters.
         /// </summary>
@@ -85,10 +83,6 @@ namespace Olive.Website
                 "{controller}/{action}/{AccountId}", 
                 new { controller = "Account", action = "Edit", AccountId = UrlParameter.Optional });
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The application_ start.
@@ -120,7 +114,5 @@ namespace Olive.Website
             container.RegisterType<ICurrencyCache, CurrencyCache>();
             return container;
         }
-
-        #endregion
     }
 }

@@ -46,8 +46,6 @@ namespace Olive.DataAccess
     /// </summary>
     public class Transfer
     {
-        #region Public Properties
-
         /// <summary>
         ///   Gets or sets Amount.
         /// </summary>
@@ -87,7 +85,5 @@ namespace Olive.DataAccess
         ///   Gets or sets TransferId.
         /// </summary>
         public long TransferId { get; set; }
-
-        #endregion
     }
 }

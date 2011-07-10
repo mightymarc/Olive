@@ -50,8 +50,6 @@ namespace Olive.Website.Controllers
     /// </summary>
     public class AccountController : SiteController
     {
-        #region Public Methods
-
         /// <summary>
         /// The create.
         /// </summary>
@@ -207,7 +205,5 @@ namespace Olive.Website.Controllers
 
             return View("Index", viewModel);
         }
-
-        #endregion
     }
 }

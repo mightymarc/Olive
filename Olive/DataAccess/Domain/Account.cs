@@ -46,8 +46,6 @@ namespace Olive.DataAccess
     /// </summary>
     public class Account
     {
-        #region Public Properties
-
         /// <summary>
         ///   Gets or sets AccountId.
         /// </summary>
@@ -87,7 +85,5 @@ namespace Olive.DataAccess
         ///   Gets or sets Users.
         /// </summary>
         public virtual ICollection<AccountUser> Users { get; set; }
-
-        #endregion
     }
 }

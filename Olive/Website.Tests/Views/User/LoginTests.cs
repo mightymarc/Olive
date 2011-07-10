@@ -52,8 +52,6 @@ namespace Olive.Website.Tests.Views.User
     [TestFixture]
     public class LoginTests
     {
-        #region Public Methods
-
         /// <summary>
         /// The renders without exceptions.
         /// </summary>
@@ -77,7 +75,5 @@ namespace Olive.Website.Tests.Views.User
 
             var html = view.RenderAsHtml(viewModel);
         }
-
-        #endregion
     }
 }

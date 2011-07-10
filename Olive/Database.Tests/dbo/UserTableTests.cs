@@ -51,68 +51,58 @@ namespace Olive.Database.Tests.dbo
     [TestClass]
     public class UserTableTests : DatabaseTestClass
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The allowed to update password hash data.
+        ///   The allowed to update password hash data.
         /// </summary>
         private DatabaseTestActions AllowedToUpdatePasswordHashData;
 
         /// <summary>
-        /// The insert success data.
+        ///   The insert success data.
         /// </summary>
         private DatabaseTestActions InsertSuccessData;
 
         /// <summary>
-        /// The insert with duplicate email fails data.
+        ///   The insert with duplicate email fails data.
         /// </summary>
         private DatabaseTestActions InsertWithDuplicateEmailFailsData;
 
         /// <summary>
-        /// The insert with null email fails data.
+        ///   The insert with null email fails data.
         /// </summary>
         private DatabaseTestActions InsertWithNullEmailFailsData;
 
         /// <summary>
-        /// The insert with null password hash fails data.
+        ///   The insert with null password hash fails data.
         /// </summary>
         private DatabaseTestActions InsertWithNullPasswordHashFailsData;
 
         /// <summary>
-        /// The insert with null password salt fails data.
+        ///   The insert with null password salt fails data.
         /// </summary>
         private DatabaseTestActions InsertWithNullPasswordSaltFailsData;
 
         /// <summary>
-        /// The not allowed to delete data.
+        ///   The not allowed to delete data.
         /// </summary>
         private DatabaseTestActions NotAllowedToDeleteData;
 
         /// <summary>
-        /// The not allowed to update email data.
+        ///   The not allowed to update email data.
         /// </summary>
         private DatabaseTestActions NotAllowedToUpdateEmailData;
 
         /// <summary>
-        /// The not allowed to update password salt data.
+        ///   The not allowed to update password salt data.
         /// </summary>
         private DatabaseTestActions NotAllowedToUpdatePasswordSaltData;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserTableTests"/> class.
+        ///   Initializes a new instance of the <see cref = "UserTableTests" /> class.
         /// </summary>
         public UserTableTests()
         {
             this.InitializeComponent();
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The allowed to update password hash.
@@ -347,10 +337,6 @@ namespace Olive.Database.Tests.dbo
         {
             this.InitializeTest();
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Required method for Designer support - do not modify 
@@ -601,8 +587,6 @@ namespace Olive.Database.Tests.dbo
             scalarValueCondition10.ResultSet = 1;
             scalarValueCondition10.RowNumber = 1;
         }
-
-        #endregion
 
         // You can use the following additional attributes as you write your tests:
         // Use ClassInitialize to run code before running the first test in the class

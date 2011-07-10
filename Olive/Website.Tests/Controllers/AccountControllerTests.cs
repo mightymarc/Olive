@@ -59,16 +59,10 @@ namespace Olive.Website.Tests.Controllers
     [TestFixture]
     public class AccountControllerTests : ControllerTestBase<AccountController>
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The random.
+        ///   The random.
         /// </summary>
         private static readonly Random Random = new Random();
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The account details contains transfer history.
@@ -360,7 +354,5 @@ namespace Olive.Website.Tests.Controllers
         {
             base.SetUp();
         }
-
-        #endregion
     }
 }

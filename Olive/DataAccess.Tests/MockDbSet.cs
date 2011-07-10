@@ -55,31 +55,21 @@ namespace Olive.DataAccess.Tests
     public class MockDbSet<T> : IDbSet<T>
         where T : class
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The _data.
+        ///   The _data.
         /// </summary>
         private readonly HashSet<T> _data;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="MockDbSet{T}"/> class.
+        ///   Initializes a new instance of the <see cref = "MockDbSet{T}" /> class.
         /// </summary>
         public MockDbSet()
         {
             this._data = new HashSet<T>();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        /// Gets Local.
+        ///   Gets Local.
         /// </summary>
         public ObservableCollection<T> Local
         {
@@ -89,12 +79,8 @@ namespace Olive.DataAccess.Tests
             }
         }
 
-        #endregion
-
-        #region Explicit Interface Properties
-
         /// <summary>
-        /// Gets ElementType.
+        ///   Gets ElementType.
         /// </summary>
         Type IQueryable.ElementType
         {
@@ -105,7 +91,7 @@ namespace Olive.DataAccess.Tests
         }
 
         /// <summary>
-        /// Gets Expression.
+        ///   Gets Expression.
         /// </summary>
         Expression IQueryable.Expression
         {
@@ -116,7 +102,7 @@ namespace Olive.DataAccess.Tests
         }
 
         /// <summary>
-        /// Gets Provider.
+        ///   Gets Provider.
         /// </summary>
         IQueryProvider IQueryable.Provider
         {
@@ -125,10 +111,6 @@ namespace Olive.DataAccess.Tests
                 return this._data.AsQueryable().Provider;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The add.
@@ -220,10 +202,6 @@ namespace Olive.DataAccess.Tests
             return item;
         }
 
-        #endregion
-
-        #region Explicit Interface Methods
-
         /// <summary>
         /// The get enumerator.
         /// </summary>
@@ -243,7 +221,5 @@ namespace Olive.DataAccess.Tests
         {
             return this._data.GetEnumerator();
         }
-
-        #endregion
     }
 }

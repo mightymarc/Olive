@@ -63,36 +63,30 @@ namespace Olive.Website.Tests.Controllers
     public abstract class ControllerTestBase<T>
         where T : Controller, new()
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The container.
+        ///   The container.
         /// </summary>
         protected IUnityContainer container = new UnityContainer();
 
         /// <summary>
-        /// The currency cache.
+        ///   The currency cache.
         /// </summary>
         protected Mock<ICurrencyCache> currencyCache;
 
         /// <summary>
-        /// The http context mock.
+        ///   The http context mock.
         /// </summary>
         protected Mock<HttpContextBase> httpContextMock;
 
         /// <summary>
-        /// The service mock.
+        ///   The service mock.
         /// </summary>
         protected Mock<IWebService> serviceMock;
 
         /// <summary>
-        /// The session mock.
+        ///   The session mock.
         /// </summary>
         protected Mock<ISiteSession> sessionMock;
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The set up.
@@ -114,10 +108,6 @@ namespace Olive.Website.Tests.Controllers
             this.container.RegisterInstance(this.httpContextMock.Object);
             this.container.RegisterInstance<IFaultFactory>(new FaultFactory());
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The assert view model.
@@ -203,7 +193,5 @@ namespace Olive.Website.Tests.Controllers
             this.sessionMock.SetupGet(s => s.SessionId).Returns(sessionId);
             return sessionId;
         }
-
-        #endregion
     }
 }

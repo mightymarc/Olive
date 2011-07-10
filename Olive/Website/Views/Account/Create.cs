@@ -60,8 +60,6 @@ namespace Olive.Website.Views.Account
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Account/Create.cshtml")]
     public class Create : System.Web.Mvc.WebViewPage<CreateViewModel>
     {
-        #region Public Methods
-
         /// <summary>
         /// The execute.
         /// </summary>
@@ -102,8 +100,6 @@ namespace Olive.Website.Views.Account
 #line default
 #line hidden
         }
-
-        #endregion
     }
 }
 

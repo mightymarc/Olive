@@ -51,8 +51,6 @@ namespace Olive.Services
     [ContractClass(typeof(IWebServiceContract))]
     public interface IWebService
     {
-        #region Public Methods
-
         /// <summary>
         /// The create current account.
         /// </summary>
@@ -182,7 +180,5 @@ namespace Olive.Services
         /// </returns>
         [OperationContract]
         List<string> GetCurrencies();
-
-        #endregion
     }
 }

@@ -49,17 +49,15 @@ namespace Olive
     /// </summary>
     public class MockDataParameterCollection : List<object>, IDataParameterCollection
     {
-        #region Public Indexers
-
         /// <summary>
-        /// The this.
+        ///   The this.
         /// </summary>
-        /// <param name="parameterName">
-        /// The parameter name.
+        /// <param name = "parameterName">
+        ///   The parameter name.
         /// </param>
-        /// <exception cref="Exception">
+        /// <exception cref = "Exception">
         /// </exception>
-        /// <exception cref="NotImplementedException">
+        /// <exception cref = "NotImplementedException">
         /// </exception>
         public object this[string parameterName]
         {
@@ -81,10 +79,6 @@ namespace Olive
                 throw new NotImplementedException();
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The contains.
@@ -130,7 +124,5 @@ namespace Olive
         {
             throw new NotImplementedException();
         }
-
-        #endregion
     }
 }

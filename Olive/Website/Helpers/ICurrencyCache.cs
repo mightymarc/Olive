@@ -46,13 +46,9 @@ namespace Olive.Website.Helpers
     /// </summary>
     public interface ICurrencyCache
     {
-        #region Public Properties
-
         /// <summary>
         ///   Gets the cached currencies.
         /// </summary>
         List<string> Currencies { get; }
-
-        #endregion
     }
 }

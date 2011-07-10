@@ -46,8 +46,6 @@ namespace Olive.DataAccess
     /// </summary>
     public class Session
     {
-        #region Public Properties
-
         /// <summary>
         ///   Gets or sets CreatedAt.
         /// </summary>
@@ -72,7 +70,5 @@ namespace Olive.DataAccess
         ///   Gets or sets UserId.
         /// </summary>
         public int UserId { get; set; }
-
-        #endregion
     }
 }

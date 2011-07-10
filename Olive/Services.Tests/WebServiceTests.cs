@@ -59,10 +59,8 @@ namespace Olive.Services.Tests
     [TestFixture]
     public sealed class WebServiceTests
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The create transfer with bad arguments throws exception cases.
+        ///   The create transfer with bad arguments throws exception cases.
         /// </summary>
         private static object[] createTransferWithBadArgumentsThrowsExceptionCases = {
                                                                                          new object[] { 0, 1, 100m, "cc" }
@@ -93,7 +91,7 @@ namespace Olive.Services.Tests
                                                                                      };
 
         /// <summary>
-        /// The edit account does not throw exception cases.
+        ///   The edit account does not throw exception cases.
         /// </summary>
         private static object[] editAccountDoesNotThrowExceptionCases = {
                                                                             new object[] { Guid.NewGuid(), 123, "Name" }, 
@@ -102,7 +100,7 @@ namespace Olive.Services.Tests
                                                                         };
 
         /// <summary>
-        /// The edit account with bad arguments throws exception cases.
+        ///   The edit account with bad arguments throws exception cases.
         /// </summary>
         private static object[] editAccountWithBadArgumentsThrowsExceptionCases = {
                                                                                       new object[]
@@ -126,18 +124,14 @@ namespace Olive.Services.Tests
                                                                                   };
 
         /// <summary>
-        /// The container.
+        ///   The container.
         /// </summary>
         private IUnityContainer container;
 
         /// <summary>
-        /// The fault factory.
+        ///   The fault factory.
         /// </summary>
         private IFaultFactory faultFactory;
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The create account with good credentials does not throw exception.
@@ -369,8 +363,8 @@ namespace Olive.Services.Tests
             catch (ArgumentException)
             {
                 return;
-                    
-                    // Assert.Pass(string.Format("Source={0}; Dest={1}; Amount={2}; Desc={3}", sourceAccountId, destAccountId, amount, description));
+
+                // Assert.Pass(string.Format("Source={0}; Dest={1}; Amount={2}; Desc={3}", sourceAccountId, destAccountId, amount, description));
             }
             catch
             {
@@ -783,10 +777,6 @@ namespace Olive.Services.Tests
             this.container.RegisterInstance(this.faultFactory);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The get mock web service.
         /// </summary>
@@ -800,7 +790,5 @@ namespace Olive.Services.Tests
 
             return mockService.Object;
         }
-
-        #endregion
     }
 }

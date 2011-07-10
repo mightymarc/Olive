@@ -48,10 +48,8 @@ namespace Olive.Services
     /// </summary>
     public class FaultFactory : IFaultFactory
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="FaultFactory"/> class.
+        ///   Initializes a new instance of the <see cref = "FaultFactory" /> class.
         /// </summary>
         public FaultFactory()
         {
@@ -63,43 +61,35 @@ namespace Olive.Services
             this.UnauthorizedAccountAccessFaultCode = new FaultCode("UnauthorizedAccountAccess");
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        /// Gets or sets EmailAlreadyRegisteredFaultCode.
+        ///   Gets or sets EmailAlreadyRegisteredFaultCode.
         /// </summary>
         public FaultCode EmailAlreadyRegisteredFaultCode { get; protected set; }
 
         /// <summary>
-        /// Gets or sets SessionDoesNotExistFaultCode.
+        ///   Gets or sets SessionDoesNotExistFaultCode.
         /// </summary>
         public FaultCode SessionDoesNotExistFaultCode { get; protected set; }
 
         /// <summary>
-        /// Gets or sets UnauthorizedAccountAccessFaultCode.
+        ///   Gets or sets UnauthorizedAccountAccessFaultCode.
         /// </summary>
         public FaultCode UnauthorizedAccountAccessFaultCode { get; protected set; }
 
         /// <summary>
-        /// Gets or sets UnauthorizedAccountEditFaultCode.
+        ///   Gets or sets UnauthorizedAccountEditFaultCode.
         /// </summary>
         public FaultCode UnauthorizedAccountEditFaultCode { get; protected set; }
 
         /// <summary>
-        /// Gets or sets UnauthorizedAccountWithdrawFaultCode.
+        ///   Gets or sets UnauthorizedAccountWithdrawFaultCode.
         /// </summary>
         public FaultCode UnauthorizedAccountWithdrawFaultCode { get; protected set; }
 
         /// <summary>
-        /// Gets or sets UnrecognizedCredentialsFaultCode.
+        ///   Gets or sets UnrecognizedCredentialsFaultCode.
         /// </summary>
         public FaultCode UnrecognizedCredentialsFaultCode { get; protected set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The create email already registered fault exception.
@@ -223,7 +213,5 @@ namespace Olive.Services
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, email)), 
                 this.UnrecognizedCredentialsFaultCode);
         }
-
-        #endregion
     }
 }

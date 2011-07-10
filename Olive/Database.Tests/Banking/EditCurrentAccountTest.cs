@@ -51,28 +51,18 @@ namespace Olive.Database.Tests.Banking
     [TestClass]
     public class EditCurrentAccountTest : DatabaseTestClass
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The returns error code when account does not exist data.
+        ///   The returns error code when account does not exist data.
         /// </summary>
         private DatabaseTestActions ReturnsErrorCodeWhenAccountDoesNotExistData;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="EditCurrentAccountTest"/> class.
+        ///   Initializes a new instance of the <see cref = "EditCurrentAccountTest" /> class.
         /// </summary>
         public EditCurrentAccountTest()
         {
             this.InitializeComponent();
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The returns error code when account does not exist.
@@ -116,10 +106,6 @@ namespace Olive.Database.Tests.Banking
             this.InitializeTest();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Required method for Designer support - do not modify 
         ///   the contents of this method with the code editor.
@@ -153,8 +139,6 @@ namespace Olive.Database.Tests.Banking
             scalarValueCondition1.ResultSet = 1;
             scalarValueCondition1.RowNumber = 1;
         }
-
-        #endregion
 
         // You can use the following additional attributes as you write your tests:
         // Use ClassInitialize to run code before running the first test in the class

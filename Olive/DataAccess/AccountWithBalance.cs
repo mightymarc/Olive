@@ -44,13 +44,9 @@ namespace Olive.DataAccess
     /// </summary>
     public class AccountWithBalance : Account
     {
-        #region Public Properties
-
         /// <summary>
         ///   Gets or sets Balance.
         /// </summary>
         public decimal Balance { get; set; }
-
-        #endregion
     }
 }

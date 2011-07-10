@@ -60,8 +60,6 @@ namespace Olive.Website.Views.User
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/User/Login.cshtml")]
     public class Login : System.Web.Mvc.WebViewPage<LoginViewModel>
     {
-        #region Public Methods
-
         /// <summary>
         /// The execute.
         /// </summary>
@@ -157,8 +155,6 @@ namespace Olive.Website.Views.User
 #line hidden
             this.WriteLiteral("</div>");
         }
-
-        #endregion
     }
 }
 

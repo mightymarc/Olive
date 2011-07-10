@@ -44,8 +44,6 @@ namespace Olive.DataAccess.Tests
     /// </summary>
     public abstract class TestBase
     {
-        #region Methods
-
         /// <summary>
         /// The get dba context.
         /// </summary>
@@ -65,7 +63,5 @@ namespace Olive.DataAccess.Tests
         {
             return new OliveContext(@"server=.\SQLEXPRESS;user=ServiceUser;password=temp;database=OliveTest;");
         }
-
-        #endregion
     }
 }

@@ -51,58 +51,48 @@ namespace Olive.Database.Tests.Banking
     [TestClass]
     public class CreateTransfer : DatabaseTestClass
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The fails with different account currencies data.
+        ///   The fails with different account currencies data.
         /// </summary>
         private DatabaseTestActions FailsWithDifferentAccountCurrenciesData;
 
         /// <summary>
-        /// The fails with negative amount data.
+        ///   The fails with negative amount data.
         /// </summary>
         private DatabaseTestActions FailsWithNegativeAmountData;
 
         /// <summary>
-        /// The fails with null description data.
+        ///   The fails with null description data.
         /// </summary>
         private DatabaseTestActions FailsWithNullDescriptionData;
 
         /// <summary>
-        /// The fails with null source account id data.
+        ///   The fails with null source account id data.
         /// </summary>
         private DatabaseTestActions FailsWithNullSourceAccountIdData;
 
         /// <summary>
-        /// The fails with unknown dest account data.
+        ///   The fails with unknown dest account data.
         /// </summary>
         private DatabaseTestActions FailsWithUnknownDestAccountData;
 
         /// <summary>
-        /// The fails with unknown source account data.
+        ///   The fails with unknown source account data.
         /// </summary>
         private DatabaseTestActions FailsWithUnknownSourceAccountData;
 
         /// <summary>
-        /// The success data.
+        ///   The success data.
         /// </summary>
         private DatabaseTestActions SuccessData;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateTransfer"/> class.
+        ///   Initializes a new instance of the <see cref = "CreateTransfer" /> class.
         /// </summary>
         public CreateTransfer()
         {
             this.InitializeComponent();
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The fails with different account currencies.
@@ -289,10 +279,6 @@ namespace Olive.Database.Tests.Banking
         {
             this.InitializeTest();
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Required method for Designer support - do not modify 
@@ -518,8 +504,6 @@ namespace Olive.Database.Tests.Banking
             this.FailsWithNullSourceAccountIdData.PretestAction = null;
             this.FailsWithNullSourceAccountIdData.TestAction = FailsWithNullSourceAccountId_TestAction;
         }
-
-        #endregion
 
         // You can use the following additional attributes as you write your tests:
         // Use ClassInitialize to run code before running the first test in the class

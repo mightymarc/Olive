@@ -48,38 +48,34 @@ namespace Olive.Services
     [DataContract]
     public class GetAccountTransfersTransfer
     {
-        #region Public Properties
-
         /// <summary>
-        /// Gets or sets Amount.
+        ///   Gets or sets Amount.
         /// </summary>
         [DataMember]
         public decimal Amount { get; set; }
 
         /// <summary>
-        /// Gets or sets CurrencyShortName.
+        ///   Gets or sets CurrencyShortName.
         /// </summary>
         [DataMember]
         public string CurrencyShortName { get; set; }
 
         /// <summary>
-        /// Gets or sets DestAccountId.
+        ///   Gets or sets DestAccountId.
         /// </summary>
         [DataMember]
         public int DestAccountId { get; set; }
 
         /// <summary>
-        /// Gets or sets SourceAccountId.
+        ///   Gets or sets SourceAccountId.
         /// </summary>
         [DataMember]
         public int SourceAccountId { get; set; }
 
         /// <summary>
-        /// Gets or sets TransferId.
+        ///   Gets or sets TransferId.
         /// </summary>
         [DataMember]
         public Guid TransferId { get; set; }
-
-        #endregion
     }
 }

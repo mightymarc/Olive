@@ -49,16 +49,10 @@ namespace Olive.DataAccess.Tests
     /// </summary>
     public class AccountTests : TestBase
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The random.
+        ///   The random.
         /// </summary>
         private readonly Random random = new Random();
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The account id_ get set.
@@ -104,7 +98,5 @@ namespace Olive.DataAccess.Tests
                 Assert.NotNull(account.Users);
             }
         }
-
-        #endregion
     }
 }

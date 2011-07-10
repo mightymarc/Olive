@@ -36,6 +36,7 @@
 //   Defines the PrecompiledMvcViewEngineStart type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 [assembly:
     WebActivator.PreApplicationStartMethod(typeof(Olive.Website.App_Start.PrecompiledMvcViewEngineStart), "Start")]
 
@@ -51,8 +52,6 @@ namespace Olive.Website.App_Start
     /// </summary>
     public static class PrecompiledMvcViewEngineStart
     {
-        #region Public Methods
-
         /// <summary>
         /// The start.
         /// </summary>
@@ -65,7 +64,5 @@ namespace Olive.Website.App_Start
             // StartPage lookups are done by WebPages. 
             VirtualPathFactoryManager.RegisterVirtualPathFactory(engine);
         }
-
-        #endregion
     }
 }

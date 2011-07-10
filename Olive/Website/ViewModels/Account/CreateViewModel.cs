@@ -46,10 +46,8 @@ namespace Olive.Website.ViewModels.Account
     /// </summary>
     public class CreateViewModel
     {
-        #region Public Properties
-
         /// <summary>
-        /// Gets or sets Currencies.
+        ///   Gets or sets Currencies.
         /// </summary>
         public List<string> Currencies { get; set; }
 
@@ -68,7 +66,5 @@ namespace Olive.Website.ViewModels.Account
         ///   The display name.
         /// </value>
         public string DisplayName { get; set; }
-
-        #endregion
     }
 }

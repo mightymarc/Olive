@@ -47,8 +47,6 @@ namespace Olive.Website
     /// </summary>
     public sealed class SiteIdentity : IIdentity
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SiteIdentity"/> class.
         /// </summary>
@@ -60,12 +58,8 @@ namespace Olive.Website
             this.SessionId = userId;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        /// Gets AuthenticationType.
+        ///   Gets AuthenticationType.
         /// </summary>
         public string AuthenticationType
         {
@@ -76,7 +70,7 @@ namespace Olive.Website
         }
 
         /// <summary>
-        /// Gets a value indicating whether IsAuthenticated.
+        ///   Gets a value indicating whether IsAuthenticated.
         /// </summary>
         public bool IsAuthenticated
         {
@@ -87,7 +81,7 @@ namespace Olive.Website
         }
 
         /// <summary>
-        /// Gets Name.
+        ///   Gets Name.
         /// </summary>
         public string Name
         {
@@ -98,10 +92,8 @@ namespace Olive.Website
         }
 
         /// <summary>
-        /// Gets SessionId.
+        ///   Gets SessionId.
         /// </summary>
         public Guid SessionId { get; private set; }
-
-        #endregion
     }
 }

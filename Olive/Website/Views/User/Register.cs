@@ -60,8 +60,6 @@ namespace Olive.Website.Views.User
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/User/Register.cshtml")]
     public class Register : System.Web.Mvc.WebViewPage<RegisterViewModel>
     {
-        #region Public Methods
-
         /// <summary>
         /// The execute.
         /// </summary>
@@ -177,8 +175,6 @@ namespace Olive.Website.Views.User
 #line default
 #line hidden
         }
-
-        #endregion
     }
 }
 

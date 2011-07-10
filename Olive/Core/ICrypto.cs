@@ -44,8 +44,6 @@ namespace Olive
     /// </summary>
     public interface ICrypto
     {
-        #region Public Methods
-
         /// <summary>
         /// Creates a salt.
         /// </summary>
@@ -78,7 +76,5 @@ namespace Olive
         /// The hash that was generated.
         /// </returns>
         string GenerateHash(string password, string salt);
-
-        #endregion
     }
 }

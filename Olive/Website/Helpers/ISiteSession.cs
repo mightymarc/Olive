@@ -46,8 +46,6 @@ namespace Olive.Website.Helpers
     /// </summary>
     public interface ISiteSession
     {
-        #region Public Properties
-
         /// <summary>
         ///   Gets a value indicating whether there is a session.
         /// </summary>
@@ -57,7 +55,5 @@ namespace Olive.Website.Helpers
         ///   Gets or sets the session id.
         /// </summary>
         Guid SessionId { get; set; }
-
-        #endregion
     }
 }

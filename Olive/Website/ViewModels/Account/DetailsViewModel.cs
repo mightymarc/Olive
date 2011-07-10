@@ -48,18 +48,14 @@ namespace Olive.Website.ViewModels.Account
     /// </summary>
     public class DetailsViewModel
     {
-        #region Public Properties
-
         /// <summary>
-        /// Gets or sets AccountDisplayName.
+        ///   Gets or sets AccountDisplayName.
         /// </summary>
         public string AccountDisplayName { get; set; }
 
         /// <summary>
-        /// Gets or sets Transfers.
+        ///   Gets or sets Transfers.
         /// </summary>
         public List<GetAccountTransfersTransfer> Transfers { get; set; }
-
-        #endregion
     }
 }

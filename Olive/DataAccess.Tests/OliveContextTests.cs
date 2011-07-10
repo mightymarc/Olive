@@ -52,8 +52,6 @@ namespace Olive.DataAccess.Tests
     /// </summary>
     public class OliveContextTests : TestBase
     {
-        #region Public Methods
-
         /// <summary>
         /// The create current account success test.
         /// </summary>
@@ -353,7 +351,5 @@ namespace Olive.DataAccess.Tests
             // Act and assert
             Assert.Throws<UnknownReturnCodeException>(() => mockContext.Object.VerifySession(Guid.NewGuid()));
         }
-
-        #endregion
     }
 }

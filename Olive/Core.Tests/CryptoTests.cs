@@ -49,8 +49,6 @@ namespace Core.Tests
     [TestFixture]
     public class CryptoTests
     {
-        #region Public Methods
-
         /// <summary>
         /// The create salt does not repeat.
         /// </summary>
@@ -86,7 +84,5 @@ namespace Core.Tests
                 "+mohhbPgqahe9B/7Z+88H7b3SYD46/lw5OcuNT7ZU31ZMIPCAd/W5D4cinqsK8jbsRnH37fUuPExEROVvXDpfw==", 
                 crypto.GenerateHash("password", "salt"));
         }
-
-        #endregion
     }
 }

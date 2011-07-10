@@ -51,38 +51,28 @@ namespace Olive.Database.Tests.Auth
     [TestClass]
     public class CreateSessionTests : DatabaseTestClass
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The correct hash returns session id data.
+        ///   The correct hash returns session id data.
         /// </summary>
         private DatabaseTestActions CorrectHashReturnsSessionIdData;
 
         /// <summary>
-        /// The incorrect hash returns error code data.
+        ///   The incorrect hash returns error code data.
         /// </summary>
         private DatabaseTestActions IncorrectHashReturnsErrorCodeData;
 
         /// <summary>
-        /// The unknown email returns error code data.
+        ///   The unknown email returns error code data.
         /// </summary>
         private DatabaseTestActions UnknownEmailReturnsErrorCodeData;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateSessionTests"/> class.
+        ///   Initializes a new instance of the <see cref = "CreateSessionTests" /> class.
         /// </summary>
         public CreateSessionTests()
         {
             this.InitializeComponent();
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The correct hash returns session id.
@@ -174,10 +164,6 @@ namespace Olive.Database.Tests.Auth
                 this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Required method for Designer support - do not modify 
         ///   the contents of this method with the code editor.
@@ -256,8 +242,6 @@ namespace Olive.Database.Tests.Auth
             this.UnknownEmailReturnsErrorCodeData.PretestAction = null;
             this.UnknownEmailReturnsErrorCodeData.TestAction = UnknownEmailReturnsErrorCode_TestAction;
         }
-
-        #endregion
 
         // You can use the following additional attributes as you write your tests:
         // Use ClassInitialize to run code before running the first test in the class

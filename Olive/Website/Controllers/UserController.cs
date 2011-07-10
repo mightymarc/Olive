@@ -51,8 +51,6 @@ namespace Olive.Website.Controllers
     /// </summary>
     public class UserController : SiteController
     {
-        #region Public Methods
-
         /// <summary>
         /// The login view (GET).
         /// </summary>
@@ -146,7 +144,5 @@ namespace Olive.Website.Controllers
         {
             return this.View(new RegisterViewModel());
         }
-
-        #endregion
     }
 }

@@ -57,8 +57,6 @@ namespace Olive.Website.Tests.Controllers
     [TestFixture]
     public class UserControllerTests : ControllerTestBase<UserController>
     {
-        #region Public Methods
-
         /// <summary>
         /// The cannot register when logged in.
         /// </summary>
@@ -238,10 +236,6 @@ namespace Olive.Website.Tests.Controllers
             Assert.False(isLocal);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The create model state from model.
         /// </summary>
@@ -263,7 +257,5 @@ namespace Olive.Website.Tests.Controllers
             controller.ModelState.Clear();
             controller.ModelState.Merge(modelBinder.ModelState);
         }
-
-        #endregion
     }
 }

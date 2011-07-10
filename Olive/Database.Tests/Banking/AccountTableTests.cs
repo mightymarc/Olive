@@ -51,28 +51,18 @@ namespace Olive.DataAccess.Tests.Banking
     [TestClass]
     public class AccountTableTests : DatabaseTestClass
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The allow negative enforced data.
+        ///   The allow negative enforced data.
         /// </summary>
         private DatabaseTestActions AllowNegativeEnforcedData;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="AccountTableTests"/> class.
+        ///   Initializes a new instance of the <see cref = "AccountTableTests" /> class.
         /// </summary>
         public AccountTableTests()
         {
             this.InitializeComponent();
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The allow negative enforced.
@@ -116,10 +106,6 @@ namespace Olive.DataAccess.Tests.Banking
             this.InitializeTest();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Required method for Designer support - do not modify 
         ///   the contents of this method with the code editor.
@@ -151,8 +137,6 @@ namespace Olive.DataAccess.Tests.Banking
             this.AllowNegativeEnforcedData.PretestAction = null;
             this.AllowNegativeEnforcedData.TestAction = AllowNegativeEnforced_TestAction;
         }
-
-        #endregion
 
         // You can use the following additional attributes as you write your tests:
         // Use ClassInitialize to run code before running the first test in the class

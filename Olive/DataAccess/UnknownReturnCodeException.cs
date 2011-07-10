@@ -49,8 +49,6 @@ namespace Olive.DataAccess
     [Serializable]
     public class UnknownReturnCodeException : Exception
     {
-        #region Constructors and Destructors
-
         /// <summary>
         ///   Initializes a new instance of the <see cref = "UnknownReturnCodeException" /> class.
         /// </summary>
@@ -115,10 +113,6 @@ namespace Olive.DataAccess
         {
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         ///   Gets or sets the return code.
         /// </summary>
@@ -126,7 +120,5 @@ namespace Olive.DataAccess
         ///   The return code.
         /// </value>
         public int ReturnCode { get; set; }
-
-        #endregion
     }
 }

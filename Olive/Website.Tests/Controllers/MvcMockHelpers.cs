@@ -55,8 +55,6 @@ namespace Olive.Website.Tests.Controllers
     /// </returns>
     public static class MvcMockHelpers
     {
-        #region Public Methods
-
         /// <summary>
         /// The fake http context.
         /// </summary>
@@ -157,10 +155,6 @@ namespace Olive.Website.Tests.Controllers
             mock.Setup(req => req.PathInfo).Returns(string.Empty);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The get query string parameters.
         /// </summary>
@@ -202,7 +196,5 @@ namespace Olive.Website.Tests.Controllers
         {
             return url.Contains("?") ? url.Substring(0, url.IndexOf("?")) : url;
         }
-
-        #endregion
     }
 }

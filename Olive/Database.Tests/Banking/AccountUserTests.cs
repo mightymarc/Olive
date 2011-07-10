@@ -51,38 +51,28 @@ namespace Olive.Database.Tests.Banking
     [TestClass]
     public class AccountUserTests : DatabaseTestClass
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The allowed to select data.
+        ///   The allowed to select data.
         /// </summary>
         private DatabaseTestActions AllowedToSelectData;
 
         /// <summary>
-        /// The not allowed to delete data.
+        ///   The not allowed to delete data.
         /// </summary>
         private DatabaseTestActions NotAllowedToDeleteData;
 
         /// <summary>
-        /// The not allowed to update data.
+        ///   The not allowed to update data.
         /// </summary>
         private DatabaseTestActions NotAllowedToUpdateData;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="AccountUserTests"/> class.
+        ///   Initializes a new instance of the <see cref = "AccountUserTests" /> class.
         /// </summary>
         public AccountUserTests()
         {
             this.InitializeComponent();
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The allowed to select.
@@ -174,10 +164,6 @@ namespace Olive.Database.Tests.Banking
             this.InitializeTest();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Required method for Designer support - do not modify 
         ///   the contents of this method with the code editor.
@@ -255,8 +241,6 @@ namespace Olive.Database.Tests.Banking
             scalarValueCondition3.ResultSet = 1;
             scalarValueCondition3.RowNumber = 1;
         }
-
-        #endregion
 
         // You can use the following additional attributes as you write your tests:
         // Use ClassInitialize to run code before running the first test in the class

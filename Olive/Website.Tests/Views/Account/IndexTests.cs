@@ -53,8 +53,6 @@ namespace Olive.Website.Tests.Views.Account
     [TestFixture]
     public class IndexTests
     {
-        #region Public Methods
-
         /// <summary>
         /// The renders without exceptions.
         /// </summary>
@@ -96,7 +94,5 @@ namespace Olive.Website.Tests.Views.Account
                 html.DocumentNode.SelectSingleNode(".//a[@href='/Account/Transfer/?SourceAccountId=100']"), 
                 "Transfer from account link missing.");
         }
-
-        #endregion
     }
 }

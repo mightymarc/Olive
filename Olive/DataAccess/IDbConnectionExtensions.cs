@@ -48,8 +48,6 @@ namespace Olive.DataAccess
     /// </summary>
     public static class IDbConnectionExtensions
     {
-        #region Public Methods
-
         /// <summary>
         /// Creates a parameter with the specified properties and adds it to the specified command.
         /// </summary>
@@ -173,10 +171,6 @@ namespace Olive.DataAccess
             return (int)command.GetParameter("@ReturnCode").Value;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Creates a parameter for the specified command.
         /// </summary>
@@ -226,7 +220,5 @@ namespace Olive.DataAccess
 
             return param;
         }
-
-        #endregion
     }
 }

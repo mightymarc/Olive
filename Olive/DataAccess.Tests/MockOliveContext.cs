@@ -48,10 +48,8 @@ namespace Olive.DataAccess.Tests
     /// </summary>
     public class MockOliveContext : IOliveContext, IDisposable
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="MockOliveContext"/> class.
+        ///   Initializes a new instance of the <see cref = "MockOliveContext" /> class.
         /// </summary>
         public MockOliveContext()
         {
@@ -68,16 +66,12 @@ namespace Olive.DataAccess.Tests
                 };
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        /// Gets or sets Accounts.
+        ///   Gets or sets Accounts.
         /// </summary>
-        /// <exception cref="NotImplementedException">
+        /// <exception cref = "NotImplementedException">
         /// </exception>
-        /// <exception cref="NotImplementedException">
+        /// <exception cref = "NotImplementedException">
         /// </exception>
         public IDbSet<Account> Accounts
         {
@@ -93,11 +87,11 @@ namespace Olive.DataAccess.Tests
         }
 
         /// <summary>
-        /// Gets or sets AccountsWithBalance.
+        ///   Gets or sets AccountsWithBalance.
         /// </summary>
-        /// <exception cref="NotImplementedException">
+        /// <exception cref = "NotImplementedException">
         /// </exception>
-        /// <exception cref="NotImplementedException">
+        /// <exception cref = "NotImplementedException">
         /// </exception>
         public IDbSet<AccountWithBalance> AccountsWithBalance
         {
@@ -113,11 +107,11 @@ namespace Olive.DataAccess.Tests
         }
 
         /// <summary>
-        /// Gets or sets Currencies.
+        ///   Gets or sets Currencies.
         /// </summary>
-        /// <exception cref="NotImplementedException">
+        /// <exception cref = "NotImplementedException">
         /// </exception>
-        /// <exception cref="NotImplementedException">
+        /// <exception cref = "NotImplementedException">
         /// </exception>
         public IDbSet<Currency> Currencies
         {
@@ -133,11 +127,11 @@ namespace Olive.DataAccess.Tests
         }
 
         /// <summary>
-        /// Gets or sets Sessions.
+        ///   Gets or sets Sessions.
         /// </summary>
-        /// <exception cref="NotImplementedException">
+        /// <exception cref = "NotImplementedException">
         /// </exception>
-        /// <exception cref="NotImplementedException">
+        /// <exception cref = "NotImplementedException">
         /// </exception>
         public IDbSet<Session> Sessions
         {
@@ -153,11 +147,11 @@ namespace Olive.DataAccess.Tests
         }
 
         /// <summary>
-        /// Gets or sets Transfers.
+        ///   Gets or sets Transfers.
         /// </summary>
-        /// <exception cref="NotImplementedException">
+        /// <exception cref = "NotImplementedException">
         /// </exception>
-        /// <exception cref="NotImplementedException">
+        /// <exception cref = "NotImplementedException">
         /// </exception>
         public IDbSet<Transfer> Transfers
         {
@@ -173,13 +167,9 @@ namespace Olive.DataAccess.Tests
         }
 
         /// <summary>
-        /// Gets or sets Users.
+        ///   Gets or sets Users.
         /// </summary>
         public IDbSet<User> Users { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The create current account.
@@ -437,7 +427,5 @@ namespace Olive.DataAccess.Tests
         {
             throw new NotImplementedException();
         }
-
-        #endregion
     }
 }

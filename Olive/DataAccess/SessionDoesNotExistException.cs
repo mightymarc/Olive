@@ -48,8 +48,6 @@ namespace Olive.DataAccess
     [Serializable]
     public class SessionDoesNotExistException : Exception
     {
-        #region Constructors and Destructors
-
         /// <summary>
         ///   Initializes a new instance of the <see cref = "SessionDoesNotExistException" /> class.
         /// </summary>
@@ -101,7 +99,5 @@ namespace Olive.DataAccess
             : base(info, context)
         {
         }
-
-        #endregion
     }
 }

@@ -53,23 +53,17 @@ namespace Olive.Services
     /// </summary>
     public class WebService : IWebService
     {
-        #region Public Properties
-
         /// <summary>
-        /// Gets or sets Container.
+        ///   Gets or sets Container.
         /// </summary>
         [Microsoft.Practices.Unity.Dependency]
         public virtual IUnityContainer Container { get; set; }
 
         /// <summary>
-        /// Gets or sets FaultFactory.
+        ///   Gets or sets FaultFactory.
         /// </summary>
         [Dependency]
         public IFaultFactory FaultFactory { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The create current account.
@@ -454,10 +448,6 @@ namespace Olive.Services
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The get context.
         /// </summary>
@@ -499,7 +489,5 @@ namespace Olive.Services
                 }
             }
         }
-
-        #endregion
     }
 }

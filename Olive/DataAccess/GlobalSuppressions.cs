@@ -36,7 +36,6 @@
 //   GlobalSuppressions.cs
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 [assembly:
     System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", 
         Scope = "member", Target = "Olive.DataAccess.Account.#Users")]

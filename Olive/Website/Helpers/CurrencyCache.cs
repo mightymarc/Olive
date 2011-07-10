@@ -51,10 +51,8 @@ namespace Olive.Website.Helpers
     /// </summary>
     public class CurrencyCache : ICurrencyCache
     {
-        #region Public Properties
-
         /// <summary>
-        /// Gets Currencies.
+        ///   Gets Currencies.
         /// </summary>
         public List<string> Currencies
         {
@@ -67,11 +65,9 @@ namespace Olive.Website.Helpers
         }
 
         /// <summary>
-        /// Gets or sets Service.
+        ///   Gets or sets Service.
         /// </summary>
         [Dependency]
         public IWebService Service { get; set; }
-
-        #endregion
     }
 }

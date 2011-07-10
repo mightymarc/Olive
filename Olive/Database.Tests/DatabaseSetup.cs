@@ -48,8 +48,6 @@ namespace Olive.DataAccess.Tests
     [TestClass]
     public class DatabaseSetup
     {
-        #region Public Methods
-
         /// <summary>
         /// The initialize assembly.
         /// </summary>
@@ -64,7 +62,5 @@ namespace Olive.DataAccess.Tests
             DatabaseTestClass.TestService.DeployDatabaseProject();
             DatabaseTestClass.TestService.GenerateData();
         }
-
-        #endregion
     }
 }

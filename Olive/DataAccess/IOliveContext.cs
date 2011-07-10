@@ -49,8 +49,6 @@ namespace Olive.DataAccess
     [ContractClass(typeof(IOliveContextContract))]
     public interface IOliveContext : IDisposable
     {
-        #region Public Properties
-
         /// <summary>
         ///   Gets or sets Accounts.
         /// </summary>
@@ -80,10 +78,6 @@ namespace Olive.DataAccess
         ///   Gets or sets Users.
         /// </summary>
         IDbSet<User> Users { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The create current account.
@@ -161,7 +155,5 @@ namespace Olive.DataAccess
         /// The user id of the user that owns the session.
         /// </returns>
         int VerifySession(Guid sessionId);
-
-        #endregion
     }
 }

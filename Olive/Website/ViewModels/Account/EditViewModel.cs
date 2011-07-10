@@ -47,8 +47,6 @@ namespace Olive.Website.ViewModels.Account
     /// </summary>
     public sealed class EditViewModel
     {
-        #region Public Properties
-
         /// <summary>
         ///   Gets or sets the id of the account being edited.
         /// </summary>
@@ -68,7 +66,5 @@ namespace Olive.Website.ViewModels.Account
         [Display(Name = "Name", Description = "Account name")]
         [DisplayFormat(ConvertEmptyStringToNull = true)]
         public string DisplayName { get; set; }
-
-        #endregion
     }
 }

@@ -47,10 +47,8 @@ namespace Olive.Website.ViewModels.User
     /// </summary>
     public class LoginViewModel
     {
-        #region Public Properties
-
         /// <summary>
-        /// Gets or sets Email.
+        ///   Gets or sets Email.
         /// </summary>
         [Required]
         [DataType(DataType.EmailAddress)]
@@ -58,7 +56,7 @@ namespace Olive.Website.ViewModels.User
         public string Email { get; set; }
 
         /// <summary>
-        /// Gets or sets Password.
+        ///   Gets or sets Password.
         /// </summary>
         [Required]
         [DataType(DataType.Password)]
@@ -66,11 +64,9 @@ namespace Olive.Website.ViewModels.User
         public string Password { get; set; }
 
         /// <summary>
-        /// Gets or sets ReturnUrl.
+        ///   Gets or sets ReturnUrl.
         /// </summary>
         [HiddenInput(DisplayValue = false)]
         public string ReturnUrl { get; set; }
-
-        #endregion
     }
 }

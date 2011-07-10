@@ -49,10 +49,8 @@ namespace Olive.DataAccess
     [ContractClassFor(typeof(IOliveContext))]
     public abstract class IOliveContextContract : IOliveContext
     {
-        #region Public Properties
-
         /// <summary>
-        /// Gets or sets Accounts.
+        ///   Gets or sets Accounts.
         /// </summary>
         public IDbSet<Account> Accounts
         {
@@ -68,7 +66,7 @@ namespace Olive.DataAccess
         }
 
         /// <summary>
-        /// Gets or sets AccountsWithBalance.
+        ///   Gets or sets AccountsWithBalance.
         /// </summary>
         public IDbSet<AccountWithBalance> AccountsWithBalance
         {
@@ -84,7 +82,7 @@ namespace Olive.DataAccess
         }
 
         /// <summary>
-        /// Gets or sets Currencies.
+        ///   Gets or sets Currencies.
         /// </summary>
         public IDbSet<Currency> Currencies
         {
@@ -100,7 +98,7 @@ namespace Olive.DataAccess
         }
 
         /// <summary>
-        /// Gets or sets Sessions.
+        ///   Gets or sets Sessions.
         /// </summary>
         public IDbSet<Session> Sessions
         {
@@ -116,7 +114,7 @@ namespace Olive.DataAccess
         }
 
         /// <summary>
-        /// Gets or sets Transfers.
+        ///   Gets or sets Transfers.
         /// </summary>
         public IDbSet<Transfer> Transfers
         {
@@ -132,7 +130,7 @@ namespace Olive.DataAccess
         }
 
         /// <summary>
-        /// Gets or sets Users.
+        ///   Gets or sets Users.
         /// </summary>
         public IDbSet<User> Users
         {
@@ -146,10 +144,6 @@ namespace Olive.DataAccess
                 return;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The create current account.
@@ -268,7 +262,5 @@ namespace Olive.DataAccess
 
             return default(int);
         }
-
-        #endregion
     }
 }

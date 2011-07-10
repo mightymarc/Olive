@@ -51,38 +51,28 @@ namespace Olive.Database.Tests.Auth
     [TestClass]
     public class VerifySessionTests : DatabaseTestClass
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The success data.
+        ///   The success data.
         /// </summary>
         private DatabaseTestActions SuccessData;
 
         /// <summary>
-        /// The unknown session id data.
+        ///   The unknown session id data.
         /// </summary>
         private DatabaseTestActions UnknownSessionIdData;
 
         /// <summary>
-        /// The verify fails on expired session data.
+        ///   The verify fails on expired session data.
         /// </summary>
         private DatabaseTestActions VerifyFailsOnExpiredSessionData;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="VerifySessionTests"/> class.
+        ///   Initializes a new instance of the <see cref = "VerifySessionTests" /> class.
         /// </summary>
         public VerifySessionTests()
         {
             this.InitializeComponent();
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The success.
@@ -174,10 +164,6 @@ namespace Olive.Database.Tests.Auth
                 this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Required method for Designer support - do not modify 
         ///   the contents of this method with the code editor.
@@ -267,8 +253,6 @@ namespace Olive.Database.Tests.Auth
             scalarValueCondition3.ResultSet = 1;
             scalarValueCondition3.RowNumber = 1;
         }
-
-        #endregion
 
         // You can use the following additional attributes as you write your tests:
         // Use ClassInitialize to run code before running the first test in the class

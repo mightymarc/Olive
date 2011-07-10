@@ -52,8 +52,6 @@ namespace Olive.Website.Tests.Views.Account
     [TestFixture]
     public class EditTests
     {
-        #region Public Methods
-
         /// <summary>
         /// The with view model renders without exceptions 1.
         /// </summary>
@@ -104,7 +102,5 @@ namespace Olive.Website.Tests.Views.Account
             Assert.IsNotNull(html.DocumentNode.SelectSingleNode("//input[@type='submit']"), "Submit button missing");
             Assert.IsNotNull(html.DocumentNode.SelectSingleNode("//a[@href='/Account']"), "Cancel link missing");
         }
-
-        #endregion
     }
 }

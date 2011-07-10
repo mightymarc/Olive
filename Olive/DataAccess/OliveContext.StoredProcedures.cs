@@ -48,8 +48,6 @@ namespace Olive.DataAccess
     /// </summary>
     public partial class OliveContext
     {
-        #region Public Methods
-
         /// <summary>
         /// Creates a current account.
         /// </summary>
@@ -224,7 +222,5 @@ namespace Olive.DataAccess
                     throw new UnknownReturnCodeException(command.GetReturnCode());
             }
         }
-
-        #endregion
     }
 }

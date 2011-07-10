@@ -47,32 +47,28 @@ namespace Olive.Services
     [DataContract]
     public class GetAccountAccount
     {
-        #region Public Properties
-
         /// <summary>
-        /// Gets or sets AccountId.
+        ///   Gets or sets AccountId.
         /// </summary>
         [DataMember]
         public int AccountId { get; set; }
 
         /// <summary>
-        /// Gets or sets AccountType.
+        ///   Gets or sets AccountType.
         /// </summary>
         [DataMember]
         public string AccountType { get; set; }
 
         /// <summary>
-        /// Gets or sets CurrencyId.
+        ///   Gets or sets CurrencyId.
         /// </summary>
         [DataMember]
         public string CurrencyId { get; set; }
 
         /// <summary>
-        /// Gets or sets DisplayName.
+        ///   Gets or sets DisplayName.
         /// </summary>
         [DataMember]
         public string DisplayName { get; set; }
-
-        #endregion
     }
 }

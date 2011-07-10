@@ -46,13 +46,9 @@ namespace Olive.Website.ViewModels.Account
     /// </summary>
     public class IndexViewModel
     {
-        #region Public Properties
-
         /// <summary>
-        /// Gets or sets Accounts.
+        ///   Gets or sets Accounts.
         /// </summary>
         public AccountOverview Accounts { get; set; }
-
-        #endregion
     }
 }

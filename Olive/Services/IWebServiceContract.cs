@@ -52,8 +52,6 @@ namespace Olive.Services
     [ContractClassFor(typeof(IWebService))]
     public abstract class IWebServiceContract : IWebService
     {
-        #region Public Methods
-
         public int CreateCurrentAccount(Guid sessionId, string currencyId, string displayName)
         {
             Contract.Requires<ArgumentException>(sessionId != Guid.Empty, "sessionId");
@@ -139,7 +137,5 @@ namespace Olive.Services
             Contract.Ensures(Contract.Result<List<string>>() != null);
             return default(List<string>);
         }
-
-        #endregion
     }
 }

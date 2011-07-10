@@ -44,8 +44,6 @@ namespace Olive.DataAccess
     /// </summary>
     public static class AccountType
     {
-        #region Constants and Fields
-
         /// <summary>
         ///   The current.
         /// </summary>
@@ -55,7 +53,5 @@ namespace Olive.DataAccess
         ///   The incoming moneybookers usd.
         /// </summary>
         public const string IncomingMoneybookersUsd = "IncomingMoneybookersUSD";
-
-        #endregion
     }
 }

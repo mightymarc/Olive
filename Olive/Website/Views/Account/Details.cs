@@ -58,8 +58,6 @@ namespace Olive.Website.Views.Account
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Account/Details.cshtml")]
     public class Details : System.Web.Mvc.WebViewPage<DetailsViewModel>
     {
-        #region Public Methods
-
         /// <summary>
         /// The execute.
         /// </summary>
@@ -68,14 +66,11 @@ namespace Olive.Website.Views.Account
             this.WriteLiteral("\r\n");
 
 #line 3 "C:\Users\Andy\AppData\Local\TFS\Tests\Olive\Website\Views\Account\Details.cshtml"
-
             this.ViewBag.Title = "Details";
 #line default
 #line hidden
             this.WriteLiteral("\r\n<h2>Details</h2>\r\n");
         }
-
-        #endregion
     }
 }
 

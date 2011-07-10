@@ -36,7 +36,6 @@
 //   Shared assembly information values for the solution.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;

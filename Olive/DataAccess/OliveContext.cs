@@ -51,19 +51,13 @@ namespace Olive.DataAccess
     /// </summary>
     public partial class OliveContext : DbContext, IOliveContext
     {
-        #region Constants and Fields
-
         /// <summary>
         ///   The connection used to execute stored procedures.
         /// </summary>
         private IDbConnection commandConnection;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="OliveContext"/> class.
+        ///   Initializes a new instance of the <see cref = "OliveContext" /> class.
         /// </summary>
         [InjectionConstructor]
         public OliveContext()
@@ -81,10 +75,6 @@ namespace Olive.DataAccess
             : base(nameOrConnectionString)
         {
         }
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         ///   Gets or sets Accounts.
@@ -135,10 +125,6 @@ namespace Olive.DataAccess
         /// </summary>
         public IDbSet<User> Users { get; set; }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Saves the changes.
         /// </summary>
@@ -146,10 +132,6 @@ namespace Olive.DataAccess
         {
             base.SaveChanges();
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// This method is called when the model for a derived context has been initialized, but
@@ -201,7 +183,5 @@ namespace Olive.DataAccess
 
             modelBuilder.Entity<AccountWithBalance>().ToTable("AccountWithBalance", "Banking");
         }
-
-        #endregion
     }
 }
