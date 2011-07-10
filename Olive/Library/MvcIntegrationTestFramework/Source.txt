@@ -1,1 +1,1 @@
-From https://github.com/JonCanning/MvcIntegrationTestFramework/
+From https://github.com/andreasbrekken/MvcIntegrationTestFramework

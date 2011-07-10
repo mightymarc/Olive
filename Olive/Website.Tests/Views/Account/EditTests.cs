@@ -39,8 +39,27 @@
 
 namespace Olive.Website.Tests.Views.Account
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Threading;
+    using System.Web.Mvc;
+
+    using HtmlAgilityPack;
+
+    using Moq;
+
+    using MvcIntegrationTestFramework;
+    using MvcIntegrationTestFramework.Browsing;
+    using MvcIntegrationTestFramework.Hosting;
+
+    using Microsoft.Practices.Unity;
+
     using NUnit.Framework;
 
+    using Olive.Services;
+    using Olive.Website.Controllers;
+    using Olive.Website.Helpers;
     using Olive.Website.ViewModels.Account;
     using Olive.Website.Views.Account;
 
@@ -56,32 +75,13 @@ namespace Olive.Website.Tests.Views.Account
         /// The with view model renders without exceptions 1.
         /// </summary>
         [Test]
-        public void WithViewModelRendersWithoutExceptions1()
+        public void WithViewModelRendersWithoutExceptions()
         {
             var view = new Edit();
 
             var viewModel = new EditViewModel { AccountId = 123, DisplayName = null };
 
             var html = view.RenderAsHtml(viewModel);
-        }
-
-        /// <summary>
-        /// The with view model renders without exceptions 2.
-        /// </summary>
-        [Test]
-        public void WithViewModelRendersWithoutExceptions2()
-        {
-            var view = new Edit();
-
-            var viewModel = new EditViewModel { AccountId = 123, DisplayName = "Quite Unique" };
-
-            var html = view.RenderAsHtml(viewModel);
-            Assert.IsNotNull(html.DocumentNode.SelectSingleNode("//form"), "Form missing");
-            Assert.IsNotNull(
-                html.DocumentNode.SelectSingleNode("//input[@type='text' and @name='DisplayName']"), 
-                "DisplayName textbox missing.");
-            Assert.IsNotNull(html.DocumentNode.SelectSingleNode("//input[@type='submit']"), "Submit button missing");
-            Assert.IsNotNull(html.DocumentNode.SelectSingleNode("//a[@href='/Account']"), "Cancel link missing");
         }
 
         /// <summary>
@@ -101,6 +101,151 @@ namespace Olive.Website.Tests.Views.Account
                 "DisplayName textbox missing.");
             Assert.IsNotNull(html.DocumentNode.SelectSingleNode("//input[@type='submit']"), "Submit button missing");
             Assert.IsNotNull(html.DocumentNode.SelectSingleNode("//a[@href='/Account']"), "Cancel link missing");
+        }
+
+        [Test]
+        public void IntegrationWithoutSessionAndViewModelRedirects()
+        {
+            var appHost = AppHost.Simulate("Website");
+            appHost.Start(browsingSession =>
+                {
+                    var requestResult = browsingSession.Get("Account/Edit/1234");
+
+                    Assert.AreEqual((int)HttpStatusCode.Redirect, requestResult.Response.StatusCode); 
+                });
+        }
+
+        [Test]
+        public void IntegrationWithoutSessionWithModelRedirectsx()
+        {
+            var appHost = AppHost.Simulate("Website");
+            appHost.Start(browsingSession =>
+                {
+                    var formData =
+                        NameValueCollectionConversions.ConvertFromObject(
+                            new { AccountId = 1234, DisplayName = "Display name" });
+
+                    var requestResult = browsingSession.Post("Account/Edit/1234", formData);
+
+                    Assert.AreEqual((int)HttpStatusCode.Redirect, requestResult.Response.StatusCode);
+                });
+        }
+
+        [Test]
+        public void IntegrationWithoutSessionWithModelRedirects()
+        {
+            var appHost = AppHost.Simulate("Website");
+            appHost.Start(browsingSession =>
+            {
+                var formData =
+                    NameValueCollectionConversions.ConvertFromObject(
+                        new { AccountId = 1234, DisplayName = "Display name" });
+
+                var requestResult = browsingSession.Post("Account/Edit/1234", formData);
+
+                Assert.AreEqual((int)HttpStatusCode.Redirect, requestResult.Response.StatusCode);
+            });
+        }
+
+        public class MockInjectionFilterProvider : IFilterProvider
+        {
+            public Func<ActionExecutingContext, bool> Action { get; set; }
+
+            public class ActionFilter : ActionFilterAttribute
+            {
+                private bool disabled;
+
+                public override void OnActionExecuting(ActionExecutingContext filterContext)
+                {
+                    if (this.disabled)
+                    {
+                        return;
+                    }
+
+                    if (!this.Action(filterContext))
+                    {
+                        this.disabled = true;
+                    }
+                }
+
+                public Func<ActionExecutingContext, bool> Action { get; set; }
+            }
+
+            public MockInjectionFilterProvider(Func<ActionExecutingContext, bool> action)
+            {
+                this.Action = action;
+            }
+
+            public IEnumerable<Filter> GetFilters(ControllerContext controllerContext, ActionDescriptor actionDescriptor)
+            {
+                yield return new Filter(new ActionFilter { Action = this.Action }, FilterScope.Action, null);
+            }
+        }
+
+        [Test]
+        public void IntegrationLoginCreateAccountAndEditIt()
+        {
+            var email = "user@pass.com";
+            var password = "password";
+            var sessionId = Guid.NewGuid();
+
+            var appHost = AppHost.Simulate("Website", null);
+
+            appHost.Start(
+                browsingSession =>
+                    {
+                        // Go to /Account and expect to be redirected.
+                        var requestResult = browsingSession.Get("Account");
+                        Assert.IsInstanceOf(typeof(RedirectToRouteResult), requestResult.ResultExecutedContext.Result);
+
+                        // Go to login page
+                        requestResult = browsingSession.Get("/User/Login");
+                        Assert.IsInstanceOf(typeof(ViewResult), requestResult.ResultExecutedContext.Result);
+                        var viewResult = (ViewResult)requestResult.ResultExecutedContext.Result;
+                        Assert.AreEqual("Login", viewResult.ViewName);
+
+                        var document = new HtmlDocument();
+                        document.LoadHtml(requestResult.ResponseText);
+
+                        // Log in using random credentials
+                        var formData = new { Email = email, Password = password };
+
+                        FilterProviders.Providers.Add(
+                            new MockInjectionFilterProvider(
+                                fc =>
+                                    {
+                                        var serviceMock = new Mock<IWebService>();
+                                        serviceMock.Setup(s => s.CreateSession(email, password)).Returns(sessionId);
+                                        ((SiteController)fc.Controller).Service = serviceMock.Object;
+                                        return false;
+                                    }));
+
+                        requestResult = browsingSession.Post("/User/Login", formData);
+
+                        Assert.IsNull(requestResult.ActionExecutedContext.Exception);
+                        Assert.AreEqual(
+                            (int)HttpStatusCode.Redirect,
+                            requestResult.Response.StatusCode,
+                            "Wrong return code from login action.");
+                        Assert.AreEqual("/Account", requestResult.Response.RedirectLocation);
+
+                        // Go to create account
+                        FilterProviders.Providers.Add(
+                            new MockInjectionFilterProvider(
+                                fc =>
+                                {
+                                    var sessionMock = new Mock<ISiteSession>();
+                                    sessionMock.Setup(s => s.HasSession).Returns(true);
+                                    ////sessionMock.SetupGet(s => s.SessionId).Returns(sessionId);
+                                    ((SiteController)fc.Controller).SessionPersister = sessionMock.Object;
+                                    return false;
+                                }));
+
+                        requestResult = browsingSession.Get("/Account/Create");
+                        Assert.IsInstanceOf(typeof(ViewResult), requestResult.ResultExecutedContext.Result);
+                        viewResult = (ViewResult)requestResult.ResultExecutedContext.Result;
+                        Assert.AreEqual("Create", viewResult.ViewName);
+                    });
         }
     }
 }

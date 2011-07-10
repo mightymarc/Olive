@@ -39,6 +39,7 @@
 
 namespace Olive.Website
 {
+    using System;
     using System.Web.Mvc;
     using System.Web.Routing;
 
@@ -56,6 +57,14 @@ namespace Olive.Website
     /// </summary>
     public class MvcApplication : System.Web.HttpApplication
     {
+        /// <summary>
+        ///   Gets or sets the Unity container.
+        /// </summary>
+        /// <value>
+        ///   The container.
+        /// </value>
+        public IUnityContainer Container { get; set; }
+
         /// <summary>
         /// The register global filters.
         /// </summary>
@@ -79,7 +88,7 @@ namespace Olive.Website
 
             routes.MapRoute("Default", "{controller}/{action}", new { controller = "Home", action = "Index" });
             routes.MapRoute(
-                "Account/Edit", 
+                "Account_Edit", 
                 "{controller}/{action}/{AccountId}", 
                 new { controller = "Account", action = "Edit", AccountId = UrlParameter.Optional });
         }
@@ -94,25 +103,29 @@ namespace Olive.Website
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
-            var container = this.GetUnityContainer();
-            DependencyResolver.SetResolver(new UnityDependencyResolver(container));
+            DependencyResolver.SetResolver(new UnityDependencyResolver(this.Container));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MvcApplication"/> class.
+        /// </summary>
+        public MvcApplication()
+        {
+            this.CreateUnityContainer();
         }
 
         /// <summary>
         /// The get unity container.
         /// </summary>
-        /// <returns>
-        /// </returns>
-        private IUnityContainer GetUnityContainer()
+        private void CreateUnityContainer()
         {
-            var container = new UnityContainer();
-            container.RegisterType<IWebService, WebService>();
-            container.RegisterType<ISiteSession, SiteSession>();
-            container.RegisterType<ICrypto, Crypto>();
-            container.RegisterType<IFaultFactory, FaultFactory>();
-            container.RegisterType<IOliveContext, OliveContext>();
-            container.RegisterType<ICurrencyCache, CurrencyCache>();
-            return container;
+            this.Container = new UnityContainer();
+            this.Container.RegisterType<IWebService, WebService>();
+            this.Container.RegisterType<ISiteSession, SiteSession>();
+            this.Container.RegisterType<ICrypto, Crypto>();
+            this.Container.RegisterType<IFaultFactory, FaultFactory>();
+            this.Container.RegisterType<IOliveContext, OliveContext>();
+            this.Container.RegisterType<ICurrencyCache, CurrencyCache>();
         }
     }
 }

@@ -40,6 +40,9 @@
     <Reference Include="Moq">
       <HintPath>..\..\..\..\..\..\..\..\temp\Moq.4.0.10827.Final\Moq.4.0.10827\NET40\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="MvcIntegrationTestFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\Library\MvcIntegrationTestFramework\MvcIntegrationTestFramework.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="PrecompiledMvcViews.Testing">
       <HintPath>..\packages\PrecompiledMvcViews.Testing.1.0\lib\net40\PrecompiledMvcViews.Testing.dll</HintPath>

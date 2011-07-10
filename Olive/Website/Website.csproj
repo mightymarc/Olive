@@ -104,6 +104,7 @@
   <ItemGroup>
     <Compile Include="App_Start\PrecompiledMvcViewEngineStart.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Helpers\CurrencyCache.cs" />
     <Compile Include="Helpers\ICurrencyCache.cs" />
     <Compile Include="Helpers\ISiteSession.cs" />
@@ -142,6 +143,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Index.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Error\NotFound.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NotFound.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Error\ServerError.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ServerError.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Views\User\Login.cs">
       <AutoGen>True</AutoGen>
@@ -237,6 +248,14 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Views\Error\NotFound.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>NotFound.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Error\ServerError.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>ServerError.cs</LastGenOutput>
+    </None>
     <None Include="Views\User\Register.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Register.cs</LastGenOutput>
