@@ -34,48 +34,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Tests", "Core.Tests\Core.Tests.csproj", "{1DE053F9-6A52-49B4-9049-EB85995A1A26}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 13
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs18
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Core\\Core.csproj
-		SccProjectName1 = Core
-		SccLocalPath1 = Core
-		SccProjectUniqueName2 = DataAccess.Tests\\DataAccess.Tests.csproj
-		SccProjectName2 = DataAccess.Tests
-		SccLocalPath2 = DataAccess.Tests
-		SccProjectUniqueName3 = DataAccess\\DataAccess.csproj
-		SccProjectName3 = DataAccess
-		SccLocalPath3 = DataAccess
-		SccProjectUniqueName4 = Database.Tests\\Database.Tests.csproj
-		SccProjectName4 = Database.Tests
-		SccLocalPath4 = Database.Tests
-		SccProjectUniqueName5 = Database\\Database.dbproj
-		SccProjectName5 = Database
-		SccLocalPath5 = Database
-		SccProjectUniqueName6 = DatabaseServer\\DatabaseServer.dbproj
-		SccProjectName6 = DatabaseServer
-		SccLocalPath6 = DatabaseServer
-		SccProjectUniqueName7 = Services\\Services.csproj
-		SccProjectName7 = Services
-		SccLocalPath7 = Services
-		SccProjectUniqueName8 = Website\\Website.csproj
-		SccProjectName8 = Website
-		SccLocalPath8 = Website
-		SccProjectUniqueName9 = Website.Tests\\Website.Tests.csproj
-		SccProjectName9 = Website.Tests
-		SccLocalPath9 = Website.Tests
-		SccProjectUniqueName10 = Website.Backbone\\Website.Backbone.csproj
-		SccProjectName10 = Website.Backbone
-		SccLocalPath10 = Website.Backbone
-		SccProjectUniqueName11 = Services.Tests\\Services.Tests.csproj
-		SccProjectName11 = Services.Tests
-		SccLocalPath11 = Services.Tests
-		SccProjectUniqueName12 = Core.Tests\\Core.Tests.csproj
-		SccProjectName12 = Core.Tests
-		SccLocalPath12 = Core.Tests
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Olive.vsmdi
 	EndGlobalSection
