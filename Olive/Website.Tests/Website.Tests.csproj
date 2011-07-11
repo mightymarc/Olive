@@ -67,6 +67,8 @@
     <Compile Include="Controllers\ControllerTestBase.cs" />
     <Compile Include="Controllers\MvcMockHelpers.cs" />
     <Compile Include="Controllers\UserControllerTests.cs" />
+    <Compile Include="Integration\ViewAndController\AccountTest.cs" />
+    <Compile Include="MockInjectionFilterProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\Account\EditTests.cs" />
     <Compile Include="Views\Account\CreateTests.cs" />

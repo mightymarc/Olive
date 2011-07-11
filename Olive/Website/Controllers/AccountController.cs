@@ -75,7 +75,7 @@ namespace Olive.Website.Controllers
                 var accountId = this.Service.CreateCurrentAccount(
                     this.SessionPersister.SessionId, model.CurrencyId, model.DisplayName);
 
-                return this.RedirectToAction("Index");
+                return this.RedirectToAction(string.Empty);
             }
 
             return this.View(model);
