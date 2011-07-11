@@ -73,11 +73,11 @@ namespace Olive.Website.Tests.Integration.ViewAndController
                         {
                             new AccountOverviewAccount
                                 {
-                                    AccountId = 100, Balance = 200m, CurrencyId = "BTC", DisplayName = null 
+                                    AccountId = UnitTestHelper.Random.Next(1, 10000) * 2, Balance = (decimal)UnitTestHelper.Random.NextDouble() + 0.1m * 100000, CurrencyId = "BTC", DisplayName = null 
                                 },
                             new AccountOverviewAccount
                                 {
-                                    AccountId = 101, Balance = 50.5m, CurrencyId = "USD", DisplayName = "Coins" 
+                                    AccountId = UnitTestHelper.Random.Next(1, 10000) * 2 + 1, Balance = (decimal)UnitTestHelper.Random.NextDouble() + 0.1m * 100000, CurrencyId = "USD", DisplayName = UnitTestHelper.GetRandomDisplayName(true) 
                                 }
                         };
 
@@ -139,7 +139,7 @@ namespace Olive.Website.Tests.Integration.ViewAndController
                 Mock<IWebService> serviceMock = null;
                 var sessionId = Guid.NewGuid();
                 var currencyId = "USD";
-                var displayName = string.Empty;
+                var displayName = "ohai";
                 var accountId = UnitTestHelper.Random.Next(1, int.MaxValue);
 
                 FilterProviders.Providers.Add(
@@ -170,6 +170,145 @@ namespace Olive.Website.Tests.Integration.ViewAndController
                 var redirectResult = (RedirectToRouteResult)result.ResultExecutedContext.Result;
                 Assert.AreEqual(string.Empty, redirectResult.RouteValues["action"]);
                 Assert.AreEqual("Account", redirectResult.RouteValues["controller"]);
+            });
+        }
+
+        [Test]
+        public void AccountEditCurrentTest()
+        {
+            AppHost.Simulate("Website").Start(bs =>
+            {
+                // Arrange
+                Mock<ISiteSession> sessionMock = null;
+                Mock<IWebService> serviceMock = null;
+                var sessionId = Guid.NewGuid();
+                var currencyId = "USD";
+                var oldDdisplayName = default(string);
+                var newDisplayName = "bobby";
+                var accountId = UnitTestHelper.Random.Next(1, int.MaxValue);
+
+                FilterProviders.Providers.Add(
+                    new MockInjectionFilterProvider(
+                        fc =>
+                        {
+                            sessionMock = new Mock<ISiteSession>();
+                            sessionMock.SetupGet(s => s.HasSession).Returns(true);
+                            sessionMock.SetupGet(s => s.SessionId).Returns(sessionId);
+                            ((SiteController)fc.Controller).SessionPersister = sessionMock.Object;
+
+                            serviceMock = new Mock<IWebService>();
+                            serviceMock.Setup(s => s.GetAccount(sessionId, accountId)).Returns(
+                                new GetAccountAccount
+                                    {
+                                        AccountId = accountId,
+                                        AccountType = "Current",
+                                        CurrencyId = currencyId,
+                                        DisplayName = oldDdisplayName
+                                    });
+                            serviceMock.Setup(s => s.EditCurrentAccount(sessionId, accountId, newDisplayName));
+                            ((SiteController)fc.Controller).Service = serviceMock.Object;
+
+                            return false;
+                        }));
+
+                // Act
+                var result = bs.Post("/Account/Edit/" + accountId, new { AccountId = accountId, DisplayName = newDisplayName });
+
+                // Assert
+                sessionMock.VerifyGet(s => s.HasSession, Times.Once());
+                sessionMock.VerifyGet(s => s.SessionId, Times.Once());
+                serviceMock.Verify(s => s.EditCurrentAccount(sessionId, accountId, newDisplayName), Times.Once());
+
+                Assert.IsInstanceOf(typeof(RedirectToRouteResult), result.ResultExecutedContext.Result);
+                var redirectResult = (RedirectToRouteResult)result.ResultExecutedContext.Result;
+                Assert.AreEqual(string.Empty, redirectResult.RouteValues["action"]);
+                Assert.AreEqual("Account", redirectResult.RouteValues["controller"]);
+            });
+        }
+
+        [Test]
+        public void CreateCurrentAccountSuccessTest()
+        {
+            AppHost.Simulate("Website").Start(bs =>
+            {
+                // Arrange
+                Mock<ISiteSession> sessionMock = null;
+                Mock<IWebService> serviceMock = null;
+                var sessionId = Guid.NewGuid();
+                var currencyId = "USD";
+                var displayName = string.Empty;
+                var accountId = UnitTestHelper.Random.Next(1, int.MaxValue);
+
+                FilterProviders.Providers.Add(
+                    new MockInjectionFilterProvider(
+                        fc =>
+                        {
+                            sessionMock = new Mock<ISiteSession>();
+                            sessionMock.SetupGet(s => s.HasSession).Returns(true);
+                            sessionMock.SetupGet(s => s.SessionId).Returns(sessionId);
+                            ((SiteController)fc.Controller).SessionPersister = sessionMock.Object;
+
+                            serviceMock = new Mock<IWebService>();
+                            serviceMock.Setup(s => s.CreateCurrentAccount(sessionId, currencyId, displayName == string.Empty ? null : displayName)).Returns(accountId);
+                            ((SiteController)fc.Controller).Service = serviceMock.Object;
+
+                            return false;
+                        }));
+
+                // Act
+                var result = bs.Post("/Account/Create", new { AccountId = accountId, DisplayName = displayName, CurrencyId = currencyId });
+
+                // Assert
+                sessionMock.VerifyGet(s => s.HasSession, Times.Once());
+                sessionMock.VerifyGet(s => s.SessionId, Times.Once());
+                serviceMock.Verify(s => s.CreateCurrentAccount(sessionId, currencyId, displayName == string.Empty ? null : displayName), Times.Once());
+
+                Assert.IsInstanceOf(typeof(RedirectToRouteResult), result.ResultExecutedContext.Result);
+                var redirectResult = (RedirectToRouteResult)result.ResultExecutedContext.Result;
+                Assert.AreEqual(string.Empty, redirectResult.RouteValues["action"]);
+                Assert.AreEqual("Account", redirectResult.RouteValues["controller"]);
+            });
+        }
+
+        /// <summary>
+        /// Edits a current account (POST) without specifying AccountId in the view model.
+        /// The expected behavior is that a ArgumentException is thrown. (When mocking, it is not handled)
+        /// </summary>
+        [Test]
+        public void EditCurrentAccountPostWithAccountIdMissingInViewModelThrowsArgumentException()
+        {
+            AppHost.Simulate("Website").Start(bs =>
+            {
+                // Arrange
+
+                // Act
+                var result = bs.Post("/Account/Edit/0", new { DisplayName = string.Empty });
+
+                // Assert
+                Assert.IsNotNull(result.ActionExecutedContext, "result.ActionExecutedContext");
+                Assert.IsNotNull(result.ActionExecutedContext.Exception);
+                Assert.IsInstanceOf(typeof(ArgumentException), result.ActionExecutedContext.Exception);
+            });
+        }
+
+        /// <summary>
+        /// Edits a current account (GET) without specifying AccountId as an URL parameter.
+        /// The expected behavior is that a ArgumentException is thrown. (When mocking, it is not handled)
+        /// </summary>
+        [Test]
+        public void EditCurrentAccountGetWithAccountIdMissingInQueryStringThrowsArgumentException()
+        {
+            AppHost.Simulate("Website").Start(bs =>
+            {
+                // Arrange
+
+                // Act
+                var result = bs.Get("/Account/Edit");
+
+                // Assert
+                Assert.IsNotNull(result.ActionExecutedContext, "result.ActionExecutedContext");
+                Assert.IsNotNull(result.ActionExecutedContext.Exception);
+                Assert.IsInstanceOf(typeof(ArgumentException), result.ActionExecutedContext.Exception);
             });
         }
     }

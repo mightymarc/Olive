@@ -124,7 +124,7 @@ namespace Olive.Website.Tests.Controllers
             // Arrange
             var controller = this.CreateController(relativePath: "/Account/Create");
             this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
-            var model = new CreateViewModel { CurrencyId = "BTC", DisplayName = "abc" };
+            var model = new CreateViewModel { CurrencyId = UnitTestHelper.GetRandomCurrencyId(), DisplayName = UnitTestHelper.GetRandomDisplayName() };
 
             // Act
             var actionResult = (RedirectToRouteResult)controller.Create(model);
@@ -144,7 +144,7 @@ namespace Olive.Website.Tests.Controllers
             // Arrange
             var controller = this.CreateController(relativePath: "/Account/Create");
             this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
-            var model = new CreateViewModel { CurrencyId = "BTC", DisplayName = "abc" };
+            var model = new CreateViewModel { CurrencyId = UnitTestHelper.GetRandomCurrencyId(), DisplayName = UnitTestHelper.GetRandomDisplayName() };
 
             // Act
             var actionResult = (RedirectToRouteResult)controller.Create(model);
@@ -156,13 +156,13 @@ namespace Olive.Website.Tests.Controllers
         }
 
         /// <summary>
-        /// The create account success test.
+        /// Successfully creates and expects to be redirected to the account index.
         /// </summary>
         [Test]
         public void CreateAccountSuccessTest()
         {
             // Arrange
-            var model = new CreateViewModel { CurrencyId = "USD", DisplayName = string.Empty };
+            var model = new CreateViewModel { CurrencyId = UnitTestHelper.GetRandomCurrencyId(), DisplayName = string.Empty };
 
             var newAccountId = Random.Next(1, 10000000);
             var sessionId = this.SetupHasSession();
@@ -173,7 +173,7 @@ namespace Olive.Website.Tests.Controllers
             // Act
             var result = (RedirectToRouteResult)target.Create(model);
 
-            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual(string.Empty, result.RouteValues["action"]);
         }
 
         /// <summary>
@@ -204,14 +204,14 @@ namespace Olive.Website.Tests.Controllers
             var controller = this.CreateController();
             this.SetupHasSession();
 
-            var viewModel = new EditViewModel { AccountId = 100, DisplayName = "Display name" };
+            var viewModel = new EditViewModel { AccountId = UnitTestHelper.Random.Next(1, int.MaxValue), DisplayName = UnitTestHelper.GetRandomDisplayName() };
 
             // Act
-            var actionResult = (RedirectToRouteResult)controller.Edit(viewModel.AccountId, viewModel);
+            var actionResult = (RedirectToRouteResult)controller.Edit(viewModel);
 
             // Assert
-            Assert.AreEqual(null, actionResult.RouteValues["controller"]);
-            Assert.AreEqual(null, actionResult.RouteValues["action"]);
+            Assert.AreEqual("Account", actionResult.RouteValues["controller"]);
+            Assert.AreEqual(string.Empty, actionResult.RouteValues["action"]);
         }
 
         /// <summary>
@@ -221,18 +221,20 @@ namespace Olive.Website.Tests.Controllers
         public void EditAccountWithModelRedirectsWhenNotLoggedIn()
         {
             // Arrange
-            var controller = this.CreateController(relativePath: "/Account/Edit/100");
+            var accountId = UnitTestHelper.Random.Next(1, int.MaxValue);
+
+            var controller = this.CreateController(relativePath: "/Account/Edit/" + accountId);
             this.sessionMock.Setup(s => s.HasSession).Returns(false);
 
-            var viewModel = new EditViewModel { AccountId = 100, DisplayName = "Display name" };
+            var viewModel = new EditViewModel { AccountId = accountId, DisplayName = UnitTestHelper.GetRandomDisplayName() };
 
             // Act
-            var actionResult = (RedirectToRouteResult)controller.Edit(viewModel.AccountId, viewModel);
+            var actionResult = (RedirectToRouteResult)controller.Edit(viewModel);
 
             // Assert
             Assert.AreEqual("Login", actionResult.RouteValues["action"]);
             Assert.AreEqual("User", actionResult.RouteValues["controller"]);
-            Assert.AreEqual("/Account/Edit/100", actionResult.RouteValues["returnUrl"]);
+            Assert.AreEqual("/Account/Edit/" + accountId, actionResult.RouteValues["returnUrl"]);
         }
 
         /// <summary>
@@ -243,16 +245,27 @@ namespace Olive.Website.Tests.Controllers
         {
             // Arrange
             var accountId = UnitTestHelper.Random.Next(1, int.MaxValue);
+            var displayName = UnitTestHelper.GetRandomDisplayName(true);
+            var currencyId = UnitTestHelper.GetRandomCurrencyId();
 
             var controller = this.CreateController();
-            this.SetupHasSession();
+            var sessionId = this.SetupHasSession();
+
+            this.serviceMock.Setup(s => s.GetAccount(sessionId, accountId)).Returns(
+                new GetAccountAccount
+                    {
+                        AccountId = accountId,
+                        DisplayName = UnitTestHelper.GetRandomDisplayName(),
+                        AccountType = "Current",
+                        CurrencyId = UnitTestHelper.GetRandomCurrencyId()
+                    });
 
             // Act
             var actionResult = (ViewResult)controller.Edit(accountId);
 
             // Assert
             Assert.IsInstanceOf(typeof(EditViewModel), actionResult.Model);
-            Assert.AreEqual("Edit", actionResult.ViewName);
+            Assert.IsTrue(string.Empty == actionResult.ViewName || "Edit" == actionResult.ViewName);
         }
 
         /// <summary>
@@ -335,7 +348,7 @@ namespace Olive.Website.Tests.Controllers
             // Arrange
             var controller = this.CreateController(relativePath: "/Account");
             this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
-            var model = new CreateViewModel { CurrencyId = "PPUSD", DisplayName = "abc" };
+            var model = new CreateViewModel { CurrencyId = UnitTestHelper.GetRandomCurrencyId(), DisplayName = UnitTestHelper.GetRandomDisplayName() };
 
             // Act
             var actionResult = (RedirectToRouteResult)controller.Index();

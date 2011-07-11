@@ -40,6 +40,7 @@
 namespace Olive.Services.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.ServiceModel;
@@ -709,7 +710,36 @@ namespace Olive.Services.Tests
         [Test]
         public void GetAccountDoesNotThrowException()
         {
-            Assert.Inconclusive();
+            // Arrange
+            var sessionId = Guid.NewGuid();
+            var accountId = 1;
+            var userId = 3;
+            var displayName = default(string);
+            var currencyId = "BTC";
+
+            var mockContext = new Mock<IOliveContext>();
+            mockContext.Setup(c => c.VerifySession(sessionId)).Returns(userId);
+
+            var mockDbSet = new Mock<DataAccess.Tests.MockDbSet<Account>>();
+            mockDbSet.CallBase = true;
+            var account = new Account
+                { AccountId = accountId, AccountType = "Current", CurrencyId = currencyId, DisplayName = displayName };
+            mockDbSet.Object.Add(account);
+            mockDbSet.Setup(db => db.Find(accountId)).Returns(account);
+
+            mockContext.SetupGet(c => c.Accounts).Returns(mockDbSet.Object);
+            this.container.RegisterInstance(mockContext.Object);
+
+            var service = this.GetMockWebService();
+            Mock.Get(service).Setup(s => s.UserCanViewAccount(userId, accountId)).Returns(true);
+
+            // Act
+            service.GetAccount(sessionId, accountId);
+
+            // Assert
+            mockContext.VerifyGet(c => c.Accounts, Times.Once());
+            mockContext.Verify(c => c.VerifySession(sessionId), Times.Once());
+            Mock.Get(service).Verify(s => s.UserCanViewAccount(userId, accountId), Times.Once());
         }
 
         /// <summary>
@@ -718,7 +748,25 @@ namespace Olive.Services.Tests
         [Test]
         public void GetAccountThrowsExceptionForNonExistingAccount()
         {
-            Assert.Inconclusive();
+            // Arrange
+            var sessionId = Guid.NewGuid();
+            var accountId = 1;
+            var userId = 3;
+            var displayName = default(string);
+            var currencyId = "BTC";
+
+            var mockContext = new Mock<IOliveContext>();
+            mockContext.Setup(c => c.VerifySession(sessionId)).Returns(userId);
+            this.container.RegisterInstance(mockContext.Object);
+
+            var service = this.GetMockWebService();
+            Mock.Get(service).Setup(s => s.UserCanViewAccount(userId, accountId)).Returns(false);
+
+            // Act
+            Assert.Throws<FaultException>(() => service.GetAccount(sessionId, accountId));
+
+            // Assert
+            Mock.Get(service).Verify(s => s.UserCanViewAccount(userId, accountId), Times.Once());
         }
 
         /// <summary>
@@ -763,7 +811,19 @@ namespace Olive.Services.Tests
             // Arrange
             var service = new WebService { Container = this.container };
 
-            Assert.Inconclusive("Requires mock DbSet, postponed.");
+            var currencies =
+                new[] { "USD", "BTC", "ARG", "PPUSD" }.Select(x => new Currency { CurrencyId = x }).ToList();
+            var mockDbSet = new Mock<MockDbSet<Currency>>() { CallBase = true };
+            currencies.ForEach(x => mockDbSet.Object.Add(x));
+
+            var mockContext = new Mock<IOliveContext>();
+            mockContext.SetupGet(c => c.Currencies).Returns(mockDbSet.Object);
+            this.container.RegisterInstance(mockContext.Object);
+
+            var result = service.GetCurrencies();
+
+            Assert.AreEqual(currencies.Count, result.Count);
+            mockContext.VerifyGet(c => c.Currencies, Times.Once());
         }
 
         /// <summary>

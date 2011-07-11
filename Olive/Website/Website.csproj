@@ -124,6 +124,11 @@
     <Compile Include="ViewModels\Account\DetailsViewModel.cs" />
     <Compile Include="ViewModels\Account\IndexViewModel.cs" />
     <Compile Include="ViewModels\User\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelValidation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ViewModelValidation.resx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Account\Create.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -144,15 +149,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Index.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Account\AccountResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Error\NotFound.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NotFound.cshtml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Error\ServerError.cs">
+    <Compile Include="Views\Error\Error.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ServerError.cshtml</DependentUpon>
+      <DependentUpon>Error.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Views\User\Login.cs">
       <AutoGen>True</AutoGen>
@@ -163,6 +173,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Register.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ViewResources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -252,9 +267,9 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>NotFound.cs</LastGenOutput>
     </None>
-    <None Include="Views\Error\ServerError.cshtml">
+    <None Include="Views\Error\Error.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>ServerError.cs</LastGenOutput>
+      <LastGenOutput>Error.cs</LastGenOutput>
     </None>
     <None Include="Views\User\Register.cshtml">
       <Generator>RazorGenerator</Generator>
@@ -290,6 +305,20 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ViewModels\ViewModelValidation.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ViewModelValidation.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Account\AccountResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AccountResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ViewResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

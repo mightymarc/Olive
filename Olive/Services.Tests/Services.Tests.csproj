@@ -58,7 +58,6 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MockDbSet.cs" />
     <Compile Include="MockOliveContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebServiceTests.cs" />
@@ -67,6 +66,10 @@
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{D3889083-4413-4DCE-B732-1A9EB46AFC8A}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess.Tests\DataAccess.Tests.csproj">
+      <Project>{5C09A873-BC43-4C45-96DF-BE974080B8A6}</Project>
+      <Name>DataAccess.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">
       <Project>{AC234983-EDA6-4AEF-B86F-74DD061A5AA8}</Project>

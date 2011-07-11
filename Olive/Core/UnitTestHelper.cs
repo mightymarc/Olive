@@ -40,8 +40,10 @@
 namespace Olive
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Reflection;
+    using System.Text;
 
     using Moq;
 
@@ -88,6 +90,59 @@ namespace Olive
             mockCommand.Setup(c => c.Parameters).Returns(mockParams.Object);
 
             return mockCommand.Object;
+        }
+
+        public static string[] Currencies = new[] { "USD", "BTC", "NOK", "ARG", "LD", "RND" };
+
+        public static string GetRandomCurrencyId()
+        {
+            return Currencies[Random.Next(Currencies.Length)];
+        }
+
+        public static string GetRandomDisplayName(bool allowNull = false, bool allowEmpty = false, int maxLength = 25, bool allowNordic = true, bool allowChinese = true)
+        {
+            var length = Random.Next((allowNull ? -1 : 0) + (allowEmpty ? -1 : 0), maxLength + 1);
+
+            if (length == -2)
+            {
+                return null;
+            }
+
+            if (length == -1)
+            {
+                if (allowNull && allowEmpty)
+                {
+                    return string.Empty;
+                }
+
+                return allowNull ? null : string.Empty;
+            }
+
+            return GetRandomString(length, allowNordic, allowChinese);
+        }
+
+        private static string GetRandomString(int length, bool nordic = true, bool characterAlphabet = true)
+        {
+            var alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
+            if (nordic)
+            {
+                alphabet += "æøåöäÆØÅÖ";
+            }
+
+            if (characterAlphabet)
+            {
+                alphabet += "艾勒豆贝尔维艾娜";
+            }
+
+            var result = new char[length];
+
+            for (var n = 0; n < length; n++)
+            {
+                result[n] = alphabet[Random.Next(0, alphabet.Length)];
+            }
+
+            return new string(result);
         }
 
         /// <summary>
@@ -162,52 +217,32 @@ namespace Olive
         // end of method
 
         /// <summary>
-        /// The run method.
+        /// Runs the specified method using reflection. The method can be private.
         /// </summary>
-        /// <param name="t">
-        /// The t.
-        /// </param>
-        /// <param name="strMethod">
-        /// The str method.
-        /// </param>
-        /// <param name="objInstance">
-        /// The obj instance.
-        /// </param>
-        /// <param name="aobjParams">
-        /// The aobj params.
-        /// </param>
-        /// <param name="eFlags">
-        /// The e flags.
-        /// </param>
-        /// <returns>
-        /// The run method.
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// </exception>
-        private static object RunMethod(
-            Type t, string strMethod, object objInstance, object[] aobjParams, BindingFlags eFlags)
+        /// <param name="type">The t.</param>
+        /// <param name="methodName">The STR method.</param>
+        /// <param name="instance">The obj instance.</param>
+        /// <param name="parameters">The aobj params.</param>
+        /// <param name="bindingFlags">The e flags.</param>
+        /// <returns>The result from the method.</returns>
+        public static object RunMethod(Type type, string methodName, object instance, object[] parameters, BindingFlags bindingFlags)
         {
-            MethodInfo m;
-            try
-            {
-                m = t.GetMethod(strMethod, eFlags);
-                if (m == null)
-                {
-                    throw new ArgumentException("There is no method '" + strMethod + "' for type '" + t + "'.");
-                }
+            var m = type.GetMethod(methodName, bindingFlags);
 
-                object objRet = m.Invoke(objInstance, aobjParams);
-                return objRet;
-            }
-            catch
+            if (m == null)
             {
-                throw;
+                throw new ArgumentException(string.Format("There is no method '{0}' for type '{1}'.", methodName, type));
             }
+
+            var objRet = m.Invoke(instance, parameters);
+            return objRet;
         }
 
-        // end of method
+        public static string GetRandomEmail()
+        {
+            return GetRandomDisplayName(false, false, 25, false, false) + "@"
+                   + GetRandomDisplayName(false, false, 25, false, false) + "."
+                   + GetRandomDisplayName(false, false, 5, false, false);
+        }
     }
-    // end of class
 }
-
-//end of namespace

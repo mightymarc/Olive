@@ -40,6 +40,7 @@
 namespace Olive.Website.ViewModels.Account
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// The create view model.
@@ -57,6 +58,8 @@ namespace Olive.Website.ViewModels.Account
         /// <value>
         ///   The currency.
         /// </value>
+        [Required(AllowEmptyStrings = false, ErrorMessageResourceType = typeof(ViewModelValidation), ErrorMessageResourceName = "Account_Create_CurrencyId_Required")]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "")]
         public string CurrencyId { get; set; }
 
         /// <summary>

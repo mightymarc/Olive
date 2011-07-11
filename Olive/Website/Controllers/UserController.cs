@@ -91,7 +91,7 @@ namespace Olive.Website.Controllers
 
                     if (string.IsNullOrEmpty(model.ReturnUrl) || !this.Url.IsLocalUrl(model.ReturnUrl))
                     {
-                        return this.RedirectToAction("Index", "Account");
+                        return this.RedirectToAction(string.Empty, "Account");
                     }
 
                     return new RedirectResult(model.ReturnUrl);
@@ -102,8 +102,10 @@ namespace Olive.Website.Controllers
                     {
                         this.ModelState.AddModelError(string.Empty, "The e-mail or password provided is incorrect.");
                     }
-
-                    throw;
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
 
@@ -113,11 +115,8 @@ namespace Olive.Website.Controllers
         /// <summary>
         /// Register the user with the specified e-mail and password.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="model">The model.</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Register(RegisterViewModel model)
         {
@@ -125,11 +124,16 @@ namespace Olive.Website.Controllers
             Contract.Requires<InvalidOperationException>(this.SessionPersister != null);
             Contract.Requires<ArgumentNullException>(model != null, "model");
 
+            if (this.SessionPersister.HasSession)
+            {
+                throw new InvalidOperationException("The user is already logged in.");
+            }
+
             if (this.ModelState.IsValid)
             {
                 this.Service.CreateUser(model.Email, model.Password);
                 this.SessionPersister.SessionId = this.Service.CreateSession(model.Email, model.Password);
-                return this.RedirectToAction("Index", "Account");
+                return this.RedirectToAction(string.Empty, "Account");
             }
 
             return this.View(model);
@@ -140,8 +144,13 @@ namespace Olive.Website.Controllers
         /// </summary>
         /// <returns>
         /// </returns>
-        public ViewResult Register()
+        public ActionResult Register()
         {
+            if (this.SessionPersister.HasSession)
+            {
+                throw new InvalidOperationException("The user is already logged in.");
+            }
+
             return this.View(new RegisterViewModel());
         }
     }

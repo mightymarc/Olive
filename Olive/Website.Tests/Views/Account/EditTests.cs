@@ -44,6 +44,7 @@ namespace Olive.Website.Tests.Views.Account
     using System.Net;
     using System.Threading;
     using System.Web.Mvc;
+    using System.Web.Routing;
 
     using HtmlAgilityPack;
 
@@ -78,6 +79,7 @@ namespace Olive.Website.Tests.Views.Account
         public void WithViewModelRendersWithoutExceptions()
         {
             var view = new Edit();
+            RouteTable.Routes.Add("Account_Edit", new Route("Account/Edit/{accountId}", new MvcRouteHandler()));
 
             var viewModel = new EditViewModel { AccountId = 123, DisplayName = null };
 
@@ -91,7 +93,9 @@ namespace Olive.Website.Tests.Views.Account
         public void WithoutViewModelRendersWithoutExceptions()
         {
             var view = new Edit();
+
             var viewModel = new EditViewModel { AccountId = 612345 };
+            RouteTable.Routes.Add("Account_Edit", new Route("Account/Edit/{accountId}", new MvcRouteHandler()));
 
             var html = view.RenderAsHtml(viewModel);
 

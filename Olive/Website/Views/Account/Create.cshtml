@@ -1,14 +1,30 @@
-﻿@model Olive.Website.ViewModels.Account.CreateAccountViewModel
+﻿@model Olive.Website.ViewModels.Account.CreateViewModel
+@using Olive.Website.Views;
+@using Olive.Website.Views.Account;
+@{
+    ViewBag.Title = AccountResources.Create_DocumentTitle;
+}
+
+<h2>@AccountResources.Create_PageHeading</h2>
 
 @using (Html.BeginForm()) 
 {
-   @Html.ValidationSummary(true, "Please correct the errors and try again.")
-   <fieldset>
-       <div>
-           @Html.EditorForModel()
-           <p>
-               <input type="submit" value="Save" />
-           </p>
-       </div>
-   </fieldset>
+   @Html.ValidationSummary(true, ViewResources.DefaultValidationSummary)
+    <fieldset>
+        <div>
+            @Html.LabelFor(m => m.CurrencyId)
+            @Html.DropDownListFor(m => m.CurrencyId, Model.Currencies.Select(c => new SelectListItem { Value = c, Text = c }))
+            @Html.ValidationMessageFor(m => m.CurrencyId)
+        </div>
+
+        <div>
+            @Html.LabelFor(m => m.DisplayName)
+            @Html.TextBoxFor(m => m.DisplayName)
+            @Html.ValidationMessageFor(m => m.DisplayName)
+        </div>
+
+        <div>
+            <input type="submit" value="@AccountResources.Create_SubmitButtonCaption" />
+        </div>
+    </fieldset>
 }

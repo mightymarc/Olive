@@ -48,6 +48,7 @@ namespace Olive.Website.Tests.Controllers
 
     using NUnit.Framework;
 
+    using Olive.Services;
     using Olive.Website.Controllers;
     using Olive.Website.ViewModels.User;
 
@@ -61,9 +62,14 @@ namespace Olive.Website.Tests.Controllers
         /// The cannot register when logged in.
         /// </summary>
         [Test]
-        public void CannotRegisterWhenLoggedIn()
+        public void CannotViewRegisterWhenLoggedIn()
         {
-            Assert.Inconclusive("Not implemented.");
+            // Arrange
+            var controller = this.CreateController();
+            this.sessionMock.SetupGet(s => s.HasSession).Returns(true);
+
+            // Act
+            Assert.Throws<InvalidOperationException>(() => controller.Register());
         }
 
         /// <summary>
@@ -89,7 +95,7 @@ namespace Olive.Website.Tests.Controllers
 
             // Assert
             this.serviceMock.Verify(s => s.CreateSession(email, password), Times.Once());
-            Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
+            Assert.AreEqual(string.Empty, redirectResult.RouteValues["action"]);
             Assert.AreEqual("Account", redirectResult.RouteValues["controller"]);
         }
 
@@ -99,7 +105,26 @@ namespace Olive.Website.Tests.Controllers
         [Test]
         public void LoginActionStaysWithErrorMessageOnFailure()
         {
-            Assert.Inconclusive();
+            // Arrange
+            var controller = this.CreateController();
+            this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
+            var sessionId = Guid.NewGuid();
+            this.sessionMock.SetupSet(s => s.SessionId = sessionId);
+
+            var email = "valid@email.com";
+            var password = "password";
+
+            var faultFactory = new FaultFactory();
+
+            this.serviceMock.Setup(s => s.CreateSession(email, password)).Throws(
+                faultFactory.CreateUnrecognizedCredentialsException(email));
+
+            // Act
+            var viewResult = (ViewResult)controller.Login(new LoginViewModel { Email = email, Password = password });
+
+            // Assert
+            this.serviceMock.Verify(s => s.CreateSession(email, password), Times.Once());
+            Assert.AreEqual(string.Empty, viewResult.ViewName);
         }
 
         /// <summary>
@@ -124,7 +149,34 @@ namespace Olive.Website.Tests.Controllers
         [Test]
         public void RegisterActionLogsInAndRegistersOnSuccess()
         {
-            Assert.Inconclusive();
+            // Arrange
+            var controller = this.CreateController();
+
+            var userId = UnitTestHelper.Random.Next(1, int.MaxValue);
+            var sessionId = Guid.NewGuid();
+            var email = UnitTestHelper.GetRandomEmail();
+            var password = UnitTestHelper.GetRandomDisplayName();
+
+            this.serviceMock.Setup(s => s.CreateSession(email, password)).Returns(sessionId);
+            this.serviceMock.Setup(s => s.CreateUser(email, password));
+
+            this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
+            this.sessionMock.SetupSet(s => s.SessionId = sessionId);
+
+            // Act
+            var actionResult = controller.Register(
+                new RegisterViewModel { ConfirmPassword = password, Email = email, Password = password });
+
+            // Assert
+            var redirectToRouteResult = (RedirectToRouteResult)actionResult;
+            Assert.AreEqual(string.Empty, redirectToRouteResult.RouteValues["action"]);
+            Assert.AreEqual("Account", redirectToRouteResult.RouteValues["controller"]);
+
+            this.serviceMock.Verify(s => s.CreateSession(email, password), Times.Once());
+            this.serviceMock.Verify(s => s.CreateUser(email, password), Times.Once());
+
+            this.sessionMock.VerifyGet(s => s.HasSession, Times.Once());
+            this.sessionMock.VerifySet(s => s.SessionId = sessionId, Times.Once());
         }
 
         /// <summary>
@@ -137,10 +189,10 @@ namespace Olive.Website.Tests.Controllers
             var controller = this.CreateController();
 
             // Act
-            var viewModel = controller.Register();
+            var viewResult = (ViewResult)controller.Register();
 
             // Assert
-            Assert.IsNotNull(viewModel.Model);
+            Assert.IsNotNull(viewResult.Model);
         }
 
         /// <summary>

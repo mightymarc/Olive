@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
+  <TopNode>[0-1044]Olive.DataAccess.Tests.OliveContextTests.VerifySessionThrowsExceptionOnUnknownReturnCode</TopNode>
+  <SelectedNode>[0-1115]Olive.Website.Tests.Views.Account.CreateTests.WithViewModelRendersWithoutExceptions1</SelectedNode>
+  <ExcludeCategories>false</ExcludeCategories>
+  <Nodes>
+    <Node UniqueName="[0-1000]C:\Users\Andy\AppData\Local\Git\Olive\Olive\Tests.nunit" Expanded="true" />
+    <Node UniqueName="[0-1005]C:\Users\Andy\AppData\Local\Git\Olive\Olive\Core.Tests\bin\Debug\Core.Tests.dll" Expanded="true" />
+    <Node UniqueName="[0-1006]Core" Expanded="true" />
+    <Node UniqueName="[0-1007]Core.Tests" Expanded="true" />
+    <Node UniqueName="[0-1001]Core.Tests.CryptoTests" Expanded="true" />
+    <Node UniqueName="[0-1046]C:\Users\Andy\AppData\Local\Git\Olive\Olive\DataAccess.Tests\bin\Debug\Olive.DataAccess.Tests.dll" Expanded="true" />
+    <Node UniqueName="[0-1047]Olive" Expanded="true" />
+    <Node UniqueName="[0-1048]Olive.DataAccess" Expanded="true" />
+    <Node UniqueName="[0-1049]Olive.DataAccess.Tests" Expanded="true" />
+    <Node UniqueName="[0-1008]Olive.DataAccess.Tests.AccountTests" Expanded="true" />
+    <Node UniqueName="[0-1012]Olive.DataAccess.Tests.AccountUserTests" Expanded="true" />
+    <Node UniqueName="[0-1016]Olive.DataAccess.Tests.DbConnectionExtensionsTests" Expanded="true" />
+    <Node UniqueName="[0-1021]Olive.DataAccess.Tests.OliveContextTests" Expanded="true" />
+    <Node UniqueName="[0-1022]Olive.DataAccess.Tests.OliveContextTests.CreateCurrentAccountSuccessTest" Expanded="true" />
+    <Node UniqueName="[0-1027]Olive.DataAccess.Tests.OliveContextTests.CreateCurrentAccountWithBadArgumentsThrowsException" Expanded="true" />
+    <Node UniqueName="[0-1037]Olive.DataAccess.Tests.OliveContextTests.EditAccountWithBadArgumentsThrowsException" Expanded="true" />
+    <Node UniqueName="[0-1040]Olive.DataAccess.Tests.OliveContextTests.EditAccountWithDoesNotThrowException" Expanded="true" />
+    <Node UniqueName="[0-1105]C:\Users\Andy\AppData\Local\Git\Olive\Olive\Services.Tests\bin\Debug\Olive.Services.Tests.dll" Expanded="true" />
+    <Node UniqueName="[0-1106]Olive" Expanded="true" />
+    <Node UniqueName="[0-1107]Olive.Services" Expanded="true" />
+    <Node UniqueName="[0-1108]Olive.Services.Tests" Expanded="true" />
+    <Node UniqueName="[0-1051]Olive.Services.Tests.WebServiceTests" Expanded="true" />
+    <Node UniqueName="[0-1052]Olive.Services.Tests.WebServiceTests.CreateAccountWithGoodCredentialsDoesNotThrowException" Expanded="true" />
+    <Node UniqueName="[0-1056]Olive.Services.Tests.WebServiceTests.CreateCurrentAccountWithBadArgumentsThrowsException" Expanded="true" />
+    <Node UniqueName="[0-1067]Olive.Services.Tests.WebServiceTests.CreateTransferWithBadArgumentsThrowsException" Expanded="true" />
+    <Node UniqueName="[0-1080]Olive.Services.Tests.WebServiceTests.CreateUserWithBadEmailFormatThrowsException" Expanded="true" />
+    <Node UniqueName="[0-1090]Olive.Services.Tests.WebServiceTests.EditCurrentAccountDoesNotThrowException" Expanded="true" />
+    <Node UniqueName="[0-1094]Olive.Services.Tests.WebServiceTests.EditCurrentAccountWithBadArgumentsThrowsException" Expanded="true" />
+    <Node UniqueName="[0-1164]C:\Users\Andy\AppData\Local\Git\Olive\Olive\Website.Tests\bin\Debug\Olive.Website.Tests.dll" Expanded="true" />
+    <Node UniqueName="[0-1165]Olive" Expanded="true" />
+    <Node UniqueName="[0-1166]Olive.Website" Expanded="true" />
+    <Node UniqueName="[0-1167]Olive.Website.Tests" Expanded="true" />
+    <Node UniqueName="[0-1171]Olive.Website.Tests.Controllers" Expanded="true" />
+    <Node UniqueName="[0-1136]Olive.Website.Tests.Controllers.AccountControllerTests" Expanded="true" />
+    <Node UniqueName="[0-1118]Olive.Website.Tests.Controllers.UserControllerTests" Expanded="true" />
+    <Node UniqueName="[0-1126]Olive.Website.Tests.Controllers.UserControllerTests.RegisterStaysOnPageWhenPasswordIsEmpty" Expanded="true" />
+    <Node UniqueName="[0-1128]Olive.Website.Tests.Controllers.UserControllerTests.ReturnUrlIsValidatedToNotBeAbsolute" Expanded="true" />
+    <Node UniqueName="[0-1172]Olive.Website.Tests.Integration" Expanded="true" />
+    <Node UniqueName="[0-1173]Olive.Website.Tests.Integration.ViewAndController" Expanded="true" />
+    <Node UniqueName="[0-1156]Olive.Website.Tests.Integration.ViewAndController.AccountTest" Expanded="true" />
+    <Node UniqueName="[0-1168]Olive.Website.Tests.Views" Expanded="true" />
+    <Node UniqueName="[0-1169]Olive.Website.Tests.Views.Account" Expanded="true" />
+    <Node UniqueName="[0-1114]Olive.Website.Tests.Views.Account.CreateTests" Expanded="true" />
+    <Node UniqueName="[0-1148]Olive.Website.Tests.Views.Account.DetailsTests" Expanded="true" />
+    <Node UniqueName="[0-1150]Olive.Website.Tests.Views.Account.EditTests" Expanded="true" />
+    <Node UniqueName="[0-1109]Olive.Website.Tests.Views.Account.IndexTests" Expanded="true" />
+    <Node UniqueName="[0-1170]Olive.Website.Tests.Views.User" Expanded="true" />
+    <Node UniqueName="[0-1111]Olive.Website.Tests.Views.User.LoginTests" Expanded="true" />
+    <Node UniqueName="[0-1133]Olive.Website.Tests.Views.User.RegisterTests" Expanded="true" />
+  </Nodes>
+</VisualState>

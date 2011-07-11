@@ -1,0 +1,17 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Debug" />
+  <Config name="Debug" binpathtype="Auto">
+    <assembly path="Core.Tests\bin\Debug\Core.Tests.dll" />
+    <assembly path="DataAccess.Tests\bin\Debug\Olive.DataAccess.Tests.dll" />
+    <assembly path="Database.Tests\bin\Debug\Olive.Database.Tests.dll" />
+    <assembly path="Services.Tests\bin\Debug\Olive.Services.Tests.dll" />
+    <assembly path="Website.Tests\bin\Debug\Olive.Website.Tests.dll" />
+  </Config>
+  <Config name="Release" binpathtype="Auto">
+    <assembly path="Core.Tests\bin\Release\Core.Tests.dll" />
+    <assembly path="DataAccess.Tests\bin\Release\Olive.DataAccess.Tests.dll" />
+    <assembly path="Database.Tests\bin\Release\Olive.Database.Tests.dll" />
+    <assembly path="Services.Tests\bin\Release\Olive.Services.Tests.dll" />
+    <assembly path="Website.Tests\bin\Release\Olive.Website.Tests.dll" />
+  </Config>
+</NUnitProject>

@@ -64,15 +64,6 @@ namespace Core.Tests
         }
 
         /// <summary>
-        /// The create salt has correct length.
-        /// </summary>
-        [Test]
-        public void CreateSaltHasCorrectLength()
-        {
-            Assert.Inconclusive("Is this predictable?");
-        }
-
-        /// <summary>
         /// The generate hash matches precalculated.
         /// </summary>
         [Test]

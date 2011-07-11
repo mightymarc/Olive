@@ -7,7 +7,7 @@
 <h2>Edit account #@Model.AccountId</h2>
 <p>Introduction.</p>
 
-@using (Html.BeginRouteForm("Account/Edit", new { accountId = @Model.AccountId }))
+@using (Html.BeginRouteForm("Account_Edit", new { accountId = @Model.AccountId }))
 { 
     <div>
         @Html.LabelFor(m => m.DisplayName)

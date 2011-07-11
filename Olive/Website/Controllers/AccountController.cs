@@ -51,13 +51,10 @@ namespace Olive.Website.Controllers
     public class AccountController : SiteController
     {
         /// <summary>
-        /// The create.
+        /// Creates a current account from the specified view model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="model">The model.</param>
+        /// <returns>The action result.</returns>
         [HttpPost]
         public ActionResult Create(CreateViewModel model)
         {
@@ -78,14 +75,15 @@ namespace Olive.Website.Controllers
                 return this.RedirectToAction(string.Empty);
             }
 
+            model.Currencies = this.CurrencyCache.Currencies;
+
             return this.View(model);
         }
 
         /// <summary>
-        /// The create.
+        /// Shows the form for creating a current account.
         /// </summary>
-        /// <returns>
-        /// </returns>
+        /// <returns></returns>
         public ActionResult Create()
         {
             if (!this.SessionPersister.HasSession)
@@ -124,24 +122,19 @@ namespace Olive.Website.Controllers
         }
 
         /// <summary>
-        /// The edit.
+        /// Edits a current account (POST).
         /// </summary>
-        /// <param name="accountId">
-        /// The account id.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="accountId">The account id.</param>
+        /// <param name="model">The model.</param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult Edit(int accountId, EditViewModel model)
+        public ActionResult Edit(EditViewModel model)
         {
             Contract.Requires<InvalidOperationException>(this.Service != null);
             Contract.Requires<InvalidOperationException>(this.SessionPersister != null);
             Contract.Requires<ArgumentNullException>(model != null, "model");
-
-            model.AccountId = accountId;
+            Contract.Requires<ArgumentException>(model.AccountId > 0, "model.AccountId > 0");
+            ////Contract.Requires<ArgumentException>(model.AccountId == accountId, "model.AccountId == accountId");
 
             if (!this.SessionPersister.HasSession)
             {

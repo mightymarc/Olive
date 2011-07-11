@@ -16,7 +16,7 @@ namespace Olive.Website.Controllers
             return this.View();
         }
 
-        public ActionResult ServerError()
+        public ActionResult Error()
         {
             SleepForRandomDuration();
 

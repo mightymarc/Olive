@@ -40,6 +40,7 @@
 namespace Olive.Website.Tests.Views.Account
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using NUnit.Framework;
 
@@ -95,8 +96,9 @@ namespace Olive.Website.Tests.Views.Account
         public void WithoutViewModelRendersWithoutExceptions()
         {
             var view = new Create();
+            var viewModel = new CreateViewModel { Currencies = UnitTestHelper.Currencies.ToList() };
 
-            var html = view.RenderAsHtml();
+            var html = view.RenderAsHtml(viewModel);
         }
     }
 }

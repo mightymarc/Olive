@@ -105,7 +105,7 @@ namespace Olive.Services
         {
             const string ReasonFormat = "The specified e-mail, {0}, is already registered to another user.";
 
-            throw new FaultException(
+            return new FaultException(
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, email)), 
                 this.EmailAlreadyRegisteredFaultCode);
         }
@@ -124,7 +124,7 @@ namespace Olive.Services
         {
             const string ReasonFormat = "The specified session, {0}, does not exist or has expired.";
 
-            throw new FaultException(
+            return new FaultException(
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, sessionId)), 
                 this.SessionDoesNotExistFaultCode);
         }
@@ -146,7 +146,7 @@ namespace Olive.Services
         {
             const string ReasonFormat = "User #{0} does not have access to view account #{1}.";
 
-            throw new FaultException(
+            return new FaultException(
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, userId, accountId)), 
                 this.UnauthorizedAccountAccessFaultCode);
         }
@@ -168,7 +168,7 @@ namespace Olive.Services
         {
             const string ReasonFormat = "User #{0} does not have access to edit account #{1}.";
 
-            throw new FaultException(
+            return new FaultException(
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, userId, accountId)), 
                 this.UnauthorizedAccountEditFaultCode);
         }
@@ -190,7 +190,7 @@ namespace Olive.Services
         {
             const string ReasonFormat = "User #{0} does not have access to withraw from account #{1}.";
 
-            throw new FaultException(
+            return new FaultException(
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, userId, accountId)), 
                 this.UnauthorizedAccountWithdrawFaultCode);
         }
@@ -209,7 +209,7 @@ namespace Olive.Services
         {
             const string ReasonFormat = "The credentials e-mail {0} with an undisclosed password were unrecognized.";
 
-            throw new FaultException(
+            return new FaultException(
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, email)), 
                 this.UnrecognizedCredentialsFaultCode);
         }

@@ -84,7 +84,7 @@ namespace Olive.DataAccess.Tests
         /// The users_ not null.
         /// </summary>
         [Test]
-        public void Users_NotNull()
+        public void UsersRelationshipNotNull()
         {
             using (var context = this.GetDbaContext())
             {

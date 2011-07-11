@@ -28,25 +28,25 @@ namespace Olive.Website.Views.Error
     using System.Web.WebPages;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.1.0.0")]
-    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Error/ServerError.cshtml")]
-    public class ServerError : System.Web.Mvc.WebViewPage<dynamic>
+    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Error/Error.cshtml")]
+    public class Error : System.Web.Mvc.WebViewPage<dynamic>
     {
-        public ServerError()
+        public Error()
         {
         }
         public override void Execute()
         {
 
             
-            #line 1 "C:\Users\Andy\AppData\Local\Git\Olive\Olive\Website\Views\Error\ServerError.cshtml"
+            #line 1 "C:\Users\Andy\AppData\Local\Git\Olive\Olive\Website\Views\Error\Error.cshtml"
   
-    ViewBag.Title = "ServerError";
+    ViewBag.Title = "Well, this isn't good.";
 
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n<h2>ServerError</h2>\r\n");
+WriteLiteral("\r\n<h2>Some error</h2>\r\n");
 
 
         }
