@@ -1,0 +1,29 @@
+Olive is the code-name for a virtual financial services system.
+
+FEATURES
+Banking of virtual currencies (Moneybookers, Bitcoin, Linden Dollars, ...). Prevents money from being stolen.
+Exchange where users can buy and sell currencies, for example selling USD for Bitcoin.
+Upstream exchange robots offering prices on its own and other exchanges to improve liquidity.
+
+TECHNOLOGY
+Olive is written using the .NET framework, hosted on Microsoft Windows Server, and storing its data in Microsoft SQL Server.
+
+Components
+- Database
+	To keep the system fast, most tough tasks are performed using stored procedures inside Microsoft SQL Server. The schema of the database is written in Transact SQL and stored inside source control.
+
+- Data Access
+	Data access is provided using the ADO.NET framework.
+
+- Service layer
+	All external access to the system is done through the service layer. The service layer uses Windows Communication Foundation (WCF) to expose services in various formats, such as SOAP and JSON. This abstraction allows for different presentation types, such as phone apps, and trading robots.
+
+- Presentation
+	The service is presented using Microsoft ASP.NET MVC. The possibility of a website written only in Javascript, is kept open.
+
+DEVELOPMENT METHOD
+- Test-Driven Development
+	Security and reliability will be the top priority. Many virtual banks have been hacked with SQL injection, poor security checks, poor authorization of users, etc in the past.
+
+OPEN SOURCE
+The project source code is published on Github so that any user of the service can feel safe about using.
