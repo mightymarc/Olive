@@ -94,6 +94,9 @@
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.0\lib\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\Library\log4net\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\..\..\..\..\..\..\..\temp\Moq.4.0.10827.Final\Moq.4.0.10827\NET40\Moq.dll</HintPath>
     </Reference>
