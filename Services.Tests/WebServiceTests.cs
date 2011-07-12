@@ -52,6 +52,7 @@ namespace Olive.Services.Tests
     using NUnit.Framework;
 
     using Olive.DataAccess;
+    using Olive.DataAccess.Domain;
     using Olive.DataAccess.Tests;
 
     /// <summary>

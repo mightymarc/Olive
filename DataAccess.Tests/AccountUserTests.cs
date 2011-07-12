@@ -43,6 +43,8 @@ namespace Olive.DataAccess.Tests
 
     using NUnit.Framework;
 
+    using Olive.DataAccess.Domain;
+
     /// <summary>
     /// The account user tests.
     /// </summary>

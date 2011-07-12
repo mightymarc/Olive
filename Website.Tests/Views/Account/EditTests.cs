@@ -41,6 +41,7 @@ namespace Olive.Website.Tests.Views.Account
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Threading;
     using System.Web.Mvc;
@@ -79,7 +80,15 @@ namespace Olive.Website.Tests.Views.Account
         public void WithViewModelRendersWithoutExceptions()
         {
             var view = new Edit();
-            RouteTable.Routes.Add("Account_Edit", new Route("Account/Edit/{accountId}", new MvcRouteHandler()));
+
+            try
+            {
+                RouteTable.Routes.Add("Account_Edit", new Route("Account/Edit/{accountId}", new MvcRouteHandler()));
+            }
+            catch (ArgumentException)
+            {
+                // Already exists, which is ok.
+            }
 
             var viewModel = new EditViewModel { AccountId = 123, DisplayName = null };
 
@@ -95,7 +104,15 @@ namespace Olive.Website.Tests.Views.Account
             var view = new Edit();
 
             var viewModel = new EditViewModel { AccountId = 612345 };
-            RouteTable.Routes.Add("Account_Edit", new Route("Account/Edit/{accountId}", new MvcRouteHandler()));
+
+            try
+            {
+                RouteTable.Routes.Add("Account_Edit", new Route("Account/Edit/{accountId}", new MvcRouteHandler()));
+            }
+            catch (ArgumentException)
+            {
+                // Already exists, which is ok.
+            }
 
             var html = view.RenderAsHtml(viewModel);
 

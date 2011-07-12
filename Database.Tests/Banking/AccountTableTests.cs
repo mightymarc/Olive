@@ -37,7 +37,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Olive.DataAccess.Tests.Banking
+namespace Olive.Database.Tests.Banking
 {
     using System.ComponentModel;
 
@@ -112,18 +112,20 @@ namespace Olive.DataAccess.Tests.Banking
         /// </summary>
         private void InitializeComponent()
         {
-            DatabaseTestAction AllowNegativeEnforced_TestAction;
-            var resources = new ComponentResourceManager(typeof(AccountTableTests));
-            ScalarValueCondition scalarValueCondition1;
-            this.AllowNegativeEnforcedData = new DatabaseTestActions();
-            AllowNegativeEnforced_TestAction = new DatabaseTestAction();
-            scalarValueCondition1 = new ScalarValueCondition();
-
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction AllowNegativeEnforced_TestAction;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AccountTableTests));
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition1;
+            this.AllowNegativeEnforcedData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
+            AllowNegativeEnforced_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            scalarValueCondition1 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
+            // 
             // AllowNegativeEnforced_TestAction
+            // 
             AllowNegativeEnforced_TestAction.Conditions.Add(scalarValueCondition1);
             resources.ApplyResources(AllowNegativeEnforced_TestAction, "AllowNegativeEnforced_TestAction");
-
+            // 
             // scalarValueCondition1
+            // 
             scalarValueCondition1.ColumnNumber = 1;
             scalarValueCondition1.Enabled = true;
             scalarValueCondition1.ExpectedValue = "0";
@@ -131,8 +133,9 @@ namespace Olive.DataAccess.Tests.Banking
             scalarValueCondition1.NullExpected = false;
             scalarValueCondition1.ResultSet = 1;
             scalarValueCondition1.RowNumber = 1;
-
+            // 
             // AllowNegativeEnforcedData
+            // 
             this.AllowNegativeEnforcedData.PosttestAction = null;
             this.AllowNegativeEnforcedData.PretestAction = null;
             this.AllowNegativeEnforcedData.TestAction = AllowNegativeEnforced_TestAction;

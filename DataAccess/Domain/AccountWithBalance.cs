@@ -37,7 +37,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Olive.DataAccess
+namespace Olive.DataAccess.Domain
 {
     /// <summary>
     /// The account with balance.
@@ -47,6 +47,6 @@ namespace Olive.DataAccess
         /// <summary>
         ///   Gets or sets Balance.
         /// </summary>
-        public decimal Balance { get; set; }
+        public decimal Available { get; set; }
     }
 }

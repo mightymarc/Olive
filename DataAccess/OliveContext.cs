@@ -46,6 +46,8 @@ namespace Olive.DataAccess
 
     using Microsoft.Practices.Unity;
 
+    using Olive.DataAccess.Domain;
+
     /// <summary>
     /// The entity framework database context.
     /// </summary>

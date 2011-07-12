@@ -141,26 +141,25 @@ namespace Olive.DataAccess.Tests
         /// </summary>
         private void InitializeComponent()
         {
-            DatabaseTestAction Banking_AccountWithBalance_Balance_MatchesAcountTransferSums_TestAction;
-            var resources = new ComponentResourceManager(typeof(DbTest1));
-            ScalarValueCondition scalarValueCondition1;
-            DatabaseTestAction Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCount_TestAction;
-            ScalarValueCondition scalarValueCondition2;
-            this.Banking_AccountWithBalance_Balance_MatchesAcountTransferSumsData = new DatabaseTestActions();
-            this.Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCountData = new DatabaseTestActions();
-            Banking_AccountWithBalance_Balance_MatchesAcountTransferSums_TestAction = new DatabaseTestAction();
-            scalarValueCondition1 = new ScalarValueCondition();
-            Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCount_TestAction = new DatabaseTestAction();
-            scalarValueCondition2 = new ScalarValueCondition();
-
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction Banking_AccountWithBalance_Balance_MatchesAcountTransferSums_TestAction;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DbTest1));
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition1;
+            Microsoft.Data.Schema.UnitTesting.DatabaseTestAction Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCount_TestAction;
+            Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition2;
+            this.Banking_AccountWithBalance_Balance_MatchesAcountTransferSumsData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
+            this.Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCountData = new Microsoft.Data.Schema.UnitTesting.DatabaseTestActions();
+            Banking_AccountWithBalance_Balance_MatchesAcountTransferSums_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            scalarValueCondition1 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
+            Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCount_TestAction = new Microsoft.Data.Schema.UnitTesting.DatabaseTestAction();
+            scalarValueCondition2 = new Microsoft.Data.Schema.UnitTesting.Conditions.ScalarValueCondition();
+            // 
             // Banking_AccountWithBalance_Balance_MatchesAcountTransferSums_TestAction
-            Banking_AccountWithBalance_Balance_MatchesAcountTransferSums_TestAction.Conditions.Add(
-                scalarValueCondition1);
-            resources.ApplyResources(
-                Banking_AccountWithBalance_Balance_MatchesAcountTransferSums_TestAction, 
-                "Banking_AccountWithBalance_Balance_MatchesAcountTransferSums_TestAction");
-
+            // 
+            Banking_AccountWithBalance_Balance_MatchesAcountTransferSums_TestAction.Conditions.Add(scalarValueCondition1);
+            resources.ApplyResources(Banking_AccountWithBalance_Balance_MatchesAcountTransferSums_TestAction, "Banking_AccountWithBalance_Balance_MatchesAcountTransferSums_TestAction");
+            // 
             // scalarValueCondition1
+            // 
             scalarValueCondition1.ColumnNumber = 1;
             scalarValueCondition1.Enabled = true;
             scalarValueCondition1.ExpectedValue = "0";
@@ -168,27 +167,14 @@ namespace Olive.DataAccess.Tests
             scalarValueCondition1.NullExpected = false;
             scalarValueCondition1.ResultSet = 1;
             scalarValueCondition1.RowNumber = 1;
-
-            // Banking_AccountWithBalance_Balance_MatchesAcountTransferSumsData
-            this.Banking_AccountWithBalance_Balance_MatchesAcountTransferSumsData.PosttestAction = null;
-            this.Banking_AccountWithBalance_Balance_MatchesAcountTransferSumsData.PretestAction = null;
-            this.Banking_AccountWithBalance_Balance_MatchesAcountTransferSumsData.TestAction =
-                Banking_AccountWithBalance_Balance_MatchesAcountTransferSums_TestAction;
-
-            // Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCountData
-            this.Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCountData.PosttestAction = null;
-            this.Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCountData.PretestAction = null;
-            this.Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCountData.TestAction =
-                Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCount_TestAction;
-
+            // 
             // Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCount_TestAction
-            Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCount_TestAction.Conditions.Add(
-                scalarValueCondition2);
-            resources.ApplyResources(
-                Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCount_TestAction, 
-                "Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCount_TestAction");
-
+            // 
+            Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCount_TestAction.Conditions.Add(scalarValueCondition2);
+            resources.ApplyResources(Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCount_TestAction, "Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCount_TestAction");
+            // 
             // scalarValueCondition2
+            // 
             scalarValueCondition2.ColumnNumber = 1;
             scalarValueCondition2.Enabled = true;
             scalarValueCondition2.ExpectedValue = "0";
@@ -196,6 +182,18 @@ namespace Olive.DataAccess.Tests
             scalarValueCondition2.NullExpected = false;
             scalarValueCondition2.ResultSet = 1;
             scalarValueCondition2.RowNumber = 1;
+            // 
+            // Banking_AccountWithBalance_Balance_MatchesAcountTransferSumsData
+            // 
+            this.Banking_AccountWithBalance_Balance_MatchesAcountTransferSumsData.PosttestAction = null;
+            this.Banking_AccountWithBalance_Balance_MatchesAcountTransferSumsData.PretestAction = null;
+            this.Banking_AccountWithBalance_Balance_MatchesAcountTransferSumsData.TestAction = Banking_AccountWithBalance_Balance_MatchesAcountTransferSums_TestAction;
+            // 
+            // Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCountData
+            // 
+            this.Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCountData.PosttestAction = null;
+            this.Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCountData.PretestAction = null;
+            this.Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCountData.TestAction = Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCount_TestAction;
         }
 
         // You can use the following additional attributes as you write your tests:

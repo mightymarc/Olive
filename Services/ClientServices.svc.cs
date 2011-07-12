@@ -367,7 +367,7 @@ namespace Olive.Services
                                 new AccountOverviewAccount
                                     {
                                         AccountId = account.AccountId, 
-                                        Balance = accountWithBalance.Balance, 
+                                        Balance = accountWithBalance.Available, 
                                         CurrencyId = accountWithBalance.Currency.CurrencyId, 
                                         DisplayName = account.DisplayName
                                     };

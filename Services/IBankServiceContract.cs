@@ -46,6 +46,7 @@ namespace Olive.Services
     using System.Text.RegularExpressions;
 
     using Olive.DataAccess;
+    using Olive.DataAccess.Domain;
 
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", 
         Justification = "Contract for IBankService.")]

@@ -41,6 +41,8 @@ namespace Olive.DataAccess
 {
     using System.Collections.Generic;
 
+    using Olive.DataAccess.Domain;
+
     /// <summary>
     /// The user.
     /// </summary>

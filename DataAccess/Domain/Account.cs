@@ -37,7 +37,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Olive.DataAccess
+namespace Olive.DataAccess.Domain
 {
     using System.Collections.Generic;
 

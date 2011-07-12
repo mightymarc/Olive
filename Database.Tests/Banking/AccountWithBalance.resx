@@ -127,7 +127,7 @@ from
 		from Banking.[Transfer] where SourceAccountId = A.AccountId) [Sent],
 		(select isnull(sum(Amount), 0)
 		from Banking.[Transfer] where DestAccountId = A.AccountId) [Received],
-		AWB.Balance ViewBalance
+		AWB.Available ViewBalance
 	from
 		Banking.Account A
 	inner join

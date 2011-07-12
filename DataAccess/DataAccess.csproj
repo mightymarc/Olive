@@ -112,7 +112,7 @@
     <Compile Include="Domain\Account.cs" />
     <Compile Include="AccountType.cs" />
     <Compile Include="Domain\AccountUser.cs" />
-    <Compile Include="AccountWithBalance.cs" />
+    <Compile Include="Domain\AccountWithBalance.cs" />
     <Compile Include="AuthenticationException.cs" />
     <Compile Include="IDbConnectionExtensions.cs" />
     <Compile Include="Domain\Currency.cs" />

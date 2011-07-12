@@ -43,6 +43,7 @@ namespace Olive.DataAccess.Tests
     using System.Data;
     using System.Data.Entity;
 
+    using Olive.DataAccess.Domain;
     using Olive.Services.Tests;
 
     /// <summary>

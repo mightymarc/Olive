@@ -41,6 +41,8 @@ namespace Olive.DataAccess
 {
     using System;
 
+    using Olive.DataAccess.Domain;
+
     /// <summary>
     /// The transfer.
     /// </summary>

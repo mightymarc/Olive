@@ -139,9 +139,15 @@ declare @TransferId bigint
 
 begin try
 	print 'Transferring 100 USD from account one to account two. Expecting exception to be raised.'
-	exec Banking.CreateTransfer @AccountOneId, @AccountTwoId, '', 100, @TransferId
-	print 'Exception did not occur as it should have.'
-	select 100
+	DECLARE @RC INT
+	EXEC @RC = Banking.CreateTransfer @AccountOneId, @AccountTwoId, '', 100, @TransferId
+
+	IF @RC &lt;&gt; 0
+	BEGIN
+		SELECT @RC
+		PRINT 'Exception did not occur as it should have.'
+		RETURN
+	END
 end try
 begin catch
 	print 'Exception was raised as expected. Transaction count is ' + convert(varchar, @@trancount) + '.'

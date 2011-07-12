@@ -43,6 +43,8 @@ namespace Olive.DataAccess
     using System.Data.Entity;
     using System.Diagnostics.Contracts;
 
+    using Olive.DataAccess.Domain;
+
     /// <summary>
     /// The i olive context.
     /// </summary>
