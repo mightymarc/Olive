@@ -79,14 +79,14 @@ namespace Olive.Website.Controllers
         public ActionResult Login(LoginViewModel model)
         {
             Contract.Requires<ArgumentNullException>(this.SessionPersister != null, "this.SessionPersister");
-            Contract.Requires<ArgumentNullException>(this.Service != null, "this.Service");
+            Contract.Requires<ArgumentNullException>(this.ClientService != null, "this.ClientService");
             Contract.Requires<ArgumentNullException>(model != null, "model");
 
             if (this.ModelState.IsValid)
             {
                 try
                 {
-                    var sessionId = this.Service.CreateSession(model.Email, model.Password);
+                    var sessionId = this.ClientService.CreateSession(model.Email, model.Password);
                     this.SessionPersister.SessionId = sessionId;
 
                     if (string.IsNullOrEmpty(model.ReturnUrl) || !this.Url.IsLocalUrl(model.ReturnUrl))
@@ -120,7 +120,7 @@ namespace Olive.Website.Controllers
         [HttpPost]
         public ActionResult Register(RegisterViewModel model)
         {
-            Contract.Requires<InvalidOperationException>(this.Service != null);
+            Contract.Requires<InvalidOperationException>(this.ClientService != null);
             Contract.Requires<InvalidOperationException>(this.SessionPersister != null);
             Contract.Requires<ArgumentNullException>(model != null, "model");
 
@@ -131,8 +131,8 @@ namespace Olive.Website.Controllers
 
             if (this.ModelState.IsValid)
             {
-                this.Service.CreateUser(model.Email, model.Password);
-                this.SessionPersister.SessionId = this.Service.CreateSession(model.Email, model.Password);
+                this.ClientService.CreateUser(model.Email, model.Password);
+                this.SessionPersister.SessionId = this.ClientService.CreateSession(model.Email, model.Password);
                 return this.RedirectToAction(string.Empty, "Account");
             }
 

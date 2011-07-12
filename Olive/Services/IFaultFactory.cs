@@ -80,11 +80,8 @@ namespace Olive.Services
         /// <summary>
         /// The create email already registered fault exception.
         /// </summary>
-        /// <param name="email">
-        /// The email.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="email">The email.</param>
+        /// <returns></returns>
         FaultException CreateEmailAlreadyRegisteredFaultException(string email);
 
         /// <summary>

@@ -68,7 +68,7 @@ namespace Olive.Website.Tests.Integration.ViewAndController
                 // Arrange
                 var sessionId = Guid.NewGuid();
                 Mock<ISiteSession> sessionMock = null;
-                Mock<IWebService> serviceMock = null;
+                Mock<IClientService> serviceMock = null;
                 var accountOverview = new AccountOverview
                         {
                             new AccountOverviewAccount
@@ -90,9 +90,9 @@ namespace Olive.Website.Tests.Integration.ViewAndController
                             sessionMock.SetupGet(s => s.SessionId).Returns(sessionId);
                             ((SiteController)fc.Controller).SessionPersister = sessionMock.Object;
 
-                            serviceMock = new Mock<IWebService>();
+                            serviceMock = new Mock<IClientService>();
                             serviceMock.Setup(s => s.GetAccounts(sessionId)).Returns(accountOverview);
-                            ((SiteController)fc.Controller).Service = serviceMock.Object;
+                            ((SiteController)fc.Controller).ClientService = serviceMock.Object;
 
                             return false;
                         }));
@@ -136,7 +136,7 @@ namespace Olive.Website.Tests.Integration.ViewAndController
             {
                 // Arrange
                 Mock<ISiteSession> sessionMock = null;
-                Mock<IWebService> serviceMock = null;
+                Mock<IClientService> serviceMock = null;
                 var sessionId = Guid.NewGuid();
                 var currencyId = "USD";
                 var displayName = "ohai";
@@ -151,9 +151,9 @@ namespace Olive.Website.Tests.Integration.ViewAndController
                             sessionMock.SetupGet(s => s.SessionId).Returns(sessionId);
                             ((SiteController)fc.Controller).SessionPersister = sessionMock.Object;
 
-                            serviceMock = new Mock<IWebService>();
+                            serviceMock = new Mock<IClientService>();
                             serviceMock.Setup(s => s.CreateCurrentAccount(sessionId, currencyId, displayName)).Returns(accountId);
-                            ((SiteController)fc.Controller).Service = serviceMock.Object;
+                            ((SiteController)fc.Controller).ClientService = serviceMock.Object;
 
                             return false;
                         }));
@@ -180,7 +180,7 @@ namespace Olive.Website.Tests.Integration.ViewAndController
             {
                 // Arrange
                 Mock<ISiteSession> sessionMock = null;
-                Mock<IWebService> serviceMock = null;
+                Mock<IClientService> serviceMock = null;
                 var sessionId = Guid.NewGuid();
                 var currencyId = "USD";
                 var oldDdisplayName = default(string);
@@ -196,7 +196,7 @@ namespace Olive.Website.Tests.Integration.ViewAndController
                             sessionMock.SetupGet(s => s.SessionId).Returns(sessionId);
                             ((SiteController)fc.Controller).SessionPersister = sessionMock.Object;
 
-                            serviceMock = new Mock<IWebService>();
+                            serviceMock = new Mock<IClientService>();
                             serviceMock.Setup(s => s.GetAccount(sessionId, accountId)).Returns(
                                 new GetAccountAccount
                                     {
@@ -206,7 +206,7 @@ namespace Olive.Website.Tests.Integration.ViewAndController
                                         DisplayName = oldDdisplayName
                                     });
                             serviceMock.Setup(s => s.EditCurrentAccount(sessionId, accountId, newDisplayName));
-                            ((SiteController)fc.Controller).Service = serviceMock.Object;
+                            ((SiteController)fc.Controller).ClientService = serviceMock.Object;
 
                             return false;
                         }));
@@ -233,9 +233,9 @@ namespace Olive.Website.Tests.Integration.ViewAndController
             {
                 // Arrange
                 Mock<ISiteSession> sessionMock = null;
-                Mock<IWebService> serviceMock = null;
+                Mock<IClientService> serviceMock = null;
                 var sessionId = Guid.NewGuid();
-                var currencyId = "USD";
+                var currencyId = UnitTestHelper.GetRandomCurrencyId();
                 var displayName = string.Empty;
                 var accountId = UnitTestHelper.Random.Next(1, int.MaxValue);
 
@@ -248,9 +248,9 @@ namespace Olive.Website.Tests.Integration.ViewAndController
                             sessionMock.SetupGet(s => s.SessionId).Returns(sessionId);
                             ((SiteController)fc.Controller).SessionPersister = sessionMock.Object;
 
-                            serviceMock = new Mock<IWebService>();
+                            serviceMock = new Mock<IClientService>();
                             serviceMock.Setup(s => s.CreateCurrentAccount(sessionId, currencyId, displayName == string.Empty ? null : displayName)).Returns(accountId);
-                            ((SiteController)fc.Controller).Service = serviceMock.Object;
+                            ((SiteController)fc.Controller).ClientService = serviceMock.Object;
 
                             return false;
                         }));

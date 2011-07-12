@@ -58,7 +58,7 @@ namespace Olive.Website.Controllers
         [HttpPost]
         public ActionResult Create(CreateViewModel model)
         {
-            Contract.Requires<InvalidOperationException>(this.Service != null);
+            Contract.Requires<InvalidOperationException>(this.ClientService != null);
             Contract.Requires<InvalidOperationException>(this.SessionPersister != null);
             Contract.Requires<ArgumentNullException>(model != null, "model");
 
@@ -69,7 +69,7 @@ namespace Olive.Website.Controllers
 
             if (this.ModelState.IsValid)
             {
-                var accountId = this.Service.CreateCurrentAccount(
+                var accountId = this.ClientService.CreateCurrentAccount(
                     this.SessionPersister.SessionId, model.CurrencyId, model.DisplayName);
 
                 return this.RedirectToAction(string.Empty);
@@ -105,7 +105,7 @@ namespace Olive.Website.Controllers
         public ActionResult Details(int accountId)
         {
             Contract.Requires<InvalidOperationException>(this.SessionPersister != null, "this.SessionPersister == null");
-            Contract.Requires<InvalidOperationException>(this.Service != null);
+            Contract.Requires<InvalidOperationException>(this.ClientService != null);
 
             if (!this.SessionPersister.HasSession)
             {
@@ -114,8 +114,8 @@ namespace Olive.Website.Controllers
 
             var viewModel = new DetailsViewModel
                 {
-                    AccountDisplayName = this.Service.GetAccount(this.SessionPersister.SessionId, accountId).DisplayName, 
-                    Transfers = this.Service.GetAccountTransfers(this.SessionPersister.SessionId, accountId)
+                    AccountDisplayName = this.ClientService.GetAccount(this.SessionPersister.SessionId, accountId).DisplayName, 
+                    Transfers = this.ClientService.GetAccountTransfers(this.SessionPersister.SessionId, accountId)
                 };
 
             return this.View("Details", viewModel);
@@ -130,7 +130,7 @@ namespace Olive.Website.Controllers
         [HttpPost]
         public ActionResult Edit(EditViewModel model)
         {
-            Contract.Requires<InvalidOperationException>(this.Service != null);
+            Contract.Requires<InvalidOperationException>(this.ClientService != null);
             Contract.Requires<InvalidOperationException>(this.SessionPersister != null);
             Contract.Requires<ArgumentNullException>(model != null, "model");
             Contract.Requires<ArgumentException>(model.AccountId > 0, "model.AccountId > 0");
@@ -146,7 +146,7 @@ namespace Olive.Website.Controllers
                 return this.View(model);
             }
 
-            this.Service.EditCurrentAccount(this.SessionPersister.SessionId, model.AccountId, model.DisplayName);
+            this.ClientService.EditCurrentAccount(this.SessionPersister.SessionId, model.AccountId, model.DisplayName);
             return this.RedirectToAction(string.Empty, "Account");
         }
 
@@ -161,7 +161,7 @@ namespace Olive.Website.Controllers
         [HttpGet]
         public ActionResult Edit(int accountId)
         {
-            Contract.Requires<InvalidOperationException>(this.Service != null);
+            Contract.Requires<InvalidOperationException>(this.ClientService != null);
             Contract.Requires<InvalidOperationException>(this.SessionPersister != null);
             Contract.Requires<ArgumentException>(accountId > 0, "accountId");
 
@@ -170,7 +170,7 @@ namespace Olive.Website.Controllers
                 return this.RedirectToLogin();
             }
 
-            var account = this.Service.GetAccount(this.SessionPersister.SessionId, accountId);
+            var account = this.ClientService.GetAccount(this.SessionPersister.SessionId, accountId);
 
             var viewModel = new EditViewModel { AccountId = accountId, DisplayName = account.DisplayName };
 
@@ -185,14 +185,14 @@ namespace Olive.Website.Controllers
         public ActionResult Index()
         {
             Contract.Requires<ArgumentNullException>(this.SessionPersister != null, "this.SessionPersister");
-            Contract.Requires<ArgumentNullException>(this.Service != null, "this.Service");
+            Contract.Requires<ArgumentNullException>(this.ClientService != null, "this.ClientService");
 
             if (!this.SessionPersister.HasSession)
             {
                 return this.RedirectToLogin();
             }
 
-            var accounts = this.Service.GetAccounts(this.SessionPersister.SessionId);
+            var accounts = this.ClientService.GetAccounts(this.SessionPersister.SessionId);
 
             var viewModel = new IndexViewModel { Accounts = accounts };
 

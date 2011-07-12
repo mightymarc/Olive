@@ -68,10 +68,10 @@ namespace Olive.Website.Controllers
         public IFaultFactory FaultFactory { get; set; }
 
         /// <summary>
-        ///   Gets or sets Service.
+        ///   Gets or sets ClientService.
         /// </summary>
         [Dependency]
-        public IWebService Service { get; set; }
+        public IClientService ClientService { get; set; }
 
         /// <summary>
         ///   Gets or sets SessionPersister.

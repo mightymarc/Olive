@@ -91,7 +91,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Olive.svc" />
+    <Content Include="ClientServices.svc" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -106,14 +106,17 @@
     </Compile>
     <Compile Include="AccountOverview.svc.cs" />
     <Compile Include="AccountOverviewAccount.svc.cs" />
+    <Compile Include="IAuthServiceContract.cs" />
     <Compile Include="FaultFactory.cs" />
     <Compile Include="GetAccountAccount.cs" />
     <Compile Include="GetAccountTransfersTransfer.cs" />
+    <Compile Include="IAuthService.cs" />
+    <Compile Include="IClientService.cs" />
     <Compile Include="IFaultFactory.cs" />
-    <Compile Include="IWebService.cs" />
-    <Compile Include="IWebServiceContract.cs" />
-    <Compile Include="Olive.svc.cs">
-      <DependentUpon>Olive.svc</DependentUpon>
+    <Compile Include="IBankService.cs" />
+    <Compile Include="IBankServiceContract.cs" />
+    <Compile Include="ClientServices.svc.cs">
+      <DependentUpon>ClientServices.svc</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

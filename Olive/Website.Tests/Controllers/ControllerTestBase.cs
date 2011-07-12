@@ -81,7 +81,7 @@ namespace Olive.Website.Tests.Controllers
         /// <summary>
         ///   The service mock.
         /// </summary>
-        protected Mock<IWebService> serviceMock;
+        protected Mock<IClientService> serviceMock;
 
         /// <summary>
         ///   The session mock.
@@ -95,7 +95,7 @@ namespace Olive.Website.Tests.Controllers
         public virtual void SetUp()
         {
             this.sessionMock = new Mock<ISiteSession>();
-            this.serviceMock = new Mock<IWebService>();
+            this.serviceMock = new Mock<IClientService>();
             this.httpContextMock = new Mock<HttpContextBase>();
             this.sessionMock = new Mock<ISiteSession>();
             this.currencyCache = new Mock<ICurrencyCache>();

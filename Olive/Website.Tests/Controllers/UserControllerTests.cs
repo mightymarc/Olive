@@ -268,7 +268,7 @@ namespace Olive.Website.Tests.Controllers
 
             // Assert
             this.serviceMock.Verify(s => s.CreateSession(email, password), Times.Once());
-            Assert.AreEqual("Index", redirectResult.RouteValues["action"]);
+            Assert.AreEqual(string.Empty, redirectResult.RouteValues["action"]);
             Assert.AreEqual("Account", redirectResult.RouteValues["controller"]);
         }
 

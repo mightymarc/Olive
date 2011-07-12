@@ -147,6 +147,7 @@ namespace Olive.Website.Tests.Views.Account
 
                 var requestResult = browsingSession.Post("Account/Edit/1234", formData);
 
+                Assert.IsNotNull(requestResult.Response, "requestResult.Response");
                 Assert.AreEqual((int)HttpStatusCode.Redirect, requestResult.Response.StatusCode);
             });
         }

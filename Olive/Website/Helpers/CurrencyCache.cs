@@ -58,16 +58,16 @@ namespace Olive.Website.Helpers
         {
             get
             {
-                Contract.Requires(this.Service != null, "this.Service != null");
+                Contract.Requires(this.ClientService != null, "this.ClientService != null");
 
-                return this.Service.GetCurrencies();
+                return this.ClientService.GetCurrencies();
             }
         }
 
         /// <summary>
-        ///   Gets or sets Service.
+        ///   Gets or sets ClientService.
         /// </summary>
         [Dependency]
-        public IWebService Service { get; set; }
+        public IClientService ClientService { get; set; }
     }
 }

@@ -120,7 +120,7 @@ namespace Olive.Website
         private void CreateUnityContainer()
         {
             this.Container = new UnityContainer();
-            this.Container.RegisterType<IWebService, WebService>();
+            this.Container.RegisterType<IClientService, ClientServices>();
             this.Container.RegisterType<ISiteSession, SiteSession>();
             this.Container.RegisterType<ICrypto, Crypto>();
             this.Container.RegisterType<IFaultFactory, FaultFactory>();
