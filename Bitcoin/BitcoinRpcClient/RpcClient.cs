@@ -21,7 +21,7 @@ namespace Olive.Bitcoin
     /// <summary>
     /// RPC client to access the Bitcoin Daemon JSON RPC interface.
     /// </summary>
-    public class RpcClient
+    public class RpcClient : IRpcClient
     {
         /// <summary>
         /// Gets or sets the port number used to connect to the service.
@@ -192,6 +192,11 @@ namespace Olive.Bitcoin
                                         int.Parse(t.Value<string>("time"), CultureInfo.InvariantCulture)),
                                 TransactionId = t.Value<string>("txid")
                             }).ToList();
+        }
+
+        public void Move(string fromAccountId, string toAccountId, decimal amount)
+        {
+            throw new NotImplementedException();
         }
 
         public List<AccountWithBalance> GetAcccounts(int minConfirmations = 1)

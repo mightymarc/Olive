@@ -33,7 +33,7 @@ BEGIN TRY
 -- Make sure the source account has enough funds.
 DECLARE @SourceAccountBeforeBalance decimal(18, 8)
 DECLARE @SourceAccountAllowsNegativeBalance bit
-SELECT @SourceAccountBeforeBalance = [Balance], @SourceAccountAllowsNegativeBalance = AllowNegative FROM Banking.AccountWithBalance
+SELECT @SourceAccountBeforeBalance = Available, @SourceAccountAllowsNegativeBalance = AllowNegative FROM Banking.AccountWithBalance
 	WHERE AccountId = @SourceAccountId
 		
 IF @SourceAccountAllowsNegativeBalance = 0 AND @SourceAccountBeforeBalance < @Amount

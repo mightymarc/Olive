@@ -79,6 +79,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IRpcClient.cs" />
     <Compile Include="RpcClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

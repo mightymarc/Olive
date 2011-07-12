@@ -1,0 +1,22 @@
+﻿CREATE PROCEDURE [Banking].[ReleaseAccountHold]
+	@AccountHoldId INT
+
+AS
+
+BEGIN TRY
+	BEGIN TRAN
+
+	DELETE FROM Banking.AccountHold WHERE AccountHoldId = @AccountHoldId;
+
+	IF @@ROWCOUNT = 0
+		RAISERROR(51014, 16, 1);
+
+	COMMIT TRAN
+
+	RETURN 0
+END TRY
+BEGIN CATCH
+	ROLLBACK TRAN
+
+	RETURN ERROR_NUMBER()
+END CATCH

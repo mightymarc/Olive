@@ -111,6 +111,7 @@
     <Compile Include="GetAccountAccount.cs" />
     <Compile Include="GetAccountTransfersTransfer.cs" />
     <Compile Include="IAuthService.cs" />
+    <Compile Include="IBitcoinService.cs" />
     <Compile Include="IClientService.cs" />
     <Compile Include="IFaultFactory.cs" />
     <Compile Include="IBankService.cs" />

@@ -18,3 +18,13 @@ Account
 		Min length: 1
 		Max length: 150
 
+
+AccountHold
+	Reason
+		Can not be null
+		Max length: 150 (N)
+	Amount
+		decimal(18,8)
+
+Transaction
+	TransactionId: length=64(varchar)

@@ -1,0 +1,10 @@
+﻿CREATE TABLE [Banking].[AccountHold]
+(
+	AccountHoldId INT IDENTITY NOT NULL,
+	AccountId INT NOT NULL,
+	Amount DECIMAL(18, 8),
+	CreatedAt DATETIME NOT NULL DEFAULT(GETUTCDATE()),
+	ExpiresAt DATETIME NULL,
+	Reason NVARCHAR(150) NOT NULL
+);
+

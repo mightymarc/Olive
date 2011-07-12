@@ -149,6 +149,28 @@
     <Folder Include="Schema Objects\Schemas\Auth\Views\Indexes\" />
     <Folder Include="Schema Objects\Schemas\Auth\Views\Triggers\" />
     <Folder Include="Schema Objects\Schemas\Auth\Views\Statistics\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Programmability\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Programmability\Defaults\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Programmability\Functions\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Programmability\Rules\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Programmability\Stored Procedures\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Programmability\Types\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Programmability\Types\User Defined Data Types\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Programmability\Types\User Defined Types CLR\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Programmability\Types\User Defined Table Types\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Programmability\Types\XML Schema Collections\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Synonyms\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Tables\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Tables\Constraints\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Tables\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Tables\Keys\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Tables\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Tables\Statistics\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Views\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Views\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Views\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\Bitcoin\Views\Statistics\" />
   </ItemGroup>
   <ItemGroup>
     <PropertiesFile Include="Properties\Database.sqlsettings">
@@ -295,6 +317,42 @@
       <SubType>Code</SubType>
     </Build>
     <Build Include="Schema Objects\Schemas\Banking\Programmability\Stored Procedures\EditCurrentAccount.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Banking\Tables\AccountHold.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Banking\Programmability\Stored Procedures\CreateAccountHold.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Banking\Views\AccountHoldView.view.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Banking\Tables\Keys\AccountHold.FK_AccountHold_Account.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Banking\Tables\Keys\AccountHold.PK_AccountHold.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Database Level Objects\Security\Schemas\Bitcoin.schema.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Bitcoin\Tables\Transaction.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Bitcoin\Tables\Keys\Transaction.PK_Transaction.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Bitcoin\Tables\Keys\Transaction.FK_Transaction_Account.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Bitcoin\Tables\Keys\Transaction.FK_Transaction_AccountHold.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Bitcoin\Programmability\Stored Procedures\CreateTransaction.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Banking\Programmability\Stored Procedures\ReleaseAccountHold.proc.sql">
       <SubType>Code</SubType>
     </Build>
   </ItemGroup>

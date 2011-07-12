@@ -41,6 +41,8 @@ EXEC master..sp_addmessage 51009, 16, N'Authentication failed.', @replace = 'rep
 EXEC master..sp_addmessage 51010, 16, N'Failed to insert.', @replace = 'replace';
 EXEC master..sp_addmessage 51011, 16, N'The specified session does not exist.', @replace = 'replace';
 EXEC master..sp_addmessage 51012, 16, N'The specified account does not exist.', @replace = 'replace';
+EXEC master..sp_addmessage 51013, 16, N'The specified account does not have the necessary available balance to create the hold.', @replace = 'replace';
+EXEC master..sp_addmessage 51014, 16, N'The specified account hold does not exist.', @replace = 'replace';
 
 USE OliveTest
 
