@@ -1,0 +1,20 @@
+﻿@model Olive.Website.ViewModels.Account.EditViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit account #@Model.AccountId</h2>
+<p>Introduction.</p>
+
+@using (Html.BeginRouteForm("Account_Edit", new { accountId = @Model.AccountId }))
+{ 
+    <div>
+        @Html.LabelFor(m => m.DisplayName)
+        @Html.TextBoxFor(m => m.DisplayName)
+        @Html.ValidationMessageFor(m => m.DisplayName)
+    </div>
+
+    <input type="submit" value="Save changes" />
+    <a href="/Account">Cancel</a>
+}

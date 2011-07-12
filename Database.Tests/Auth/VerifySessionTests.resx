@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Success_TestAction.SqlScript" xml:space="preserve">
+    <value>BEGIN TRAN;
+
+DECLARE @Email VARCHAR(100) = 'aaaaaaaaa@aaaaaaaaa.com';
+DECLARE @PasswordHash VARCHAR(100) = 'aaaaaaaaaaa';
+DECLARE @PasswordSalt VARCHAR(100) = 'aaaaaaaaaaa';
+
+INSERT INTO dbo.[User] (Email, PasswordHash, PasswordSalt)
+VALUES (@Email, @PasswordHash, @PasswordSalt);
+
+DECLARE @UserId INT = CONVERT(INT, @@IDENTITY);
+DECLARE @RC INT
+DECLARE @SessionId UNIQUEIDENTIFIER;
+
+EXEC @RC = Auth.CreateSession @Email, @PasswordHash, @SessionId OUTPUT;
+
+IF @RC &lt;&gt; 0
+BEGIN
+	SELECT 'CreateSession did not return 0.';
+	RETURN
+END
+
+DECLARE @ReturnedUserId INT
+
+EXEC @RC = Auth.VerifySession @SessionId, @ReturnedUserId OUTPUT;
+
+IF @RC &lt;&gt; 0
+BEGIN
+	PRINT 'VerifySession did not return 0.';
+	RETURN
+END
+
+IF @UserId &lt;&gt; @ReturnedUserId
+BEGIN
+	SELECT 'Incorrect user id returned.'
+	RETURN
+END
+
+SELECT 0;
+
+ROLLBACK TRAN;
+
+</value>
+  </data>
+  <data name="UnknownSessionId_TestAction.SqlScript" xml:space="preserve">
+    <value>DECLARE @RC INT
+DECLARE @UserId INT
+
+DECLARE @UnknownSessionId UNIQUEIDENTIFIER = NEWID();
+
+BEGIN TRAN
+
+BEGIN TRY
+	EXEC @RC = Auth.VerifySession @UnknownSessionId, @UserId OUTPUT
+END TRY
+BEGIN CATCH
+	IF ERROR_NUMBER() = 51011
+		SELECT 0
+END CATCH
+
+ROLLBACK TRAN
+
+</value>
+  </data>
+  <data name="VerifyFailsOnExpiredSession_TestAction.SqlScript" xml:space="preserve">
+    <value>-- Session is created in Pre-Test
+DECLARE @SessionId UNIQUEIDENTIFIER = '{5E1E723C-78E6-4BBB-9D26-C4AB0D2AD971}';
+
+BEGIN TRY
+	DECLARE @UserId INT
+	EXEC Auth.VerifySession @SessionId, @UserId OUTPUT
+END TRY
+BEGIN CATCH
+	IF ERROR_NUMBER() = 51011
+		SELECT 0
+END CATCH
+</value>
+  </data>
+  <data name="VerifyFailsOnExpiredSession_PosttestAction.SqlScript" xml:space="preserve">
+    <value>DECLARE @SessionId UNIQUEIDENTIFIER = '{5E1E723C-78E6-4BBB-9D26-C4AB0D2AD971}';
+DECLARE @UserId INT = 3001
+
+DELETE FROM Auth.[Session] WHERE SessionId = @SessionId;
+DELETE FROM dbo.[User] WHERE UserId = @UserId;
+</value>
+  </data>
+  <data name="VerifyFailsOnExpiredSession_PretestAction.SqlScript" xml:space="preserve">
+    <value>DECLARE @SessionId UNIQUEIDENTIFIER = '{5E1E723C-78E6-4BBB-9D26-C4AB0D2AD971}';
+DECLARE @UserId INT = 3001
+
+SET IDENTITY_INSERT dbo.[User] ON
+INSERT INTO dbo.[User] (UserId, Email, PasswordSalt, PasswordHash) VALUES (@UserId, 'user@domain.com', 'salt', 'hash');
+SET IDENTITY_INSERT dbo.[User] OFF
+
+INSERT INTO Auth.[Session] (SessionId, ExpiresAt, UserId) VALUES (@SessionId, DATEADD(day, -1, GETUTCDATE()), @UserId);
+
+</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+</root>
