@@ -34,6 +34,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Tests", "Services.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Tests", "Core.Tests\Core.Tests.csproj", "{1DE053F9-6A52-49B4-9049-EB85995A1A26}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bitcoin", "Bitcoin", "{8A255B6A-1BE8-484D-9626-48D59B79C9A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpcClient", "Bitcoin\BitcoinRpcClient\RpcClient.csproj", "{EB150E1F-86FE-43D5-A04D-83545028FB8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpcClient.Tests", "Bitcoin\BitcoinProxy.Tests\RpcClient.Tests.csproj", "{9F06C7DC-6F81-4E3F-9D10-0AE60FB4E6A4}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Olive.vsmdi
@@ -91,8 +97,20 @@ Global
 		{1DE053F9-6A52-49B4-9049-EB85995A1A26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DE053F9-6A52-49B4-9049-EB85995A1A26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DE053F9-6A52-49B4-9049-EB85995A1A26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB150E1F-86FE-43D5-A04D-83545028FB8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB150E1F-86FE-43D5-A04D-83545028FB8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB150E1F-86FE-43D5-A04D-83545028FB8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB150E1F-86FE-43D5-A04D-83545028FB8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F06C7DC-6F81-4E3F-9D10-0AE60FB4E6A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F06C7DC-6F81-4E3F-9D10-0AE60FB4E6A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F06C7DC-6F81-4E3F-9D10-0AE60FB4E6A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F06C7DC-6F81-4E3F-9D10-0AE60FB4E6A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EB150E1F-86FE-43D5-A04D-83545028FB8D} = {8A255B6A-1BE8-484D-9626-48D59B79C9A6}
+		{9F06C7DC-6F81-4E3F-9D10-0AE60FB4E6A4} = {8A255B6A-1BE8-484D-9626-48D59B79C9A6}
 	EndGlobalSection
 EndGlobal
