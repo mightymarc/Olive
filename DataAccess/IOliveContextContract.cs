@@ -147,6 +147,18 @@ namespace Olive.DataAccess
             }
         }
 
+        public IDbSet<BitcoinTransaction> BitcoinTransactions
+        {
+            get
+            {
+                return default(IDbSet<BitcoinTransaction>);
+            }
+            set
+            {
+                return;
+            }
+        }
+
         /// <summary>
         /// The create current account.
         /// </summary>
@@ -263,6 +275,32 @@ namespace Olive.DataAccess
             Contract.Ensures(Contract.Result<int>() > 0);
 
             return default(int);
+        }
+
+        public string GetLastProcessedTransactionId()
+        {
+            return default(string);
+        }
+
+        public bool BitcoinTransactionIsProcessed(string transactionId)
+        {
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(transactionId), "transactionId");
+            return default(bool);
+        }
+
+        public int CreateAccountHold(decimal amount, string holdReason, DateTime? expiresAt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreditTransaction(string transactionId, int accountId, int accountHoldId, decimal amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ReleaseAccountHold(int accountHoldId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

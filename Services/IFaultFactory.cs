@@ -48,36 +48,6 @@ namespace Olive.Services
     public interface IFaultFactory
     {
         /// <summary>
-        ///   Gets EmailAlreadyRegisteredFaultCode.
-        /// </summary>
-        FaultCode EmailAlreadyRegisteredFaultCode { get; }
-
-        /// <summary>
-        ///   Gets SessionDoesNotExistFaultCode.
-        /// </summary>
-        FaultCode SessionDoesNotExistFaultCode { get; }
-
-        /// <summary>
-        ///   Gets UnauthorizedAccountAccessFaultCode.
-        /// </summary>
-        FaultCode UnauthorizedAccountAccessFaultCode { get; }
-
-        /// <summary>
-        ///   Gets UnauthorizedAccountEditFaultCode.
-        /// </summary>
-        FaultCode UnauthorizedAccountEditFaultCode { get; }
-
-        /// <summary>
-        ///   Gets UnauthorizedAccountWithdrawFaultCode.
-        /// </summary>
-        FaultCode UnauthorizedAccountWithdrawFaultCode { get; }
-
-        /// <summary>
-        ///   Gets UnrecognizedCredentialsFaultCode.
-        /// </summary>
-        FaultCode UnrecognizedCredentialsFaultCode { get; }
-
-        /// <summary>
         /// The create email already registered fault exception.
         /// </summary>
         /// <param name="email">The email.</param>

@@ -39,6 +39,7 @@
 
 namespace Olive.DataAccess
 {
+    using System;
     using System.Data;
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
@@ -63,7 +64,7 @@ namespace Olive.DataAccess
         /// </summary>
         [InjectionConstructor]
         public OliveContext()
-            : base("OliveConnectionString")
+            : base("Olive")
         {
         }
 
@@ -82,6 +83,8 @@ namespace Olive.DataAccess
         ///   Gets or sets Accounts.
         /// </summary>
         public IDbSet<Account> Accounts { get; set; }
+
+        public IDbSet<BitcoinTransaction> BitcoinTransactions { get; set; }
 
         /// <summary>
         ///   Gets or sets AccountsWithBalance.
@@ -135,6 +138,11 @@ namespace Olive.DataAccess
             base.SaveChanges();
         }
 
+        public void ReleaseAccountHold(int accountHoldId)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// This method is called when the model for a derived context has been initialized, but
         ///   before the model has been locked down and used to initialize the context.  The default
@@ -174,6 +182,8 @@ namespace Olive.DataAccess
             modelBuilder.Entity<User>().ToTable("User", "dbo");
 
             modelBuilder.Entity<Session>().ToTable("Session", "Auth");
+            modelBuilder.Entity<BitcoinTransaction>().ToTable("Transaction", "Bitcoin");
+            modelBuilder.Entity<BitcoinTransaction>().HasKey(c => c.TransactionId);
 
             // dbo.Currency
             modelBuilder.Entity<Currency>().ToTable("Currency", "dbo");

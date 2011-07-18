@@ -98,7 +98,7 @@ namespace Olive.Website.Controllers
                 }
                 catch (FaultException fe)
                 {
-                    if (fe.Code.Name == this.FaultFactory.UnrecognizedCredentialsFaultCode.Name)
+                    if (fe.Code.Name == Olive.Services.FaultFactory.UnrecognizedCredentialsFaultCode.Name)
                     {
                         this.ModelState.AddModelError(string.Empty, "The e-mail or password provided is incorrect.");
                     }

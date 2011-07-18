@@ -49,128 +49,112 @@ namespace Olive.Services
     public class FaultFactory : IFaultFactory
     {
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "FaultFactory" /> class.
+        /// Initializes the <see cref="FaultFactory"/> class.
         /// </summary>
-        public FaultFactory()
+        static FaultFactory()
         {
-            this.UnauthorizedAccountEditFaultCode = new FaultCode("UnauthorizedAccountEdit");
-            this.UnrecognizedCredentialsFaultCode = new FaultCode("UnrecognizedCredentials");
-            this.EmailAlreadyRegisteredFaultCode = new FaultCode("EmailAlreadyRegistered");
-            this.UnauthorizedAccountWithdrawFaultCode = new FaultCode("UnauthorizedAccountWithdraw");
-            this.SessionDoesNotExistFaultCode = new FaultCode("SessionDoesNotExist");
-            this.UnauthorizedAccountAccessFaultCode = new FaultCode("UnauthorizedAccountAccess");
+            UnauthorizedAccountEditFaultCode = new FaultCode("UnauthorizedAccountEdit");
+            UnrecognizedCredentialsFaultCode = new FaultCode("UnrecognizedCredentials");
+            EmailAlreadyRegisteredFaultCode = new FaultCode("EmailAlreadyRegistered");
+            UnauthorizedAccountWithdrawFaultCode = new FaultCode("UnauthorizedAccountWithdraw");
+            SessionDoesNotExistFaultCode = new FaultCode("SessionDoesNotExist");
+            UnauthorizedAccountAccessFaultCode = new FaultCode("UnauthorizedAccountAccess");
         }
 
         /// <summary>
         ///   Gets or sets EmailAlreadyRegisteredFaultCode.
         /// </summary>
-        public FaultCode EmailAlreadyRegisteredFaultCode { get; protected set; }
+        public static FaultCode EmailAlreadyRegisteredFaultCode { get; protected set; }
 
         /// <summary>
         ///   Gets or sets SessionDoesNotExistFaultCode.
         /// </summary>
-        public FaultCode SessionDoesNotExistFaultCode { get; protected set; }
+        public static FaultCode SessionDoesNotExistFaultCode { get; protected set; }
 
         /// <summary>
         ///   Gets or sets UnauthorizedAccountAccessFaultCode.
         /// </summary>
-        public FaultCode UnauthorizedAccountAccessFaultCode { get; protected set; }
+        public static FaultCode UnauthorizedAccountAccessFaultCode { get; protected set; }
 
         /// <summary>
         ///   Gets or sets UnauthorizedAccountEditFaultCode.
         /// </summary>
-        public FaultCode UnauthorizedAccountEditFaultCode { get; protected set; }
+        public static FaultCode UnauthorizedAccountEditFaultCode { get; protected set; }
 
         /// <summary>
         ///   Gets or sets UnauthorizedAccountWithdrawFaultCode.
         /// </summary>
-        public FaultCode UnauthorizedAccountWithdrawFaultCode { get; protected set; }
+        public static FaultCode UnauthorizedAccountWithdrawFaultCode { get; protected set; }
 
         /// <summary>
         ///   Gets or sets UnrecognizedCredentialsFaultCode.
         /// </summary>
-        public FaultCode UnrecognizedCredentialsFaultCode { get; protected set; }
+        public static FaultCode UnrecognizedCredentialsFaultCode { get; protected set; }
 
         /// <summary>
         /// The create email already registered fault exception.
         /// </summary>
-        /// <param name="email">
-        /// The email.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="email">The email.</param>
+        /// <returns></returns>
         /// <exception cref="FaultException">
-        /// </exception>
+        ///   </exception>
         public virtual FaultException CreateEmailAlreadyRegisteredFaultException(string email)
         {
             const string ReasonFormat = "The specified e-mail, {0}, is already registered to another user.";
 
             return new FaultException(
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, email)), 
-                this.EmailAlreadyRegisteredFaultCode);
+                EmailAlreadyRegisteredFaultCode);
         }
 
         /// <summary>
         /// The create session does not exist fault exception.
         /// </summary>
-        /// <param name="sessionId">
-        /// The session id.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="sessionId">The session id.</param>
+        /// <returns></returns>
         /// <exception cref="FaultException">
-        /// </exception>
+        ///   </exception>
         public virtual FaultException CreateSessionDoesNotExistFaultException(Guid sessionId)
         {
             const string ReasonFormat = "The specified session, {0}, does not exist or has expired.";
 
             return new FaultException(
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, sessionId)), 
-                this.SessionDoesNotExistFaultCode);
+                SessionDoesNotExistFaultCode);
         }
 
         /// <summary>
         /// The create unauthorized account access fault exception.
         /// </summary>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="accountId">
-        /// The account id.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="userId">The user id.</param>
+        /// <param name="accountId">The account id.</param>
+        /// <returns></returns>
         /// <exception cref="FaultException">
-        /// </exception>
+        ///   </exception>
         public FaultException CreateUnauthorizedAccountAccessFaultException(int userId, int accountId)
         {
             const string ReasonFormat = "User #{0} does not have access to view account #{1}.";
 
             return new FaultException(
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, userId, accountId)), 
-                this.UnauthorizedAccountAccessFaultCode);
+                UnauthorizedAccountAccessFaultCode);
         }
 
         /// <summary>
         /// The create unauthorized account edit fault exception.
         /// </summary>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="accountId">
-        /// The account id.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="userId">The user id.</param>
+        /// <param name="accountId">The account id.</param>
+        /// <returns></returns>
         /// <exception cref="FaultException">
-        /// </exception>
+        ///   </exception>
         public virtual FaultException CreateUnauthorizedAccountEditFaultException(int userId, int accountId)
         {
             const string ReasonFormat = "User #{0} does not have access to edit account #{1}.";
 
             return new FaultException(
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, userId, accountId)), 
-                this.UnauthorizedAccountEditFaultCode);
+                UnauthorizedAccountEditFaultCode);
         }
 
         /// <summary>
@@ -192,7 +176,7 @@ namespace Olive.Services
 
             return new FaultException(
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, userId, accountId)), 
-                this.UnauthorizedAccountWithdrawFaultCode);
+                UnauthorizedAccountWithdrawFaultCode);
         }
 
         /// <summary>
@@ -211,7 +195,7 @@ namespace Olive.Services
 
             return new FaultException(
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, email)), 
-                this.UnrecognizedCredentialsFaultCode);
+                UnrecognizedCredentialsFaultCode);
         }
     }
 }

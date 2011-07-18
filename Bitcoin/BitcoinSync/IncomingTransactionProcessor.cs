@@ -41,6 +41,7 @@ namespace Olive.Bitcoin.BitcoinSync
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.Linq;
     using System.Text;
@@ -66,16 +67,16 @@ namespace Olive.Bitcoin.BitcoinSync
         [Dependency]
         public IRpcClient RpClient { get; set; }
 
-        public void Process()
+        public virtual void Process()
         {
             this.Logger.Debug("Looking up last processed transaction...");
 
-            var lastTransactionId = this.BitcoinService.GetLastProcessedTransationId();
+            var lastTransactionId = this.BitcoinService.GetLastProcessedTransactionId();
 
             this.Logger.DebugFormat("Last processed transaction id is {0}.", lastTransactionId);
             this.Logger.DebugFormat("Looking for transactions that occured after the last processed transaction.");
 
-            var newTransactions = this.GetTransationsAfter(lastTransactionId);
+            var newTransactions = this.GetTransactionsAfter(lastTransactionId);
 
             this.Logger.InfoFormat("Found new {0} transaction(s).", newTransactions.Count);
 
@@ -85,13 +86,19 @@ namespace Olive.Bitcoin.BitcoinSync
             }
         }
 
-        private void Process(Transaction transaction)
+        public virtual void Process(Transaction transaction)
         {
+            if (transaction.Account == string.Empty)
+            {
+                return;
+            }
+
             this.Logger.InfoFormat("Procsssing transaction #{0}.", transaction.TransactionId);
 
             if (this.BitcoinService.TransactionIsProcessed(transaction.TransactionId))
             {
-                throw new InvalidOperationException("The specified transaction has already been processed.");
+                this.Logger.WarnFormat("Will not process transaction #{0} because the service claims it has already been processed.", transaction.TransactionId);
+                return;
             }
 
             if (!(transaction.Amount > 0))
@@ -109,10 +116,12 @@ namespace Olive.Bitcoin.BitcoinSync
             this.BitcoinService.ReleaseTransactionHold(transaction.TransactionId);
         }
 
-        private List<Transaction> GetTransationsAfter(string transactionId)
+        private List<Transaction> GetTransactionsAfter(string transactionId)
         {
-            const int transactionCountStep = 2;
+            const int TransactionCountStep = 2;
             var transactionCount = 10;
+
+            Func<Transaction, bool> transactionFilter = t => t.Account != string.Empty && t.Category == "receive";
 
             if (transactionId == null)
             {
@@ -120,39 +129,50 @@ namespace Olive.Bitcoin.BitcoinSync
 
                 while (true)
                 {
-                    var transactions = this.RpClient.GetTransactions(null, transactionCount);
+                    var transactions = this.RpClient.GetTransactions(null, transactionCount).Where(transactionFilter).ToList();
+
+                    if (transactions.Count == 0)
+                    {
+                        return new List<Transaction>();
+                    }
 
                     if (prevTransactions == null)
                     {
                         prevTransactions = transactions;
-                        transactionCount += transactionCountStep;
+                        transactionCount += TransactionCountStep;
                         continue;
                     }
 
-                    // Are there any older entries in transactions than in prevTransactions?
-                    var oldestPrevTransaction = prevTransactions.Min(t => t.Time);
-
-                    if (!transactions.Any(t => t.Time < oldestPrevTransaction))
+                    // Are there more transactions in the new list?
+                    if (transactions.Count == prevTransactions.Count)
                     {
                         return transactions;
                     }
 
+                    Contract.Assume(transactions.Count > prevTransactions.Count);
+
                     // There are older transactions, keep going backwards.
                     prevTransactions = transactions;
-                    transactionCount += transactionCountStep;
+                    transactionCount += TransactionCountStep;
                 }
             }
             else
             {
                 while (true)
                 {
-                    var transactions = this.RpClient.GetTransactions(null, transactionCount);
+                    var transactions = this.RpClient.GetTransactions(null, transactionCount).Where(transactionFilter).ToList();
+
+                    if (transactions.Count == 0)
+                    {
+                        return new List<Transaction>();
+                    }
+
                     var lastTransaction = transactions.SingleOrDefault(t => t.TransactionId == transactionId);
 
                     if (lastTransaction == null)
                     {
                         // Transaction to look for was not found, go further back in time.
-                        transactionCount += transactionCountStep;
+                        transactionCount += TransactionCountStep;
                         continue;
                     }
 

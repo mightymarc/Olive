@@ -51,6 +51,8 @@ namespace Olive.Website.Helpers
     /// </summary>
     public class CurrencyCache : ICurrencyCache
     {
+        private List<string> currencies;
+
         /// <summary>
         ///   Gets Currencies.
         /// </summary>
@@ -58,9 +60,12 @@ namespace Olive.Website.Helpers
         {
             get
             {
-                Contract.Requires(this.ClientService != null, "this.ClientService != null");
+                if (this.currencies == null)
+                {
+                    this.currencies = this.ClientService.GetCurrencies();
+                }
 
-                return this.ClientService.GetCurrencies();
+                return this.currencies;
             }
         }
 

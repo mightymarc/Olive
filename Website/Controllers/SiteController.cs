@@ -41,6 +41,7 @@ namespace Olive.Website.Controllers
 {
     using System;
     using System.Diagnostics.Contracts;
+    using System.Threading;
     using System.Web.Mvc;
     using System.Web.Routing;
 
@@ -56,35 +57,36 @@ namespace Olive.Website.Controllers
     public abstract class SiteController : Controller
     {
         /// <summary>
-        ///   Gets or sets CurrencyCache.
+        /// Gets or sets CurrencyCache.
         /// </summary>
+        /// <value>
+        /// The currency cache.
+        /// </value>
         [Dependency]
         public ICurrencyCache CurrencyCache { get; set; }
 
         /// <summary>
-        ///   Gets or sets FaultFactory.
+        /// Gets or sets ClientService.
         /// </summary>
-        [Dependency]
-        public IFaultFactory FaultFactory { get; set; }
-
-        /// <summary>
-        ///   Gets or sets ClientService.
-        /// </summary>
+        /// <value>
+        /// The client service.
+        /// </value>
         [Dependency]
         public IClientService ClientService { get; set; }
 
         /// <summary>
-        ///   Gets or sets SessionPersister.
+        /// Gets or sets SessionPersister.
         /// </summary>
+        /// <value>
+        /// The session persister.
+        /// </value>
         [Dependency]
         public ISiteSession SessionPersister { get; set; }
 
         /// <summary>
         /// Called when an unhandled exception occurs in the action.
         /// </summary>
-        /// <param name="filterContext">
-        /// Information about the current request and action.
-        /// </param>
+        /// <param name="filterContext">Information about the current request and action.</param>
         protected override void OnException(ExceptionContext filterContext)
         {
             if (filterContext.Exception is SessionDoesNotExistException)
@@ -101,8 +103,7 @@ namespace Olive.Website.Controllers
         /// <summary>
         /// The redirect to login.
         /// </summary>
-        /// <returns>
-        /// </returns>
+        /// <returns></returns>
         protected ActionResult RedirectToLogin()
         {
             Contract.Requires(this.Request != null, "this.Context.Request");

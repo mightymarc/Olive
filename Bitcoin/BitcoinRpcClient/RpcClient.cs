@@ -156,7 +156,11 @@ namespace Olive.Bitcoin
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(accountId), "accountId");
             Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-            throw new NotImplementedException();
+            var result = accountId == null
+                                ? this.InvokeMethod("getnewaddress")
+                                : this.InvokeMethod("getnewaddress", accountId);
+
+            return result.Value<string>();
         }
 
         public void Stop()
@@ -179,14 +183,15 @@ namespace Olive.Bitcoin
             var result = (JArray)this.InvokeMethod("listtransactions", accountId ?? "*", count, skip);
 
             return (from t in result
+                    let category = t.Value<string>("category")
                     select
                         new Transaction
                             {
                                 Account = t.Value<string>("account"),
                                 Address = t.Value<string>("address"),
                                 Amount = decimal.Parse(t.Value<string>("amount"), CultureInfo.InvariantCulture),
-                                Category = t.Value<string>("category"),
-                                Confirmations = int.Parse(t.Value<string>("confirmations"), CultureInfo.InvariantCulture),
+                                Category = category,
+                                Confirmations = category == "move" ? default(int?) : int.Parse(t.Value<string>("confirmations"), CultureInfo.InvariantCulture),
                                 Time =
                                     new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(
                                         int.Parse(t.Value<string>("time"), CultureInfo.InvariantCulture)),
@@ -194,9 +199,37 @@ namespace Olive.Bitcoin
                             }).ToList();
         }
 
-        public void Move(string fromAccountId, string toAccountId, decimal amount)
+        public void Move(string fromAccountId, string toAccountId, decimal amount, int minConfirmations = 1, string comment = null)
         {
-            throw new NotImplementedException();
+            JToken result;
+
+            if (comment != null)
+            {
+                result = this.InvokeMethod("move", fromAccountId, toAccountId, amount, minConfirmations, comment);
+            }
+            else
+            {
+                result = this.InvokeMethod("move", fromAccountId, toAccountId, amount, minConfirmations);
+            }
+
+            if (result.Value<bool>() != true)
+            {
+                throw new Exception("Unknown result: " + result);
+            }
+        }
+
+        public string Send(string fromAccountId, string toAddress, decimal amount, int minConfirmations = 1, string comment = null, string commentTo = null)
+        {
+            var result = this.InvokeMethod(
+                "sendfrom", 
+                fromAccountId, 
+                toAddress, 
+                amount, 
+                minConfirmations, 
+                comment, 
+                commentTo);
+
+            return result.Value<string>();
         }
 
         public List<AccountWithBalance> GetAcccounts(int minConfirmations = 1)
@@ -214,29 +247,5 @@ namespace Olive.Bitcoin
                             }).ToList(
                                 );
         }
-    }
-
-    public class Transaction
-    {
-        public string Account { get; set; }
-
-        public string Address { get; set; }
-
-        public string Category { get; set; }
-
-        public decimal Amount { get; set; }
-
-        public int Confirmations { get; set; }
-
-        public string TransactionId { get; set; }
-
-        public DateTime Time { get; set; }
-    }
-
-    public class AccountWithBalance
-    {
-        public string Name { get; set; }
-
-        public decimal Balance { get; set; }
     }
 }

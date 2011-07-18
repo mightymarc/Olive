@@ -1,0 +1,6 @@
+﻿<%@ ServiceHost 
+Language="C#" 
+Debug="true" 
+Service="Olive.Services.ClientService" 
+CodeBehind="ClientService.svc.cs"
+Factory="Olive.Services.ClientServiceServiceHostFactory" %>

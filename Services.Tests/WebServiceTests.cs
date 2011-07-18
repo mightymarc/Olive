@@ -154,7 +154,7 @@ namespace Olive.Services.Tests
             var context = new Mock<IOliveContext>();
             this.container.RegisterInstance(context.Object);
 
-            var service = new ClientServices { Container = this.container };
+            var service = new ClientService { Container = this.container };
             var sessionId = Guid.NewGuid();
 
             var expectedAccountId = 53;
@@ -191,7 +191,7 @@ namespace Olive.Services.Tests
         [TestCase("", "name")]
         public void CreateCurrentAccountWithBadArgumentsThrowsException(string currencyId, string displayName)
         {
-            var service = new ClientServices { Container = this.container };
+            var service = new ClientService { Container = this.container };
             var sessionId = Guid.NewGuid();
 
             try
@@ -213,7 +213,7 @@ namespace Olive.Services.Tests
         public void CreateCurrentAccountWithoutCredentialsThrowsException()
         {
             // Arrange
-            var service = new ClientServices { Container = this.container };
+            var service = new ClientService { Container = this.container };
 
             // Act and assert
             Assert.Throws<ArgumentException>(() => service.CreateCurrentAccount(Guid.Empty, "a@b.com", null));
@@ -225,7 +225,7 @@ namespace Olive.Services.Tests
         [Test]
         public void CreateSessionWitInvalidEmailThrowsException()
         {
-            var service = new ClientServices();
+            var service = new ClientService();
 
             Assert.Throws<ArgumentException>(() => service.CreateSession("@bademail.com", "password"));
         }
@@ -265,7 +265,7 @@ namespace Olive.Services.Tests
         [Test]
         public void CreateSessionWithNullEmailThrowsException()
         {
-            var service = new ClientServices();
+            var service = new ClientService();
             Assert.Throws<ArgumentException>(() => service.CreateSession(null, "password"));
         }
 
@@ -275,7 +275,7 @@ namespace Olive.Services.Tests
         [Test]
         public void CreateSessionWithNullPasswordThrowsException()
         {
-            var service = new ClientServices();
+            var service = new ClientService();
 
             Assert.Throws<ArgumentException>(() => service.CreateSession("valid@email.com", null));
         }
@@ -356,7 +356,7 @@ namespace Olive.Services.Tests
 
             context.Setup(c => c.VerifySession(It.IsAny<Guid>())).Returns(1);
 
-            IBankService service = new ClientServices { Container = this.container };
+            IBankService service = new ClientService { Container = this.container };
 
             try
             {
@@ -453,7 +453,7 @@ namespace Olive.Services.Tests
             mockCrypto.Setup(c => c.GenerateHash(It.IsAny<string>(), It.IsAny<string>())).Returns("hash");
             this.container.RegisterInstance(mockCrypto.Object);
 
-            var service = new ClientServices { Container = this.container };
+            var service = new ClientService { Container = this.container };
 
             // Act
             service.CreateUser(email, password);
@@ -487,7 +487,7 @@ namespace Olive.Services.Tests
             }
             catch (FaultException fe)
             {
-                if (fe.Code.Name == this.faultFactory.EmailAlreadyRegisteredFaultCode.Name)
+                if (fe.Code.Name == FaultFactory.EmailAlreadyRegisteredFaultCode.Name)
                 {
                     Assert.Pass();
                 }
@@ -517,7 +517,7 @@ namespace Olive.Services.Tests
             this.container.RegisterInstance<IOliveContext>(context);
 
             // Act
-            var service = new ClientServices { Container = this.container };
+            var service = new ClientService { Container = this.container };
 
             // Assert
             Assert.Throws<ArgumentException>(
@@ -533,7 +533,7 @@ namespace Olive.Services.Tests
         public void CreateUserWithNullEmailThrowsException()
         {
             // Arrange
-            var service = new ClientServices { Container = this.container };
+            var service = new ClientService { Container = this.container };
 
             // Act and assert
             Assert.Throws<ArgumentException>(() => service.CreateUser(null, "password"));
@@ -546,7 +546,7 @@ namespace Olive.Services.Tests
         public void CreateUserWithNullPasswordThrowsException()
         {
             // Arrange
-            var service = new ClientServices { Container = this.container };
+            var service = new ClientService { Container = this.container };
 
             // Act and assert
             Assert.Throws<ArgumentException>(() => service.CreateUser("a@b.com", null));
@@ -559,7 +559,7 @@ namespace Olive.Services.Tests
         public void CreateUserWithTooShortPasswordThrowsException()
         {
             // Arrange
-            var service = new ClientServices { Container = this.container };
+            var service = new ClientService { Container = this.container };
 
             // Act and assert
             Assert.Throws<ArgumentException>(() => service.CreateUser("a@b.c", "ab"));
@@ -587,7 +587,7 @@ namespace Olive.Services.Tests
 
             var userId = 512;
 
-            var mockService = new Mock<ClientServices> { CallBase = true };
+            var mockService = new Mock<ClientService> { CallBase = true };
             mockService.SetupGet(s => s.Container).Returns(this.container);
             var service = (IClientService)mockService.Object;
             mockService.Setup(s => s.UserCanEditAccount(userId, accountId)).Returns(true);
@@ -623,7 +623,7 @@ namespace Olive.Services.Tests
         public void EditCurrentAccountWithBadArgumentsThrowsException(Guid sessionId, int accountId, string displayName)
         {
             // Arrange
-            var service = new ClientServices();
+            var service = new ClientService();
 
             // Act and assert
             try
@@ -661,7 +661,7 @@ namespace Olive.Services.Tests
             }
             catch (FaultException fe)
             {
-                if (fe.Code.Name == this.faultFactory.SessionDoesNotExistFaultCode.Name)
+                if (fe.Code.Name == FaultFactory.SessionDoesNotExistFaultCode.Name)
                 {
                     Assert.Pass("Exception was thrown as expected.");
                 }
@@ -696,7 +696,7 @@ namespace Olive.Services.Tests
             }
             catch (FaultException fe)
             {
-                if (fe.Code.Name == this.faultFactory.UnauthorizedAccountEditFaultCode.Name)
+                if (fe.Code.Name == FaultFactory.UnauthorizedAccountEditFaultCode.Name)
                 {
                     Assert.Pass();
                 }
@@ -753,8 +753,8 @@ namespace Olive.Services.Tests
             var sessionId = Guid.NewGuid();
             var accountId = 1;
             var userId = 3;
-            var displayName = default(string);
-            var currencyId = "BTC";
+            ////var displayName = default(string);
+            ////var currencyId = "BTC";
 
             var mockContext = new Mock<IOliveContext>();
             mockContext.Setup(c => c.VerifySession(sessionId)).Returns(userId);
@@ -794,7 +794,7 @@ namespace Olive.Services.Tests
             }
             catch (FaultException fe)
             {
-                if (fe.Code.Name == this.faultFactory.UnauthorizedAccountAccessFaultCode.Name)
+                if (fe.Code.Name == FaultFactory.UnauthorizedAccountAccessFaultCode.Name)
                 {
                     Assert.Pass();
                 }
@@ -810,7 +810,7 @@ namespace Olive.Services.Tests
         public void GetCurrenciesTest()
         {
             // Arrange
-            var service = new ClientServices { Container = this.container };
+            var service = new ClientService { Container = this.container };
 
             var currencies =
                 new[] { "USD", "BTC", "ARG", "PPUSD" }.Select(x => new Currency { CurrencyId = x }).ToList();
@@ -843,9 +843,9 @@ namespace Olive.Services.Tests
         /// </summary>
         /// <returns>
         /// </returns>
-        private ClientServices GetMockWebService()
+        private ClientService GetMockWebService()
         {
-            var mockService = new Mock<ClientServices> { CallBase = true };
+            var mockService = new Mock<ClientService> { CallBase = true };
             mockService.Object.Container = this.container;
             mockService.Object.FaultFactory = this.faultFactory;
 

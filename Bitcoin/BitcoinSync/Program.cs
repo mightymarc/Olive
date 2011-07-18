@@ -40,9 +40,25 @@
 namespace Olive.Bitcoin.BitcoinSync
 {
     using System;
+    using System.Net;
+
+    using log4net;
+    using log4net.Config;
+
+    using Microsoft.Practices.Unity;
+
+    using Olive.Bitcoin.BitcoinSync.Properties;
+    using Olive.DataAccess;
+    using Olive.Services;
 
     public class Program
     {
+        private ILog logger;
+
+        private readonly BitcoinSyncSettings settings = new BitcoinSyncSettings();
+
+        private IUnityContainer container;
+
         static void Main(string[] args)
         {
             new Program();
@@ -50,17 +66,50 @@ namespace Olive.Bitcoin.BitcoinSync
 
         public Program()
         {
+            Console.SetBufferSize(200, 500);
+            Console.SetWindowSize(200, 70);
+
+            XmlConfigurator.Configure();
+            this.logger = LogManager.GetLogger(typeof(Program));
+
+            this.container = new UnityContainer();
+            this.container.RegisterInstance<ILog>(this.logger);
+            var clientService = new ClientService { Container = this.container };
+            this.container.RegisterType<IOliveContext, OliveContext>();
+            this.container.RegisterInstance<IBitcoinService>(clientService);
+
+            var rpcCredential = new NetworkCredential(
+                this.settings.BitcoinDaemonUsername, this.settings.BitcoinDaemonPassword);
+            this.container.RegisterInstance<IRpcClient>(new RpcClient
+                {
+                    Credential = rpcCredential, 
+                    Hostname = this.settings.BitcoinDaemonHostname, 
+                    PortNumber = this.settings.BitconDaemonPort
+                });
+
             Console.WriteLine("Bitcoin Sync");
             Console.WriteLine();
 
-            this.ProcessIncomingTransactions();
-
+#if !DEBUG
+            try
+            {
+#endif
+                this.ProcessIncomingTransactions();
+#if !DEBUG
+            }
+            catch (Exception e)
+            {
+                this.logger.Error("Unhandled exception: ", e);   
+            }
+#endif
             Console.ReadLine();
         }
 
         private void ProcessIncomingTransactions()
         {
             var processor = new IncomingTransactionProcessor();
+            this.container.BuildUp(processor);
+
             processor.Process();
         }
     }

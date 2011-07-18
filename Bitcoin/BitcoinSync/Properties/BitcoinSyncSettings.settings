@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Olive.Bitcoin.BitcoinSync" GeneratedClassName="BitcoinSync">
+  <Profiles />
+  <Settings>
+    <Setting Name="BitcoinDaemonHostname" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">oapp1.olive.local</Value>
+    </Setting>
+    <Setting Name="BitconDaemonPort" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">8502</Value>
+    </Setting>
+    <Setting Name="BitcoinDaemonUsername" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">user</Value>
+    </Setting>
+    <Setting Name="BitcoinDaemonPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">password</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

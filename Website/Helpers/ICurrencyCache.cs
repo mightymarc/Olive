@@ -44,6 +44,7 @@ namespace Olive.Website.Helpers
     /// <summary>
     /// Cache of currencies.
     /// </summary>
+    // TODO: Code contracts
     public interface ICurrencyCache
     {
         /// <summary>

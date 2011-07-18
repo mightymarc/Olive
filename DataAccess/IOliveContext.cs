@@ -81,6 +81,8 @@ namespace Olive.DataAccess
         /// </summary>
         IDbSet<User> Users { get; set; }
 
+        IDbSet<BitcoinTransaction> BitcoinTransactions { get; set; }
+
         /// <summary>
         /// The create current account.
         /// </summary>
@@ -157,5 +159,19 @@ namespace Olive.DataAccess
         /// The user id of the user that owns the session.
         /// </returns>
         int VerifySession(Guid sessionId);
+
+        /// <summary>
+        /// Gets the last processed transaction id.
+        /// </summary>
+        /// <returns></returns>
+        string GetLastProcessedTransactionId();
+
+        bool BitcoinTransactionIsProcessed(string transactionId);
+
+        int CreateAccountHold(decimal amount, string holdReason, DateTime? expiresAt);
+
+        void CreditTransaction(string transactionId, int accountId, int accountHoldId, decimal amount);
+
+        void ReleaseAccountHold(int accountHoldId);
     }
 }

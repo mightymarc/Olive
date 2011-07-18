@@ -1,2 +1,2 @@
 ﻿CREATE LOGIN [ServiceUser]
-    WITH PASSWORD = N'temp';
+    WITH PASSWORD = N'kqMNwWN6MMCR82JeR682';

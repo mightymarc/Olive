@@ -42,6 +42,7 @@ namespace Olive.DataAccess
     using System;
     using System.Data;
     using System.Diagnostics.Contracts;
+    using System.Linq;
 
     /// <summary>
     /// The entity framework database context.
@@ -221,6 +222,36 @@ namespace Olive.DataAccess
                 default:
                     throw new UnknownReturnCodeException(command.GetReturnCode());
             }
+        }
+
+        public string GetLastProcessedTransactionId()
+        {
+            var command = this.CommandConnection.CreateCommand("Bitcoin.[GetLastProcessedTransactionId]");
+            command.AddParam("@TransactionId", DbType.AnsiString, size: 64, direction: ParameterDirection.Output);
+
+            switch (this.ExecuteCommand(command))
+            {
+                case 0:
+                    var transactionId = command.GetParameter("@TransactionId").Value;
+                    return transactionId == DBNull.Value ? null : (string)transactionId;
+                default:
+                    throw new UnknownReturnCodeException(command.GetReturnCode());
+            }
+        }
+
+        public virtual bool BitcoinTransactionIsProcessed(string transactionId)
+        {
+            return this.BitcoinTransactions.Any(x => x.TransactionId == transactionId);
+        }
+
+        public int CreateAccountHold(decimal amount, string holdReason, DateTime? expiresAt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreditTransaction(string transactionId, int accountId, int accountHoldId, decimal amount)
+        {
+            throw new NotImplementedException();
         }
     }
 }

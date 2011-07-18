@@ -52,8 +52,6 @@ namespace Olive.Website.Tests.Views.Account
     using Moq;
 
     using MvcIntegrationTestFramework;
-    using MvcIntegrationTestFramework.Browsing;
-    using MvcIntegrationTestFramework.Hosting;
 
     using Microsoft.Practices.Unity;
 

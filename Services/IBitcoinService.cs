@@ -39,15 +39,22 @@
 
 namespace Olive.Services
 {
+    using System.ServiceModel;
+
     // TODO: Write code contract
+    [ServiceContract]
     public interface IBitcoinService
     {
-        string GetLastProcessedTransationId();
+        [OperationContract]
+        string GetLastProcessedTransactionId();
 
+        [OperationContract]
         bool TransactionIsProcessed(string transactionId);
 
+        [OperationContract]
         void CreditTransactionWithHold(int accountId, string transactionId, decimal amount);
 
+        [OperationContract]
         void ReleaseTransactionHold(string transactionId);
     }
 }

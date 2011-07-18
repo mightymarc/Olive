@@ -46,14 +46,25 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>.\sql\debug\</OutputPath>
     <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
-    <TargetConnectionString>Data Source=.\SQLEXPRESS;Integrated Security=True;Pooling=False</TargetConnectionString>
+    <TargetConnectionString>Data Source=osql1.olive.local;Integrated Security=True;Pooling=False</TargetConnectionString>
     <TargetDatabase>master</TargetDatabase>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <SuppressWarnings>
     </SuppressWarnings>
+    <SqlCommandVariablesFile>Properties\DevMaster.sqlcmdvars</SqlCommandVariablesFile>
+    <DeployToDatabase>True</DeployToDatabase>
     <DeploymentConfigFile>Properties\Master.sqldeployment</DeploymentConfigFile>
-    <SqlCommandVariablesFile>Properties\Master.sqlcmdvars</SqlCommandVariablesFile>
-    <DeployToDatabase>False</DeployToDatabase>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Dev' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetConnectionString>Data Source=.\SQLEXPRESS;Integrated Security=True;Pooling=False</TargetConnectionString>
+    <TargetDatabase>master</TargetDatabase>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <SuppressWarnings />
+    <SqlCommandVariablesFile>Properties\DevMaster.sqlcmdvars</SqlCommandVariablesFile>
+    <DeployToDatabase>True</DeployToDatabase>
+    <DeploymentConfigFile>Properties\Master.sqldeployment</DeploymentConfigFile>
+    <OutputPath>.\sql\Dev\</OutputPath>
   </PropertyGroup>
   <!--Import the settings-->
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\TeamData\Microsoft.Data.Schema.SqlTasks.targets" />
@@ -130,6 +141,9 @@
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql">
       <SubType>Code</SubType>
     </PostDeploy>
+    <PropertiesFile Include="Properties\DevMaster.sqlcmdvars">
+      <SubType>PropertiesFile</SubType>
+    </PropertiesFile>
   </ItemGroup>
   <ItemGroup>
     <BuildContributorArgument Include="OutDir=$(OutDir)" />
@@ -141,7 +155,7 @@
     <Build Include="Schema Objects\Server Level Objects\Security\Logins\NT AUTHORITY_SYSTEM.login.sql">
       <SubType>Code</SubType>
     </Build>
-    <Build Include="Schema Objects\Server Level Objects\Security\Logins\AndyMac_Andy.login.sql">
+    <Build Include="Schema Objects\Server Level Objects\Security\Logins\OLIVE_andreasbrekken.login.sql">
       <SubType>Code</SubType>
     </Build>
     <Build Include="Schema Objects\Server Level Objects\Security\Logins\BUILTIN_Users.login.sql">

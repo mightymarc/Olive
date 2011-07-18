@@ -17,7 +17,6 @@ namespace Olive.Website.Tests.Integration.ViewAndController
     using Moq;
 
     using MvcIntegrationTestFramework;
-    using MvcIntegrationTestFramework.Hosting;
 
     using NUnit.Framework;
 

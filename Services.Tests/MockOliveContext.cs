@@ -174,6 +174,18 @@ namespace Olive.DataAccess.Tests
         /// </summary>
         public IDbSet<User> Users { get; set; }
 
+        public IDbSet<BitcoinTransaction> BitcoinTransactions
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         /// <summary>
         /// The create current account.
         /// </summary>
@@ -408,6 +420,31 @@ namespace Olive.DataAccess.Tests
         /// <exception cref="NotImplementedException">
         /// </exception>
         public int VerifySession(Guid sessionId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetLastProcessedTransactionId()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool BitcoinTransactionIsProcessed(string transactionId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CreateAccountHold(decimal amount, string holdReason, DateTime? expiresAt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreditTransaction(string transactionId, int accountId, int accountHoldId, decimal amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ReleaseAccountHold(int accountHoldId)
         {
             throw new NotImplementedException();
         }

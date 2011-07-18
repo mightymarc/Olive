@@ -46,7 +46,7 @@ namespace Olive.Services
     using System.Text;
 
     [ServiceContract]
-    public interface IClientService : IBankService, IAuthService
+    public interface IClientService : IBankService, IAuthService, IBitcoinService
     {
     }
 }

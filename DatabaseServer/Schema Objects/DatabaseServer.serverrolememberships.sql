@@ -2,5 +2,5 @@
 
 
 GO
-EXECUTE sp_addsrvrolemember @loginame = N'AndyMac\Andy', @rolename = N'sysadmin';
+EXECUTE sp_addsrvrolemember @loginame = N'OLIVE\andreasbrekken', @rolename = N'sysadmin';
 

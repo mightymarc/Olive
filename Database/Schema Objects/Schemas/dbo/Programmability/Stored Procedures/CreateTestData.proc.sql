@@ -2,6 +2,14 @@
 
 AS
 
+PRINT 'Creating test data...'
+
+IF '$(TargetEnv)' <> 'Dev' AND '$(TargetEnv)' <> 'Beta'
+BEGIN
+	RAISERROR('Cannot create test data unless target environment is Dev or Beta.', 16, 1);
+	RETURN
+END
+
 insert into dbo.Currency (CurrencyId) values ('USD')
 
 insert into dbo.Currency (CurrencyId) values ('BTC')

@@ -1,0 +1,3214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DataSchemaModel FileFormatVersion="1.2" SchemaVersion="1.1" DspName="Microsoft.Data.Schema.Sql.Sql100DatabaseSchemaProvider" CollationLcid="1030" CollationCaseSensitive="False">
+	<Header>
+		<CustomData Category="ModelCapability">
+			<Metadata Name="ModelCapability" Value="Default" />
+		</CustomData>
+		<CustomData Category="ClrTypesDbSchema" Type="DbSchema">
+			<Metadata Name="ClrTypesDbSchema" Value="True" />
+		</CustomData>
+		<CustomData Category="AnsiNulls">
+			<Metadata Name="AnsiNulls" Value="True" />
+		</CustomData>
+		<CustomData Category="QuotedIdentifier">
+			<Metadata Name="QuotedIdentifier" Value="True" />
+		</CustomData>
+		<CustomData Category="CompatibilityMode">
+			<Metadata Name="CompatibilityMode" Value="100" />
+		</CustomData>
+		<CustomData Category="Permissions" Type="XmlPermissions">
+			<Metadata Name="FileName" Value="C:\USERS\ANDY\APPDATA\LOCAL\GIT\OLIVE\DATABASE\PROPERTIES\DATABASE.SQLPERMISSIONS" />
+		</CustomData>
+		<CustomData Category="Reference" Type="DbSchema">
+			<Metadata Name="FileName" Value="C:\USERS\ANDY\APPDATA\LOCAL\GIT\OLIVE\DATABASESERVER\SQL\DEV\DATABASESERVER.DBSCHEMA" />
+			<Metadata Name="LogicalName" Value="DatabaseServer.dbschema" />
+			<Metadata Name="ExternalParts" Value="[master]" />
+		</CustomData>
+	</Header>
+	<Model>
+		<Element Type="ISql100DatabaseOptions">
+			<Property Name="Collation" Value="Danish_Norwegian_CI_AS" />
+			<Property Name="IsAnsiNullDefaultOn" Value="True" />
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Property Name="IsAnsiWarningsOn" Value="True" />
+			<Property Name="IsArithAbortOn" Value="True" />
+			<Property Name="IsConcatNullYieldsNullOn" Value="True" />
+			<Property Name="IsTornPageProtectionOn" Value="False" />
+			<Property Name="IsFullTextEnabled" Value="True" />
+			<Property Name="PageVerifyMode" Value="3" />
+			<Relationship Name="DefaultFilegroup">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[PRIMARY]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql90DefaultConstraint">
+			<Property Name="DefaultExpressionScript">
+				<Value><![CDATA[(0)]]></Value>
+			</Property>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[Account]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForColumn">
+				<Entry>
+					<References Name="[Banking].[Account].[AllowNegative]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="4" />
+		</Element>
+		<Element Type="ISql90DefaultConstraint">
+			<Property Name="DefaultExpressionScript">
+				<Value><![CDATA[(GETUTCDATE())]]></Value>
+			</Property>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[AccountHold]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForColumn">
+				<Entry>
+					<References Name="[Banking].[AccountHold].[CreatedAt]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="5" />
+		</Element>
+		<Element Type="ISql90DefaultConstraint">
+			<Property Name="DefaultExpressionScript">
+				<Value><![CDATA[(newid())]]></Value>
+			</Property>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Auth].[Session]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForColumn">
+				<Entry>
+					<References Name="[Auth].[Session].[SessionId]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="6" />
+		</Element>
+		<Element Type="ISql90DefaultConstraint">
+			<Property Name="DefaultExpressionScript">
+				<Value><![CDATA[(dateadd(hour, 1, getutcdate()))]]></Value>
+			</Property>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Auth].[Session]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForColumn">
+				<Entry>
+					<References Name="[Auth].[Session].[ExpiresAt]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="7" />
+		</Element>
+		<Element Type="ISql90DefaultConstraint">
+			<Property Name="DefaultExpressionScript">
+				<Value><![CDATA[(getutcdate())]]></Value>
+			</Property>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Auth].[Session]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForColumn">
+				<Entry>
+					<References Name="[Auth].[Session].[CreatedAt]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="8" />
+		</Element>
+		<Element Type="ISql90DefaultConstraint">
+			<Property Name="DefaultExpressionScript">
+				<Value><![CDATA[(GETUTCDATE())]]></Value>
+			</Property>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Bitcoin].[Transaction]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForColumn">
+				<Entry>
+					<References Name="[Bitcoin].[Transaction].[CreatedAt]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="9" />
+		</Element>
+		<Element Type="ISql90Schema" Name="[Auth]">
+			<Relationship Name="Authorizer">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100View" Name="[Auth].[ActiveSession]">
+			<Property Name="IsSchemaBound" Value="True" />
+			<Property Name="QueryScript">
+				<Value><![CDATA[ SELECT [SessionId], [ExpiresAt], [UserId] FROM [Auth].[Session] WHERE ExpiresAt > GETUTCDATE()]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="ISql90ComputedColumn" Name="[Auth].[ActiveSession].[SessionId]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[Auth].[Session].[SessionId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql90ComputedColumn" Name="[Auth].[ActiveSession].[ExpiresAt]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[Auth].[Session].[ExpiresAt]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql90ComputedColumn" Name="[Auth].[ActiveSession].[UserId]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[Auth].[Session].[UserId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Auth]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="QueryDependencies">
+				<Entry>
+					<References Name="[Auth].[Session]" />
+				</Entry>
+				<Entry>
+					<References Name="[Auth].[Session].[SessionId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Auth].[Session].[ExpiresAt]" />
+				</Entry>
+				<Entry>
+					<References Name="[Auth].[Session].[UserId]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="156" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE VIEW [Auth].[ActiveSession]&#xD;&#xA;&#x9;WITH SCHEMABINDING&#xD;&#xA;&#x9;AS" />
+				<Property Name="FooterContents" Value=";" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql100Procedure" Name="[Auth].[CreateSession]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+
+BEGIN TRY
+
+-- Check params
+if @Email is null BEGIN RAISERROR(51003, 16, 1, '@Email'); END;
+if @PasswordHash IS NULL BEGIN RAISERROR(51003, 16, 1, '@PasswordHash'); END;
+if @SessionId is not null BEGIN RAISERROR(51004, 16, 1, '@SessionId'); END;
+
+declare @UserId int
+
+declare @CorrectPasswordHash varchar(100)
+
+select @CorrectPasswordHash = PasswordHash, @UserId = UserId from dbo.[User] where Email = @Email;
+
+if @CorrectPasswordHash is null or @UserId is null
+begin
+	RAISERROR(51009, 16, 1);
+	RETURN;
+END
+
+IF @CorrectPasswordHash <> @PasswordHash
+BEGIN
+	RAISERROR(51009, 16, 1);
+	RETURN;
+END
+
+select @SessionId = NEWID()
+
+insert into Auth.[Session] (SessionId, UserId) values (@SessionId, @UserId);
+
+if @@ROWCOUNT <> 1
+BEGIN
+	RAISERROR(51010, 16, 1);
+	RETURN;
+END
+
+END TRY
+BEGIN CATCH
+	RETURN ERROR_NUMBER();
+END CATCH
+
+RETURN 0;]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References Name="[Auth].[CreateSession].[@Email]" />
+				</Entry>
+				<Entry>
+					<References Name="[Auth].[CreateSession].[@PasswordHash]" />
+				</Entry>
+				<Entry>
+					<References Name="[Auth].[CreateSession].[@SessionId]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[User]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[User].[PasswordHash]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[User].[UserId]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[User].[Email]" />
+				</Entry>
+				<Entry>
+					<References Name="[Auth].[Session]" />
+				</Entry>
+				<Entry>
+					<References Name="[Auth].[Session].[SessionId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Auth].[Session].[UserId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Auth]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Auth].[CreateSession].[@Email]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Auth].[CreateSession].[@PasswordHash]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Auth].[CreateSession].[@SessionId]">
+						<Property Name="IsOutput" Value="True" />
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="CreateOffset" Value="180" />
+				<Property Name="Length" Value="1191" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="-- Returns:&#xD;&#xA;-- 0: Success&#xD;&#xA;-- 1: Unknown error&#xD;&#xA;-- 100: User not found.&#xD;&#xA;-- 101: E-mail is null&#xD;&#xA;-- 102: PasswordHash is null&#xD;&#xA;-- 103: SessionId not null&#xD;&#xA;-- 104: Hash is wrong.&#xD;&#xA;CREATE PROCEDURE [Auth].[CreateSession]&#xD;&#xA;(&#xD;&#xA;&#x9;@Email VARCHAR(100),&#xD;&#xA;&#x9;@PasswordHash varchar(100),&#xD;&#xA;&#x9;@SessionId varchar(100) output&#xD;&#xA;)&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql100Procedure" Name="[Auth].[DeleteSession]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+
+if @SessionId is null RAISERROR(51003, 16, 1, '@SessionId');
+
+delete from Auth.[ActiveSession] where SessionId = @SessionId;
+
+IF @@ROWCOUNT = 1
+	RETURN 0
+
+-- Session not found.
+RAISERROR(51011, 16, 1);
+
+return convert(int, 1 - @@rowcount);]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[Auth].[DeleteSession].[@SessionId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Auth].[ActiveSession]" />
+				</Entry>
+				<Entry>
+					<References Name="[Auth].[ActiveSession].[SessionId]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Auth]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Auth].[DeleteSession].[@SessionId]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="CreateOffset" Value="102" />
+				<Property Name="Length" Value="434" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="-- Returns&#xD;&#xA;-- 0: Success (deleted)&#xD;&#xA;-- 101: SessionId parameter is null&#xD;&#xA;-- 100: Session not found.&#xD;&#xA;CREATE PROCEDURE Auth.[DeleteSession]&#xD;&#xA;(&#xD;&#xA;&#x9;@SessionId uniqueidentifier&#xD;&#xA;)&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql90ForeignKeyConstraint" Name="[Auth].[FK_Session_User]">
+			<Relationship Name="Columns">
+				<Entry>
+					<References Name="[Auth].[Session].[UserId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Auth].[Session]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignColumns">
+				<Entry>
+					<References Name="[dbo].[User].[UserId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignTable">
+				<Entry>
+					<References Name="[dbo].[User]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100PrimaryKeyConstraint" Name="[Auth].[PK_Session]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="ISqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[Auth].[Session].[SessionId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Auth].[Session]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100Table" Name="[Auth].[Session]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Auth].[Session].[SessionId]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+						<AttachedAnnotation Disambiguator="6" />
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Auth].[Session].[ExpiresAt]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+						<AttachedAnnotation Disambiguator="7" />
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Auth].[Session].[CreatedAt]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+						<AttachedAnnotation Disambiguator="8" />
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Auth].[Session].[UserId]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Auth]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100Procedure" Name="[Auth].[VerifySession]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+
+IF @UserId IS NOT NULL RAISERROR(51003, 16, 1, '@UserId');
+IF @SessionId IS NULL RAISERROR(51003, 16, 1, '@SessionId');
+
+SELECT @UserId = UserId 
+FROM Auth.[ActiveSession]
+WHERE SessionId = @SessionId;
+
+IF @UserId IS NULL
+BEGIN
+	-- The specified session does not exist or is expired.
+	RAISERROR(51011, 16, 1);
+END
+
+RETURN 0;]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[Auth].[VerifySession].[@UserId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Auth].[VerifySession].[@SessionId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Auth].[ActiveSession]" />
+				</Entry>
+				<Entry>
+					<References Name="[Auth].[ActiveSession].[UserId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Auth].[ActiveSession].[SessionId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Auth]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Auth].[VerifySession].[@SessionId]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Auth].[VerifySession].[@UserId]">
+						<Property Name="IsOutput" Value="True" />
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="444" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [Auth].[VerifySession]&#xD;&#xA;(&#xD;&#xA;&#x9;@SessionId UNIQUEIDENTIFIER,&#xD;&#xA;&#x9;@UserId INT OUTPUT&#xD;&#xA;)&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql90Route" Name="[AutoCreatedLocal]">
+			<Property Name="Address" Value="LOCAL" />
+			<Relationship Name="Authorizer">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql90Schema" Name="[Banking]">
+			<Relationship Name="Authorizer">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100Table" Name="[Banking].[Account]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[Account].[AccountId]">
+						<Property Name="IsNullable" Value="False" />
+						<Property Name="IsIdentity" Value="True" />
+						<Property Name="IdentitySeed" Value="1000" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[Account].[DisplayName]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="150" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[Account].[CurrencyId]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="10" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[Account].[Type]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="50" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[Account].[AllowNegative]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bit]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+						<AttachedAnnotation Disambiguator="4" />
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Banking]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100Table" Name="[Banking].[AccountHold]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[AccountHold].[AccountHoldId]">
+						<Property Name="IsNullable" Value="False" />
+						<Property Name="IsIdentity" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[AccountHold].[AccountId]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[AccountHold].[Amount]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Scale" Value="8" />
+									<Property Name="Precision" Value="18" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[decimal]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[AccountHold].[CreatedAt]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+						<AttachedAnnotation Disambiguator="5" />
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[AccountHold].[ExpiresAt]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[AccountHold].[Reason]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="150" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Banking]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100View" Name="[Banking].[AccountHoldView]">
+			<Property Name="IsSchemaBound" Value="True" />
+			<Property Name="QueryScript">
+				<Value><![CDATA[ SELECT AccountHoldId, AccountId, Amount, ExpiresAt, Reason
+	FROM Banking.AccountHold
+	WHERE ExpiresAt > GETUTCDATE()]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="ISql90ComputedColumn" Name="[Banking].[AccountHoldView].[AccountHoldId]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[Banking].[AccountHold].[AccountHoldId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql90ComputedColumn" Name="[Banking].[AccountHoldView].[AccountId]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[Banking].[AccountHold].[AccountId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql90ComputedColumn" Name="[Banking].[AccountHoldView].[Amount]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[Banking].[AccountHold].[Amount]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql90ComputedColumn" Name="[Banking].[AccountHoldView].[ExpiresAt]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[Banking].[AccountHold].[ExpiresAt]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql90ComputedColumn" Name="[Banking].[AccountHoldView].[Reason]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[Banking].[AccountHold].[Reason]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Banking]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="QueryDependencies">
+				<Entry>
+					<References Name="[Banking].[AccountHold]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountHold].[AccountHoldId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountHold].[AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountHold].[Amount]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountHold].[ExpiresAt]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountHold].[Reason]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="185" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE VIEW [Banking].[AccountHoldView]&#xD;&#xA;&#x9;WITH SCHEMABINDING&#xD;&#xA;&#x9;AS" />
+				<Property Name="FooterContents" Value=";" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql100Table" Name="[Banking].[AccountUser]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[AccountUser].[AccountId]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[AccountUser].[UserId]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[AccountUser].[CanDeposit]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bit]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[AccountUser].[CanWithdraw]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bit]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Banking]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100View" Name="[Banking].[AccountWithBalance]">
+			<Property Name="IsSchemaBound" Value="True" />
+			<Property Name="QueryScript">
+				<Value><![CDATA[
+
+SELECT
+	AccountId,
+	DisplayName,
+	CurrencyId,
+	[Type],
+	AllowNegative,
+		(SELECT ISNULL(SUM(TD.Amount), 0) FROM Banking.[Transfer] TD WHERE TD.DestAccountId = A.AccountId) -
+		(SELECT ISNULL(SUM(TS.Amount), 0) FROM Banking.[Transfer] TS WHERE TS.SourceAccountId = A.AccountId) -
+		(SELECT ISNULL(SUM(Amount), 0) FROM Banking.AccountHoldView AHV WHERE AHV.AccountId = A.AccountId)
+	Available
+FROM
+	Banking.[Account] A]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="ISql90ComputedColumn" Name="[Banking].[AccountWithBalance].[AccountId]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[Banking].[Account].[AccountId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql90ComputedColumn" Name="[Banking].[AccountWithBalance].[DisplayName]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[Banking].[Account].[DisplayName]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql90ComputedColumn" Name="[Banking].[AccountWithBalance].[CurrencyId]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[Banking].[Account].[CurrencyId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql90ComputedColumn" Name="[Banking].[AccountWithBalance].[Type]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[Banking].[Account].[Type]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql90ComputedColumn" Name="[Banking].[AccountWithBalance].[AllowNegative]">
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[Banking].[Account].[AllowNegative]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql90ComputedColumn" Name="[Banking].[AccountWithBalance].[Available]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Banking]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="QueryDependencies">
+				<Entry>
+					<References Name="[Banking].[Account]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[DisplayName]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[CurrencyId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[Type]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[AllowNegative]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Transfer]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Transfer].[Amount]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Transfer].[DestAccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Transfer].[Amount]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Transfer].[SourceAccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountHoldView]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountHoldView].[Amount]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountHoldView].[AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[AccountId]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="494" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE VIEW Banking.AccountWithBalance&#xD;&#xA;WITH SCHEMABINDING&#xD;&#xA;AS" />
+				<Property Name="FooterContents" Value=";" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql90CheckConstraint" Name="[Banking].[CK_Account_Type]">
+			<Property Name="CheckExpressionScript">
+				<Value><![CDATA[[Type]='Current' OR [Type]='IncomingMoneybookersUSD']]></Value>
+			</Property>
+			<Relationship Name="CheckExpressionDependencies">
+				<Entry>
+					<References Name="[Banking].[Account].[Type]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[Account]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql90CheckConstraint" Name="[Banking].[CK_Transfer_Amount]">
+			<Property Name="CheckExpressionScript">
+				<Value><![CDATA[[Amount]>(0)]]></Value>
+			</Property>
+			<Relationship Name="CheckExpressionDependencies">
+				<Entry>
+					<References Name="[Banking].[Transfer].[Amount]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[Transfer]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql90CheckConstraint" Name="[Banking].[CK_Transfer_DifferentAccounts]">
+			<Property Name="CheckExpressionScript">
+				<Value><![CDATA[[SourceAccountId]<>[DestAccountId]]]></Value>
+			</Property>
+			<Relationship Name="CheckExpressionDependencies">
+				<Entry>
+					<References Name="[Banking].[Transfer].[SourceAccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Transfer].[DestAccountId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[Transfer]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100Procedure" Name="[Banking].[CreateAccountHold]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+
+BEGIN TRY
+	IF @AccountId IS NULL RAISERROR(51003, 16, 1, '@AccountId');
+	IF @Amount IS NULL RAISERROR(51003, 16, 1, '@Amount');
+	IF @Reason IS NULL RAISERROR(51003, 16, 1, '@Reason');
+	IF @AccountHoldId IS NOT NULL RAISERROR(51004, 16, 1, '@AccountHoldId');
+
+	BEGIN TRAN
+
+	DECLARE @Available DECIMAL(18, 8)
+	SELECT @Available = Available FROM Banking.AccountWithBalance WHERE AccountId = @AccountId;
+
+	IF @Available < @Amount
+		RAISERROR(51013, 16, 1);
+
+	INSERT INTO Banking.AccountHold (AccountId, Amount, ExpiresAt, Reason)
+		VALUES (@AccountId, @Amount, @ExpiresAt, @Reason);
+
+	SELECT @AccountHoldId = CONVERT(INT, SCOPE_IDENTITY());
+
+	COMMIT TRAN
+
+	RETURN 0
+END TRY
+BEGIN CATCH
+	IF @@TRANCOUNT > 0
+		ROLLBACK TRAN
+
+	RETURN ERROR_NUMBER();
+END CATCH]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[decimal]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[CreateAccountHold].[@AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[CreateAccountHold].[@Amount]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[CreateAccountHold].[@Reason]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[CreateAccountHold].[@AccountHoldId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountWithBalance]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountWithBalance].[Available]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountWithBalance].[AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountHold]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountHold].[AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountHold].[Amount]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountHold].[ExpiresAt]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountHold].[Reason]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[CreateAccountHold].[@ExpiresAt]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Banking]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[CreateAccountHold].[@AccountId]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[CreateAccountHold].[@Amount]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Scale" Value="8" />
+									<Property Name="Precision" Value="18" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[decimal]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[CreateAccountHold].[@Reason]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="150" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[CreateAccountHold].[@ExpiresAt]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[CreateAccountHold].[@AccountHoldId]">
+						<Property Name="IsOutput" Value="True" />
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="956" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [Banking].[CreateAccountHold]&#xD;&#xA;&#x9;@AccountId INT,&#xD;&#xA;&#x9;@Amount DECIMAL(18, 8),&#xD;&#xA;&#x9;@Reason NVARCHAR(150),&#xD;&#xA;&#x9;@ExpiresAt DATETIME,&#xD;&#xA;&#x9;@AccountHoldId INT OUTPUT&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql100Procedure" Name="[Banking].[CreateCurrentAccount]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+
+IF @UserId IS NULL RAISERROR(51003, 16, 1, '@UserId');
+IF @CurrencyId IS NULL RAISERROR(51003, 16, 1, '@CurrencyId');
+IF @AccountId IS NOT NULL RAISERROR(51004, 16, 1, '@AccountId');
+
+BEGIN TRAN
+
+BEGIN TRY
+	INSERT INTO Banking.Account (CurrencyId, [Type], [DisplayName]) VALUES (@CurrencyId, 'Current', @DisplayName);
+	SELECT @AccountId = CAST(SCOPE_IDENTITY() as int)
+
+	IF @@ROWCOUNT <> 1 OR @AccountId IS NULL
+		RAISERROR(51010, 16, 1);
+
+	INSERT INTO Banking.AccountUser (AccountId, UserId, CanDeposit, CanWithdraw)
+	VALUES (@AccountId, @UserId, 1, 1);
+
+	IF @@ROWCOUNT <> 1
+		RAISERROR(51010, 16, 1);
+
+	COMMIT TRAN
+	RETURN 0
+END TRY
+BEGIN CATCH
+	ROLLBACK TRAN
+	
+	exec dbo.RethrowError
+END CATCH]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[Banking].[CreateCurrentAccount].[@UserId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[CreateCurrentAccount].[@CurrencyId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[CreateCurrentAccount].[@AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[CurrencyId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[Type]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[DisplayName]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[CreateCurrentAccount].[@DisplayName]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountUser]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountUser].[AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountUser].[UserId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountUser].[CanDeposit]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountUser].[CanWithdraw]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[RethrowError]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Banking]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[CreateCurrentAccount].[@UserId]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[CreateCurrentAccount].[@CurrencyId]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[CreateCurrentAccount].[@DisplayName]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="150" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[CreateCurrentAccount].[@AccountId]">
+						<Property Name="IsOutput" Value="True" />
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="874" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE Banking.[CreateCurrentAccount]&#xD;&#xA;&#x9;@UserId int,&#xD;&#xA;&#x9;@CurrencyId varchar(100),&#xD;&#xA;&#x9;@DisplayName nvarchar(150),&#xD;&#xA;&#x9;@AccountId int output&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql100Procedure" Name="[Banking].[CreateTransfer]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+
+if @SourceAccountId is null RAISERROR(51003, 16, 1, '@SourceAccountId');
+if @DestAccountId is null RAISERROR(51003, 16, 1, '@DestAccountId');
+if @Amount is null RAISERROR(51003, 16, 1, '@Amount');
+if @Description is null RAISERROR(51003, 16, 1, '@Description');
+if @TransferId is not null RAISERROR(51004, 16, 1, '@TransferId');
+IF @SourceAccountId = @DestAccountId RAISERROR(51007, 16, 1);
+if @Amount <= 0 RAISERROR(51005, 16, 1);
+
+BEGIN TRAN
+BEGIN TRY
+
+-- Make sure the source account has enough funds.
+DECLARE @SourceAccountBeforeBalance decimal(18, 8)
+DECLARE @SourceAccountAllowsNegativeBalance bit
+SELECT @SourceAccountBeforeBalance = Available, @SourceAccountAllowsNegativeBalance = AllowNegative FROM Banking.AccountWithBalance
+	WHERE AccountId = @SourceAccountId
+		
+IF @SourceAccountAllowsNegativeBalance = 0 AND @SourceAccountBeforeBalance < @Amount
+	RAISERROR(51006, 16, 1);
+
+-- Make sure the accounts have the same currency.
+DECLARE @SourceAccountCurrencyId VARCHAR(10) = (SELECT CurrencyId FROM Banking.Account WHERE AccountId = @SourceAccountId);
+
+IF @SourceAccountCurrencyId IS NULL
+	RAISERROR(51001, 16, 1);
+
+DECLARE @DestAccountCurrencyId VARCHAR(10) = (SELECT CurrencyId FROM Banking.Account WHERE AccountId = @DestAccountId);
+
+IF @DestAccountCurrencyId IS NULL
+	RAISERROR(51002, 16, 1);
+
+IF @SourceAccountCurrencyId <> @DestAccountCurrencyId
+	RAISERROR(51008, 16, 1);
+	
+INSERT INTO Banking.[Transfer]
+(
+	SourceAccountId, 
+	DestAccountId, 
+	Amount,
+	[Description]
+) VALUES (
+	@SourceAccountId,
+	@DestAccountId,
+	@Amount,
+	@Description
+)
+	
+IF @@ROWCOUNT <> 1
+	RAISERROR(51010, 16, 1);
+
+SELECT @TransferId = CONVERT(BIGINT, SCOPE_IDENTITY());
+
+COMMIT TRAN
+
+RETURN 0
+END TRY
+BEGIN CATCH
+	ROLLBACK TRAN
+	EXEC dbo.RethrowError
+END CATCH]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[decimal]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[bit]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[CurrencyId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[AccountId]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[CreateTransfer].[@SourceAccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[CreateTransfer].[@DestAccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[CreateTransfer].[@Amount]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[CreateTransfer].[@Description]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[CreateTransfer].[@TransferId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountWithBalance]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountWithBalance].[Available]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountWithBalance].[AllowNegative]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountWithBalance].[AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Transfer]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Transfer].[SourceAccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Transfer].[DestAccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Transfer].[Amount]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Transfer].[Description]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[bigint]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[RethrowError]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Banking]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[CreateTransfer].[@SourceAccountId]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[CreateTransfer].[@DestAccountId]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[CreateTransfer].[@Description]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="250" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[CreateTransfer].[@Amount]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Scale" Value="8" />
+									<Property Name="Precision" Value="18" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[decimal]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[CreateTransfer].[@TransferId]">
+						<Property Name="IsOutput" Value="True" />
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bigint]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="CreateOffset" Value="334" />
+				<Property Name="Length" Value="2327" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="-- Returns:&#xD;&#xA;-- 100: @SourceAccountId is null&#xD;&#xA;-- 101: @DestAccountId is null&#xD;&#xA;-- 102: @Amount is null&#xD;&#xA;-- 103: @Description is null&#xD;&#xA;-- 104: @TransferId must be null&#xD;&#xA;-- 105: Source account would get illegal negative balance.&#xD;&#xA;-- 106: Failed to insert transfer.&#xD;&#xA;-- 107: Amount is &lt;= 0.&#xD;&#xA;-- 108: Accounts have different currencies.&#xD;&#xA;CREATE PROCEDURE Banking.CreateTransfer&#xD;&#xA;(&#xD;&#xA;&#x9;@SourceAccountId int,&#xD;&#xA;&#x9;@DestAccountId int,&#xD;&#xA;&#x9;@Description nvarchar(250),&#xD;&#xA;&#x9;@Amount decimal(18, 8),&#xD;&#xA;&#x9;@TransferId bigint output&#xD;&#xA;)&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql100Procedure" Name="[Banking].[DestroyEverything]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+
+IF '$(TargetEnv)' <> 'Dev' AND '$(TargetEnv)' <> 'Beta'
+BEGIN
+	RAISERROR('Cannot destroy Banking-schema data unless target environment is Dev or Beta.', 16, 1);
+	RETURN
+END
+
+DELETE FROM Banking.[Transfer]
+DELETE FROM Banking.[AccountUser]
+DELETE FROM Banking.[Account]]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[Banking].[Transfer]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountUser]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Banking]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="332" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [Banking].[DestroyEverything]&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql90DefaultConstraint" Name="[Banking].[DF_Transfer_CreatedAt]">
+			<Property Name="DefaultExpressionScript">
+				<Value><![CDATA[(getutcdate())]]></Value>
+			</Property>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[Transfer]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForColumn">
+				<Entry>
+					<References Name="[Banking].[Transfer].[CreatedAt]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100Procedure" Name="[Banking].[EditCurrentAccount]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+
+IF @AccountId IS NULL RAISERROR(51003, 16, 1, '@AccountId');
+
+BEGIN TRAN
+
+BEGIN TRY
+	UPDATE Banking.Account SET DisplayName = @DisplayName WHERE AccountId = @AccountId;
+
+	IF @@ROWCOUNT = 0
+		RAISERROR(51012, 16, 1);
+
+	COMMIT TRAN
+
+	RETURN 0
+END TRY
+BEGIN CATCH
+	IF @@TRANCOUNT > 0
+		ROLLBACK TRAN;
+	
+	RETURN ERROR_NUMBER();
+END CATCH]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[Banking].[EditCurrentAccount].[@AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[DisplayName]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[EditCurrentAccount].[@DisplayName]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[AccountId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Banking]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[EditCurrentAccount].[@AccountId]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[EditCurrentAccount].[@DisplayName]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="150" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="452" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE Banking.[EditCurrentAccount]&#xD;&#xA;&#x9;@AccountId int,&#xD;&#xA;&#x9;@DisplayName nvarchar(150)&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql90ForeignKeyConstraint" Name="[Banking].[FK_Account_Currency]">
+			<Relationship Name="Columns">
+				<Entry>
+					<References Name="[Banking].[Account].[CurrencyId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[Account]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignColumns">
+				<Entry>
+					<References Name="[dbo].[Currency].[CurrencyId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignTable">
+				<Entry>
+					<References Name="[dbo].[Currency]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql90ForeignKeyConstraint" Name="[Banking].[FK_AccountHold_Account]">
+			<Relationship Name="Columns">
+				<Entry>
+					<References Name="[Banking].[AccountHold].[AccountId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[AccountHold]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignColumns">
+				<Entry>
+					<References Name="[Banking].[Account].[AccountId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignTable">
+				<Entry>
+					<References Name="[Banking].[Account]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql90ForeignKeyConstraint" Name="[Banking].[FK_AccountUser_Account]">
+			<Relationship Name="Columns">
+				<Entry>
+					<References Name="[Banking].[AccountUser].[AccountId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[AccountUser]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignColumns">
+				<Entry>
+					<References Name="[Banking].[Account].[AccountId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignTable">
+				<Entry>
+					<References Name="[Banking].[Account]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql90ForeignKeyConstraint" Name="[Banking].[FK_AccountUser_User]">
+			<Relationship Name="Columns">
+				<Entry>
+					<References Name="[Banking].[AccountUser].[UserId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[AccountUser]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignColumns">
+				<Entry>
+					<References Name="[dbo].[User].[UserId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignTable">
+				<Entry>
+					<References Name="[dbo].[User]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql90ForeignKeyConstraint" Name="[Banking].[FK_Transfer_DestAccount]">
+			<Relationship Name="Columns">
+				<Entry>
+					<References Name="[Banking].[Transfer].[DestAccountId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[Transfer]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignColumns">
+				<Entry>
+					<References Name="[Banking].[Account].[AccountId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignTable">
+				<Entry>
+					<References Name="[Banking].[Account]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql90ForeignKeyConstraint" Name="[Banking].[FK_Transfer_SourceAccount]">
+			<Relationship Name="Columns">
+				<Entry>
+					<References Name="[Banking].[Transfer].[SourceAccountId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[Transfer]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignColumns">
+				<Entry>
+					<References Name="[Banking].[Account].[AccountId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignTable">
+				<Entry>
+					<References Name="[Banking].[Account]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100Procedure" Name="[Banking].[GetOrCreateUserCurrentAccount]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+
+select @AccountId = A.AccountId
+from Banking.Account A
+inner join Banking.AccountUser AU on A.AccountId = AU.AccountId and AU.UserId = @UserId
+where A.CurrencyId = @CurrencyId and A.[Type] = 'Current'
+
+if @AccountId is null
+	exec [Banking].[CreateCurrentAccount] @UserId, @CurrencyId, @DisplayName, @AccountId output
+
+if @AccountId is null
+	raiserror('Failed to create current account.', 16, 1)
+
+return 0]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[Banking].[Account]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountUser]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountUser].[AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountUser].[UserId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[GetOrCreateUserCurrentAccount].[@UserId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[GetOrCreateUserCurrentAccount].[@AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[CurrencyId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[GetOrCreateUserCurrentAccount].[@CurrencyId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[Type]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[CreateCurrentAccount]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[GetOrCreateUserCurrentAccount].[@DisplayName]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Banking]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[GetOrCreateUserCurrentAccount].[@UserId]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[GetOrCreateUserCurrentAccount].[@CurrencyId]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="10" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[GetOrCreateUserCurrentAccount].[@DisplayName]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="150" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[GetOrCreateUserCurrentAccount].[@AccountId]">
+						<Property Name="IsOutput" Value="True" />
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="585" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [Banking].[GetOrCreateUserCurrentAccount]&#xD;&#xA;(&#xD;&#xA;&#x9;@UserId int,&#xD;&#xA;&#x9;@CurrencyId varchar(10),&#xD;&#xA;&#x9;@DisplayName NVARCHAR(150),&#xD;&#xA;&#x9;@AccountId int output&#xD;&#xA;)&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql100PrimaryKeyConstraint" Name="[Banking].[PK_Account]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="ISqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[Banking].[Account].[AccountId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[Account]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100PrimaryKeyConstraint" Name="[Banking].[PK_AccountHold]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="ISqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[Banking].[AccountHold].[AccountHoldId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[AccountHold]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100PrimaryKeyConstraint" Name="[Banking].[PK_AccountUser]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="ISqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[Banking].[AccountUser].[AccountId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[Banking].[AccountUser].[UserId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[AccountUser]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100PrimaryKeyConstraint" Name="[Banking].[PK_Transfer]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="ISqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[Banking].[Transfer].[TransferId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Banking].[Transfer]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100Procedure" Name="[Banking].[ReleaseAccountHold]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+
+BEGIN TRY
+	BEGIN TRAN
+
+	DELETE FROM Banking.AccountHold WHERE AccountHoldId = @AccountHoldId;
+
+	IF @@ROWCOUNT = 0
+		RAISERROR(51014, 16, 1);
+
+	COMMIT TRAN
+
+	RETURN 0
+END TRY
+BEGIN CATCH
+	ROLLBACK TRAN
+
+	RETURN ERROR_NUMBER()
+END CATCH]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[Banking].[AccountHold]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[AccountHold].[AccountHoldId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[ReleaseAccountHold].[@AccountHoldId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Banking]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Banking].[ReleaseAccountHold].[@AccountHoldId]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="328" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [Banking].[ReleaseAccountHold]&#xD;&#xA;&#x9;@AccountHoldId INT&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql100Table" Name="[Banking].[Transfer]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[Transfer].[TransferId]">
+						<Property Name="IsNullable" Value="False" />
+						<Property Name="IsIdentity" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bigint]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[Transfer].[SourceAccountId]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[Transfer].[DestAccountId]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[Transfer].[Amount]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Scale" Value="8" />
+									<Property Name="Precision" Value="18" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[decimal]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[Transfer].[CreatedAt]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Banking].[Transfer].[Description]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="250" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Banking]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql90Role" Name="[BankServiceRole]">
+			<Relationship Name="Authorizer">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql90Schema" Name="[Bitcoin]">
+			<Relationship Name="Authorizer">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100Procedure" Name="[Bitcoin].[CreateTransaction]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+
+BEGIN TRY
+	BEGIN TRAN
+
+	INSERT INTO Bitcoin.[Transaction] (TransactionId, AccountId, AccountHoldId, Amount)
+		VALUES (@TransactionId, @AccountId, @AccountHoldId, @Amount);
+
+	COMMIT TRAN
+
+	RETURN 0
+END TRY
+BEGIN CATCH
+	RETURN ERROR_NUMBER();
+END CATCH]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[Bitcoin].[Transaction]" />
+				</Entry>
+				<Entry>
+					<References Name="[Bitcoin].[Transaction].[TransactionId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Bitcoin].[Transaction].[AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Bitcoin].[Transaction].[AccountHoldId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Bitcoin].[Transaction].[Amount]" />
+				</Entry>
+				<Entry>
+					<References Name="[Bitcoin].[CreateTransaction].[@TransactionId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Bitcoin].[CreateTransaction].[@AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Bitcoin].[CreateTransaction].[@AccountHoldId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Bitcoin].[CreateTransaction].[@Amount]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Bitcoin]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Bitcoin].[CreateTransaction].[@TransactionId]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="64" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Bitcoin].[CreateTransaction].[@AccountId]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Bitcoin].[CreateTransaction].[@AccountHoldId]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Bitcoin].[CreateTransaction].[@Amount]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Scale" Value="8" />
+									<Property Name="Precision" Value="18" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[decimal]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="413" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [Bitcoin].[CreateTransaction]&#xD;&#xA;&#x9;@TransactionId VARCHAR(64),&#xD;&#xA;&#x9;@AccountId INT,&#xD;&#xA;&#x9;@AccountHoldId INT,&#xD;&#xA;&#x9;@Amount DECIMAL(18, 8)&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql90ForeignKeyConstraint" Name="[Bitcoin].[FK_Transaction_Account]">
+			<Relationship Name="Columns">
+				<Entry>
+					<References Name="[Bitcoin].[Transaction].[AccountId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Bitcoin].[Transaction]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignColumns">
+				<Entry>
+					<References Name="[Banking].[Account].[AccountId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignTable">
+				<Entry>
+					<References Name="[Banking].[Account]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql90ForeignKeyConstraint" Name="[Bitcoin].[FK_Transaction_AccountHold]">
+			<Relationship Name="Columns">
+				<Entry>
+					<References Name="[Bitcoin].[Transaction].[AccountHoldId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Bitcoin].[Transaction]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignColumns">
+				<Entry>
+					<References Name="[Banking].[AccountHold].[AccountHoldId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignTable">
+				<Entry>
+					<References Name="[Banking].[AccountHold]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100Procedure" Name="[Bitcoin].[GetLastProcessedTransactionId]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+
+SELECT TOP 1 @TransactionId = TransactionId FROM Bitcoin.[Transaction]
+	ORDER BY CreatedAt DESC;]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[Bitcoin].[Transaction]" />
+				</Entry>
+				<Entry>
+					<References Name="[Bitcoin].[GetLastProcessedTransactionId].[@TransactionId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Bitcoin].[Transaction].[TransactionId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Bitcoin].[Transaction].[CreatedAt]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Bitcoin]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="ISql100SubroutineParameter" Name="[Bitcoin].[GetLastProcessedTransactionId].[@TransactionId]">
+						<Property Name="IsOutput" Value="True" />
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="64" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="201" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [Bitcoin].[GetLastProcessedTransactionId]&#xD;&#xA;&#x9;@TransactionId VARCHAR(64) OUTPUT&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql100PrimaryKeyConstraint" Name="[Bitcoin].[PK_Transaction]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="ISqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[Bitcoin].[Transaction].[TransactionId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[Bitcoin].[Transaction]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100Table" Name="[Bitcoin].[Transaction]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Bitcoin].[Transaction].[TransactionId]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="64" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Bitcoin].[Transaction].[CreatedAt]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+						<AttachedAnnotation Disambiguator="9" />
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Bitcoin].[Transaction].[AccountId]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Bitcoin].[Transaction].[AccountHoldId]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[Bitcoin].[Transaction].[Amount]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Scale" Value="8" />
+									<Property Name="Precision" Value="18" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[decimal]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References Name="[Bitcoin]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100Procedure" Name="[dbo].[CreateTestData]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+
+PRINT 'Creating test data...'
+
+IF '$(TargetEnv)' <> 'Dev' AND '$(TargetEnv)' <> 'Beta'
+BEGIN
+	RAISERROR('Cannot create test data unless target environment is Dev or Beta.', 16, 1);
+	RETURN
+END
+
+insert into dbo.Currency (CurrencyId) values ('USD')
+
+insert into dbo.Currency (CurrencyId) values ('BTC')
+insert into dbo.Currency (CurrencyId) values ('NOK')
+insert into dbo.Currency (CurrencyId) values ('GBP')
+
+insert into Banking.[Account] ([Type], CurrencyId, AllowNegative, DisplayName)
+	values ('IncomingMoneybookersUSD', 'USD', 1, 'Incoming Moneybookers (USD)')
+	
+declare @UserCount int = round((100 - 50) * rand() + 50, 0)
+print 'Creating ' + cast(@UserCount as nvarchar) + ' users.'
+
+declare @UserN int = 0
+
+while @UserN < @UserCount 
+begin
+	select @UserN += 1
+
+	insert into dbo.[User] (PasswordHash, PasswordSalt, Email) values (left(cast(newid() as varchar(100)),20), left(cast(newid() as varchar(100)),20),
+		left(cast(newid() as varchar(100)),5) + '@' + left(cast(newid() as varchar(100)),5)
+	
+	)
+	
+	declare @UserId int = null
+	select @UserId = cast(@@IDENTITY as int) -- Must use @@IDENTITY because of the trigger (which doesn't set SCOPE_IDENTITY()).
+	declare @CurrentAccountCount int = round((5 - 1 - 1) * rand() + 1, 0) 
+	declare @CurrentAccountN int = 0
+	
+	declare @TransactionCount int = round((100 - 0) * rand() + 0, 0)
+	declare @TransactionN int = 0
+	
+	while @TransactionN < @TransactionCount
+	begin
+		select @TransactionN += 1
+		
+		if rand() < 0.2
+		begin
+			-- Deposit money
+			declare @SourceAccountId int = (select AccountId from Banking.Account
+				where [Type] = 'IncomingMoneybookersUSD')
+				
+			declare @DestAccountId int = null
+			exec [Banking].[GetOrCreateUserCurrentAccount] @UserId, 'USD', null, @DestAccountId output
+			
+			declare @Amount decimal(18, 8) = round(rand() * 100000, 8)
+			declare @TransferId bigint = null
+			
+			exec Banking.CreateTransfer @SourceAccountId, @DestAccountId, 'Deposit with Moneybookers',
+				@Amount, @TransferId output
+		end
+	end
+end]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[AccountId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[Type]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[decimal]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[bigint]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Currency]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Currency].[CurrencyId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[Type]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[CurrencyId]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[AllowNegative]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[Account].[DisplayName]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[User]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[User].[PasswordHash]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[User].[PasswordSalt]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[User].[Email]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[GetOrCreateUserCurrentAccount]" />
+				</Entry>
+				<Entry>
+					<References Name="[Banking].[CreateTransfer]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="2103" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [dbo].[CreateTestData]&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql100Table" Name="[dbo].[Currency]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[dbo].[Currency].[CurrencyId]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="10" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100Procedure" Name="[dbo].[DestroyEverything]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+
+IF '$(TargetEnv)' <> 'Dev' AND '$(TargetEnv)' <> 'Beta'
+BEGIN
+	RAISERROR('Cannot destroy data unless target environment is Dev or Beta.', 16, 1);
+	RETURN
+END
+
+EXEC Banking.DestroyEverything
+
+DELETE FROM dbo.[User]
+DELETE FROM dbo.[Currency]]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[Banking].[DestroyEverything]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[User]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Currency]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="301" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [dbo].[DestroyEverything]&#xD;&#xA;&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql100PrimaryKeyConstraint" Name="[dbo].[PK_Currency]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="ISqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Currency].[CurrencyId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[Currency]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100PrimaryKeyConstraint" Name="[dbo].[PK_User]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="ISqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[User].[UserId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[User]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql100Procedure" Name="[dbo].[RethrowError]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+        IF ERROR_NUMBER() IS NULL
+                RETURN;
+
+        DECLARE 
+                @ErrorMessage    NVARCHAR(4000),
+                @ErrorNumber     INT,
+                @ErrorSeverity   INT,
+                @ErrorState      INT,
+                @ErrorLine       INT,
+                @ErrorProcedure  NVARCHAR(200);
+
+        SELECT 
+                @ErrorNumber = ERROR_NUMBER(),
+                @ErrorSeverity = ERROR_SEVERITY(),
+                @ErrorState = ERROR_STATE(),
+                @ErrorLine = ERROR_LINE(),
+                @ErrorProcedure = ISNULL(ERROR_PROCEDURE(), '-');
+
+        SELECT @ErrorMessage = 
+                N'Error %d, Level %d, State %d, Procedure %s, Line %d, ' + 
+                        'Message: '+ ERROR_MESSAGE();
+
+        RAISERROR 
+                (
+                @ErrorMessage, 
+                @ErrorSeverity, 
+                @ErrorState,               
+                @ErrorNumber,    -- parameter: original error number.
+                @ErrorSeverity,  -- parameter: original error severity.
+                @ErrorState,     -- parameter: original error state.
+                @ErrorProcedure, -- parameter: original error procedure name.
+                @ErrorLine       -- parameter: original error line number.
+                );]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="1356" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE dbo.RethrowError AS" />
+			</Annotation>
+		</Element>
+		<Element Type="ISql100Table" Name="[dbo].[User]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[dbo].[User].[UserId]">
+						<Property Name="IsNullable" Value="False" />
+						<Property Name="IsIdentity" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[dbo].[User].[Email]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql90ComputedColumn" Name="[dbo].[User].[EmailLowercase]">
+						<Property Name="ExpressionScript">
+							<Value><![CDATA[LOWER(Email)]]></Value>
+						</Property>
+						<Relationship Name="ExpressionDependencies">
+							<Entry>
+								<References Name="[dbo].[User].[Email]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[dbo].[User].[PasswordHash]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="ISql100SimpleColumn" Name="[dbo].[User].[PasswordSalt]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="ISql90TypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Owner">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql90File" Name="[OliveDes]">
+			<Property Name="FileName" Value="$(DefaultDataPath)$(DatabaseName).mdf" />
+			<Property Name="FileGrowth" Value="1024" />
+			<Property Name="FileGrowthUnit" Value="3" />
+			<Relationship Name="Filegroup">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[PRIMARY]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="ISql90File" Name="[OliveDes_log]">
+			<Property Name="FileName" Value="$(DefaultLogPath)$(DatabaseName)_log.ldf" />
+			<Property Name="MaxSize" Value="2097152" />
+			<Property Name="IsUnlimited" Value="False" />
+			<Property Name="FileGrowth" Value="10" />
+			<Property Name="FileGrowthUnit" Value="1" />
+			<Property Name="IsLogFile" Value="True" />
+		</Element>
+		<Element Type="ISql90User" Name="[ServiceUser]">
+			<Property Name="LoginIdentifierScript">
+				<Value><![CDATA[ServiceUser]]></Value>
+			</Property>
+			<Relationship Name="Login">
+				<Entry>
+					<References ExternalSource="DatabaseServer.dbschema" Name="[master]|[ServiceUser]" />
+				</Entry>
+			</Relationship>
+		</Element>
+	</Model>
+</DataSchemaModel>

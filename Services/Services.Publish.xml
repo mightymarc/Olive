@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="http://oapp1.olive.local/MSDEPLOYAGENTSERVICE" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="OliveServices" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="True" profileName="OApp1" publishMethod="MSDeploy" replaceMatchingFiles="True" userName="andreasbrekken" savePWD="False" userPWD="" SelectedForPublish="True" />
+  <publishProfile publishUrl="http://oapp2.olive.local/MSDEPLOYAGENTSERVICE" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="OliveServices" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="OApp2" publishMethod="MSDeploy" replaceMatchingFiles="True" userName="andreasbrekken" savePWD="False" userPWD="" SelectedForPublish="False" />
+</publishData>

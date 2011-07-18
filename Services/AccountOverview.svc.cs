@@ -45,7 +45,7 @@ namespace Olive.Services
     /// <summary>
     /// The account overview.
     /// </summary>
-    [DataContract]
+    [CollectionDataContract]
     public class AccountOverview : List<AccountOverviewAccount>
     {
     }

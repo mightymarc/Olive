@@ -40,10 +40,15 @@
 namespace Olive.Website
 {
     using System;
+    using System.Configuration;
+    using System.ServiceModel;
+    using System.ServiceModel.Channels;
+    using System.Threading;
     using System.Web.Mvc;
     using System.Web.Routing;
 
     using Microsoft.Practices.Unity;
+    using Microsoft.Practices.Unity.Configuration;
 
     using Olive.DataAccess;
     using Olive.Services;
@@ -55,15 +60,20 @@ namespace Olive.Website
     /// <summary>
     /// The mvc application.
     /// </summary>
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : System.Web.HttpApplication, IContainerAccessor
     {
-        /// <summary>
-        ///   Gets or sets the Unity container.
-        /// </summary>
-        /// <value>
-        ///   The container.
-        /// </value>
-        public IUnityContainer Container { get; set; }
+        private static IUnityContainer container;
+
+        public static IUnityContainer Container
+        {
+            get { return container; }
+        }
+
+        IUnityContainer IContainerAccessor.Container
+        {
+            get { return Container; }
+        }
+
 
         /// <summary>
         /// The register global filters.
@@ -103,29 +113,30 @@ namespace Olive.Website
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
-            DependencyResolver.SetResolver(new UnityDependencyResolver(this.Container));
-        }
+            if (Container == null)
+            {
+                container = this.CreateUnityContainer();
+            }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MvcApplication"/> class.
-        /// </summary>
-        public MvcApplication()
-        {
-            this.CreateUnityContainer();
+            ControllerBuilder.Current.SetControllerFactory(typeof(UnityControllerFactory));
+            ////DependencyResolver.SetResolver(new UnityDependencyResolver(this.Container));
         }
 
         /// <summary>
         /// The get unity container.
         /// </summary>
-        private void CreateUnityContainer()
+        private IUnityContainer CreateUnityContainer()
         {
-            this.Container = new UnityContainer();
-            this.Container.RegisterType<IClientService, ClientServices>();
-            this.Container.RegisterType<ISiteSession, SiteSession>();
-            this.Container.RegisterType<ICrypto, Crypto>();
-            this.Container.RegisterType<IFaultFactory, FaultFactory>();
-            this.Container.RegisterType<IOliveContext, OliveContext>();
-            this.Container.RegisterType<ICurrencyCache, CurrencyCache>();
+            var container = new UnityContainer().LoadConfiguration();
+
+            // Register the channel factory in code for now, because I don't know how to
+            // register generic types in configuration files.
+            container.RegisterType<IChannelFactory<IClientService>, ChannelFactory<IClientService>>(new ContainerControlledLifetimeManager(), new InjectionConstructor(string.Empty));
+
+            // Register the service interface with a factory that creates it using the channel.
+            container.RegisterType<IClientService>(new InjectionFactory(c => c.Resolve<ChannelFactory<IClientService>>().CreateChannel()));
+
+            return container;
         }
     }
 }

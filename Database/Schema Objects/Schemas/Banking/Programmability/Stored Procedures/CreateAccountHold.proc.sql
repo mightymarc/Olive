@@ -1,8 +1,8 @@
 ﻿CREATE PROCEDURE [Banking].[CreateAccountHold]
 	@AccountId INT,
 	@Amount DECIMAL(18, 8),
-	@ExpiresAt DATETIME,
 	@Reason NVARCHAR(150),
+	@ExpiresAt DATETIME,
 	@AccountHoldId INT OUTPUT
 
 AS

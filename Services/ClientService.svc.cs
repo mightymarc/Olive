@@ -43,6 +43,9 @@ namespace Olive.Services
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
+    using System.ServiceModel;
+    using System.ServiceModel.Activation;
+    using System.Transactions;
 
     using Microsoft.Practices.Unity;
 
@@ -51,7 +54,10 @@ namespace Olive.Services
     /// <summary>
     /// The web service.
     /// </summary>
-    public class ClientServices : IClientService
+    ////[AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
+    // TODO: This should be in config, but it doesn't seem to pick it up.
+    [ServiceBehavior(IncludeExceptionDetailInFaults = true, InstanceContextMode = InstanceContextMode.Single)]
+    public class ClientService : IClientService
     {
         /// <summary>
         ///   Gets or sets Container.
@@ -320,12 +326,12 @@ namespace Olive.Services
                 var account = context.Accounts.Find(accountId);
 
                 return new GetAccountAccount
-                    {
-                        AccountId = account.AccountId, 
-                        DisplayName = account.DisplayName, 
-                        CurrencyId = account.CurrencyId, 
-                        AccountType = account.AccountType
-                    };
+                {
+                    AccountId = account.AccountId,
+                    DisplayName = account.DisplayName,
+                    CurrencyId = account.CurrencyId,
+                    AccountType = account.AccountType
+                };
             }
         }
 
@@ -365,12 +371,12 @@ namespace Olive.Services
                             let accountWithBalance = context.AccountsWithBalance.Find(account.AccountId)
                             select
                                 new AccountOverviewAccount
-                                    {
-                                        AccountId = account.AccountId, 
-                                        Balance = accountWithBalance.Available, 
-                                        CurrencyId = accountWithBalance.Currency.CurrencyId, 
-                                        DisplayName = account.DisplayName
-                                    };
+                                {
+                                    AccountId = account.AccountId,
+                                    Balance = accountWithBalance.Available,
+                                    CurrencyId = accountWithBalance.Currency.CurrencyId,
+                                    DisplayName = account.DisplayName
+                                };
 
                 var result = new AccountOverview();
                 result.AddRange(query);
@@ -487,6 +493,46 @@ namespace Olive.Services
                 {
                     throw this.FaultFactory.CreateSessionDoesNotExistFaultException(sessionId);
                 }
+            }
+        }
+
+        public string GetLastProcessedTransactionId()
+        {
+            using (var context = this.GetContext())
+            {
+                return context.GetLastProcessedTransactionId();
+            }
+        }
+
+        public bool TransactionIsProcessed(string transactionId)
+        {
+            using (var context = this.GetContext())
+            {
+                return context.BitcoinTransactionIsProcessed(transactionId);
+            }
+        }
+
+        public void CreditTransactionWithHold(int accountId, string transactionId, decimal amount)
+        {
+            var holdReason = "Hold for Bitcoin incoming transaction #" + transactionId;
+
+            using (var context = this.GetContext())
+            {
+                using (var scope = new TransactionScope())
+                {
+                    var accountHoldId = context.CreateAccountHold(amount, holdReason, default(DateTime?));
+                    context.CreditTransaction(transactionId, accountId, accountHoldId, amount);
+                    scope.Complete();
+                }
+            }
+        }
+
+        public void ReleaseTransactionHold(string transactionId)
+        {
+            using (var context = this.GetContext())
+            {
+                var transaction = context.BitcoinTransactions.FirstOrDefault(x => x.TransactionId == transactionId);
+                context.ReleaseAccountHold(transaction.AccountHoldId.Value);
             }
         }
     }
