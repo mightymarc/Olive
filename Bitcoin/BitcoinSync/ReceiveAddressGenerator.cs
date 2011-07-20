@@ -55,7 +55,7 @@ namespace Olive.Bitcoin.BitcoinSync
 
     public class ReceiveAddressGenerator
     {
-        private Properties.BitcoinSyncSettings settings = new BitcoinSyncSettings();
+        private Properties.BitcoinSyncSettings settings = BitcoinSyncSettings.Default;
 
         [Dependency]
         public ILog Logger { get; set; }
