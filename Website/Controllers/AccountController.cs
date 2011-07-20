@@ -93,6 +93,39 @@ namespace Olive.Website.Controllers
 
             return this.View(new CreateViewModel { Currencies = this.CurrencyCache.Currencies });
         }
+        
+        [HttpGet]
+        public ActionResult Transfer(int sourceAccountId)
+        {
+            if (!this.SessionPersister.HasSession)
+            {
+                return this.RedirectToLogin();
+            }
+
+            return this.View(new TransferViewModel { SourceAccountId = sourceAccountId });
+        }
+
+        [HttpPost]
+        public ActionResult Transfer(TransferViewModel model)
+        {
+            Contract.Requires<InvalidOperationException>(this.ClientService != null);
+            Contract.Requires<InvalidOperationException>(this.SessionPersister != null);
+            Contract.Requires<ArgumentNullException>(model != null, "model");
+            Contract.Requires<ArgumentException>(model.SourceAccountId > 0, "model.SourceAccountId > 0");
+
+            if (!this.SessionPersister.HasSession)
+            {
+                return this.RedirectToLogin();
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            this.ClientService.CreateTransfer(this.SessionPersister.SessionId, model.SourceAccountId, model.DestAccountId, model.Amount, model.Description);
+            return this.RedirectToAction(string.Empty, "Account");
+        }
 
         /// <summary>
         /// The details.

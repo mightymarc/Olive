@@ -207,6 +207,7 @@
     <Compile Include="Helpers\UnityDependencyResolver.cs" />
     <Compile Include="ViewModels\Account\EditViewModel.cs" />
     <Compile Include="ViewModels\Account\CreateViewModel.cs" />
+    <Compile Include="ViewModels\Account\TransferViewModel.cs" />
     <Compile Include="ViewModels\User\LoginViewModel.cs" />
     <Compile Include="ViewModels\Account\DetailsViewModel.cs" />
     <Compile Include="ViewModels\Account\IndexViewModel.cs" />
@@ -215,6 +216,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ViewModelValidation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Account\Transfer.cs">
+      <DependentUpon>Transfer.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Views\Account\Create.cs">
       <AutoGen>True</AutoGen>
@@ -346,6 +352,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\Account\Transfer.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Transfer.cs</LastGenOutput>
+    </Content>
     <None Include="Views\Error\NotFound.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>NotFound.cs</LastGenOutput>
