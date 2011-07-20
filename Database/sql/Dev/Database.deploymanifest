@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <TargetConnectionString>Data Source=osql1.olive.local;Integrated Security=True;Pooling=False</TargetConnectionString>
+    <TargetConnectionString>Data Source=.\SQLEXPRESS;Integrated Security=True;Pooling=False</TargetConnectionString>
     <TargetDatabase>Olive</TargetDatabase>
     <DeployToDatabase>True</DeployToDatabase>
     <DeployToScript>True</DeployToScript>
     <SourceModel>Database.dbschema</SourceModel>
     <DeployScriptFileName>Database.sql</DeployScriptFileName>
-    <DeploymentConfigurationFile>Olive_Beta.sqldeployment</DeploymentConfigurationFile>
+    <DeploymentConfigurationFile>Olive_Dev.sqldeployment</DeploymentConfigurationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <SqlCommandVariablesFile>Olive_Beta.sqlcmdvars</SqlCommandVariablesFile>
+    <SqlCommandVariablesFile>Olive_Dev.sqlcmdvars</SqlCommandVariablesFile>
   </PropertyGroup>
   <ItemGroup>
     <DeploymentExtensionConfiguration Include="Olive_Script.PostDeployment.sql">

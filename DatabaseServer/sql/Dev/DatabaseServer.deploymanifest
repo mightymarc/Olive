@@ -7,7 +7,7 @@
     <DeployToScript>True</DeployToScript>
     <SourceModel>DatabaseServer.dbschema</SourceModel>
     <DeployScriptFileName>DatabaseServer.sql</DeployScriptFileName>
-    <DeploymentConfigurationFile>master_Master.sqldeployment</DeploymentConfigurationFile>
+    <DeploymentConfigurationFile>master_DevMaster.sqldeployment</DeploymentConfigurationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SqlCommandVariablesFile>master_DevMaster.sqlcmdvars</SqlCommandVariablesFile>

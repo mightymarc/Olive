@@ -3,7 +3,7 @@
   <Version>1.0</Version>
   <Properties>
     <Property>
-      <PropertyName>TargetEnvironment</PropertyName>
+      <PropertyName>TargetEnv</PropertyName>
       <PropertyValue>Dev</PropertyValue>
     </Property>
   </Properties>

@@ -11,28 +11,35 @@ Post-Deployment Script Template
 */
 -- Security
 --EXEC sp_addrolemember N'BankServiceRole', N'ServiceUser'
-GRANT SELECT ON [Banking].[AccountWithBalance] TO [OLIVE\OliveService]
-GRANT SELECT ON [Bitcoin].[Transaction] TO [OLIVE\OliveService]
-GRANT SELECT ON [Banking].[AccountUser] TO [OLIVE\OliveService]
-GRANT SELECT ON [Banking].[Account] TO [OLIVE\OliveService]
-GRANT SELECT ON [Banking].[Transfer] TO [OLIVE\OliveService]
-GRANT INSERT ON [dbo].[User] TO [OLIVE\OliveService]
-GRANT SELECT ON [dbo].[User] TO [OLIVE\OliveService]
-GRANT UPDATE ON [dbo].[User] ([PasswordHash]) TO [OLIVE\OliveService]
-GRANT SELECT ON [dbo].[Currency] TO [OLIVE\OliveService]
-GRANT EXECUTE ON [Banking].[CreateTransfer] TO [OLIVE\OliveService]
-GRANT EXECUTE ON [Banking].[ReleaseAccountHold] TO [OLIVE\OliveService]
-GRANT EXECUTE ON [Banking].[CreateCurrentAccount] TO [OLIVE\OliveService]
-GRANT EXECUTE ON [Banking].[EditCurrentAccount] TO [OLIVE\OliveService]
-GRANT EXECUTE ON [Bitcoin].[CreateTransaction] TO [OLIVE\OliveService]
-GRANT EXECUTE ON [Auth].[CreateSession] TO [OLIVE\OliveService];
-GRANT EXECUTE ON [Auth].VerifySession TO [OLIVE\OliveService];
-GRANT EXECUTE ON [Auth].DeleteSession TO [OLIVE\OliveService];
-GRANT EXECUTE ON [Banking].[GetSpecialAccountId] TO [OLIVE\OliveService];
-GRANT EXECUTE ON [Bitcoin].[GetLastProcessedTransactionId] TO [OLIVE\OliveService];
-GRANT EXECUTE ON [Banking].[CreateAccountHold] TO [OLIVE\OliveService];
-GRANT EXECUTE ON [Bitcoin].[GetAccountReceiveAddress] TO [OLIVE\OliveService];
-GRANT EXECUTE ON [Bitcoin].[SetAccountReceiveAddress] TO [OLIVE\OliveService];
+
+IF '$(TargetEnv)' <> 'Dev'
+BEGIN
+    CREATE USER [OLIVE\OliveService]
+    FOR LOGIN [OLIVE\OliveService];
+
+    GRANT SELECT ON [Banking].[AccountWithBalance] TO [OLIVE\OliveService]
+    GRANT SELECT ON [Bitcoin].[Transaction] TO [OLIVE\OliveService]
+    GRANT SELECT ON [Banking].[AccountUser] TO [OLIVE\OliveService]
+    GRANT SELECT ON [Banking].[Account] TO [OLIVE\OliveService]
+    GRANT SELECT ON [Banking].[Transfer] TO [OLIVE\OliveService]
+    GRANT INSERT ON [dbo].[User] TO [OLIVE\OliveService]
+    GRANT SELECT ON [dbo].[User] TO [OLIVE\OliveService]
+    GRANT UPDATE ON [dbo].[User] ([PasswordHash]) TO [OLIVE\OliveService]
+    GRANT SELECT ON [dbo].[Currency] TO [OLIVE\OliveService]
+    GRANT EXECUTE ON [Banking].[CreateTransfer] TO [OLIVE\OliveService]
+    GRANT EXECUTE ON [Banking].[ReleaseAccountHold] TO [OLIVE\OliveService]
+    GRANT EXECUTE ON [Banking].[CreateCurrentAccount] TO [OLIVE\OliveService]
+    GRANT EXECUTE ON [Banking].[EditCurrentAccount] TO [OLIVE\OliveService]
+    GRANT EXECUTE ON [Bitcoin].[CreateTransaction] TO [OLIVE\OliveService]
+    GRANT EXECUTE ON [Auth].[CreateSession] TO [OLIVE\OliveService];
+    GRANT EXECUTE ON [Auth].VerifySession TO [OLIVE\OliveService];
+    GRANT EXECUTE ON [Auth].DeleteSession TO [OLIVE\OliveService];
+    GRANT EXECUTE ON [Banking].[GetSpecialAccountId] TO [OLIVE\OliveService];
+    GRANT EXECUTE ON [Bitcoin].[GetLastProcessedTransactionId] TO [OLIVE\OliveService];
+    GRANT EXECUTE ON [Banking].[CreateAccountHold] TO [OLIVE\OliveService];
+    GRANT EXECUTE ON [Bitcoin].[GetAccountReceiveAddress] TO [OLIVE\OliveService];
+    GRANT EXECUTE ON [Bitcoin].[SetAccountReceiveAddress] TO [OLIVE\OliveService];
+END
 
 --GRANT EXECUTE ON [dbo].RethrowError TO [OLIVE\OliveService];
 

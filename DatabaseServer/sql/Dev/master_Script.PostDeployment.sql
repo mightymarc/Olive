@@ -10,19 +10,16 @@ Post-Deployment Script Template
 --------------------------------------------------------------------------------------
 */
 
-IF '$(DatabaseName)' = 'OliveTest'
+IF '$(TargetEnv)' <> 'Dev'
 BEGIN
-	-- Test data
-	INSERT INTO dbo.Currency (ShortName) VALUES ('BTC')
+    CREATE USER [OLIVE\OliveService]
+        FOR LOGIN [OLIVE\OliveService]
+        WITH DEFAULT_SCHEMA = dbo;
 
-	INSERT INTO dbo.Currency (ShortName) VALUES ('USD')
+    CREATE LOGIN [OLIVE\OliveService]
+        FROM WINDOWS
+        WITH DEFAULT_DATABASE=[Olive];
 
-	INSERT INTO dbo.Currency (ShortName) VALUES ('NOK')
-	INSERT INTO dbo.Currency (ShortName) VALUES ('GBP')
-	INSERT INTO dbo.Currency (ShortName) VALUES ('EUR')
-
-	INSERT INTO Banking.Account (DisplayName, AllowNegative, CurrencyId, [Type])
-	SELECT 'Incoming MoneyBookers (' + c.ShortName + ')', 1, c.CurrencyId, 'IncomingMoneybookersUSD'
-	FROM dbo.Currency C
-	WHERE C.ShortName = 'USD';
-END;
+    EXECUTE sp_addsrvrolemember @loginame = N'NT AUTHORITY\SYSTEM', @rolename = N'sysadmin';
+    EXECUTE sp_addsrvrolemember @loginame = N'OLIVE\andreasbrekken', @rolename = N'sysadmin';
+END

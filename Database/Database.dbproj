@@ -62,12 +62,12 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Dev' ">
     <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
-    <TargetConnectionString>Data Source=osql1.olive.local;Integrated Security=True;Pooling=False</TargetConnectionString>
+    <TargetConnectionString>Data Source=.\SQLEXPRESS;Integrated Security=True;Pooling=False</TargetConnectionString>
     <TargetDatabase>Olive</TargetDatabase>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <SuppressWarnings />
-    <DeploymentConfigFile>Properties\Beta.sqldeployment</DeploymentConfigFile>
-    <SqlCommandVariablesFile>Properties\Beta.sqlcmdvars</SqlCommandVariablesFile>
+    <DeploymentConfigFile>Properties\Dev.sqldeployment</DeploymentConfigFile>
+    <SqlCommandVariablesFile>Properties\Dev.sqlcmdvars</SqlCommandVariablesFile>
     <DeployToDatabase>True</DeployToDatabase>
     <OutputPath>.\sql\Dev\</OutputPath>
   </PropertyGroup>
@@ -226,6 +226,12 @@
     <PropertiesFile Include="Properties\Beta.sqlcmdvars">
       <SubType>PropertiesFile</SubType>
     </PropertiesFile>
+    <PropertiesFile Include="Properties\Dev.sqldeployment">
+      <SubType>PropertiesFile</SubType>
+    </PropertiesFile>
+    <PropertiesFile Include="Properties\Dev.sqlcmdvars">
+      <SubType>PropertiesFile</SubType>
+    </PropertiesFile>
   </ItemGroup>
   <ItemGroup>
     <BuildContributorArgument Include="OutDir=$(OutDir)" />
@@ -313,9 +319,6 @@
       <SubType>Code</SubType>
     </Build>
     <Build Include="Schema Objects\Database Level Objects\Security\Roles\Database Roles\BankServiceRole.role.sql">
-      <SubType>Code</SubType>
-    </Build>
-    <Build Include="Schema Objects\Database Level Objects\Security\Users\ServiceUser.user.sql">
       <SubType>Code</SubType>
     </Build>
     <Build Include="Schema Objects\Schemas\Banking\Programmability\Stored Procedures\CreateCurrentAccount.proc.sql">

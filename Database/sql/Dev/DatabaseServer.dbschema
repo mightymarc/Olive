@@ -39,30 +39,6 @@
 			</Relationship>
 		</Element>
 		<Element Type="ISql100ServerOptions" />
-		<Element Type="ISqlServerRoleMembership">
-			<Relationship Name="Member">
-				<Entry>
-					<References Name="[NT AUTHORITY\SYSTEM]" />
-				</Entry>
-			</Relationship>
-			<Relationship Name="Role">
-				<Entry>
-					<References ExternalSource="BuiltIns" Name="[sysadmin]" />
-				</Entry>
-			</Relationship>
-		</Element>
-		<Element Type="ISqlServerRoleMembership">
-			<Relationship Name="Member">
-				<Entry>
-					<References Name="[OLIVE\andreasbrekken]" />
-				</Entry>
-			</Relationship>
-			<Relationship Name="Role">
-				<Entry>
-					<References ExternalSource="BuiltIns" Name="[sysadmin]" />
-				</Entry>
-			</Relationship>
-		</Element>
 		<Element Type="ISql90Route" Name="[AutoCreatedLocal]">
 			<Property Name="Address" Value="LOCAL" />
 			<Relationship Name="Authorizer">
@@ -89,28 +65,6 @@
 			<Property Name="DefaultLanguage" Value="us_english" />
 			<Property Name="IsCheckPolicyOn" Value="False" />
 			<Annotation Type="GloballyScoped" />
-		</Element>
-		<Element Type="ISql90Login" Name="[OLIVE\andreasbrekken]">
-			<Property Name="IsMappedToWindowsLogin" Value="True" />
-			<Property Name="DefaultLanguage" Value="us_english" />
-			<Property Name="IsCheckPolicyOn" Value="False" />
-			<Annotation Type="GloballyScoped" />
-		</Element>
-		<Element Type="ISql90Login" Name="[OLIVE\OliveService]" Disambiguator="3">
-			<Property Name="IsMappedToWindowsLogin" Value="True" />
-			<Property Name="DefaultDatabase" Value="Olive" />
-			<Property Name="IsCheckPolicyOn" Value="False" />
-			<Annotation Type="GloballyScoped" />
-		</Element>
-		<Element Type="ISql90User" Name="[OLIVE\OliveService]">
-			<Property Name="LoginIdentifierScript">
-				<Value><![CDATA[[OLIVE\OliveService]]]></Value>
-			</Property>
-			<Relationship Name="Login">
-				<Entry>
-					<References Name="[OLIVE\OliveService]" Disambiguator="3" />
-				</Entry>
-			</Relationship>
 		</Element>
 		<Element Type="ISql90Login" Name="[sa]">
 			<Property Name="Password" Value="svinjy|ouBxvej926hnyg8SbmsFT7_&amp;#$!~&lt;zkgavf7@pp4{" />

@@ -67,7 +67,7 @@
     <SuppressWarnings />
     <SqlCommandVariablesFile>Properties\DevMaster.sqlcmdvars</SqlCommandVariablesFile>
     <DeployToDatabase>True</DeployToDatabase>
-    <DeploymentConfigFile>Properties\Master.sqldeployment</DeploymentConfigFile>
+    <DeploymentConfigFile>Properties\DevMaster.sqldeployment</DeploymentConfigFile>
     <OutputPath>.\sql\Dev\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Beta' ">
@@ -176,28 +176,16 @@
     <Build Include="Schema Objects\Server Level Objects\Security\Logins\NT AUTHORITY_SYSTEM.login.sql">
       <SubType>Code</SubType>
     </Build>
-    <Build Include="Schema Objects\Server Level Objects\Security\Logins\OLIVE_andreasbrekken.login.sql">
-      <SubType>Code</SubType>
-    </Build>
     <Build Include="Schema Objects\Server Level Objects\Security\Logins\BUILTIN_Users.login.sql">
       <SubType>Code</SubType>
     </Build>
-    <Build Include="Schema Objects\Server Level Objects\Security\Logins\ServiceUser.login.sql">
-      <SubType>Code</SubType>
-    </Build>
     <Build Include="Schema Objects\Database Level Objects\Security\Roles\Database Roles\ServiceRole.role.sql">
-      <SubType>Code</SubType>
-    </Build>
-    <Build Include="Schema Objects\DatabaseServer.serverrolememberships.sql">
       <SubType>Code</SubType>
     </Build>
     <Build Include="Schema Objects\Database Level Objects\Service Broker\Routes\AutoCreatedLocal.route.sql">
       <SubType>Code</SubType>
     </Build>
     <Build Include="Schema Objects\Database Level Objects\Security\Schemas\Banking.schema.sql">
-      <SubType>Code</SubType>
-    </Build>
-    <Build Include="Schema Objects\Database Level Objects\Security\Users\ServiceUser.user.sql">
       <SubType>Code</SubType>
     </Build>
   </ItemGroup>
