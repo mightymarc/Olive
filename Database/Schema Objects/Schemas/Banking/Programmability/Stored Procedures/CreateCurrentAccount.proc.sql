@@ -12,7 +12,9 @@ IF @AccountId IS NOT NULL RAISERROR(51004, 16, 1, '@AccountId');
 BEGIN TRAN
 
 BEGIN TRY
-	INSERT INTO Banking.Account (CurrencyId, [Type], [DisplayName]) VALUES (@CurrencyId, 'Current', @DisplayName);
+	INSERT INTO Banking.Account (CurrencyId, [Type], [DisplayName], AnyCanDeposit)
+		VALUES (@CurrencyId, 'Current', @DisplayName, 1);
+
 	SELECT @AccountId = CAST(SCOPE_IDENTITY() as int)
 
 	IF @@ROWCOUNT <> 1 OR @AccountId IS NULL

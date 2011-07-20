@@ -39,6 +39,7 @@
 
 namespace Olive.DataAccess.Domain
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -93,5 +94,13 @@ namespace Olive.DataAccess.Domain
         ///   Gets or sets Users.
         /// </summary>
         public virtual ICollection<AccountUser> Users { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether any user can deposit to this account.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if any user can deposit; otherwise, <c>false</c>.
+        /// </value>
+        public bool AnyCanDeposit { get; set; }
     }
 }

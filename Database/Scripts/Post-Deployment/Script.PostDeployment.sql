@@ -16,6 +16,14 @@ IF '$(TargetEnv)' <> 'Dev'
 BEGIN
 	CREATE USER [OLIVE\OliveService] FOR LOGIN [OLIVE\OliveService]
 	EXEC sp_addrolemember N'ClientService', N'OLIVE\OliveService'
+
+	-- Remove this after 2010-07-20
+	IF GETUTCDATE() < '2011-07-21'
+	BEGIN
+		UPDATE Banking.[Account]
+			SET AnyCanDeposit = 1
+			WHERE [Type] = 'Current';
+	END
 END
 
 -- Errors

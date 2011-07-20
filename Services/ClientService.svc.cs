@@ -460,7 +460,8 @@ namespace Olive.Services
         {
             using (var context = this.GetContext())
             {
-                return context.Users.Find(userId).AccountAccess.Any(x => x.CanDeposit && x.AccountId == accountId);
+                return context.Accounts.Find(accountId).AnyCanDeposit ||
+                    context.Users.Find(userId).AccountAccess.Any(x => x.CanDeposit && x.AccountId == accountId);
             }
         }
 
