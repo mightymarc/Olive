@@ -65,9 +65,9 @@
     <TargetDatabase>master</TargetDatabase>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <SuppressWarnings />
-    <SqlCommandVariablesFile>Properties\DevMaster.sqlcmdvars</SqlCommandVariablesFile>
+    <SqlCommandVariablesFile>Properties\Dev.sqlcmdvars</SqlCommandVariablesFile>
     <DeployToDatabase>True</DeployToDatabase>
-    <DeploymentConfigFile>Properties\DevMaster.sqldeployment</DeploymentConfigFile>
+    <DeploymentConfigFile>Properties\Dev.sqldeployment</DeploymentConfigFile>
     <OutputPath>.\sql\Dev\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Beta' ">
@@ -156,6 +156,12 @@
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql">
       <SubType>Code</SubType>
     </PostDeploy>
+    <PropertiesFile Include="Properties\Dev.sqldeployment">
+      <SubType>PropertiesFile</SubType>
+    </PropertiesFile>
+    <PropertiesFile Include="Properties\Dev.sqlcmdvars">
+      <SubType>PropertiesFile</SubType>
+    </PropertiesFile>
   </ItemGroup>
   <ItemGroup>
     <BuildContributorArgument Include="OutDir=$(OutDir)" />
