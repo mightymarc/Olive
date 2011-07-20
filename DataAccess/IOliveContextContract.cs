@@ -330,7 +330,7 @@ namespace Olive.DataAccess
         public string GetAccountReceiveAddress(int accountId)
         {
             Contract.Requires<ArgumentException>(accountId > 0, "accountId > 0");
-            Contract.Ensures(Contract.Result<string>() != null && Contract.Result<string>().Length == 34, "receiveAddress");
+            Contract.Ensures(Contract.Result<string>() == null || Contract.Result<string>().Length == 34, "receiveAddress");
             return default(string);
         }
     }
