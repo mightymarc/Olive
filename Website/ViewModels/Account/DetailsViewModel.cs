@@ -54,6 +54,14 @@ namespace Olive.Website.ViewModels.Account
         public string AccountDisplayName { get; set; }
 
         /// <summary>
+        /// Gets or sets the bitcoin receive address.
+        /// </summary>
+        /// <value>
+        /// The bitcoin receive address, which can be null.
+        /// </value>
+        public string BitcoinReceiveAddress { get; set; }
+
+        /// <summary>
         ///   Gets or sets Transfers.
         /// </summary>
         public List<GetAccountTransfersTransfer> Transfers { get; set; }

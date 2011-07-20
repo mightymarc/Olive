@@ -22,11 +22,12 @@
     @foreach (var account in this.Model.Accounts)
     {
         <tr>
-            <td>@account.AccountId</td>
+            <td><a href="/Account/Details/@account.AccountId">@account.AccountId</a></td>
             <td>@account.CurrencyId</td>
             <td>@account.Balance</td>
             <td>@account.DisplayName</td>
             <td>
+                <a href="/Account/Details/@account.AccountId">Details</a>
                 <a href="/Account/Edit/@account.AccountId">Edit</a>
                 <a href="/Account/Transfer/?SourceAccountId=@account.AccountId">Transfer from</a>
             </td>

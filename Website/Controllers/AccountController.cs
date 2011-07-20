@@ -115,7 +115,8 @@ namespace Olive.Website.Controllers
             var viewModel = new DetailsViewModel
                 {
                     AccountDisplayName = this.ClientService.GetAccount(this.SessionPersister.SessionId, accountId).DisplayName, 
-                    Transfers = this.ClientService.GetAccountTransfers(this.SessionPersister.SessionId, accountId)
+                    ////Transfers = this.ClientService.GetAccountTransfers(this.SessionPersister.SessionId, accountId),
+                    BitcoinReceiveAddress = this.ClientService.GetAccountReceiveAddress(accountId)
                 };
 
             return this.View("Details", viewModel);

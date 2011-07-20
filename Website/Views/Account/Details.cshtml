@@ -5,3 +5,10 @@
 }
 
 <h2>Details</h2>
+
+@if (Model.BitcoinReceiveAddress != null)
+{
+    <div>
+        Bitcoin receive address: @Model.BitcoinReceiveAddress
+    </div>
+}
