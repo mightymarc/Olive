@@ -52,15 +52,9 @@ namespace Olive.DataAccess
         /// <summary>
         /// Creates a current account.
         /// </summary>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="currencyId">
-        /// The currency of the account.
-        /// </param>
-        /// <param name="displayName">
-        /// The display name of the account (USD, BTC, PPUSD, ...)
-        /// </param>
+        /// <param name="userId">The user id.</param>
+        /// <param name="currencyId">The currency of the account.</param>
+        /// <param name="displayName">The display name of the account (USD, BTC, PPUSD, ...)</param>
         /// <returns>
         /// The account id of the new account
         /// </returns>
@@ -244,14 +238,102 @@ namespace Olive.DataAccess
             return this.BitcoinTransactions.Any(x => x.TransactionId == transactionId);
         }
 
-        public int CreateAccountHold(decimal amount, string holdReason, DateTime? expiresAt)
+        public int CreateAccountHold(int accountId, decimal amount, string holdReason, DateTime? expiresAt)
         {
-            throw new NotImplementedException();
+            var command = this.CommandConnection.CreateCommand("Banking.CreateAccountHold");
+            command.AddParam("@AccountId", DbType.Int32, accountId);
+            command.AddParam("@Amount", DbType.Decimal, amount);
+            command.AddParam("@Reason", DbType.String, holdReason ?? (object)DBNull.Value, size: 150);
+            command.AddParam("@ExpiresAt", DbType.DateTime, expiresAt != null ? (object)expiresAt : DBNull.Value);
+            command.AddParam("@AccountHoldId", DbType.Int32, direction: ParameterDirection.Output);
+
+            switch (this.ExecuteCommand(command))
+            {
+                case 0:
+                    var accountHoldId = command.GetParameter("@AccountHoldId").Value;
+                    return (int)accountHoldId;
+                default:
+                    throw new UnknownReturnCodeException(command.GetReturnCode());
+            }
         }
 
-        public void CreditTransaction(string transactionId, int accountId, int accountHoldId, decimal amount)
+        public int GetSpecialAccountId(string name)
         {
-            throw new NotImplementedException();
+            var command = this.CommandConnection.CreateCommand();
+            command.CommandText = "SELECT Banking.GetSpecialAccountId(@Name)";
+            command.AddParam("@Name", DbType.AnsiString, name, size: 150);
+
+            command.Connection.Open();
+
+            try
+            {
+                return (int)command.ExecuteScalar();
+            }
+            finally
+            {
+                command.Connection.Close();   
+            }
+        }
+
+        public void CreateTransaction(string transactionId, int accountId, int accountHoldId, decimal amount)
+        {
+            var command = this.CommandConnection.CreateCommand("Bitcoin.CreateTransaction");
+            command.AddParam("@TransactionId", DbType.AnsiString, transactionId, size: 64);
+            command.AddParam("@AccountId", DbType.Int32, accountId);
+            command.AddParam("@AccountHoldId", DbType.Int32, accountHoldId);
+            command.AddParam("@Amount", DbType.Decimal, amount);
+
+            switch (this.ExecuteCommand(command))
+            {
+                case 0:
+                    return;
+                default:
+                    throw new UnknownReturnCodeException(command.GetReturnCode());
+            }
+        }
+
+        public void SetAccountReceiveAddress(int accountId, string receiveAddress)
+        {
+            var command = this.CommandConnection.CreateCommand("Bitcoin.SetAccountReceiveAddress");
+            command.AddParam("@AccountId", DbType.Int32, accountId);
+            command.AddParam("@ReceiveAddress", DbType.AnsiString, receiveAddress, size: 34);
+
+            switch (this.ExecuteCommand(command))
+            {
+                case 0:
+                    return;
+                default:
+                    throw new UnknownReturnCodeException(command.GetReturnCode());
+            }
+        }
+
+        public string GetAccountReceiveAddress(int accountId)
+        {
+            var command = this.CommandConnection.CreateCommand("Bitcoin.GetAccountReceiveAddress");
+            command.AddParam("@AccountId", DbType.Int32, accountId);
+            command.AddParam("@ReceiveAddress", DbType.AnsiString, 34, ParameterDirection.Output);
+
+            switch (this.ExecuteCommand(command))
+            {
+                case 0:
+                    return (string)command.Parameters["@ReceiveAddress"];
+                default:
+                    throw new UnknownReturnCodeException(command.GetReturnCode());
+            }
+        }
+
+        public void ReleaseAccountHold(int accountHoldId)
+        {
+            var command = this.CommandConnection.CreateCommand("Banking.ReleaseAccountHold");
+            command.AddParam("@AccountHoldId", DbType.Int32, accountHoldId);
+
+            switch (this.ExecuteCommand(command))
+            {
+                case 0:
+                    return;
+                default:
+                    throw new UnknownReturnCodeException(command.GetReturnCode());
+            }
         }
     }
 }

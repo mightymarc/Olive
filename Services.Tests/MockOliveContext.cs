@@ -434,6 +434,11 @@ namespace Olive.DataAccess.Tests
             throw new NotImplementedException();
         }
 
+        public int CreateAccountHold(int accountId, decimal amount, string holdReason, DateTime? expiresAt)
+        {
+            throw new NotImplementedException();
+        }
+
         public int CreateAccountHold(decimal amount, string holdReason, DateTime? expiresAt)
         {
             throw new NotImplementedException();
@@ -445,6 +450,26 @@ namespace Olive.DataAccess.Tests
         }
 
         public void ReleaseAccountHold(int accountHoldId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetSpecialAccountId(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateTransaction(string transactionId, int accountId, int accountHoldId, decimal amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetAccountReceiveAddress(int accountId, string receiveAddress)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetAccountReceiveAddress(int accountId)
         {
             throw new NotImplementedException();
         }

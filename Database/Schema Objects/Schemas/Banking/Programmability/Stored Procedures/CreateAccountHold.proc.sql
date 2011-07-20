@@ -1,38 +1,48 @@
 ﻿CREATE PROCEDURE [Banking].[CreateAccountHold]
-	@AccountId INT,
-	@Amount DECIMAL(18, 8),
-	@Reason NVARCHAR(150),
-	@ExpiresAt DATETIME,
-	@AccountHoldId INT OUTPUT
+    @AccountId INT,
+    @Amount DECIMAL(18, 8),
+    @Reason NVARCHAR(150),
+    @ExpiresAt DATETIME,
+    @AccountHoldId INT OUTPUT
 
 AS
 
+DECLARE @TC INT = @@TRANCOUNT;
+
+IF @TC > 0
+    SAVE TRAN TR1;
+ELSE
+    BEGIN TRAN
+
 BEGIN TRY
-	IF @AccountId IS NULL RAISERROR(51003, 16, 1, '@AccountId');
-	IF @Amount IS NULL RAISERROR(51003, 16, 1, '@Amount');
-	IF @Reason IS NULL RAISERROR(51003, 16, 1, '@Reason');
-	IF @AccountHoldId IS NOT NULL RAISERROR(51004, 16, 1, '@AccountHoldId');
+    IF @AccountId IS NULL RAISERROR(51003, 16, 1, '@AccountId');
+    IF @Amount IS NULL RAISERROR(51003, 16, 1, '@Amount');
+    IF @Reason IS NULL RAISERROR(51003, 16, 1, '@Reason');
+    IF @AccountHoldId IS NOT NULL RAISERROR(51004, 16, 1, '@AccountHoldId');
 
-	BEGIN TRAN
 
-	DECLARE @Available DECIMAL(18, 8)
-	SELECT @Available = Available FROM Banking.AccountWithBalance WHERE AccountId = @AccountId;
+    DECLARE @Available DECIMAL(18, 8)
 
-	IF @Available < @Amount
-		RAISERROR(51013, 16, 1);
+    SELECT @Available = Available
+        FROM Banking.AccountWithBalance 
+        WHERE AccountId = @AccountId;
 
-	INSERT INTO Banking.AccountHold (AccountId, Amount, ExpiresAt, Reason)
-		VALUES (@AccountId, @Amount, @ExpiresAt, @Reason);
+    IF @Available < @Amount
+        RAISERROR(51013, 16, 1);
 
-	SELECT @AccountHoldId = CONVERT(INT, SCOPE_IDENTITY());
+    INSERT INTO Banking.AccountHold (AccountId, Amount, ExpiresAt, Reason)
+        VALUES (@AccountId, @Amount, @ExpiresAt, @Reason);
 
-	COMMIT TRAN
+    SELECT @AccountHoldId = CONVERT(INT, SCOPE_IDENTITY());
 
-	RETURN 0
+    IF @TC = 0
+        COMMIT TRAN
+
+    RETURN 0
 END TRY
 BEGIN CATCH
-	IF @@TRANCOUNT > 0
-		ROLLBACK TRAN
+    IF @TC = 0 ROLLBACK TRAN
+    ELSE ROLLBACK TRAN TR1;
 
-	RETURN ERROR_NUMBER();
+    RETURN ERROR_NUMBER();
 END CATCH

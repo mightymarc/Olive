@@ -10,22 +10,31 @@ Post-Deployment Script Template
 --------------------------------------------------------------------------------------
 */
 -- Security
-EXEC sp_addrolemember N'BankServiceRole', N'ServiceUser'
-GRANT SELECT ON [Banking].[AccountWithBalance] TO [BankServiceRole]
-GRANT SELECT ON [Banking].[AccountUser] TO [BankServiceRole]
-GRANT SELECT ON [Banking].[Account] TO [BankServiceRole]
-GRANT SELECT ON [Banking].[Transfer] TO [BankServiceRole]
-GRANT INSERT ON [dbo].[User] TO [BankServiceRole]
-GRANT SELECT ON [dbo].[User] TO [BankServiceRole]
-GRANT UPDATE ON [dbo].[User] ([PasswordHash]) TO [BankServiceRole]
-GRANT SELECT ON [dbo].[Currency] TO [BankServiceRole]
-GRANT EXECUTE ON [Banking].[CreateTransfer] TO [BankServiceRole]
-GRANT EXECUTE ON [Banking].[CreateCurrentAccount] TO [BankServiceRole]
-GRANT EXECUTE ON [Banking].[EditCurrentAccount] TO [BankServiceRole]
-GRANT EXECUTE ON [Auth].[CreateSession] TO [BankServiceRole];
-GRANT EXECUTE ON [Auth].VerifySession TO [BankServiceRole];
-GRANT EXECUTE ON [Auth].DeleteSession TO [BankServiceRole];
---GRANT EXECUTE ON [dbo].RethrowError TO [BankServiceRole];
+--EXEC sp_addrolemember N'BankServiceRole', N'ServiceUser'
+GRANT SELECT ON [Banking].[AccountWithBalance] TO [OLIVE\OliveService]
+GRANT SELECT ON [Bitcoin].[Transaction] TO [OLIVE\OliveService]
+GRANT SELECT ON [Banking].[AccountUser] TO [OLIVE\OliveService]
+GRANT SELECT ON [Banking].[Account] TO [OLIVE\OliveService]
+GRANT SELECT ON [Banking].[Transfer] TO [OLIVE\OliveService]
+GRANT INSERT ON [dbo].[User] TO [OLIVE\OliveService]
+GRANT SELECT ON [dbo].[User] TO [OLIVE\OliveService]
+GRANT UPDATE ON [dbo].[User] ([PasswordHash]) TO [OLIVE\OliveService]
+GRANT SELECT ON [dbo].[Currency] TO [OLIVE\OliveService]
+GRANT EXECUTE ON [Banking].[CreateTransfer] TO [OLIVE\OliveService]
+GRANT EXECUTE ON [Banking].[ReleaseAccountHold] TO [OLIVE\OliveService]
+GRANT EXECUTE ON [Banking].[CreateCurrentAccount] TO [OLIVE\OliveService]
+GRANT EXECUTE ON [Banking].[EditCurrentAccount] TO [OLIVE\OliveService]
+GRANT EXECUTE ON [Bitcoin].[CreateTransaction] TO [OLIVE\OliveService]
+GRANT EXECUTE ON [Auth].[CreateSession] TO [OLIVE\OliveService];
+GRANT EXECUTE ON [Auth].VerifySession TO [OLIVE\OliveService];
+GRANT EXECUTE ON [Auth].DeleteSession TO [OLIVE\OliveService];
+GRANT EXECUTE ON [Banking].[GetSpecialAccountId] TO [OLIVE\OliveService];
+GRANT EXECUTE ON [Bitcoin].[GetLastProcessedTransactionId] TO [OLIVE\OliveService];
+GRANT EXECUTE ON [Banking].[CreateAccountHold] TO [OLIVE\OliveService];
+GRANT EXECUTE ON [Bitcoin].[GetAccountReceiveAddress] TO [OLIVE\OliveService];
+GRANT EXECUTE ON [Bitcoin].[SetAccountReceiveAddress] TO [OLIVE\OliveService];
+
+--GRANT EXECUTE ON [dbo].RethrowError TO [OLIVE\OliveService];
 
 -- Errors
 --USE master
@@ -49,14 +58,14 @@ USE Olive;
 SET NOCOUNT ON
 
 
-INSERT INTO dbo.[User] (Email,PasswordHash,PasswordSalt) Values ('andreas@opuno.com', 'a', 'b');
+--INSERT INTO dbo.[User] (Email,PasswordHash,PasswordSalt) Values ('andreas@opuno.com', 'a', 'b');
 
-IF '$(TargetEnv)' = 'Dev'
-BEGIN
-    --exec dbo.DestroyEverything
-    exec dbo.CreateTestData
+--IF '$(TargetEnv)' = 'Dev'
+--BEGIN
+--    --exec dbo.DestroyEverything
+--    --exec dbo.CreateTestData
 
-    -- Easy test password: "a"
-    update dbo.[User] set PasswordHash = 'eJsSKba6/GAXbyZ5AhoRSgUkwojQLOYevHxVPrY8UCKZe0e9sH+YL3F7DfaYdsnKHIpGxIsIfCl/KJfZRDA0dg==',
-    PasswordSalt = 'GIWdAnVlZAIt8REiQArFVWs+nJJb9f+5Br61pxLUpA9H5T0vCq7th2l+TPHl6WOGHqi+7GbxRc0r8tOdMf5Qrg==';
-END
+--    -- Easy test password: "a"
+--    --update dbo.[User] set PasswordHash = 'eJsSKba6/GAXbyZ5AhoRSgUkwojQLOYevHxVPrY8UCKZe0e9sH+YL3F7DfaYdsnKHIpGxIsIfCl/KJfZRDA0dg==',
+--    --PasswordSalt = 'GIWdAnVlZAIt8REiQArFVWs+nJJb9f+5Br61pxLUpA9H5T0vCq7th2l+TPHl6WOGHqi+7GbxRc0r8tOdMf5Qrg==';
+--END

@@ -77,6 +77,14 @@ namespace Olive.DataAccess.Domain
         public virtual ICollection<Transfer> IncomingTransfers { get; set; }
 
         /// <summary>
+        /// Gets or sets the bitcoin account receive address.
+        /// </summary>
+        /// <value>
+        /// The bitcoin account receive address.
+        /// </value>
+        public virtual BitcoinAccountReceiveAddress BitcoinAccountReceiveAddress { get; set; }
+
+        /// <summary>
         ///   Gets or sets OutgoingTransfers.
         /// </summary>
         public virtual ICollection<Transfer> OutgoingTransfers { get; set; }

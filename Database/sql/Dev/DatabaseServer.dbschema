@@ -96,6 +96,22 @@
 			<Property Name="IsCheckPolicyOn" Value="False" />
 			<Annotation Type="GloballyScoped" />
 		</Element>
+		<Element Type="ISql90Login" Name="[OLIVE\OliveService]" Disambiguator="3">
+			<Property Name="IsMappedToWindowsLogin" Value="True" />
+			<Property Name="DefaultDatabase" Value="Olive" />
+			<Property Name="IsCheckPolicyOn" Value="False" />
+			<Annotation Type="GloballyScoped" />
+		</Element>
+		<Element Type="ISql90User" Name="[OLIVE\OliveService]">
+			<Property Name="LoginIdentifierScript">
+				<Value><![CDATA[[OLIVE\OliveService]]]></Value>
+			</Property>
+			<Relationship Name="Login">
+				<Entry>
+					<References Name="[OLIVE\OliveService]" Disambiguator="3" />
+				</Entry>
+			</Relationship>
+		</Element>
 		<Element Type="ISql90Login" Name="[sa]">
 			<Property Name="Password" Value="svinjy|ouBxvej926hnyg8SbmsFT7_&amp;#$!~&lt;zkgavf7@pp4{" />
 			<Property Name="DefaultLanguage" Value="us_english" />
@@ -105,20 +121,6 @@
 			<Relationship Name="Authorizer">
 				<Entry>
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
-				</Entry>
-			</Relationship>
-		</Element>
-		<Element Type="ISql90Login" Name="[ServiceUser]" Disambiguator="3">
-			<Property Name="Password" Value="kqMNwWN6MMCR82JeR682" />
-			<Annotation Type="GloballyScoped" />
-		</Element>
-		<Element Type="ISql90User" Name="[ServiceUser]">
-			<Property Name="LoginIdentifierScript">
-				<Value><![CDATA[ServiceUser]]></Value>
-			</Property>
-			<Relationship Name="Login">
-				<Entry>
-					<References Name="[ServiceUser]" Disambiguator="3" />
 				</Entry>
 			</Relationship>
 		</Element>

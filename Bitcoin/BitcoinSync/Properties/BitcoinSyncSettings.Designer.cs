@@ -25,7 +25,7 @@ namespace Olive.Bitcoin.BitcoinSync.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("oapp1.olive.local")]
+        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
         public string BitcoinDaemonHostname {
             get {
                 return ((string)(this["BitcoinDaemonHostname"]));
@@ -56,6 +56,15 @@ namespace Olive.Bitcoin.BitcoinSync.Properties {
         public string BitcoinDaemonPassword {
             get {
                 return ((string)(this["BitcoinDaemonPassword"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("EXU")]
+        public string Currency {
+            get {
+                return ((string)(this["Currency"]));
             }
         }
     }

@@ -1,1 +1,1 @@
-﻿CREATE ROLE [BankServiceRole]
+﻿

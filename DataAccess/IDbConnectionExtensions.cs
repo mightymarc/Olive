@@ -129,7 +129,15 @@ namespace Olive.DataAccess
             Contract.Requires<ArgumentNullException>(command.Connection != null, "command.Connection");
 
             command.Connection.Open();
-            command.ExecuteNonQuery();
+
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            finally
+            {
+                command.Connection.Close();
+            }
 
             Contract.Assume(command.Parameters["@ReturnCode"] != null);
 

@@ -26,10 +26,14 @@
     <PreviousProjectVersion>4.0</PreviousProjectVersion>
     <AllowServerObjects>True</AllowServerObjects>
     <AllowDatabaseObjects>True</AllowDatabaseObjects>
-    <SccProjectName>SAK</SccProjectName>
-    <SccProvider>SAK</SccProvider>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
+    <SccProjectName>
+    </SccProjectName>
+    <SccProvider>
+    </SccProvider>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccLocalPath>
+    </SccLocalPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <OutputPath>.\sql\release\</OutputPath>
@@ -65,6 +69,17 @@
     <DeployToDatabase>True</DeployToDatabase>
     <DeploymentConfigFile>Properties\Master.sqldeployment</DeploymentConfigFile>
     <OutputPath>.\sql\Dev\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Beta' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetConnectionString>Data Source=osql1.olive.local;Integrated Security=True;Pooling=False</TargetConnectionString>
+    <TargetDatabase>master</TargetDatabase>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <SuppressWarnings />
+    <SqlCommandVariablesFile>Properties\BetaMaster.sqlcmdvars</SqlCommandVariablesFile>
+    <DeployToDatabase>True</DeployToDatabase>
+    <DeploymentConfigFile>Properties\BetaMaster.sqldeployment</DeploymentConfigFile>
+    <OutputPath>.\sql\Beta\</OutputPath>
   </PropertyGroup>
   <!--Import the settings-->
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\TeamData\Microsoft.Data.Schema.SqlTasks.targets" />
@@ -142,6 +157,12 @@
       <SubType>Code</SubType>
     </PostDeploy>
     <PropertiesFile Include="Properties\DevMaster.sqlcmdvars">
+      <SubType>PropertiesFile</SubType>
+    </PropertiesFile>
+    <PropertiesFile Include="Properties\BetaMaster.sqlcmdvars">
+      <SubType>PropertiesFile</SubType>
+    </PropertiesFile>
+    <PropertiesFile Include="Properties\BetaMaster.sqldeployment">
       <SubType>PropertiesFile</SubType>
     </PropertiesFile>
   </ItemGroup>

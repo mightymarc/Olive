@@ -50,13 +50,14 @@ namespace Olive.Bitcoin.BitcoinSync
 
     using Microsoft.Practices.Unity;
 
+    using Olive.Bitcoin.BitcoinSync.Properties;
     using Olive.Services;
 
     public class IncomingTransactionProcessor
     {
         private const string ReceivedTransferCategory = "receive";
 
-        private const string IncomingBitcoinBTCAccount = "IncomingBitcoinBTC";
+        private Properties.BitcoinSyncSettings settings = new BitcoinSyncSettings();
 
         [Dependency]
         public ILog Logger { get; set; }
@@ -106,54 +107,44 @@ namespace Olive.Bitcoin.BitcoinSync
                 throw new Exception("The amount for a received transaction must be > 0");
             }
 
-            var accountId = int.Parse(transaction.Account, CultureInfo.InvariantCulture);
+            int accountId;
 
-            this.BitcoinService.CreditTransactionWithHold(accountId, transaction.TransactionId, transaction.Amount);
+            if (!int.TryParse(transaction.Account, NumberStyles.Integer, CultureInfo.InvariantCulture, out accountId))
+            {
+                this.Logger.WarnFormat(
+                    "Will not process transaction #{0} because it maps to somethign that's not a user id ({1}).",
+                    transaction.TransactionId,
+                    transaction.Account);
+                return;
+            }
 
-            // TODO: If an exception occurs, reverse the transaction and release the hold.
-            this.RpClient.Move(transaction.Account, IncomingBitcoinBTCAccount, transaction.Amount);
-
+            this.BitcoinService.CreditTransactionWithHold(accountId, transaction.TransactionId, transaction.Amount, this.settings.Currency);
+            this.RpClient.Move(transaction.Account, this.settings.Currency, transaction.Amount);
             this.BitcoinService.ReleaseTransactionHold(transaction.TransactionId);
         }
 
         private List<Transaction> GetTransactionsAfter(string transactionId)
         {
-            const int TransactionCountStep = 2;
-            var transactionCount = 10;
+            const int TransactionCountStep = 1000;
+            var transactionCount = 1000;
 
             Func<Transaction, bool> transactionFilter = t => t.Account != string.Empty && t.Category == "receive";
 
             if (transactionId == null)
             {
-                List<Transaction> prevTransactions = null;
-
                 while (true)
                 {
-                    var transactions = this.RpClient.GetTransactions(null, transactionCount).Where(transactionFilter).ToList();
+                    this.Logger.DebugFormat("Looking for the most recent {0} transactions.", transactionCount);
 
-                    if (transactions.Count == 0)
-                    {
-                        return new List<Transaction>();
-                    }
+                    var transactions = this.RpClient.GetTransactions(null, transactionCount);
 
-                    if (prevTransactions == null)
+                    if (transactions.Count == transactionCount)
                     {
-                        prevTransactions = transactions;
                         transactionCount += TransactionCountStep;
                         continue;
                     }
 
-                    // Are there more transactions in the new list?
-                    if (transactions.Count == prevTransactions.Count)
-                    {
-                        return transactions;
-                    }
-
-                    Contract.Assume(transactions.Count > prevTransactions.Count);
-
-                    // There are older transactions, keep going backwards.
-                    prevTransactions = transactions;
-                    transactionCount += TransactionCountStep;
+                    return transactions.Where(transactionFilter).ToList();
                 }
             }
             else

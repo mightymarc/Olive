@@ -62,6 +62,13 @@ namespace Olive.Services
             return default(int);
         }
 
+        public int GetSpecialAccountId(string name)
+        {
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(name), "name");
+            Contract.Ensures(Contract.Result<int>() > 0);
+            return default(int);
+        }
+
         public long CreateTransfer(
             Guid sessionId, int sourceAccountId, int destAccountId, decimal amount, string description)
         {

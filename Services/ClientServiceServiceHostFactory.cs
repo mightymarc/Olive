@@ -27,6 +27,7 @@ namespace Olive.Services
         {
             var container = new UnityContainer().LoadConfiguration();
             var instance = new ClientService { Container = container };
+            container.BuildUp(instance);
             var serviceBusHost = new ServiceHost(instance, baseAddresses);
             return serviceBusHost;
         }

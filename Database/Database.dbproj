@@ -26,10 +26,14 @@
     <PreviousProjectVersion>4.0</PreviousProjectVersion>
     <AllowServerObjects>False</AllowServerObjects>
     <AllowDatabaseObjects>True</AllowDatabaseObjects>
-    <SccProjectName>SAK</SccProjectName>
-    <SccProvider>SAK</SccProvider>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
+    <SccProjectName>
+    </SccProjectName>
+    <SccProvider>
+    </SccProvider>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccLocalPath>
+    </SccLocalPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <OutputPath>.\sql\release\</OutputPath>
@@ -58,14 +62,25 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Dev' ">
     <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
-    <TargetConnectionString>Data Source=.\SQLEXPRESS;Integrated Security=True;Pooling=False</TargetConnectionString>
+    <TargetConnectionString>Data Source=osql1.olive.local;Integrated Security=True;Pooling=False</TargetConnectionString>
     <TargetDatabase>Olive</TargetDatabase>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <SuppressWarnings />
-    <DeploymentConfigFile>Properties\DevServer.sqldeployment</DeploymentConfigFile>
-    <SqlCommandVariablesFile>Properties\DevServer.sqlcmdvars</SqlCommandVariablesFile>
+    <DeploymentConfigFile>Properties\Beta.sqldeployment</DeploymentConfigFile>
+    <SqlCommandVariablesFile>Properties\Beta.sqlcmdvars</SqlCommandVariablesFile>
     <DeployToDatabase>True</DeployToDatabase>
     <OutputPath>.\sql\Dev\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Beta' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetConnectionString>Data Source=osql1.olive.local;Integrated Security=True;Pooling=False</TargetConnectionString>
+    <TargetDatabase>Olive</TargetDatabase>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <SuppressWarnings />
+    <DeploymentConfigFile>Properties\Beta.sqldeployment</DeploymentConfigFile>
+    <SqlCommandVariablesFile>Properties\Beta.sqlcmdvars</SqlCommandVariablesFile>
+    <DeployToDatabase>True</DeployToDatabase>
+    <OutputPath>.\sql\Beta\</OutputPath>
   </PropertyGroup>
   <!--Import the settings-->
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\TeamData\Microsoft.Data.Schema.SqlTasks.targets" />
@@ -203,6 +218,12 @@
       <SubType>PropertiesFile</SubType>
     </PropertiesFile>
     <PropertiesFile Include="Properties\DevServer.sqlcmdvars">
+      <SubType>PropertiesFile</SubType>
+    </PropertiesFile>
+    <PropertiesFile Include="Properties\Beta.sqldeployment">
+      <SubType>PropertiesFile</SubType>
+    </PropertiesFile>
+    <PropertiesFile Include="Properties\Beta.sqlcmdvars">
       <SubType>PropertiesFile</SubType>
     </PropertiesFile>
   </ItemGroup>
@@ -373,6 +394,27 @@
       <SubType>Code</SubType>
     </Build>
     <Build Include="Schema Objects\Schemas\Bitcoin\Programmability\Stored Procedures\GetLastProcessedTransationId.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Banking\Tables\SpecialAccount.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Banking\Programmability\Functions\GetSpecialAccount.function.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Banking\Tables\Keys\SpecialAccount.FK_SpecialAccount_Account.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Banking\Tables\Keys\SpecialAccount.PK_SpecialAccount.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Bitcoin\Tables\AccountReceiveAddress.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Bitcoin\Programmability\Functions\GetAccountReceiveAddress.function.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Bitcoin\Programmability\Stored Procedures\SetAccountReceiveAddress.proc.sql">
       <SubType>Code</SubType>
     </Build>
   </ItemGroup>

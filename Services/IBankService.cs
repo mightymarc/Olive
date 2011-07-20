@@ -63,6 +63,9 @@ namespace Olive.Services
         [OperationContract]
         int CreateCurrentAccount(Guid sessionId, string currencyId, string displayName);
 
+        [OperationContract]
+        int GetSpecialAccountId(string name);
+
         /// <summary>
         /// The create transfer.
         /// </summary>

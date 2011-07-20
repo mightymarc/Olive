@@ -41,11 +41,15 @@ namespace Olive.Bitcoin.BitcoinSync
 {
     using System;
     using System.Net;
+    using System.ServiceModel;
+    using System.ServiceModel.Channels;
+    using System.Threading;
 
     using log4net;
     using log4net.Config;
 
     using Microsoft.Practices.Unity;
+    using Microsoft.Practices.Unity.Configuration;
 
     using Olive.Bitcoin.BitcoinSync.Properties;
     using Olive.DataAccess;
@@ -67,14 +71,27 @@ namespace Olive.Bitcoin.BitcoinSync
         public Program()
         {
             Console.SetBufferSize(200, 500);
-            Console.SetWindowSize(200, 70);
+            ////Console.SetWindowSize(200, 70);
 
             XmlConfigurator.Configure();
             this.logger = LogManager.GetLogger(typeof(Program));
 
-            this.container = new UnityContainer();
+            this.container = new UnityContainer().LoadConfiguration();
+
             this.container.RegisterInstance<ILog>(this.logger);
-            var clientService = new ClientService { Container = this.container };
+
+            this.container.RegisterInstance<ICrypto>(new Crypto());
+            this.container.RegisterInstance<IFaultFactory>(new FaultFactory());
+
+#if Dev
+            var clientService = new ClientService();
+            this.container.BuildUp(clientService);
+#else
+            var clientService = new ChannelFactory<IClientService>("OliveService").CreateChannel();
+#endif
+
+            this.container.RegisterInstance(clientService);
+
             this.container.RegisterType<IOliveContext, OliveContext>();
             this.container.RegisterInstance<IBitcoinService>(clientService);
 
@@ -83,26 +100,42 @@ namespace Olive.Bitcoin.BitcoinSync
             this.container.RegisterInstance<IRpcClient>(new RpcClient
                 {
                     Credential = rpcCredential, 
-                    Hostname = this.settings.BitcoinDaemonHostname, 
+                    Hostname = "oapp1.olive.local",//// this.settings.BitcoinDaemonHostname, 
                     PortNumber = this.settings.BitconDaemonPort
                 });
 
             Console.WriteLine("Bitcoin Sync");
             Console.WriteLine();
 
-#if !DEBUG
+
+            while (true)
+            {
+#if !Dev
             try
             {
 #endif
                 this.ProcessIncomingTransactions();
-#if !DEBUG
+                this.GenerateReceiveAddresses();
+#if !Dev
             }
             catch (Exception e)
             {
                 this.logger.Error("Unhandled exception: ", e);   
             }
 #endif
+
+                Thread.Sleep(5 * 1000);
+            }
+
             Console.ReadLine();
+        }
+
+        private void GenerateReceiveAddresses()
+        {
+            var generator = new ReceiveAddressGenerator();
+            this.container.BuildUp(generator);
+
+            generator.Process();
         }
 
         private void ProcessIncomingTransactions()

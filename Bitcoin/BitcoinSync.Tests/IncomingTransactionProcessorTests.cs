@@ -154,13 +154,13 @@ namespace BitcoinSync.Tests
 
             var mockService = new Mock<IBitcoinService>(MockBehavior.Strict);
             mockService.Setup(s => s.TransactionIsProcessed(transaction.TransactionId)).Returns(false);
-            mockService.Setup(s => s.CreditTransactionWithHold(accountId, transaction.TransactionId, transaction.Amount));
+            mockService.Setup(s => s.CreditTransactionWithHold(accountId, transaction.TransactionId, transaction.Amount, "BTC"));
             mockService.Setup(s => s.ReleaseTransactionHold(transaction.TransactionId));
             container.RegisterInstance(mockService.Object);
 
             var mockRpcClient = new Mock<IRpcClient>(MockBehavior.Strict);
 
-            mockRpcClient.Setup(r => r.Move(transaction.Account, "IncomingBitcoinBTC", transaction.Amount, 1, null));
+            mockRpcClient.Setup(r => r.Move(transaction.Account, "BitcoinSyncBTC", transaction.Amount, 1, null));
             container.RegisterInstance(mockRpcClient.Object);
 
             var processor = new Mock<IncomingTransactionProcessor>() { CallBase = true };
@@ -171,9 +171,9 @@ namespace BitcoinSync.Tests
 
             // Assert
             mockService.Verify(s => s.TransactionIsProcessed(transaction.TransactionId), Times.Once());
-            mockService.Verify(s => s.CreditTransactionWithHold(accountId, transaction.TransactionId, transaction.Amount), Times.Once());
+            mockService.Verify(s => s.CreditTransactionWithHold(accountId, transaction.TransactionId, transaction.Amount, "BTC"), Times.Once());
             mockService.Verify(s => s.ReleaseTransactionHold(transaction.TransactionId), Times.Once());
-            mockRpcClient.Verify(r => r.Move(transaction.Account, "IncomingBitcoinBTC", transaction.Amount, 1, null), Times.Once());
+            mockRpcClient.Verify(r => r.Move(transaction.Account, "BitcoinSyncBTC", transaction.Amount, 1, null), Times.Once());
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace BitcoinSync.Tests
 
             mockService.Setup(s => s.GetLastProcessedTransactionId()).Returns(lastTransactionId);
             mockService.Setup(s => s.TransactionIsProcessed(transactionId)).Returns(false);
-            mockService.Setup(s => s.CreditTransactionWithHold(accountId, transactionId, amount));
+            mockService.Setup(s => s.CreditTransactionWithHold(accountId, transactionId, amount, "BTC"));
             mockService.Setup(s => s.ReleaseTransactionHold(transactionId));
 
             Console.WriteLine("Processing transaction log. Mocking will prevent anything but #" + transactionId + " from being processed.");
@@ -237,7 +237,7 @@ namespace BitcoinSync.Tests
             // Assert
             mockService.Verify(s => s.GetLastProcessedTransactionId());
             mockService.Verify(s => s.TransactionIsProcessed(transactionId));
-            mockService.Verify(s => s.CreditTransactionWithHold(accountId, transactionId, amount));
+            mockService.Verify(s => s.CreditTransactionWithHold(accountId, transactionId, amount, "BTC"));
             mockService.Verify(s => s.ReleaseTransactionHold(transactionId));
         }
     }

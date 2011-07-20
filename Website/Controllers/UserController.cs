@@ -93,7 +93,7 @@ namespace Olive.Website.Controllers
                     {
                         return this.RedirectToAction(string.Empty, "Account");
                     }
-
+                      
                     return new RedirectResult(model.ReturnUrl);
                 }
                 catch (FaultException fe)

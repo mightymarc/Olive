@@ -39,6 +39,7 @@
 
 namespace Olive.Services
 {
+    using System.Collections.Generic;
     using System.ServiceModel;
 
     // TODO: Write code contract
@@ -52,9 +53,23 @@ namespace Olive.Services
         bool TransactionIsProcessed(string transactionId);
 
         [OperationContract]
-        void CreditTransactionWithHold(int accountId, string transactionId, decimal amount);
+        void CreditTransactionWithHold(int accountId, string transactionId, decimal amount, string currencyId);
 
         [OperationContract]
         void ReleaseTransactionHold(string transactionId);
+
+        [OperationContract]
+        void SetAccountReceiveAddress(int accountId, string receiveAddress);
+
+        [OperationContract]
+        string GetAccountReceiveAddress(int accountId);
+
+        /// <summary>
+        /// Gets the accounts without receive address, excluding special accounts.
+        /// </summary>
+        /// <param name="currencyId">The currency id.</param>
+        /// <returns>The account identifiers of the accounts.</returns>
+        [OperationContract]
+        List<int> GetAccountsWithoutReceiveAddress(string currencyId);
     }
 }

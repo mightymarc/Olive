@@ -65,6 +65,9 @@ namespace Olive.Services
         [Dependency]
         public virtual IUnityContainer Container { get; set; }
 
+        [Dependency]
+        public virtual ICrypto Crypto { get; set; }
+
         /// <summary>
         ///   Gets or sets FaultFactory.
         /// </summary>
@@ -74,15 +77,9 @@ namespace Olive.Services
         /// <summary>
         /// The create current account.
         /// </summary>
-        /// <param name="sessionId">
-        /// The session id.
-        /// </param>
-        /// <param name="currencyId">
-        /// The currency id.
-        /// </param>
-        /// <param name="displayName">
-        /// The display name.
-        /// </param>
+        /// <param name="sessionId">The session id.</param>
+        /// <param name="currencyId">The currency id.</param>
+        /// <param name="displayName">The display name.</param>
         /// <returns>
         /// The create current account.
         /// </returns>
@@ -102,22 +99,33 @@ namespace Olive.Services
         }
 
         /// <summary>
+        /// Gets the special account id.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        public int GetSpecialAccountId(string name)
+        {
+            using (var context = this.GetContext())
+            {
+                return context.GetSpecialAccountId(name);
+            }
+        }
+
+        /// <summary>
         /// The create session.
         /// </summary>
-        /// <param name="email">
-        /// The email.
-        /// </param>
-        /// <param name="password">
-        /// The password.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="email">The email.</param>
+        /// <param name="password">The password.</param>
+        /// <returns></returns>
         /// <exception cref="FaultException">
-        /// </exception>
+        ///   </exception>
+        ///   
         /// <exception cref="FaultException">
-        /// </exception>
+        ///   </exception>
         public Guid CreateSession(string email, string password)
         {
+            Contract.Requires(this.FaultFactory != null, "FaultFactory dependency not resolved.");
+
             using (var context = this.GetContext())
             {
                 var salt =
@@ -129,9 +137,7 @@ namespace Olive.Services
                     throw this.FaultFactory.CreateUnrecognizedCredentialsException(email);
                 }
 
-                var crypto = this.Container.Resolve<ICrypto>();
-
-                var hash = crypto.GenerateHash(password, salt);
+                var hash = this.Crypto.GenerateHash(password, salt);
 
                 try
                 {
@@ -147,28 +153,19 @@ namespace Olive.Services
         /// <summary>
         /// The create transfer.
         /// </summary>
-        /// <param name="sessionId">
-        /// The session id.
-        /// </param>
-        /// <param name="sourceAccountId">
-        /// The source account id.
-        /// </param>
-        /// <param name="destAccountId">
-        /// The dest account id.
-        /// </param>
-        /// <param name="amount">
-        /// The amount.
-        /// </param>
-        /// <param name="description">
-        /// The description.
-        /// </param>
+        /// <param name="sessionId">The session id.</param>
+        /// <param name="sourceAccountId">The source account id.</param>
+        /// <param name="destAccountId">The dest account id.</param>
+        /// <param name="amount">The amount.</param>
+        /// <param name="description">The description.</param>
         /// <returns>
         /// The create transfer.
         /// </returns>
         /// <exception cref="FaultException">
-        /// </exception>
+        ///   </exception>
+        ///   
         /// <exception cref="FaultException">
-        /// </exception>
+        ///   </exception>
         public long CreateTransfer(
             Guid sessionId, int sourceAccountId, int destAccountId, decimal amount, string description)
         {
@@ -216,10 +213,8 @@ namespace Olive.Services
                     throw this.FaultFactory.CreateEmailAlreadyRegisteredFaultException(email);
                 }
 
-                var crypto = this.Container.Resolve<ICrypto>();
-
-                var salt = crypto.CreateSalt(64);
-                var hash = crypto.GenerateHash(password, salt);
+                var salt = this.Crypto.CreateSalt(64);
+                var hash = this.Crypto.GenerateHash(password, salt);
 
                 var user = new User { PasswordHash = hash, PasswordSalt = salt, Email = email };
                 context.Users.Add(user);
@@ -232,21 +227,17 @@ namespace Olive.Services
         /// <summary>
         /// The edit current account.
         /// </summary>
-        /// <param name="sessionId">
-        /// The session id.
-        /// </param>
-        /// <param name="accountId">
-        /// The account id.
-        /// </param>
-        /// <param name="displayName">
-        /// The display name.
-        /// </param>
+        /// <param name="sessionId">The session id.</param>
+        /// <param name="accountId">The account id.</param>
+        /// <param name="displayName">The display name.</param>
         /// <exception cref="FaultException">
-        /// </exception>
+        ///   </exception>
+        ///   
         /// <exception cref="FaultException">
-        /// </exception>
+        ///   </exception>
+        ///   
         /// <exception cref="FaultException">
-        /// </exception>
+        ///   </exception>
         public void EditCurrentAccount(Guid sessionId, int accountId, string displayName)
         {
             var userId = default(int);
@@ -461,10 +452,11 @@ namespace Olive.Services
         /// </returns>
         private IOliveContext GetContext()
         {
-            Contract.Requires(this.Container != null);
             Contract.Ensures(Contract.Result<IOliveContext>() != null);
 
-            return this.Container.Resolve<IOliveContext>();
+            var context = this.Container.Resolve<IOliveContext>();
+
+            return context;
         }
 
         /// <summary>
@@ -512,7 +504,7 @@ namespace Olive.Services
             }
         }
 
-        public void CreditTransactionWithHold(int accountId, string transactionId, decimal amount)
+        public void CreditTransactionWithHold(int accountId, string transactionId, decimal amount, string currencyId)
         {
             var holdReason = "Hold for Bitcoin incoming transaction #" + transactionId;
 
@@ -520,8 +512,13 @@ namespace Olive.Services
             {
                 using (var scope = new TransactionScope())
                 {
-                    var accountHoldId = context.CreateAccountHold(amount, holdReason, default(DateTime?));
-                    context.CreditTransaction(transactionId, accountId, accountHoldId, amount);
+                    var sourceAccountId = context.GetSpecialAccountId("BitcoinSyncIncoming" + currencyId);
+                    var destAccount = context.Accounts.FirstOrDefault(x => x.AccountId == accountId);
+
+                    context.CreateTransfer(sourceAccountId, destAccount.AccountId, "Bitcoin " + transactionId, amount);
+                    var accountHoldId = context.CreateAccountHold(accountId, amount, holdReason, default(DateTime?));
+                    context.CreateTransaction(transactionId, accountId, accountHoldId, amount);
+
                     scope.Complete();
                 }
             }
@@ -532,7 +529,41 @@ namespace Olive.Services
             using (var context = this.GetContext())
             {
                 var transaction = context.BitcoinTransactions.FirstOrDefault(x => x.TransactionId == transactionId);
+
+                if (transaction == null)
+                {
+                    throw new Exception(string.Format("The specified transaction, #{0} was not found.", transactionId));
+                }
+
                 context.ReleaseAccountHold(transaction.AccountHoldId.Value);
+            }
+        }
+
+        public void SetAccountReceiveAddress(int accountId, string receiveAddress)
+        {
+            using (var context = this.GetContext())
+            {
+                context.SetAccountReceiveAddress(accountId, receiveAddress);
+            }
+        }
+
+        public string GetAccountReceiveAddress(int accountId)
+        {
+            using (var context = this.GetContext())
+            {
+                return context.GetAccountReceiveAddress(accountId);
+            }
+        }
+
+        public List<int> GetAccountsWithoutReceiveAddress(string currencyId)
+        {
+            using (var context = this.GetContext())
+            {
+                return
+                    context.Accounts.Where(
+                        a =>
+                        a.AccountType != "Special" && a.CurrencyId == currencyId
+                        && a.BitcoinAccountReceiveAddress == null || a.BitcoinAccountReceiveAddress.ReceiveAddress == null).Select(a => a.AccountId).ToList();
             }
         }
     }
