@@ -170,6 +170,7 @@ namespace Olive.DataAccess
             modelBuilder.Configurations.Add(new EntityConfigurations.SessionConfiguration());
             modelBuilder.Configurations.Add(new EntityConfigurations.TransferConfiguration());
             modelBuilder.Configurations.Add(new EntityConfigurations.UserConfiguration());
+            modelBuilder.Configurations.Add(new EntityConfigurations.RoleConfiguration());
         }
     }
 }

@@ -76,9 +76,9 @@
     <TargetDatabase>master</TargetDatabase>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <SuppressWarnings />
-    <SqlCommandVariablesFile>Properties\BetaMaster.sqlcmdvars</SqlCommandVariablesFile>
+    <SqlCommandVariablesFile>Properties\Beta.sqlcmdvars</SqlCommandVariablesFile>
     <DeployToDatabase>True</DeployToDatabase>
-    <DeploymentConfigFile>Properties\BetaMaster.sqldeployment</DeploymentConfigFile>
+    <DeploymentConfigFile>Properties\Beta.sqldeployment</DeploymentConfigFile>
     <OutputPath>.\sql\Beta\</OutputPath>
   </PropertyGroup>
   <!--Import the settings-->
@@ -101,7 +101,6 @@
     <Folder Include="Schema Objects\Server Level Objects\Security\Event Sessions\" />
     <Folder Include="Schema Objects\Server Level Objects\Security\Server Audit\" />
     <Folder Include="Schema Objects\Server Level Objects\Security\Server Audit Specification\" />
-    <Folder Include="Schema Objects\Server Level Objects\Security\Logins\" />
     <Folder Include="Schema Objects\Server Level Objects\Service Broker\" />
     <Folder Include="Schema Objects\Server Level Objects\Service Broker\Endpoints\" />
     <Folder Include="Schema Objects\Server Level Objects\Programmability\" />
@@ -137,6 +136,7 @@
     <Folder Include="Schema Objects\Database Level Objects\Storage\Full Text Catalogs\" />
     <Folder Include="Schema Objects\Database Level Objects\Storage\Partition Functions\" />
     <Folder Include="Schema Objects\Database Level Objects\Storage\Partition Schemes\" />
+    <Folder Include="Schema Objects\Server Level Objects\Security\Event Sessions\Logins" />
   </ItemGroup>
   <ItemGroup>
     <PropertiesFile Include="Properties\Master.sqlsettings">
@@ -156,30 +156,12 @@
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql">
       <SubType>Code</SubType>
     </PostDeploy>
-    <PropertiesFile Include="Properties\DevMaster.sqlcmdvars">
-      <SubType>PropertiesFile</SubType>
-    </PropertiesFile>
-    <PropertiesFile Include="Properties\BetaMaster.sqlcmdvars">
-      <SubType>PropertiesFile</SubType>
-    </PropertiesFile>
-    <PropertiesFile Include="Properties\BetaMaster.sqldeployment">
-      <SubType>PropertiesFile</SubType>
-    </PropertiesFile>
   </ItemGroup>
   <ItemGroup>
     <BuildContributorArgument Include="OutDir=$(OutDir)" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Schema Objects\Server Level Objects\Security\Logins\sa.login.sql">
-      <SubType>Code</SubType>
-    </Build>
-    <Build Include="Schema Objects\Server Level Objects\Security\Logins\NT AUTHORITY_SYSTEM.login.sql">
-      <SubType>Code</SubType>
-    </Build>
-    <Build Include="Schema Objects\Server Level Objects\Security\Logins\BUILTIN_Users.login.sql">
-      <SubType>Code</SubType>
-    </Build>
-    <Build Include="Schema Objects\Database Level Objects\Security\Roles\Database Roles\ServiceRole.role.sql">
+    <Build Include="Schema Objects\Database Level Objects\Security\Roles\Database Roles\ClientService.role.sql">
       <SubType>Code</SubType>
     </Build>
     <Build Include="Schema Objects\Database Level Objects\Service Broker\Routes\AutoCreatedLocal.route.sql">

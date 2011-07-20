@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IFaultFactory.cs" company="Olive">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Account.cs" company="Olive">
 //   Microsoft Public License (Ms-PL)
 //
 //    This license governs use of the accompanying software. If you use the software, you accept this license. If you do not accept the license, do not use the software.
@@ -32,87 +32,29 @@
 //    
 //    (E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties of merchantability, fitness for a particular purpose and non-infringement.
 // </copyright>
-// <summary>
-//   The i fault factory.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Olive.Services
+namespace Olive.DataAccess.Domain
 {
-    using System;
-    using System.ServiceModel;
+    using System.Collections.Generic;
 
     /// <summary>
-    /// The i fault factory.
+    /// Role
     /// </summary>
-    public interface IFaultFactory
+    public class Role
     {
-        /// <summary>
-        /// The create email already registered fault exception.
-        /// </summary>
-        /// <param name="email">The email.</param>
-        /// <returns></returns>
-        FaultException CreateEmailAlreadyRegisteredFaultException(string email);
 
         /// <summary>
-        /// The create session does not exist fault exception.
+        /// Gets or sets the role id.
         /// </summary>
-        /// <param name="sessionId">
-        /// The session id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        FaultException CreateSessionDoesNotExistFaultException(Guid sessionId);
+        /// <value>
+        /// The role id.
+        /// </value>
+        public string RoleId { get; set; }
 
         /// <summary>
-        /// The create unauthorized account access fault exception.
+        ///   Gets or sets the users who have this role.
         /// </summary>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="accountId">
-        /// The account id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        FaultException CreateUnauthorizedAccountAccessFaultException(int userId, int accountId);
-
-        /// <summary>
-        /// The create unauthorized account edit fault exception.
-        /// </summary>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="accountId">
-        /// The account id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        FaultException CreateUnauthorizedAccountEditFaultException(int userId, int accountId);
-
-        /// <summary>
-        /// The create unauthorized account withdraw fault exception.
-        /// </summary>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="accountId">
-        /// The account id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        FaultException CreateUnauthorizedAccountWithdrawFaultException(int userId, int accountId);
-
-        /// <summary>
-        /// The create unrecognized credentials exception.
-        /// </summary>
-        /// <param name="email">
-        /// The email.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        FaultException CreateUnrecognizedCredentialsException(string email);
-
-        FaultException CreateUnauthorizedFeatureAccessFaultException();
+        public virtual ICollection<User> Users { get; set; }
     }
 }

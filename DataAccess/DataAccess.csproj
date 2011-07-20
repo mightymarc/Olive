@@ -198,11 +198,13 @@
     <Compile Include="AuthenticationException.cs" />
     <Compile Include="Domain\BitcoinTransaction.cs" />
     <Compile Include="Domain\BitcoinAccountReceiveAddress.cs" />
+    <Compile Include="Domain\Role.cs" />
     <Compile Include="EntityConfigurations\AccountConfiguration.cs" />
     <Compile Include="EntityConfigurations\AccountUserConfiguration.cs" />
     <Compile Include="EntityConfigurations\BitcoinAccountReceiveAddressConfiguration.cs" />
     <Compile Include="EntityConfigurations\BitcoinTransactionConfiguration.cs" />
     <Compile Include="EntityConfigurations\AccountWithBalanceConfiguration.cs" />
+    <Compile Include="EntityConfigurations\RoleConfiguration.cs" />
     <Compile Include="EntityConfigurations\SessionConfiguration.cs" />
     <Compile Include="EntityConfigurations\CurrencyConfiguration.cs" />
     <Compile Include="EntityConfigurations\UserConfiguration.cs" />

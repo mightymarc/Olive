@@ -1,0 +1,4 @@
+﻿CREATE TABLE [Auth].[Role]
+(
+	RoleId VARCHAR(50) NOT NULL
+);

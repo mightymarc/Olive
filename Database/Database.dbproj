@@ -417,6 +417,27 @@
     <Build Include="Schema Objects\Schemas\Bitcoin\Programmability\Stored Procedures\SetAccountReceiveAddress.proc.sql">
       <SubType>Code</SubType>
     </Build>
+    <Build Include="Schema Objects\Schemas\Auth\Tables\Role.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Auth\Tables\Keys\Role.PK_Role.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Auth\Tables\RoleUser.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Auth\Tables\Keys\RoleUser.PK_RoleUser.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Auth\Tables\Keys\RoleUser.FK_RoleUser_User.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Auth\Tables\Keys\RoleUser.FK_RoleUser_Role.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Database Level Objects\Security\Roles\Database Roles\ClientService.role.sql">
+      <SubType>Code</SubType>
+    </Build>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatabaseServer\DatabaseServer.dbproj">

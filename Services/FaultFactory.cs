@@ -59,16 +59,31 @@ namespace Olive.Services
             UnauthorizedAccountWithdrawFaultCode = new FaultCode("UnauthorizedAccountWithdraw");
             SessionDoesNotExistFaultCode = new FaultCode("SessionDoesNotExist");
             UnauthorizedAccountAccessFaultCode = new FaultCode("UnauthorizedAccountAccess");
+            UnauthorizedFeatureAccessFaultCode = new FaultCode("UnauthorizedFeatureAccessFaultCode");
         }
 
         /// <summary>
-        ///   Gets or sets EmailAlreadyRegisteredFaultCode.
+        /// Gets or sets the unauthorized feature access fault code.
         /// </summary>
+        /// <value>
+        /// The unauthorized feature access fault code.
+        /// </value>
+        public static FaultCode UnauthorizedFeatureAccessFaultCode { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the email already registered fault code.
+        /// </summary>
+        /// <value>
+        /// The email already registered fault code.
+        /// </value>
         public static FaultCode EmailAlreadyRegisteredFaultCode { get; protected set; }
 
         /// <summary>
-        ///   Gets or sets SessionDoesNotExistFaultCode.
+        /// Gets or sets the session does not exist fault code.
         /// </summary>
+        /// <value>
+        /// The session does not exist fault code.
+        /// </value>
         public static FaultCode SessionDoesNotExistFaultCode { get; protected set; }
 
         /// <summary>
@@ -196,6 +211,15 @@ namespace Olive.Services
             return new FaultException(
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, email)), 
                 UnrecognizedCredentialsFaultCode);
+        }
+
+        public FaultException CreateUnauthorizedFeatureAccessFaultException()
+        {
+            const string ReasonFormat = "The specified account does not have access to this feature.";
+
+            return new FaultException(
+                new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat)),
+                UnauthorizedFeatureAccessFaultCode);
         }
     }
 }

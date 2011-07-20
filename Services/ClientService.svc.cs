@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Olive.svc.cs" company="Olive">
 //   Microsoft Public License (Ms-PL)
 //
@@ -73,6 +73,7 @@ namespace Olive.Services
         /// </summary>
         [Dependency]
         public IFaultFactory FaultFactory { get; set; }
+
 
         /// <summary>
         /// The create current account.
@@ -150,6 +151,14 @@ namespace Olive.Services
             }
         }
 
+        private bool UserHasRole(int userId, string roleId)
+        {
+            using (var context = this.GetContext())
+            {
+                return context.Users.Find(userId).Roles.Any(r => r.RoleId == roleId);
+            }
+        }
+
         /// <summary>
         /// The create transfer.
         /// </summary>
@@ -175,7 +184,9 @@ namespace Olive.Services
 
             using (var context = this.GetContext())
             {
-                var hasAccess = this.UserCanWithdrawFromAccount(userId, sourceAccountId);
+                var isAdmin = this.UserHasRole(userId, "Admin");
+                var hasAccess = isAdmin || this.UserCanWithdrawFromAccount(userId, sourceAccountId);
+                hasAccess &= isAdmin || this.UserCanDepositToAccount(userId, destAccountId);
 
                 if (!hasAccess)
                 {
@@ -253,7 +264,7 @@ namespace Olive.Services
 
             using (var context = this.GetContext())
             {
-                var hasAccess = this.UserCanEditAccount(userId, accountId);
+                var hasAccess = this.UserHasRole(userId, "Admin") || this.UserCanEditAccount(userId, accountId);
 
                 if (!hasAccess)
                 {
@@ -307,7 +318,7 @@ namespace Olive.Services
 
             using (var context = this.GetContext())
             {
-                var hasAccess = this.UserCanViewAccount(userId, accountId);
+                var hasAccess = this.UserHasRole(userId, "Admin") || this.UserCanViewAccount(userId, accountId);
 
                 if (!hasAccess)
                 {
@@ -445,6 +456,14 @@ namespace Olive.Services
             }
         }
 
+        public virtual bool UserCanDepositToAccount(int userId, int accountId)
+        {
+            using (var context = this.GetContext())
+            {
+                return context.Users.Find(userId).AccountAccess.Any(x => x.CanDeposit && x.AccountId == accountId);
+            }
+        }
+
         /// <summary>
         /// The get context.
         /// </summary>
@@ -488,28 +507,53 @@ namespace Olive.Services
             }
         }
 
-        public string GetLastProcessedTransactionId()
+        public string GetLastProcessedTransactionId(Guid sessionId)
         {
             using (var context = this.GetContext())
             {
+                var userId = this.VerifySession(sessionId);
+                var hasAccess = this.UserHasRole(userId, "BitcoinSync");
+
+                if (!hasAccess)
+                {
+                    throw this.FaultFactory.CreateUnauthorizedFeatureAccessFaultException();
+                }
+
+
                 return context.GetLastProcessedTransactionId();
             }
         }
 
-        public bool TransactionIsProcessed(string transactionId)
+        public bool TransactionIsProcessed(Guid sessionId, string transactionId)
         {
             using (var context = this.GetContext())
             {
+                var userId = this.VerifySession(sessionId);
+                var hasAccess = this.UserHasRole(userId, "BitcoinSync");
+
+                if (!hasAccess)
+                {
+                    throw this.FaultFactory.CreateUnauthorizedFeatureAccessFaultException();
+                }
+
                 return context.BitcoinTransactionIsProcessed(transactionId);
             }
         }
 
-        public void CreditTransactionWithHold(int accountId, string transactionId, decimal amount, string currencyId)
+        public void CreditTransactionWithHold(Guid sessionId, int accountId, string transactionId, decimal amount, string currencyId)
         {
             var holdReason = "Hold for Bitcoin incoming transaction #" + transactionId;
 
             using (var context = this.GetContext())
             {
+                var userId = this.VerifySession(sessionId);
+                var hasAccess = this.UserHasRole(userId, "BitcoinSync");
+
+                if (!hasAccess)
+                {
+                    throw this.FaultFactory.CreateUnauthorizedFeatureAccessFaultException();
+                }
+
                 using (var scope = new TransactionScope())
                 {
                     var sourceAccountId = context.GetSpecialAccountId("BitcoinSyncIncoming" + currencyId);
@@ -524,10 +568,18 @@ namespace Olive.Services
             }
         }
 
-        public void ReleaseTransactionHold(string transactionId)
+        public void ReleaseTransactionHold(Guid sessionId, string transactionId)
         {
             using (var context = this.GetContext())
             {
+                var userId = this.VerifySession(sessionId);
+                var hasAccess = this.UserHasRole(userId, "BitcoinSync");
+
+                if (!hasAccess)
+                {
+                    throw this.FaultFactory.CreateUnauthorizedFeatureAccessFaultException();
+                }
+
                 var transaction = context.BitcoinTransactions.FirstOrDefault(x => x.TransactionId == transactionId);
 
                 if (transaction == null)
@@ -539,26 +591,51 @@ namespace Olive.Services
             }
         }
 
-        public void SetAccountReceiveAddress(int accountId, string receiveAddress)
+        public void SetAccountReceiveAddress(Guid sessionId, int accountId, string receiveAddress)
         {
             using (var context = this.GetContext())
             {
+                var userId = this.VerifySession(sessionId);
+                var hasAccess = this.UserHasRole(userId, "BitcoinSync");
+
+                if (!hasAccess)
+                {
+                    throw this.FaultFactory.CreateUnauthorizedFeatureAccessFaultException();
+                }
+
                 context.SetAccountReceiveAddress(accountId, receiveAddress);
             }
         }
 
-        public string GetAccountReceiveAddress(int accountId)
+        public string GetAccountReceiveAddress(Guid sessionId, int accountId)
         {
             using (var context = this.GetContext())
             {
+                var userId = this.VerifySession(sessionId);
+                var hasAccess = this.UserHasRole(userId, "BitcoinSync") || this.UserHasRole(userId, "Admin")
+                                || this.UserCanViewAccount(userId, accountId);
+
+                if (!hasAccess)
+                {
+                    throw this.FaultFactory.CreateUnauthorizedFeatureAccessFaultException();
+                }
+
                 return context.GetAccountReceiveAddress(accountId);
             }
         }
 
-        public List<int> GetAccountsWithoutReceiveAddress(string currencyId)
+        public List<int> GetAccountsWithoutReceiveAddress(Guid sessionId, string currencyId)
         {
             using (var context = this.GetContext())
             {
+                var userId = this.VerifySession(sessionId);
+                var hasAccess = this.UserHasRole(userId, "BitcoinSync");
+
+                if (!hasAccess)
+                {
+                    throw this.FaultFactory.CreateUnauthorizedFeatureAccessFaultException();
+                }
+
                 return
                     context.Accounts.Where(
                         a =>

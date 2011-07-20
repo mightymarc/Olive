@@ -1,0 +1,3 @@
+﻿ALTER TABLE [Auth].[Role]
+	ADD CONSTRAINT [PK_Role]
+	PRIMARY KEY (RoleId);

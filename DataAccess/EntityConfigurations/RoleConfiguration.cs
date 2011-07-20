@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IFaultFactory.cs" company="Olive">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="RoleConfiguration.cs" company="Olive">
 //   Microsoft Public License (Ms-PL)
 //
 //    This license governs use of the accompanying software. If you use the software, you accept this license. If you do not accept the license, do not use the software.
@@ -33,86 +33,39 @@
 //    (E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties of merchantability, fitness for a particular purpose and non-infringement.
 // </copyright>
 // <summary>
-//   The i fault factory.
+//   Model configuration for the Role entity.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Olive.Services
+namespace Olive.DataAccess.EntityConfigurations
 {
     using System;
-    using System.ServiceModel;
+    using System.Collections.Generic;
+    using System.Data.Entity.ModelConfiguration;
+    using System.Linq;
+    using System.Text;
+
+    using Olive.DataAccess.Domain;
 
     /// <summary>
-    /// The i fault factory.
+    /// Model configuration for the Role entity.
     /// </summary>
-    public interface IFaultFactory
+    public class RoleConfiguration : EntityTypeConfiguration<Role>
     {
         /// <summary>
-        /// The create email already registered fault exception.
+        /// Initializes a new instance of the <see cref="RoleConfiguration"/> class.
         /// </summary>
-        /// <param name="email">The email.</param>
-        /// <returns></returns>
-        FaultException CreateEmailAlreadyRegisteredFaultException(string email);
-
-        /// <summary>
-        /// The create session does not exist fault exception.
-        /// </summary>
-        /// <param name="sessionId">
-        /// The session id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        FaultException CreateSessionDoesNotExistFaultException(Guid sessionId);
-
-        /// <summary>
-        /// The create unauthorized account access fault exception.
-        /// </summary>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="accountId">
-        /// The account id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        FaultException CreateUnauthorizedAccountAccessFaultException(int userId, int accountId);
-
-        /// <summary>
-        /// The create unauthorized account edit fault exception.
-        /// </summary>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="accountId">
-        /// The account id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        FaultException CreateUnauthorizedAccountEditFaultException(int userId, int accountId);
-
-        /// <summary>
-        /// The create unauthorized account withdraw fault exception.
-        /// </summary>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="accountId">
-        /// The account id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        FaultException CreateUnauthorizedAccountWithdrawFaultException(int userId, int accountId);
-
-        /// <summary>
-        /// The create unrecognized credentials exception.
-        /// </summary>
-        /// <param name="email">
-        /// The email.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        FaultException CreateUnrecognizedCredentialsException(string email);
-
-        FaultException CreateUnauthorizedFeatureAccessFaultException();
+        public RoleConfiguration()
+        {
+            this.ToTable("Role", "Auth");
+            this.HasKey(m => m.RoleId);
+            this.HasMany(m => m.Users).WithMany(m => m.Roles).Map(
+                m =>
+                    {
+                        m.ToTable("RoleUser", "Auth");
+                        m.MapLeftKey("RoleId");
+                        m.MapRightKey("UserId");
+                    });
+        }
     }
 }

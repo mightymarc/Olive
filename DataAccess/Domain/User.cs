@@ -49,9 +49,20 @@ namespace Olive.DataAccess
     public class User
     {
         /// <summary>
-        ///   Gets or sets AccountAccess.
+        /// Gets or sets the  account access entries for this user.
         /// </summary>
+        /// <value>
+        /// The account access.
+        /// </value>
         public virtual ICollection<AccountUser> AccountAccess { get; set; }
+
+        /// <summary>
+        /// Gets or sets the roles.
+        /// </summary>
+        /// <value>
+        /// The roles.
+        /// </value>
+        public virtual ICollection<Role> Roles { get; set; }
 
         /// <summary>
         ///   Gets or sets the email.

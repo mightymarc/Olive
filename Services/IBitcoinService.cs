@@ -39,6 +39,7 @@
 
 namespace Olive.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.ServiceModel;
 
@@ -47,22 +48,22 @@ namespace Olive.Services
     public interface IBitcoinService
     {
         [OperationContract]
-        string GetLastProcessedTransactionId();
+        string GetLastProcessedTransactionId(Guid sessionId);
 
         [OperationContract]
-        bool TransactionIsProcessed(string transactionId);
+        bool TransactionIsProcessed(Guid sessionId, string transactionId);
 
         [OperationContract]
-        void CreditTransactionWithHold(int accountId, string transactionId, decimal amount, string currencyId);
+        void CreditTransactionWithHold(Guid sessionId, int accountId, string transactionId, decimal amount, string currencyId);
 
         [OperationContract]
-        void ReleaseTransactionHold(string transactionId);
+        void ReleaseTransactionHold(Guid sessionId, string transactionId);
 
         [OperationContract]
-        void SetAccountReceiveAddress(int accountId, string receiveAddress);
+        void SetAccountReceiveAddress(Guid sessionId, int accountId, string receiveAddress);
 
         [OperationContract]
-        string GetAccountReceiveAddress(int accountId);
+        string GetAccountReceiveAddress(Guid sessionId, int accountId);
 
         /// <summary>
         /// Gets the accounts without receive address, excluding special accounts.
@@ -70,6 +71,6 @@ namespace Olive.Services
         /// <param name="currencyId">The currency id.</param>
         /// <returns>The account identifiers of the accounts.</returns>
         [OperationContract]
-        List<int> GetAccountsWithoutReceiveAddress(string currencyId);
+        List<int> GetAccountsWithoutReceiveAddress(Guid sessionId, string currencyId);
     }
 }
