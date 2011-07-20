@@ -130,17 +130,14 @@ namespace Olive.DataAccess
         /// </summary>
         public IDbSet<User> Users { get; set; }
 
+        public IDbSet<BitcoinAccountReceiveAddress> BitcoinAccountReceiveAddresses { get; set; }
+
         /// <summary>
         /// Saves the changes.
         /// </summary>
         public new void SaveChanges()
         {
             base.SaveChanges();
-        }
-
-        public void ReleaseAccountHold(int accountHoldId)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -159,41 +156,16 @@ namespace Olive.DataAccess
 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            // dbo.AccountUser
-            modelBuilder.Entity<AccountUser>().ToTable("AccountUser", "Banking");
-            modelBuilder.Entity<AccountUser>().HasKey(e => new { e.AccountId, e.UserId });
-
-            // AccountUser.UserId -> User.UserId
-            modelBuilder.Entity<AccountUser>().HasRequired(m => m.User).WithMany(m => m.AccountAccess).HasForeignKey(
-                m => m.UserId);
-
-            // AccountUser.AccountId -> Account.AccountId
-            modelBuilder.Entity<AccountUser>().HasRequired(m => m.Account).WithMany(m => m.Users).HasForeignKey(
-                m => m.AccountId);
-
-            // Banking.Transfer
-            modelBuilder.Entity<Transfer>().ToTable("Transfer", "Banking");
-            modelBuilder.Entity<Transfer>().HasRequired(t => t.SourceAccount).WithMany(m => m.OutgoingTransfers).
-                HasForeignKey(m => m.SourceAccountId);
-            modelBuilder.Entity<Transfer>().HasRequired(t => t.DestAccount).WithMany(m => m.IncomingTransfers).
-                HasForeignKey(m => m.DestAccountId);
-
-            // dbo.User
-            modelBuilder.Entity<User>().ToTable("User", "dbo");
-
-            modelBuilder.Entity<Session>().ToTable("Session", "Auth");
-            modelBuilder.Entity<BitcoinTransaction>().ToTable("Transaction", "Bitcoin");
-            modelBuilder.Entity<BitcoinTransaction>().HasKey(c => c.TransactionId);
-
-            // dbo.Currency
-            modelBuilder.Entity<Currency>().ToTable("Currency", "dbo");
-            modelBuilder.Entity<Currency>().HasKey(c => c.CurrencyId);
-
-            // Banking.Account
-            modelBuilder.Entity<Account>().ToTable("Account", "Banking");
-            modelBuilder.Entity<Account>().Property(m => m.AccountType).HasColumnName("Type");
-
-            modelBuilder.Entity<AccountWithBalance>().ToTable("AccountWithBalance", "Banking");
+            // Can be done using reflection, see http://stackoverflow.com/questions/5718976/ef-4-1-rtm-entitytypeconfiguration
+            modelBuilder.Configurations.Add(new EntityConfigurations.AccountConfiguration());
+            modelBuilder.Configurations.Add(new EntityConfigurations.AccountUserConfiguration());
+            modelBuilder.Configurations.Add(new EntityConfigurations.AccountWithBalanceConfiguration());
+            modelBuilder.Configurations.Add(new EntityConfigurations.BitcoinAccountReceiveAddressConfiguration());
+            modelBuilder.Configurations.Add(new EntityConfigurations.BitcoinTransactionConfiguration());
+            modelBuilder.Configurations.Add(new EntityConfigurations.CurrencyConfiguration());
+            modelBuilder.Configurations.Add(new EntityConfigurations.SessionConfiguration());
+            modelBuilder.Configurations.Add(new EntityConfigurations.TransferConfiguration());
+            modelBuilder.Configurations.Add(new EntityConfigurations.UserConfiguration());
         }
     }
 }

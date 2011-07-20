@@ -168,10 +168,24 @@ namespace Olive.DataAccess
 
         bool BitcoinTransactionIsProcessed(string transactionId);
 
-        int CreateAccountHold(decimal amount, string holdReason, DateTime? expiresAt);
-
-        void CreditTransaction(string transactionId, int accountId, int accountHoldId, decimal amount);
+        /// <summary>
+        /// Creates the account hold.
+        /// </summary>
+        /// <param name="accountId">The account id.</param>
+        /// <param name="amount">The amount.</param>
+        /// <param name="holdReason">The hold reason.</param>
+        /// <param name="expiresAt">The expires at.</param>
+        /// <returns></returns>
+        int CreateAccountHold(int accountId, decimal amount, string holdReason, DateTime? expiresAt);
 
         void ReleaseAccountHold(int accountHoldId);
+
+        int GetSpecialAccountId(string name);
+
+        void CreateTransaction(string transactionId, int accountId, int accountHoldId, decimal amount);
+
+        void SetAccountReceiveAddress(int accountId, string receiveAddress);
+
+        string GetAccountReceiveAddress(int accountId);
     }
 }

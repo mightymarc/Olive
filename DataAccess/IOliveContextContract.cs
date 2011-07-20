@@ -288,19 +288,50 @@ namespace Olive.DataAccess
             return default(bool);
         }
 
-        public int CreateAccountHold(decimal amount, string holdReason, DateTime? expiresAt)
+        public int CreateAccountHold(int accountId, decimal amount, string holdReason, DateTime? expiresAt)
         {
-            throw new NotImplementedException();
+            return default(int);
         }
 
         public void CreditTransaction(string transactionId, int accountId, int accountHoldId, decimal amount)
         {
-            throw new NotImplementedException();
+            return;
         }
 
         public void ReleaseAccountHold(int accountHoldId)
         {
-            throw new NotImplementedException();
+            return;
+        }
+
+        public int GetSpecialAccountId(string name)
+        {
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(name), "name");
+            Contract.Ensures(Contract.Result<int>() > 0);
+            return default(int);
+        }
+
+        public void CreateTransaction(string transactionId, int accountId, int accountHoldId, decimal amount)
+        {
+            Contract.Requires<ArgumentNullException>(transactionId != null, "transactionId");
+            Contract.Requires<ArgumentException>(transactionId.Length == 64, "transactionId length");
+            Contract.Requires<ArgumentException>(accountId > 0, "accountId > 0");
+            Contract.Requires<ArgumentException>(accountHoldId > 0, "accountHoldId > 0");
+            Contract.Requires<ArgumentException>(amount > 0, "amount > 0");
+            return;
+        }
+
+        public void SetAccountReceiveAddress(int accountId, string receiveAddress)
+        {
+            Contract.Requires<ArgumentException>(accountId > 0, "accountId > 0");
+            Contract.Requires<ArgumentNullException>(receiveAddress != null, "receiveAddress");
+            Contract.Requires<ArgumentException>(receiveAddress.Length == 34, "receiveAddress length");
+        }
+
+        public string GetAccountReceiveAddress(int accountId)
+        {
+            Contract.Requires<ArgumentException>(accountId > 0, "accountId > 0");
+            Contract.Ensures(Contract.Result<string>() != null && Contract.Result<string>().Length == 34, "receiveAddress");
+            return default(string);
         }
     }
 }
