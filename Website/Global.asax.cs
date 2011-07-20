@@ -115,7 +115,7 @@ namespace Olive.Website
 
             if (Container == null)
             {
-                container = this.CreateUnityContainer();
+                container = CreateUnityContainer();
             }
 
             ControllerBuilder.Current.SetControllerFactory(typeof(UnityControllerFactory));
@@ -125,16 +125,26 @@ namespace Olive.Website
         /// <summary>
         /// The get unity container.
         /// </summary>
-        private IUnityContainer CreateUnityContainer()
+        private static IUnityContainer CreateUnityContainer()
         {
             var container = new UnityContainer().LoadConfiguration();
 
+            // Bypass service proxy for local testing
+#if Dev
+            container.RegisterInstance<IFaultFactory>(new FaultFactory());
+            container.RegisterType<IOliveContext, OliveContext>();
+
+            var clientService = new ClientService();
+            container.BuildUp(clientService);
+            container.RegisterInstance<IClientService>(clientService);
+#else
             // Register the channel factory in code for now, because I don't know how to
             // register generic types in configuration files.
             container.RegisterType<IChannelFactory<IClientService>, ChannelFactory<IClientService>>(new ContainerControlledLifetimeManager(), new InjectionConstructor(string.Empty));
 
             // Register the service interface with a factory that creates it using the channel.
             container.RegisterType<IClientService>(new InjectionFactory(c => c.Resolve<ChannelFactory<IClientService>>().CreateChannel()));
+#endif
 
             return container;
         }

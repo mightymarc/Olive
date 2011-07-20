@@ -64,7 +64,11 @@ namespace Olive.DataAccess
         /// </summary>
         [InjectionConstructor]
         public OliveContext()
+#if Dev
+            : base("OliveLocal")
+#else
             : base("Olive")
+#endif
         {
         }
 
