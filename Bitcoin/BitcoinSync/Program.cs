@@ -100,7 +100,11 @@ namespace Olive.Bitcoin.BitcoinSync
             this.container.RegisterInstance<IRpcClient>(new RpcClient
                 {
                     Credential = rpcCredential, 
-                    Hostname = "oapp1.olive.local",//// this.settings.BitcoinDaemonHostname, 
+#if Dev
+                    Hostname = "localhost",
+#else
+                    Hostname = "oapp1.olive.local",
+#endif
                     PortNumber = this.settings.BitconDaemonPort
                 });
 
@@ -114,7 +118,9 @@ namespace Olive.Bitcoin.BitcoinSync
             try
             {
 #endif
+#if !Dev
                 this.ProcessIncomingTransactions();
+#endif
                 this.GenerateReceiveAddresses();
 #if !Dev
             }
