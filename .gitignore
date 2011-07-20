@@ -29,3 +29,5 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 *.dbmdl
 *.csproj.VisualState.xml
+DatabaseServer/sql/*
+Database/sql/*
