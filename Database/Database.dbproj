@@ -318,9 +318,6 @@
     <Build Include="Schema Objects\Schemas\dbo\Tables\Currency.table.sql">
       <SubType>Code</SubType>
     </Build>
-    <Build Include="Schema Objects\Database Level Objects\Security\Roles\Database Roles\BankServiceRole.role.sql">
-      <SubType>Code</SubType>
-    </Build>
     <Build Include="Schema Objects\Schemas\Banking\Programmability\Stored Procedures\CreateCurrentAccount.proc.sql">
       <SubType>Code</SubType>
     </Build>

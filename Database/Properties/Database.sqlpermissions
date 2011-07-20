@@ -1,5 +1,149 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Permissions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:Microsoft.VisualStudio.Data.Schema.Permissions" Version="1.0">
+  <PermissionStatement Action="GRANT">
+    <Permission>SELECT</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="AccountWithBalance" Schema="Banking" Type="OBJECT" />
+  </PermissionStatement>
+  <PermissionStatement Action="GRANT">
+    <Permission>SELECT</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="RoleUser" Schema="Auth" Type="OBJECT" />
+  </PermissionStatement>
+  
+  <!-- SELECT on dbo.User (Table) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>SELECT</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="User" Schema="dbo" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- INSERT on dbo.User (Table) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>INSERT</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="User" Schema="dbo" Type="OBJECT" />
+  </PermissionStatement>
+
+  <PermissionStatement Action="GRANT">
+    <Permission>SELECT</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="AccountUser" Schema="Banking" Type="OBJECT" />
+  </PermissionStatement>
+  
+  <!-- SELECT on Banking.Account -->
+  <PermissionStatement Action="GRANT">
+    <Permission>SELECT</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="Account" Schema="Banking" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- SELECT on Bitcoin.Transaction -->
+  <PermissionStatement Action="GRANT">
+    <Permission>SELECT</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="Transaction" Schema="Bitcoin" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- SELECT on Bitcoin.AccountReceiveAddress -->
+  <PermissionStatement Action="GRANT">
+    <Permission>SELECT</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="AccountReceiveAddress" Schema="Bitcoin" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- SELECT on dbo.Currency -->
+  <PermissionStatement Action="GRANT">
+    <Permission>SELECT</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="Currency" Schema="dbo" Type="OBJECT" />
+  </PermissionStatement>
+
+  
+
+  <!-- EXECUTE on Bitcoin.GetAccountReceiveAddress (UDF) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>EXECUTE</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="GetAccountReceiveAddress" Schema="Bitcoin" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- EXECUTE on Banking.GetSpecialAccountId (UDF) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>EXECUTE</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="GetSpecialAccountId" Schema="Banking" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- EXECUTE on Bitcoin.GetLastProcessedTransactionId (SP) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>EXECUTE</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="GetLastProcessedTransactionId" Schema="Bitcoin" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- EXECUTE on Banking.CreateTransfer (SP) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>EXECUTE</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="CreateTransfer" Schema="Banking" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- EXECUTE on Banking.CreateAccountHold (SP) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>EXECUTE</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="CreateAccountHold" Schema="Banking" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- EXECUTE on Bitcoin.CreateTransaction (SP) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>EXECUTE</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="CreateTransaction" Schema="Bitcoin" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- EXECUTE on Bitcoin.SetAccountReceiveAddress (SP) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>EXECUTE</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="SetAccountReceiveAddress" Schema="Bitcoin" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- EXECUTE on Banking.ReleaseAccountHold (SP) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>EXECUTE</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="ReleaseAccountHold" Schema="Banking" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- EXECUTE on Banking.EditCurrentAccount (SP) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>EXECUTE</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="EditCurrentAccount" Schema="Banking" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- EXECUTE on Banking.CreateCurrentAccount (SP) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>EXECUTE</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="CreateCurrentAccount" Schema="Banking" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- EXECUTE on Auth.CreateSession (SP) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>EXECUTE</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="CreateSession" Schema="Auth" Type="OBJECT" />
+  </PermissionStatement>
+
+  <PermissionStatement Action="GRANT">
+    <Permission>EXECUTE</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="VerifySession" Schema="Auth" Type="OBJECT" />
+  </PermissionStatement>
+
   <!--  The examples below are provided to illustrate how permissions 
         are defined in the project system for Databases, Objects, 
         and Columns.

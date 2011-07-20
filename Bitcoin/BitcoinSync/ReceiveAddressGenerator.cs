@@ -61,26 +61,26 @@ namespace Olive.Bitcoin.BitcoinSync
         public ILog Logger { get; set; }
 
         [Dependency]
-        public IBitcoinService BitcoinService { get; set; }
+        public IClientService ClientService { get; set; }
 
         [Dependency]
         public IRpcClient RpClient { get; set; }
 
-        public virtual void Process()
+        public virtual void Process(Guid sessionId)
         {
             this.Logger.Debug("Looking up users who are missing receive addresses...");
 
-            var accountIds = this.BitcoinService.GetAccountsWithoutReceiveAddress(this.settings.Currency);
+            var accountIds = this.ClientService.GetAccountsWithoutReceiveAddress(sessionId, this.settings.Currency);
 
             this.Logger.InfoFormat("Found {0} accounts missing receive addresses.", accountIds.Count);
 
             foreach (var accountId in accountIds)
             {
-                this.Process(accountId);
+                this.Process(sessionId, accountId);
             }
         }
 
-        public virtual void Process(int accountId)
+        public virtual void Process(Guid sessionId, int accountId)
         {
             this.Logger.InfoFormat("Procsssing account #{0}.", accountId);
 
@@ -88,7 +88,7 @@ namespace Olive.Bitcoin.BitcoinSync
 
             this.Logger.InfoFormat("Created receive address {0} for account #{1}.", receiveAddress, accountId);
 
-            this.BitcoinService.SetAccountReceiveAddress(accountId, receiveAddress);
+            this.ClientService.SetAccountReceiveAddress(sessionId, accountId, receiveAddress);
         }
     }
 }

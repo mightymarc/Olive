@@ -17,5 +17,11 @@
     <Setting Name="Currency" Type="System.String" Scope="Application">
       <Value Profile="(Default)">EXU</Value>
     </Setting>
+    <Setting Name="ServiceEmail" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">BitcoinSync@exu.me</Value>
+    </Setting>
+    <Setting Name="ServicePassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">password</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

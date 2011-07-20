@@ -9,17 +9,3 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
 */
-
-IF '$(TargetEnv)' <> 'Dev'
-BEGIN
-    CREATE USER [OLIVE\OliveService]
-        FOR LOGIN [OLIVE\OliveService]
-        WITH DEFAULT_SCHEMA = dbo;
-
-    CREATE LOGIN [OLIVE\OliveService]
-        FROM WINDOWS
-        WITH DEFAULT_DATABASE=[Olive];
-
-    EXECUTE sp_addsrvrolemember @loginame = N'NT AUTHORITY\SYSTEM', @rolename = N'sysadmin';
-    EXECUTE sp_addsrvrolemember @loginame = N'OLIVE\andreasbrekken', @rolename = N'sysadmin';
-END

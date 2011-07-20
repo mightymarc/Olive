@@ -63,16 +63,16 @@ namespace Olive.Bitcoin.BitcoinSync
         public ILog Logger { get; set; }
 
         [Dependency]
-        public IBitcoinService BitcoinService { get; set; }
+        public IClientService ClientService { get; set; }
 
         [Dependency]
         public IRpcClient RpClient { get; set; }
 
-        public virtual void Process()
+        public virtual void Process(Guid sessionId)
         {
             this.Logger.Debug("Looking up last processed transaction...");
 
-            var lastTransactionId = this.BitcoinService.GetLastProcessedTransactionId();
+            var lastTransactionId = this.ClientService.GetLastProcessedTransactionId(sessionId);
 
             this.Logger.DebugFormat("Last processed transaction id is {0}.", lastTransactionId);
             this.Logger.DebugFormat("Looking for transactions that occured after the last processed transaction.");
@@ -83,11 +83,11 @@ namespace Olive.Bitcoin.BitcoinSync
 
             foreach (var newTransaction in newTransactions.Where(t => t.Category == ReceivedTransferCategory))
             {
-                this.Process(newTransaction);
+                this.Process(sessionId, newTransaction);
             }
         }
 
-        public virtual void Process(Transaction transaction)
+        public virtual void Process(Guid sessionId, Transaction transaction)
         {
             if (transaction.Account == string.Empty)
             {
@@ -96,7 +96,7 @@ namespace Olive.Bitcoin.BitcoinSync
 
             this.Logger.InfoFormat("Procsssing transaction #{0}.", transaction.TransactionId);
 
-            if (this.BitcoinService.TransactionIsProcessed(transaction.TransactionId))
+            if (this.ClientService.TransactionIsProcessed(sessionId, transaction.TransactionId))
             {
                 this.Logger.WarnFormat("Will not process transaction #{0} because the service claims it has already been processed.", transaction.TransactionId);
                 return;
@@ -118,9 +118,9 @@ namespace Olive.Bitcoin.BitcoinSync
                 return;
             }
 
-            this.BitcoinService.CreditTransactionWithHold(accountId, transaction.TransactionId, transaction.Amount, this.settings.Currency);
+            this.ClientService.CreditTransactionWithHold(sessionId, accountId, transaction.TransactionId, transaction.Amount, this.settings.Currency);
             this.RpClient.Move(transaction.Account, this.settings.Currency, transaction.Amount);
-            this.BitcoinService.ReleaseTransactionHold(transaction.TransactionId);
+            this.ClientService.ReleaseTransactionHold(sessionId, transaction.TransactionId);
         }
 
         private List<Transaction> GetTransactionsAfter(string transactionId)

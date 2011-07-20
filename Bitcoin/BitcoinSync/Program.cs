@@ -78,8 +78,7 @@ namespace Olive.Bitcoin.BitcoinSync
 
             this.container = new UnityContainer().LoadConfiguration();
 
-            this.container.RegisterInstance<ILog>(this.logger);
-
+            this.container.RegisterInstance(this.logger);
             this.container.RegisterInstance<ICrypto>(new Crypto());
             this.container.RegisterInstance<IFaultFactory>(new FaultFactory());
 
@@ -111,6 +110,7 @@ namespace Olive.Bitcoin.BitcoinSync
             Console.WriteLine("Bitcoin Sync");
             Console.WriteLine();
 
+            var sessionId = clientService.CreateSession(this.settings.ServiceEmail, this.settings.ServicePassword);
 
             while (true)
             {
@@ -118,8 +118,8 @@ namespace Olive.Bitcoin.BitcoinSync
             try
             {
 #endif
-                this.ProcessIncomingTransactions();
-                this.GenerateReceiveAddresses();
+                this.ProcessIncomingTransactions(sessionId);
+                this.GenerateReceiveAddresses(sessionId);
 #if !Dev
             }
             catch (Exception e)
@@ -134,20 +134,20 @@ namespace Olive.Bitcoin.BitcoinSync
             Console.ReadLine();
         }
 
-        private void GenerateReceiveAddresses()
+        private void GenerateReceiveAddresses(Guid sessionId)
         {
             var generator = new ReceiveAddressGenerator();
             this.container.BuildUp(generator);
 
-            generator.Process();
+            generator.Process(sessionId);
         }
 
-        private void ProcessIncomingTransactions()
+        private void ProcessIncomingTransactions(Guid sessionId)
         {
             var processor = new IncomingTransactionProcessor();
             this.container.BuildUp(processor);
 
-            processor.Process();
+            processor.Process(sessionId);
         }
     }
 }

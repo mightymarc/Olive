@@ -67,5 +67,23 @@ namespace Olive.Bitcoin.BitcoinSync.Properties {
                 return ((string)(this["Currency"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("BitcoinSync@exu.me")]
+        public string ServiceEmail {
+            get {
+                return ((string)(this["ServiceEmail"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("password")]
+        public string ServicePassword {
+            get {
+                return ((string)(this["ServicePassword"]));
+            }
+        }
     }
 }

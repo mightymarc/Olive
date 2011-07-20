@@ -22,7 +22,7 @@ namespace Olive.Bitcoin.Tests
         public void FixtureSetUp()
         {
             // Make sure that the rpcClient is running on the test network.
-            this.rpcClient = new RpcClient { Hostname = "127.0.0.1", PortNumber = 8332, Credential = new NetworkCredential("test", "fest") };
+            this.rpcClient = new RpcClient { Hostname = "127.0.0.1", PortNumber = 8502, Credential = new NetworkCredential("user", "password") };
 
             /*if (!this.rpcClient.GetIsOnTestNetwork())
             {
@@ -43,7 +43,7 @@ namespace Olive.Bitcoin.Tests
         {
             var transactions = this.rpcClient.GetTransactions();
 
-            Assert.IsNotNull(transactions.FirstOrDefault(x => x.Account == string.Empty));
+            Assert.IsNotNull(transactions.FirstOrDefault());
         }
     }
 }
