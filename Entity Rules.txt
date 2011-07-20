@@ -6,8 +6,7 @@ User
 
 	Email
 		Not null
-		Regex: [a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?
-
+		Regex: ^[^@]+@.+$
 		Max length: 100
 		Is not a common temporary e-mail (find a list)
 		Unique in database (lowercased)

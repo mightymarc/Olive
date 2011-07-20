@@ -68,9 +68,7 @@ namespace Olive.Website.ViewModels.User
         [Required]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "E-mail")]
-        [RegularExpression(
-            @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
-            )]
+        [RegularExpression(@"^[^@]+@.+$")]
         public string Email { get; set; }
 
         /// <summary>

@@ -56,10 +56,7 @@ namespace Olive.Services
         {
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(email), "email");
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(password), "password");
-            Contract.Requires<ArgumentException>(
-                Regex.IsMatch(
-                    email, 
-                    @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"));
+            Contract.Requires<ArgumentException>(Regex.IsMatch(email, @"^[^@]+@.+$"));
 
             ////Contract.Requires<ArgumentException>(Regex.IsMatch(password, "^.{8,50}$"));
             Contract.Ensures(Contract.Result<Guid>() != Guid.Empty);
