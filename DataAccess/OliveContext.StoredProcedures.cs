@@ -267,7 +267,14 @@ namespace Olive.DataAccess
 
             try
             {
-                return (int)command.ExecuteScalar();
+                var result = command.ExecuteScalar();
+
+                if (result == DBNull.Value)
+                {
+                    throw new Exception("The special account " + name + " was not found.");
+                }
+
+                return (int)result;
             }
             finally
             {
