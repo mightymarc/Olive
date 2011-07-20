@@ -316,16 +316,20 @@ namespace Olive.DataAccess
 
         public string GetAccountReceiveAddress(int accountId)
         {
-            var command = this.CommandConnection.CreateCommand("Bitcoin.GetAccountReceiveAddress");
+            var command = this.CommandConnection.CreateCommand();
+            command.CommandText = "SELECT Bitcoin.GetAccountReceiveAddress(@AccountId)";
             command.AddParam("@AccountId", DbType.Int32, accountId);
-            command.AddParam("@ReceiveAddress", DbType.AnsiString, 34, ParameterDirection.Output);
 
-            switch (this.ExecuteCommand(command))
+            command.Connection.Open();
+
+            try
             {
-                case 0:
-                    return (string)command.Parameters["@ReceiveAddress"];
-                default:
-                    throw new UnknownReturnCodeException(command.GetReturnCode());
+                var result = command.ExecuteScalar();
+                return (string)(result == DBNull.Value ? null : result);
+            }
+            finally
+            {
+                command.Connection.Close();   
             }
         }
 
