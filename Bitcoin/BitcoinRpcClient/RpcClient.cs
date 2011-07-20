@@ -70,9 +70,22 @@ namespace Olive.Bitcoin
             // Get the response and read read the response data.
             JObject responseJson = null;
 
-            using (var webResponse = webRequest.GetResponse())
+            HttpWebResponse response = null;
+            WebException exception = null;
+
+            try
             {
-                using (var responseStream = webResponse.GetResponseStream())
+                response = (HttpWebResponse)webRequest.GetResponse();
+            }
+            catch (WebException we)
+            {
+                exception = we;
+                response = (HttpWebResponse)we.Response;
+            }
+
+            using (response)
+            {
+                using (var responseStream = response.GetResponseStream())
                 {
                     using (var responseStreamReader = new StreamReader(responseStream))
                     {
@@ -107,6 +120,11 @@ namespace Olive.Bitcoin
                 // There was an error.
                 // TODO: Not sure how to parse these errors.
                 throw new Exception("The RPC server reported an error: " + responseJson.Root["error"]);
+            }
+
+            if (exception != null)
+            {
+                throw new Exception("The RPC request failed: " + responseJson, exception);
             }
 
             return responseJson["result"];
@@ -220,14 +238,24 @@ namespace Olive.Bitcoin
 
         public string Send(string fromAccountId, string toAddress, decimal amount, int minConfirmations = 1, string comment = null, string commentTo = null)
         {
-            var result = this.InvokeMethod(
-                "sendfrom", 
-                fromAccountId, 
-                toAddress, 
-                amount, 
-                minConfirmations, 
-                comment, 
-                commentTo);
+            var paramList = new List<object> { fromAccountId, toAddress, amount };
+
+            if (commentTo != null || comment != null || minConfirmations != 1)
+            {
+                paramList.Add(minConfirmations);
+            }
+
+            if (comment != null || commentTo != null)
+            {
+                paramList.Add(comment);
+            }
+
+            if (commentTo != null)
+            {
+                paramList.Add(commentTo);
+            }
+
+            var result = this.InvokeMethod("sendfrom", paramList);
 
             return result.Value<string>();
         }
