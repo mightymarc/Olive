@@ -118,9 +118,7 @@ namespace Olive.Bitcoin.BitcoinSync
             try
             {
 #endif
-#if !Dev
                 this.ProcessIncomingTransactions();
-#endif
                 this.GenerateReceiveAddresses();
 #if !Dev
             }
