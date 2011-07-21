@@ -268,9 +268,9 @@ END CATCH
 </value>
   </data>
   <data name="FailsWithDifferentAccountCurrencies_PretestAction.SqlScript" xml:space="preserve">
-    <value>SET IDENTITY_INSERT dbo.[User] ON
-INSERT INTO dbo.[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (3001, 'user@domain.com', 'hash', 'salt');
-SET IDENTITY_INSERT dbo.[User] OFF
+    <value>SET IDENTITY_INSERT [Auth].[User] ON
+INSERT INTO [Auth].[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (3001, 'user@domain.com', 'hash', 'salt');
+SET IDENTITY_INSERT [Auth].[User] OFF
 
 SET IDENTITY_INSERT Banking.[Account] ON
 INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (3002, 'USD', 1, 'Current');
@@ -281,9 +281,9 @@ SET IDENTITY_INSERT Banking.[Account] OFF
 </value>
   </data>
   <data name="FailsWithNegativeAmount_PretestAction.SqlScript" xml:space="preserve">
-    <value>SET IDENTITY_INSERT dbo.[User] ON
-INSERT INTO dbo.[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (95737, 'z48597345@domain.com', 'hash', 'salt');
-SET IDENTITY_INSERT dbo.[User] OFF
+    <value>SET IDENTITY_INSERT [Auth].[User] ON
+INSERT INTO [Auth].[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (95737, 'z48597345@domain.com', 'hash', 'salt');
+SET IDENTITY_INSERT [Auth].[User] OFF
 
 SET IDENTITY_INSERT Banking.[Account] ON
 INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (95532, 'USD', 0, 'Current');
@@ -294,9 +294,9 @@ SET IDENTITY_INSERT Banking.[Account] OFF
 </value>
   </data>
   <data name="FailsWithNullDescription_PretestAction.SqlScript" xml:space="preserve">
-    <value>SET IDENTITY_INSERT dbo.[User] ON
-INSERT INTO dbo.[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (957137, 'z48597345@domain.com', 'hash', 'salt');
-SET IDENTITY_INSERT dbo.[User] OFF
+    <value>SET IDENTITY_INSERT [Auth].[User] ON
+INSERT INTO [Auth].[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (957137, 'z48597345@domain.com', 'hash', 'salt');
+SET IDENTITY_INSERT [Auth].[User] OFF
 
 SET IDENTITY_INSERT Banking.[Account] ON
 INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (934532, 'USD', 0, 'Current');
@@ -307,9 +307,9 @@ SET IDENTITY_INSERT Banking.[Account] OFF
 </value>
   </data>
   <data name="FailsWithUnknownDestAccount_PretestAction.SqlScript" xml:space="preserve">
-    <value>SET IDENTITY_INSERT dbo.[User] ON
-INSERT INTO dbo.[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (3001, 'z485p9s5@domain.com', 'hash', 'salt');
-SET IDENTITY_INSERT dbo.[User] OFF
+    <value>SET IDENTITY_INSERT [Auth].[User] ON
+INSERT INTO [Auth].[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (3001, 'z485p9s5@domain.com', 'hash', 'salt');
+SET IDENTITY_INSERT [Auth].[User] OFF
 
 SET IDENTITY_INSERT Banking.[Account] ON
 INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (3002, 'USD', 1, 'Current');
@@ -320,9 +320,9 @@ SET IDENTITY_INSERT Banking.[Account] OFF
 </value>
   </data>
   <data name="FailsWithUnknownSourceAccount_PretestAction.SqlScript" xml:space="preserve">
-    <value>SET IDENTITY_INSERT dbo.[User] ON
-INSERT INTO dbo.[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (3001, 'z485p9s5@domain.com', 'hash', 'salt');
-SET IDENTITY_INSERT dbo.[User] OFF
+    <value>SET IDENTITY_INSERT [Auth].[User] ON
+INSERT INTO [Auth].[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (3001, 'z485p9s5@domain.com', 'hash', 'salt');
+SET IDENTITY_INSERT [Auth].[User] OFF
 
 SET IDENTITY_INSERT Banking.[Account] ON
 INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (3002, 'USD', 1, 'Current');
@@ -333,9 +333,9 @@ SET IDENTITY_INSERT Banking.[Account] OFF
 </value>
   </data>
   <data name="Success_PretestAction.SqlScript" xml:space="preserve">
-    <value>SET IDENTITY_INSERT dbo.[User] ON
-INSERT INTO dbo.[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (817315, 'z485Pp9s5@domain.com', 'hash', 'salt');
-SET IDENTITY_INSERT dbo.[User] OFF
+    <value>SET IDENTITY_INSERT [Auth].[User] ON
+INSERT INTO [Auth].[User] (UserId, Email, PasswordHash, PasswordSalt) VALUES (817315, 'z485Pp9s5@domain.com', 'hash', 'salt');
+SET IDENTITY_INSERT [Auth].[User] OFF
 
 SET IDENTITY_INSERT Banking.[Account] ON
 INSERT INTO Banking.[Account] (AccountId, CurrencyId, AllowNegative, [Type]) VALUES (1342532, 'USD', 1, 'Current');
@@ -346,13 +346,13 @@ SET IDENTITY_INSERT Banking.[Account] OFF
 </value>
   </data>
   <data name="FailsWithUnknownSourceAccount_PosttestAction.SqlScript" xml:space="preserve">
-    <value>DELETE FROM dbo.[User] WHERE UserId = 3001;
+    <value>DELETE FROM [Auth].[User] WHERE UserId = 3001;
 
 DELETE FROM Banking.Account WHERE AccountId &gt;= 3002 AND AccountId &lt;= 3003;
 </value>
   </data>
   <data name="FailsWithUnknownDestAccount_PosttestAction.SqlScript" xml:space="preserve">
-    <value>DELETE FROM dbo.[User] WHERE UserId = 3001;
+    <value>DELETE FROM [Auth].[User] WHERE UserId = 3001;
 
 DELETE FROM Banking.Account WHERE AccountId &gt;= 3002 AND AccountId &lt;= 3003;
 </value>
@@ -373,7 +373,7 @@ ROLLBACK TRAN
 </value>
   </data>
   <data name="FailsWithDifferentAccountCurrencies_PosttestAction.SqlScript" xml:space="preserve">
-    <value>DELETE FROM dbo.[User] WHERE UserId = 3001;
+    <value>DELETE FROM [Auth].[User] WHERE UserId = 3001;
 
 DELETE FROM Banking.[Account] WHERE AccountId &gt;= 3002 AND AccountId &lt;= 3003;
 </value>

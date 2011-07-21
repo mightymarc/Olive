@@ -26,7 +26,7 @@ declare @UserId int
 
 declare @CorrectPasswordHash varchar(100)
 
-select @CorrectPasswordHash = PasswordHash, @UserId = UserId from dbo.[User] where Email = @Email;
+select @CorrectPasswordHash = PasswordHash, @UserId = UserId from [Auth].[User] where Email = @Email;
 
 if @CorrectPasswordHash is null or @UserId is null
 begin

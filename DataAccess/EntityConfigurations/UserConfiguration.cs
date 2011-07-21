@@ -18,7 +18,7 @@ namespace Olive.DataAccess.EntityConfigurations
     {
         public UserConfiguration()
         {
-            this.ToTable("User", "dbo");
+            this.ToTable("User", "Auth");
             this.HasKey(m => m.UserId);
         }
     }

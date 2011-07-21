@@ -11,18 +11,18 @@
     <Object Name="RoleUser" Schema="Auth" Type="OBJECT" />
   </PermissionStatement>
   
-  <!-- SELECT on dbo.User (Table) -->
+  <!-- SELECT on Auth.User (Table) -->
   <PermissionStatement Action="GRANT">
     <Permission>SELECT</Permission>
     <Grantee>ClientService</Grantee>
-    <Object Name="User" Schema="dbo" Type="OBJECT" />
+    <Object Name="User" Schema="Auth" Type="OBJECT" />
   </PermissionStatement>
 
-  <!-- INSERT on dbo.User (Table) -->
+  <!-- INSERT on Auth.User (Table) -->
   <PermissionStatement Action="GRANT">
     <Permission>INSERT</Permission>
     <Grantee>ClientService</Grantee>
-    <Object Name="User" Schema="dbo" Type="OBJECT" />
+    <Object Name="User" Schema="Auth" Type="OBJECT" />
   </PermissionStatement>
 
   <!-- INSERT on Bitcoin.WithdrawAccount (Table) -->

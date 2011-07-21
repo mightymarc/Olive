@@ -124,7 +124,7 @@ DECLARE @Email VARCHAR(100) = 'aaaaaaaaa@aaaaaaaaa.com';
 DECLARE @PasswordHash VARCHAR(100) = 'aaaaaaaaaaa';
 DECLARE @PasswordSalt VARCHAR(100) = 'aaaaaaaaaaa';
 
-INSERT INTO dbo.[User] (Email, PasswordHash, PasswordSalt)
+INSERT INTO [Auth].[User] (Email, PasswordHash, PasswordSalt)
 VALUES (@Email, @PasswordHash, @PasswordSalt);
 
 DECLARE @UserId INT = CONVERT(INT, @@IDENTITY);
@@ -179,7 +179,7 @@ END CATCH
 </value>
   </data>
   <data name="FailsOnExpiredSession_PretestAction.SqlScript" xml:space="preserve">
-    <value>INSERT INTO dbo.[User] (Email, PasswordHash, PasswordSalt) VALUES ('FailsOnExpiredSession@domain.com', 'hash', 'salt');
+    <value>INSERT INTO [Auth].[User] (Email, PasswordHash, PasswordSalt) VALUES ('FailsOnExpiredSession@domain.com', 'hash', 'salt');
 DECLARE @UserId INT = CONVERT(INT, @@IDENTITY);
 
 DECLARE @SessionId UNIQUEIDENTIFIER = NEWID();

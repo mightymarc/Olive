@@ -121,7 +121,7 @@
     <value>begin tran
 
 print 'Creating user.';
-insert into dbo.[User] (PasswordHash, Email, PasswordSalt) values ('hash', 'user@domain.com', 'salt');
+insert into [Auth].[User] (PasswordHash, Email, PasswordSalt) values ('hash', 'user@domain.com', 'salt');
 declare @UserId int = cast(@@IDENTITY as int)
 print 'User created with id ' + convert(varchar, @UserId) + '.'
 

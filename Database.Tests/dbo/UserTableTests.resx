@@ -119,7 +119,7 @@
   </resheader>
   <data name="InsertSuccess_TestAction.SqlScript" xml:space="preserve">
     <value>BEGIN TRAN
-	INSERT INTO dbo.[User] (Email, PasswordHash, PasswordSalt) VALUES ('test30101@domain.com', 'hash', 'salt');
+	INSERT INTO [Auth].[User] (Email, PasswordHash, PasswordSalt) VALUES ('test30101@domain.com', 'hash', 'salt');
 
 	IF @@ROWCOUNT = 1
 		SELECT 0
@@ -131,7 +131,7 @@ ROLLBACK TRAN
     <value>BEGIN TRAN
 
 BEGIN TRY
-	INSERT INTO dbo.[User] (Email, PasswordSalt, PasswordHash)
+	INSERT INTO [Auth].[User] (Email, PasswordSalt, PasswordHash)
 		VALUES (null, 'salt', 'hash');
 END TRY
 BEGIN CATCH
@@ -146,7 +146,7 @@ ROLLBACK TRAN
     <value>BEGIN TRAN
 
 BEGIN TRY
-	INSERT INTO dbo.[User] (Email, PasswordSalt, PasswordHash)
+	INSERT INTO [Auth].[User] (Email, PasswordSalt, PasswordHash)
 		VALUES ('e@mail.com', 'salt', null);
 END TRY
 BEGIN CATCH
@@ -160,7 +160,7 @@ ROLLBACK TRAN
     <value>BEGIN TRAN
 
 BEGIN TRY
-	INSERT INTO dbo.[User] (Email, PasswordSalt, PasswordHash)
+	INSERT INTO [Auth].[User] (Email, PasswordSalt, PasswordHash)
 		VALUES ('e@mail.com', null, 'hash');
 END TRY
 BEGIN CATCH
@@ -173,7 +173,7 @@ ROLLBACK TRAN
   <data name="InsertWithDuplicateEmailFails_TestAction.SqlScript" xml:space="preserve">
     <value>BEGIN TRAN
 
-INSERT INTO dbo.[User] (Email, PasswordHash, PasswordSalt)
+INSERT INTO [Auth].[User] (Email, PasswordHash, PasswordSalt)
 	VALUES ('test30102@domain.com', 'hash', 'salt');
 
 IF @@ROWCOUNT &lt;&gt; 1
@@ -183,7 +183,7 @@ BEGIN
 END
 
 BEGIN TRY
-	INSERT INTO dbo.[User] (Email, PasswordHash, PasswordSalt)
+	INSERT INTO [Auth].[User] (Email, PasswordHash, PasswordSalt)
 		VALUES ('TEST30102@domain.com', 'hash', 'salt');
 END TRY
 BEGIN CATCH
@@ -205,12 +205,12 @@ ROLLBACK TRAN
     <value>BEGIN TRAN
 
 BEGIN TRY
-	INSERT INTO dbo.[User] (Email, PasswordSalt, PasswordHash)
+	INSERT INTO [Auth].[User] (Email, PasswordSalt, PasswordHash)
 		VALUES ('e@mail.com', null, 'hash');
 
 	DECLARE @UserId INT = CONVERT(INT, @@IDENTITY);
 
-	DELETE FROM dbo.[User] WHERE UserId = @UserId
+	DELETE FROM [Auth].[User] WHERE UserId = @UserId
 END TRY
 BEGIN CATCH
 	SELECT 0
@@ -223,12 +223,12 @@ ROLLBACK TRAN
     <value>BEGIN TRAN
 
 BEGIN TRY
-	INSERT INTO dbo.[User] (Email, PasswordSalt, PasswordHash)
+	INSERT INTO [Auth].[User] (Email, PasswordSalt, PasswordHash)
 		VALUES ('e@mail.com', 'salt', 'hash');
 
 	DECLARE @UserId INT = CONVERT(INT, @@IDENTITY);
 
-	UPDATE dbo.[User] SET Email = 'other@email.com' WHERE UserId = @UserId
+	UPDATE [Auth].[User] SET Email = 'other@email.com' WHERE UserId = @UserId
 END TRY
 BEGIN CATCH
 	SELECT 0
@@ -238,7 +238,7 @@ ROLLBACK TRAN
 </value>
   </data>
   <data name="AllowedToUpdatePasswordHash_TestAction.SqlScript" xml:space="preserve">
-    <value>UPDATE dbo.[User] SET PasswordHash = 'newhash' WHERE UserId = 3001;
+    <value>UPDATE [Auth].[User] SET PasswordHash = 'newhash' WHERE UserId = 3001;
 
 IF @@ROWCOUNT = 1
 BEGIN
@@ -253,12 +253,12 @@ SELECT 'Apparently, nothing happened.'
     <value>BEGIN TRAN
 
 BEGIN TRY
-	INSERT INTO dbo.[User] (Email, PasswordSalt, PasswordHash)
+	INSERT INTO [Auth].[User] (Email, PasswordSalt, PasswordHash)
 		VALUES ('e@mail.com', 'salt', 'hash');
 
 	DECLARE @UserId INT = CONVERT(INT, @@IDENTITY);
 
-	UPDATE dbo.[User] SET PasswordSalt = 'othersalt' WHERE UserId = @UserId
+	UPDATE [Auth].[User] SET PasswordSalt = 'othersalt' WHERE UserId = @UserId
 END TRY
 BEGIN CATCH
 	SELECT 0
@@ -268,16 +268,16 @@ ROLLBACK TRAN
 </value>
   </data>
   <data name="AllowedToUpdatePasswordHash_PretestAction.SqlScript" xml:space="preserve">
-    <value>SET IDENTITY_INSERT dbo.[User] ON
+    <value>SET IDENTITY_INSERT [Auth].[User] ON
 
-INSERT INTO dbo.[User] (UserId, Email, PasswordHash, PasswordSalt)
+INSERT INTO [Auth].[User] (UserId, Email, PasswordHash, PasswordSalt)
 	VALUES (3001, 'test3000@domain.com', 'hash', 'salt');
 
-SET IDENTITY_INSERT dbo.[User] OFF
+SET IDENTITY_INSERT [Auth].[User] OFF
 </value>
   </data>
   <data name="AllowedToUpdatePasswordHash_PosttestAction.SqlScript" xml:space="preserve">
-    <value>DELETE FROM dbo.[User] WHERE UserId = 3001;
+    <value>DELETE FROM [Auth].[User] WHERE UserId = 3001;
 
 IF @@ROWCOUNT = 1
 	SELECT 0

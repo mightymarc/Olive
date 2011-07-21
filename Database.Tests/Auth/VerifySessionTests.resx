@@ -124,7 +124,7 @@ DECLARE @Email VARCHAR(100) = 'aaaaaaaaa@aaaaaaaaa.com';
 DECLARE @PasswordHash VARCHAR(100) = 'aaaaaaaaaaa';
 DECLARE @PasswordSalt VARCHAR(100) = 'aaaaaaaaaaa';
 
-INSERT INTO dbo.[User] (Email, PasswordHash, PasswordSalt)
+INSERT INTO [Auth].[User] (Email, PasswordHash, PasswordSalt)
 VALUES (@Email, @PasswordHash, @PasswordSalt);
 
 DECLARE @UserId INT = CONVERT(INT, @@IDENTITY);
@@ -200,16 +200,16 @@ END CATCH
 DECLARE @UserId INT = 3001
 
 DELETE FROM Auth.[Session] WHERE SessionId = @SessionId;
-DELETE FROM dbo.[User] WHERE UserId = @UserId;
+DELETE FROM [Auth].[User] WHERE UserId = @UserId;
 </value>
   </data>
   <data name="VerifyFailsOnExpiredSession_PretestAction.SqlScript" xml:space="preserve">
     <value>DECLARE @SessionId UNIQUEIDENTIFIER = '{5E1E723C-78E6-4BBB-9D26-C4AB0D2AD971}';
 DECLARE @UserId INT = 3001
 
-SET IDENTITY_INSERT dbo.[User] ON
-INSERT INTO dbo.[User] (UserId, Email, PasswordSalt, PasswordHash) VALUES (@UserId, 'user@domain.com', 'salt', 'hash');
-SET IDENTITY_INSERT dbo.[User] OFF
+SET IDENTITY_INSERT [Auth].[User] ON
+INSERT INTO [Auth].[User] (UserId, Email, PasswordSalt, PasswordHash) VALUES (@UserId, 'user@domain.com', 'salt', 'hash');
+SET IDENTITY_INSERT [Auth].[User] OFF
 
 INSERT INTO Auth.[Session] (SessionId, ExpiresAt, UserId) VALUES (@SessionId, DATEADD(day, -1, GETUTCDATE()), @UserId);
 
