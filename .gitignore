@@ -29,3 +29,4 @@ _ReSharper*/
 *.dbmdl
 *.csproj.VisualState.xml
 sql/
+Website/Views/*/*.cs
