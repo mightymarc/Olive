@@ -25,6 +25,20 @@
     <Object Name="User" Schema="dbo" Type="OBJECT" />
   </PermissionStatement>
 
+  <!-- INSERT on Bitcoin.WithdrawAccount (Table) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>INSERT</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="WithdrawAccount" Schema="Bitcoin" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- SELECT on Bitcoin.WithdrawAccount (Table) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>SELECT</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="WithdrawAccount" Schema="Bitcoin" Type="OBJECT" />
+  </PermissionStatement>
+
   <PermissionStatement Action="GRANT">
     <Permission>SELECT</Permission>
     <Grantee>ClientService</Grantee>
@@ -36,6 +50,20 @@
     <Permission>SELECT</Permission>
     <Grantee>ClientService</Grantee>
     <Object Name="Account" Schema="Banking" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- INSERT on Banking.Account -->
+  <PermissionStatement Action="GRANT">
+    <Permission>INSERT</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="Account" Schema="Banking" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- INSERT on Banking.AccountUser -->
+  <PermissionStatement Action="GRANT">
+    <Permission>INSERT</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="AccountUser" Schema="Banking" Type="OBJECT" />
   </PermissionStatement>
 
   <!-- SELECT on Bitcoin.Transaction -->

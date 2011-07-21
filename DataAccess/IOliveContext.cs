@@ -56,6 +56,8 @@ namespace Olive.DataAccess
         /// </summary>
         IDbSet<Account> Accounts { get; set; }
 
+        IDbSet<AccountHold> AccountHolds { get; set; }
+
         /// <summary>
         ///   Gets or sets AccountsWithBalance.
         /// </summary>

@@ -88,6 +88,8 @@ namespace Olive.DataAccess
         /// </summary>
         public IDbSet<Account> Accounts { get; set; }
 
+        public IDbSet<AccountHold> AccountHolds { get; set; }
+
         public IDbSet<BitcoinTransaction> BitcoinTransactions { get; set; }
 
         /// <summary>
@@ -171,6 +173,8 @@ namespace Olive.DataAccess
             modelBuilder.Configurations.Add(new EntityConfigurations.TransferConfiguration());
             modelBuilder.Configurations.Add(new EntityConfigurations.UserConfiguration());
             modelBuilder.Configurations.Add(new EntityConfigurations.RoleConfiguration());
+            modelBuilder.Configurations.Add(new EntityConfigurations.BitcoinWithdrawAccountConfiguration());
+            modelBuilder.Configurations.Add(new EntityConfigurations.AccountHoldConfiguration());
         }
     }
 }

@@ -83,6 +83,19 @@ namespace Olive.DataAccess
             }
         }
 
+        public IDbSet<AccountHold> AccountHolds
+        {
+            get
+            {
+                return default(IDbSet<AccountHold>);
+            }
+
+            set
+            {
+                return;
+            }
+        
+        }
         /// <summary>
         ///   Gets or sets Currencies.
         /// </summary>

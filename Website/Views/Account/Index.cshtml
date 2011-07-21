@@ -13,6 +13,7 @@
 <table>
     <tr>
         <th>#</th>
+        <th>Type</th>
         <th>Currency</th>
         <th>Balance</th>
         <th>Name</th>
@@ -24,12 +25,14 @@
         <tr>
             <td><a href="/Account/Details/@account.AccountId">@account.AccountId</a></td>
             <td>@account.CurrencyId</td>
+            <td>@account.Type</td>
             <td>@account.Balance</td>
             <td>@account.DisplayName</td>
             <td>
                 <a href="/Account/Details/@account.AccountId">Details</a>
                 <a href="/Account/Edit/@account.AccountId">Edit</a>
-                <a href="/Account/Transfer/?SourceAccountId=@account.AccountId">Transfer from</a>
+                <a href="/Account/Transfer/?SourceAccountId=@account.AccountId">Transfer</a>
+                <a href="/Account/Withdraw/?SourceAccountId=@account.AccountId">Withdraw</a>
             </td>
         </tr>
     }

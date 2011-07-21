@@ -50,6 +50,7 @@ namespace Olive.Services
     using Microsoft.Practices.Unity;
 
     using Olive.DataAccess;
+    using Olive.DataAccess.Domain;
 
     /// <summary>
     /// The web service.
@@ -79,7 +80,7 @@ namespace Olive.Services
         /// The create current account.
         /// </summary>
         /// <param name="sessionId">The session id.</param>
-        /// <param name="currencyId">The currency id.</param>
+        /// <param name="currencyId">The specialAccountName id.</param>
         /// <param name="displayName">The display name.</param>
         /// <returns>
         /// The create current account.
@@ -377,7 +378,8 @@ namespace Olive.Services
                                     AccountId = account.AccountId,
                                     Balance = accountWithBalance.Available,
                                     CurrencyId = accountWithBalance.Currency.CurrencyId,
-                                    DisplayName = account.DisplayName
+                                    DisplayName = account.DisplayName,
+                                    Type = account.AccountType
                                 };
 
                 var result = new AccountOverview();
@@ -396,6 +398,51 @@ namespace Olive.Services
             using (var context = this.GetContext())
             {
                 return context.Currencies.Select(x => x.CurrencyId).ToList();
+            }
+        }
+
+        public int CreateAccountHold(Guid sessionId, int accountId, decimal amount, string holdReason,
+            DateTime? expiresAt)
+        {
+            using (var context = this.GetContext())
+            {
+                var userId = this.VerifySession(sessionId);
+                var hasAccess = this.UserHasRole(userId, "BitcoinSync");
+
+                if (!hasAccess)
+                {
+                    throw this.FaultFactory.CreateUnauthorizedFeatureAccessFaultException();
+                }
+
+
+                return context.CreateAccountHold(accountId, amount, holdReason, expiresAt);
+            }
+        }
+
+        public void ReleaseTransactionHoldAndDebit(Guid sessionId, int accountHoldId, string specialAccountName)
+        {
+            using (var context = this.GetContext())
+            {
+                var userId = this.VerifySession(sessionId);
+                var hasAccess = this.UserHasRole(userId, "BitcoinSync");
+
+                if (!hasAccess)
+                {
+                    throw this.FaultFactory.CreateUnauthorizedFeatureAccessFaultException();
+                }
+
+
+                using (var scope = new TransactionScope())
+                {
+                    var accountHold = context.AccountHolds.Find(accountHoldId);
+                    var destAccountId = context.GetSpecialAccountId(specialAccountName);
+                    var sourceAccountId = accountHold.AccountId;
+                    
+                    context.ReleaseAccountHold(accountHoldId);
+                    context.CreateTransfer(sourceAccountId, destAccountId, "Debited", accountHold.Amount);
+                    
+                    scope.Complete();
+                }
             }
         }
 
@@ -558,7 +605,13 @@ namespace Olive.Services
                 using (var scope = new TransactionScope())
                 {
                     var sourceAccountId = context.GetSpecialAccountId("BitcoinSyncIncoming" + currencyId);
+
                     var destAccount = context.Accounts.FirstOrDefault(x => x.AccountId == accountId);
+
+                    if (destAccount == null)
+                    {
+                        throw this.FaultFactory.CreateAccountNotFoundFaultException(accountId);
+                    }
 
                     context.CreateTransfer(sourceAccountId, destAccount.AccountId, "Bitcoin " + transactionId, amount);
                     var accountHoldId = context.CreateAccountHold(accountId, amount, holdReason, default(DateTime?));
@@ -625,6 +678,51 @@ namespace Olive.Services
             }
         }
 
+        public int GetOrCreateBitcoinWithdrawAccount(Guid sessionId, string currencyId, string receiveAddress)
+        {
+            using (var context = this.GetContext())
+            {
+                var userId = this.VerifySession(sessionId);
+
+                using (var scope = new TransactionScope())
+                {
+                    var account =
+                        context.Accounts.Where(
+                            x =>
+                            x.BitcoinWithdrawAccount != null && x.CurrencyId == currencyId
+                            && x.BitcoinWithdrawAccount.ReceiveAddress == receiveAddress
+                            && x.Users.Any(u => u.UserId == userId && u.CanDeposit)).FirstOrDefault();
+
+                    if (account == null)
+                    {
+                        account = new Account
+                            {
+                                AccountType = "BitcoinWithdraw",
+                                AnyCanDeposit = false,
+                                CurrencyId = currencyId,
+                                DisplayName = null,
+                                BitcoinWithdrawAccount = new BitcoinWithdrawAccount
+                                    {
+                                        ReceiveAddress = receiveAddress
+                                    },
+                                Users =
+                                    new List<AccountUser>
+                                        {
+                                            new AccountUser { UserId = userId, CanDeposit = true, CanWithdraw = false } 
+                                        }
+                            };
+
+                        context.Accounts.Add(account);
+                        context.SaveChanges();
+                    }
+
+                    scope.Complete();
+
+                    return account.AccountId;
+                }
+            }
+        }
+
         public List<int> GetAccountsWithoutReceiveAddress(Guid sessionId, string currencyId)
         {
             using (var context = this.GetContext())
@@ -642,6 +740,33 @@ namespace Olive.Services
                         a =>
                         a.AccountType != "Special" && a.CurrencyId == currencyId
                         && a.BitcoinAccountReceiveAddress == null || a.BitcoinAccountReceiveAddress.ReceiveAddress == null).Select(a => a.AccountId).ToList();
+            }
+        }
+
+        public List<GetWithdrawAccountsForProcessingAccount> GetWithdrawAccountsForProcessing(Guid sessionId, string currencyId)
+        {
+            using (var context = this.GetContext())
+            {
+                var userId = this.VerifySession(sessionId);
+                var hasAccess = this.UserHasRole(userId, "BitcoinSync");
+
+                if (!hasAccess)
+                {
+                    throw this.FaultFactory.CreateUnauthorizedFeatureAccessFaultException();
+                }
+
+                var q = from a in context.AccountsWithBalance
+                        where a.BitcoinWithdrawAccount != null && a.CurrencyId == currencyId && a.Available > 0
+                        select
+                            new GetWithdrawAccountsForProcessingAccount
+                                {
+                                    AccountId = a.AccountId,
+                                    Available = a.Available,
+                                    ReceiveAddress = a.BitcoinWithdrawAccount.ReceiveAddress
+                                };
+
+                var result = q.ToList();
+                return result;
             }
         }
     }

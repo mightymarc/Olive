@@ -44,9 +44,10 @@ namespace Olive.DataAccess.Domain
     /// </summary>
     public class AccountWithBalance : Account
     {
-        /// <summary>
-        ///   Gets or sets Balance.
-        /// </summary>
+        public decimal Balance { get; set; }
+
+        public decimal Held { get; set; }
+
         public decimal Available { get; set; }
     }
 }

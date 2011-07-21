@@ -208,6 +208,7 @@
     <Compile Include="ViewModels\Account\EditViewModel.cs" />
     <Compile Include="ViewModels\Account\CreateViewModel.cs" />
     <Compile Include="ViewModels\Account\TransferViewModel.cs" />
+    <Compile Include="ViewModels\Account\WithdrawViewModel.cs" />
     <Compile Include="ViewModels\User\LoginViewModel.cs" />
     <Compile Include="ViewModels\Account\DetailsViewModel.cs" />
     <Compile Include="ViewModels\Account\IndexViewModel.cs" />
@@ -216,6 +217,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ViewModelValidation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Account\Withdraw.cs">
+      <DependentUpon>Withdraw.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Views\Account\Transfer.cs">
       <DependentUpon>Transfer.cshtml</DependentUpon>
@@ -355,6 +361,10 @@
     <Content Include="Views\Account\Transfer.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Transfer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Views\Account\Withdraw.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Withdraw.cs</LastGenOutput>
     </Content>
     <None Include="Views\Error\NotFound.cshtml">
       <Generator>RazorGenerator</Generator>

@@ -216,6 +216,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WithdrawProcessor.cs" />
     <Compile Include="ReceiveAddressGenerator.cs" />
     <Compile Include="Properties\BitcoinSyncSettings.Designer.cs">
       <AutoGen>True</AutoGen>

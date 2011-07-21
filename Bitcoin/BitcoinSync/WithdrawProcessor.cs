@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IFaultFactory.cs" company="Olive">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IncomingTransactionProcessor.cs" company="Olive">
 //   Microsoft Public License (Ms-PL)
 //
 //    This license governs use of the accompanying software. If you use the software, you accept this license. If you do not accept the license, do not use the software.
@@ -33,88 +33,70 @@
 //    (E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties of merchantability, fitness for a particular purpose and non-infringement.
 // </copyright>
 // <summary>
-//   The i fault factory.
+//   Defines the IncomingTransactionProcessor type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Olive.Services
+namespace Olive.Bitcoin.BitcoinSync
 {
     using System;
-    using System.ServiceModel;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text;
 
-    /// <summary>
-    /// The i fault factory.
-    /// </summary>
-    public interface IFaultFactory
+    using log4net;
+
+    using Microsoft.Practices.Unity;
+
+    using Olive.Bitcoin.BitcoinSync.Properties;
+    using Olive.Services;
+
+    public class WithdrawProcessor
     {
-        /// <summary>
-        /// The create email already registered fault exception.
-        /// </summary>
-        /// <param name="email">The email.</param>
-        /// <returns></returns>
-        FaultException CreateEmailAlreadyRegisteredFaultException(string email);
+        private Properties.BitcoinSyncSettings settings = new BitcoinSyncSettings();
 
-        FaultException CreateAccountNotFoundFaultException(int accountId);
+        [Dependency]
+        public ILog Logger { get; set; }
 
-        /// <summary>
-        /// The create session does not exist fault exception.
-        /// </summary>
-        /// <param name="sessionId">
-        /// The session id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        FaultException CreateSessionDoesNotExistFaultException(Guid sessionId);
+        [Dependency]
+        public IClientService ClientService { get; set; }
 
-        /// <summary>
-        /// The create unauthorized account access fault exception.
-        /// </summary>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="accountId">
-        /// The account id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        FaultException CreateUnauthorizedAccountAccessFaultException(int userId, int accountId);
+        [Dependency]
+        public IRpcClient RpClient { get; set; }
 
-        /// <summary>
-        /// The create unauthorized account edit fault exception.
-        /// </summary>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="accountId">
-        /// The account id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        FaultException CreateUnauthorizedAccountEditFaultException(int userId, int accountId);
+        public virtual void Process(Guid sessionId)
+        {
+            this.Logger.Debug("Looking for withdraw accounts...");
 
-        /// <summary>
-        /// The create unauthorized account withdraw fault exception.
-        /// </summary>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="accountId">
-        /// The account id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        FaultException CreateUnauthorizedAccountWithdrawFaultException(int userId, int accountId);
+            var accountsForProcessing = this.ClientService.GetWithdrawAccountsForProcessing(sessionId, this.settings.Currency);
 
-        /// <summary>
-        /// The create unrecognized credentials exception.
-        /// </summary>
-        /// <param name="email">
-        /// The email.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        FaultException CreateUnrecognizedCredentialsException(string email);
+            foreach (var account in accountsForProcessing)
+            {
+                this.Process(sessionId, account);
+            }
+        }
 
-        FaultException CreateUnauthorizedFeatureAccessFaultException();
+        public virtual void Process(Guid sessionId, GetWithdrawAccountsForProcessingAccount account)
+        {
+            this.Logger.InfoFormat(
+                "Processing withdraw from account #{0} for {1} {2} to address {3}",
+                account.AccountId,
+                account.Available,
+                this.settings.Currency,
+                account.ReceiveAddress);
+
+            var accountHoldId = this.ClientService.CreateAccountHold(
+                sessionId,
+                account.AccountId,
+                account.Available,
+                "Held to process withdraw to " + account.ReceiveAddress,
+                null);
+
+            var transactionId = this.RpClient.Send(this.settings.Currency, account.ReceiveAddress, account.Available);
+
+            this.ClientService.ReleaseTransactionHoldAndDebit(sessionId, accountHoldId, "BitcoinSyncOutgoingEXU");
+        }
     }
 }

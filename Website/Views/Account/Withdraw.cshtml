@@ -1,0 +1,35 @@
+﻿@model Olive.Website.ViewModels.Account.WithdrawViewModel
+
+@{
+    ViewBag.Title = "Withdraw";
+}
+
+@using (Html.BeginRouteForm("Account_Withdraw", new { sourceAccountId = @Model.SourceAccountId }))
+{ 
+    <div>
+        @Html.LabelFor(m => m.SourceAccountId)
+        @Html.TextBoxFor(m => m.SourceAccountId)
+        @Html.ValidationMessageFor(m => m.SourceAccountId)
+    </div>
+    
+    <div>
+        @Html.LabelFor(m => m.BitcoinReceiveAddress)
+        @Html.TextBoxFor(m => m.BitcoinReceiveAddress)
+        @Html.ValidationMessageFor(m => m.BitcoinReceiveAddress)
+    </div>
+    
+    <div>
+        @Html.LabelFor(m => m.Amount)
+        @Html.TextBoxFor(m => m.Amount)
+        @Html.ValidationMessageFor(m => m.Amount)
+    </div>
+    
+    <div>
+        @Html.LabelFor(m => m.Description)
+        @Html.TextBoxFor(m => m.Description)
+        @Html.ValidationMessageFor(m => m.Description)
+    </div>
+
+    <input type="submit" value="Send transfer" />
+    <a href="/Account">Cancel</a>
+}

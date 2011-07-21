@@ -44,6 +44,7 @@ namespace Olive.Bitcoin.BitcoinSync
     using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.Linq;
+    using System.ServiceModel;
     using System.Text;
 
     using log4net;
@@ -118,7 +119,21 @@ namespace Olive.Bitcoin.BitcoinSync
                 return;
             }
 
-            this.ClientService.CreditTransactionWithHold(sessionId, accountId, transaction.TransactionId, transaction.Amount, this.settings.Currency);
+            try
+            {
+                this.ClientService.CreditTransactionWithHold(
+                    sessionId, accountId, transaction.TransactionId, transaction.Amount, this.settings.Currency);
+            }
+            catch (FaultException fe)
+            {
+                if (fe.Code.Name == FaultFactory.AccountNotFoundFaultCode.Name)
+                {
+                    // The transaction has not been touched, because an account could not be found.
+                    this.Logger.WarnFormat("An account could not be found and the transaction will not be processed.");
+                    return;
+                }
+            }
+
             this.RpClient.Move(transaction.Account, this.settings.Currency, transaction.Amount);
             this.ClientService.ReleaseTransactionHold(sessionId, transaction.TransactionId);
         }

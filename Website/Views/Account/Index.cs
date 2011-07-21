@@ -49,13 +49,28 @@ WriteLiteral("\r\n");
             
             #line default
             #line hidden
-WriteLiteral("\r\n<h2>Overview</h2>\r\n\r\n<div>\r\n    <a href=\"/Account/Create\">Create account</a>\r\n<" +
-"/div>\r\n\r\n<table>\r\n    <tr>\r\n        <th>#</th>\r\n        <th>Currency</th>\r\n     " +
-"   <th>Balance</th>\r\n        <th>Name</th>\r\n        <th></th>\r\n    </tr>\r\n\r\n");
+WriteLiteral(@"
+<h2>Overview</h2>
+
+<div>
+    <a href=""/Account/Create"">Create account</a>
+</div>
+
+<table>
+    <tr>
+        <th>#</th>
+        <th>Type</th>
+        <th>Currency</th>
+        <th>Balance</th>
+        <th>Name</th>
+        <th></th>
+    </tr>
+
+");
 
 
             
-            #line 22 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
+            #line 23 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
      foreach (var account in this.Model.Accounts)
     {
 
@@ -66,7 +81,7 @@ WriteLiteral("        <tr>\r\n            <td><a href=\"/Account/Details/");
 
 
             
-            #line 25 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
+            #line 26 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
                                      Write(account.AccountId);
 
             
@@ -76,7 +91,7 @@ WriteLiteral("\">");
 
 
             
-            #line 25 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
+            #line 26 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
                                                          Write(account.AccountId);
 
             
@@ -86,7 +101,7 @@ WriteLiteral("</a></td>\r\n            <td>");
 
 
             
-            #line 26 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
+            #line 27 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
            Write(account.CurrencyId);
 
             
@@ -96,7 +111,17 @@ WriteLiteral("</td>\r\n            <td>");
 
 
             
-            #line 27 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
+            #line 28 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
+           Write(account.Type);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</td>\r\n            <td>");
+
+
+            
+            #line 29 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
            Write(account.Balance);
 
             
@@ -106,7 +131,7 @@ WriteLiteral("</td>\r\n            <td>");
 
 
             
-            #line 28 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
+            #line 30 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
            Write(account.DisplayName);
 
             
@@ -116,7 +141,7 @@ WriteLiteral("</td>\r\n            <td>\r\n                <a href=\"/Account/De
 
 
             
-            #line 30 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
+            #line 32 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
                                      Write(account.AccountId);
 
             
@@ -126,7 +151,7 @@ WriteLiteral("\">Details</a>\r\n                <a href=\"/Account/Edit/");
 
 
             
-            #line 31 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
+            #line 33 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
                                   Write(account.AccountId);
 
             
@@ -136,17 +161,27 @@ WriteLiteral("\">Edit</a>\r\n                <a href=\"/Account/Transfer/?Source
 
 
             
-            #line 32 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
+            #line 34 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
                                                        Write(account.AccountId);
 
             
             #line default
             #line hidden
-WriteLiteral("\">Transfer from</a>\r\n            </td>\r\n        </tr>\r\n");
+WriteLiteral("\">Transfer</a>\r\n                <a href=\"/Account/Withdraw/?SourceAccountId=");
 
 
             
             #line 35 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
+                                                       Write(account.AccountId);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\">Withdraw</a>\r\n            </td>\r\n        </tr>\r\n");
+
+
+            
+            #line 38 "C:\Users\Andy\AppData\Local\Git\Olive\Website\Views\Account\Index.cshtml"
     }
 
             

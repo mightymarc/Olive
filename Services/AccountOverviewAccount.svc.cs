@@ -70,5 +70,14 @@ namespace Olive.Services
         /// </summary>
         [DataMember]
         public string DisplayName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type.
+        /// </summary>
+        /// <value>
+        /// The type.
+        /// </value>
+        [DataMember]
+        public string Type { get; set; }
     }
 }

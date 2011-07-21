@@ -127,6 +127,44 @@ namespace Olive.Website.Controllers
             return this.RedirectToAction(string.Empty, "Account");
         }
 
+        [HttpGet]
+        public ActionResult Withdraw(int sourceAccountId)
+        {
+            if (!this.SessionPersister.HasSession)
+            {
+                return this.RedirectToLogin();
+            }
+
+            return this.View(new WithdrawViewModel { SourceAccountId = sourceAccountId });
+        }
+
+        [HttpPost]
+        public ActionResult Withdraw(WithdrawViewModel model)
+        {
+            Contract.Requires<InvalidOperationException>(this.ClientService != null);
+            Contract.Requires<InvalidOperationException>(this.SessionPersister != null);
+            Contract.Requires<ArgumentNullException>(model != null, "model");
+            Contract.Requires<ArgumentException>(model.SourceAccountId > 0, "model.SourceAccountId > 0");
+
+            if (!this.SessionPersister.HasSession)
+            {
+                return this.RedirectToLogin();
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            var sourceAccount = this.ClientService.GetAccount(this.SessionPersister.SessionId, model.SourceAccountId);
+            var withdrawAccountId = this.ClientService.GetOrCreateBitcoinWithdrawAccount(
+                this.SessionPersister.SessionId, sourceAccount.CurrencyId, model.BitcoinReceiveAddress);
+            this.ClientService.CreateTransfer(
+                this.SessionPersister.SessionId, model.SourceAccountId, withdrawAccountId, model.Amount, model.Description);
+
+            return this.RedirectToAction(string.Empty, "Account");
+        }
+
         /// <summary>
         /// The details.
         /// </summary>

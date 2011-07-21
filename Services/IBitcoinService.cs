@@ -65,6 +65,9 @@ namespace Olive.Services
         [OperationContract]
         string GetAccountReceiveAddress(Guid sessionId, int accountId);
 
+        [OperationContract]
+        int GetOrCreateBitcoinWithdrawAccount(Guid sessionId, string currencyId, string receiveAddress);
+
         /// <summary>
         /// Gets the accounts without receive address, excluding special accounts.
         /// </summary>
@@ -72,5 +75,8 @@ namespace Olive.Services
         /// <returns>The account identifiers of the accounts.</returns>
         [OperationContract]
         List<int> GetAccountsWithoutReceiveAddress(Guid sessionId, string currencyId);
+
+        [OperationContract]
+        List<GetWithdrawAccountsForProcessingAccount> GetWithdrawAccountsForProcessing(Guid sessionId, string currencyId);
     }
 }

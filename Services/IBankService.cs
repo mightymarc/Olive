@@ -55,7 +55,7 @@ namespace Olive.Services
         /// The create current account.
         /// </summary>
         /// <param name="sessionId">The session id.</param>
-        /// <param name="currencyId">The currency id.</param>
+        /// <param name="currencyId">The specialAccountName id.</param>
         /// <param name="displayName">The display name.</param>
         /// <returns>
         /// The create current account.
@@ -121,5 +121,11 @@ namespace Olive.Services
         /// <returns></returns>
         [OperationContract]
         List<string> GetCurrencies();
+
+        [OperationContract]
+        int CreateAccountHold(Guid sessionId, int accountId, decimal amount, string holdReason, DateTime? expiresAt);
+
+        [OperationContract]
+        void ReleaseTransactionHoldAndDebit(Guid sessionId, int accountHoldId, string specialAccountName);
     }
 }

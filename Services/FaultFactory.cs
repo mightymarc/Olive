@@ -60,6 +60,7 @@ namespace Olive.Services
             SessionDoesNotExistFaultCode = new FaultCode("SessionDoesNotExist");
             UnauthorizedAccountAccessFaultCode = new FaultCode("UnauthorizedAccountAccess");
             UnauthorizedFeatureAccessFaultCode = new FaultCode("UnauthorizedFeatureAccessFaultCode");
+            AccountNotFoundFaultCode = new FaultCode("AccountNotFoundFaultCode");
         }
 
         /// <summary>
@@ -69,6 +70,8 @@ namespace Olive.Services
         /// The unauthorized feature access fault code.
         /// </value>
         public static FaultCode UnauthorizedFeatureAccessFaultCode { get; protected set; }
+
+        public static FaultCode AccountNotFoundFaultCode { get; protected set; }
 
         /// <summary>
         /// Gets or sets the email already registered fault code.
@@ -136,6 +139,15 @@ namespace Olive.Services
             return new FaultException(
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, sessionId)), 
                 SessionDoesNotExistFaultCode);
+        }
+
+        public virtual FaultException CreateAccountNotFoundFaultException(int accountId)
+        {
+            const string ReasonFormat = "The specified account, {0}, does not exist.";
+
+            return new FaultException(
+                new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, accountId)),
+                AccountNotFoundFaultCode);
         }
 
         /// <summary>

@@ -14,16 +14,17 @@ namespace Olive.DataAccess.EntityConfigurations
 
     using Olive.DataAccess.Domain;
 
-    public class AccountConfiguration : EntityTypeConfiguration<Account>
+    public class AccountHoldConfiguration : EntityTypeConfiguration<AccountHold>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AccountConfiguration"/> class.
+        /// Initializes a new instance of the <see cref="AccountHoldConfiguration"/> class.
         /// </summary>
-        public AccountConfiguration()
+        public AccountHoldConfiguration()
         {
-            this.ToTable("Account", "Banking");
-            this.HasKey(m => m.AccountId);
-            this.Property(m => m.AccountType).HasColumnName("Type");
+            this.ToTable("AccountHold", "Banking");
+            this.HasKey(m => m.AccountHoldId);
+
+            this.HasRequired(m => m.Account).WithMany(m => m.Holds);
         }
     }
 }

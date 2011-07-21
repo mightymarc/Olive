@@ -48,6 +48,14 @@ namespace Olive.DataAccess.Domain
     public class Account
     {
         /// <summary>
+        /// Gets or sets the holds.
+        /// </summary>
+        /// <value>
+        /// The holds.
+        /// </value>
+        public virtual ICollection<AccountHold> Holds { get; set; }
+
+        /// <summary>
         ///   Gets or sets AccountId.
         /// </summary>
         public int AccountId { get; set; }
@@ -102,5 +110,7 @@ namespace Olive.DataAccess.Domain
         ///   <c>true</c> if any user can deposit; otherwise, <c>false</c>.
         /// </value>
         public bool AnyCanDeposit { get; set; }
+
+        public virtual BitcoinWithdrawAccount BitcoinWithdrawAccount { get; set; }
     }
 }

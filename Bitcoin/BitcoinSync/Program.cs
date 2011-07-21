@@ -89,10 +89,9 @@ namespace Olive.Bitcoin.BitcoinSync
             var clientService = new ChannelFactory<IClientService>("OliveService").CreateChannel();
 #endif
 
-            this.container.RegisterInstance(clientService);
+            this.container.RegisterInstance<IClientService>(clientService);
 
             this.container.RegisterType<IOliveContext, OliveContext>();
-            this.container.RegisterInstance<IBitcoinService>(clientService);
 
             var rpcCredential = new NetworkCredential(
                 this.settings.BitcoinDaemonUsername, this.settings.BitcoinDaemonPassword);
@@ -118,6 +117,7 @@ namespace Olive.Bitcoin.BitcoinSync
             try
             {
 #endif
+                this.ProcessWithdraws(sessionId);
                 this.ProcessIncomingTransactions(sessionId);
                 this.GenerateReceiveAddresses(sessionId);
 #if !Dev
@@ -145,6 +145,14 @@ namespace Olive.Bitcoin.BitcoinSync
         private void ProcessIncomingTransactions(Guid sessionId)
         {
             var processor = new IncomingTransactionProcessor();
+            this.container.BuildUp(processor);
+
+            processor.Process(sessionId);
+        }
+
+        private void ProcessWithdraws(Guid sessionId)
+        {
+            var processor = new WithdrawProcessor();
             this.container.BuildUp(processor);
 
             processor.Process(sessionId);

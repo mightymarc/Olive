@@ -119,5 +119,23 @@ namespace Olive.Services
             Contract.Ensures(Contract.Result<List<string>>() != null);
             return default(List<string>);
         }
+
+        public int CreateAccountHold(Guid sessionId, int accountId, decimal amount, string holdReason, DateTime? expiresAt)
+        {
+            Contract.Requires<ArgumentException>(sessionId != Guid.Empty, "sessionId");
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(holdReason), "holdReason");
+            Contract.Requires<ArgumentException>(amount > 0, "amount > 0");
+            Contract.Requires<ArgumentException>(accountId > 0, "accountId > 0");
+            Contract.Requires<ArgumentException>(expiresAt == null || expiresAt.Value > DateTime.UtcNow);
+            Contract.Ensures(Contract.Result<int>() > 0);
+            return default(int);
+        }
+
+        public void ReleaseTransactionHoldAndDebit(Guid sessionId, int accountHoldId, string specialAccountName)
+        {
+            Contract.Requires<ArgumentException>(sessionId != Guid.Empty, "sessionId");
+            Contract.Requires<ArgumentException>(accountHoldId > 0, "accountHoldId > 0");
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(specialAccountName), "specialAccountName");
+        }
     }
 }

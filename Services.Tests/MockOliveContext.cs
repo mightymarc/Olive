@@ -89,6 +89,18 @@ namespace Olive.DataAccess.Tests
             }
         }
 
+        public IDbSet<AccountHold> AccountHolds
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         /// <summary>
         ///   Gets or sets AccountsWithBalance.
         /// </summary>

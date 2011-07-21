@@ -191,6 +191,7 @@
       <DependentUpon>ClientService.svc</DependentUpon>
     </Compile>
     <Compile Include="ClientServiceServiceHostFactory.cs" />
+    <Compile Include="GetWithdrawAccountsForProcessingAccount.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
