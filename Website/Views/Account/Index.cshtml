@@ -10,7 +10,7 @@
     <a href="/Account/Create">Create account</a>
 </div>
 
-<table>
+<table border="1">
     <tr>
         <th>#</th>
         <th>Type</th>
@@ -24,15 +24,15 @@
     {
         <tr>
             <td><a href="/Account/Details/@account.AccountId">@account.AccountId</a></td>
-            <td>@account.CurrencyId</td>
             <td>@account.Type</td>
+            <td>@account.CurrencyId</td>
             <td>@account.Balance</td>
             <td>@account.DisplayName</td>
             <td>
-                <a href="/Account/Details/@account.AccountId">Details</a>
-                <a href="/Account/Edit/@account.AccountId">Edit</a>
-                <a href="/Account/Transfer/?SourceAccountId=@account.AccountId">Transfer</a>
-                <a href="/Account/Withdraw/?SourceAccountId=@account.AccountId">Withdraw</a>
+                <a href="/Account/Details/@account.AccountId">Details</a>&nbsp;-&nbsp;
+                <a href="/Account/Edit/@account.AccountId">Edit</a>&nbsp;-&nbsp;
+                <a href="/Account/Transfer/?SourceAccountId=@account.AccountId">Transfer</a>&nbsp;-&nbsp;
+                <a href="/Account/Withdraw/?SourceAccountId=@account.AccountId">Withdraw</a>&nbsp;-&nbsp;
             </td>
         </tr>
     }
