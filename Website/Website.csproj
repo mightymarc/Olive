@@ -189,6 +189,7 @@
   <ItemGroup>
     <Compile Include="App_Start\PrecompiledMvcViewEngineStart.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Helpers\CurrencyCache.cs" />
     <Compile Include="Helpers\IContainerAccessor.cs" />
@@ -262,6 +263,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Error.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Home\Index.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Index.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Views\User\Login.cs">
       <AutoGen>True</AutoGen>
@@ -373,6 +379,10 @@
     <None Include="Views\Error\Error.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Error.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Home\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.cs</LastGenOutput>
     </None>
     <None Include="Views\User\Register.cshtml">
       <Generator>RazorGenerator</Generator>
