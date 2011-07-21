@@ -131,7 +131,7 @@ namespace Olive.Website.Controllers
 
             if (this.ModelState.IsValid)
             {
-                this.ClientService.CreateUser(model.Email, model.Password);
+                this.ClientService.CreateUser(model.Email, model.Password, model.ParentUserId);
                 this.SessionPersister.SessionId = this.ClientService.CreateSession(model.Email, model.Password);
                 return this.RedirectToAction(string.Empty, "Account");
             }

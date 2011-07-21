@@ -4,5 +4,6 @@
     EmailLowercase AS LOWER(Email),
     [PasswordHash] VARCHAR (100) NOT NULL,
     [PasswordSalt] VARCHAR (100) NOT NULL,
+	ParentUserId INT
 );
 

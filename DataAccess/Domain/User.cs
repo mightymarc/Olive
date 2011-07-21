@@ -48,6 +48,8 @@ namespace Olive.DataAccess
     /// </summary>
     public class User
     {
+        public int ParentUserId { get; set; }
+
         /// <summary>
         /// Gets or sets the  account access entries for this user.
         /// </summary>

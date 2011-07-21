@@ -69,6 +69,6 @@ namespace Olive.Services
         /// The password.
         /// </param>
         [OperationContract]
-        void CreateUser(string email, string password);
+        void CreateUser(string email, string password, int parentParentUserId);
     }
 }

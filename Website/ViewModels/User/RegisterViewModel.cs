@@ -47,6 +47,10 @@ namespace Olive.Website.ViewModels.User
     /// </summary>
     public sealed class RegisterViewModel
     {
+        [Required]
+        [Display(Name = "Referrer", Description = "User number of the person who told you about the site. Don't know it? Ask them.")]
+        public int ParentUserId { get; set; }
+
         /// <summary>
         ///   Gets or sets the password confirmation.
         /// </summary>

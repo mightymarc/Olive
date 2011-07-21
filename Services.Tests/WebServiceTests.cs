@@ -456,7 +456,7 @@ namespace Olive.Services.Tests
             var service = new ClientService { Container = this.container };
 
             // Act
-            service.CreateUser(email, password);
+            service.CreateUser(email, password, 0);
 
             // Assert
             Assert.IsNotNull(contextMock.Object.Users.SingleOrDefault(u => u.Email == email));
@@ -483,7 +483,7 @@ namespace Olive.Services.Tests
             // Assert
             try
             {
-                service.CreateUser(email, password);
+                service.CreateUser(email, password, 0);
             }
             catch (FaultException fe)
             {
@@ -521,7 +521,7 @@ namespace Olive.Services.Tests
 
             // Assert
             Assert.Throws<ArgumentException>(
-                () => service.CreateUser(email, password), 
+                () => service.CreateUser(email, password, 0), 
                 string.Format(
                     CultureInfo.CurrentCulture, "E-mail '{0}' should not have been allowed to register.", email));
         }
@@ -536,7 +536,7 @@ namespace Olive.Services.Tests
             var service = new ClientService { Container = this.container };
 
             // Act and assert
-            Assert.Throws<ArgumentException>(() => service.CreateUser(null, "password"));
+            Assert.Throws<ArgumentException>(() => service.CreateUser(null, "password", 0));
         }
 
         /// <summary>
@@ -549,7 +549,7 @@ namespace Olive.Services.Tests
             var service = new ClientService { Container = this.container };
 
             // Act and assert
-            Assert.Throws<ArgumentException>(() => service.CreateUser("a@b.com", null));
+            Assert.Throws<ArgumentException>(() => service.CreateUser("a@b.com", null, 0));
         }
 
         /// <summary>
@@ -562,7 +562,7 @@ namespace Olive.Services.Tests
             var service = new ClientService { Container = this.container };
 
             // Act and assert
-            Assert.Throws<ArgumentException>(() => service.CreateUser("a@b.c", "ab"));
+            Assert.Throws<ArgumentException>(() => service.CreateUser("a@b.c", "ab", 0));
         }
 
         /// <summary>

@@ -216,7 +216,7 @@ namespace Olive.Services
         /// </param>
         /// <exception cref="FaultException">
         /// </exception>
-        public virtual void CreateUser(string email, string password)
+        public virtual void CreateUser(string email, string password, int parentUserId)
         {
             using (var context = this.GetContext())
             {
@@ -228,7 +228,7 @@ namespace Olive.Services
                 var salt = this.Crypto.CreateSalt(64);
                 var hash = this.Crypto.GenerateHash(password, salt);
 
-                var user = new User { PasswordHash = hash, PasswordSalt = salt, Email = email };
+                var user = new User { PasswordHash = hash, PasswordSalt = salt, Email = email, ParentUserId = parentUserId };
                 context.Users.Add(user);
                 context.SaveChanges();
 

@@ -158,7 +158,7 @@ namespace Olive.Website.Tests.Controllers
             var password = UnitTestHelper.GetRandomDisplayName();
 
             this.serviceMock.Setup(s => s.CreateSession(email, password)).Returns(sessionId);
-            this.serviceMock.Setup(s => s.CreateUser(email, password));
+            this.serviceMock.Setup(s => s.CreateUser(email, password, 0));
 
             this.sessionMock.SetupGet(s => s.HasSession).Returns(false);
             this.sessionMock.SetupSet(s => s.SessionId = sessionId);
@@ -173,7 +173,7 @@ namespace Olive.Website.Tests.Controllers
             Assert.AreEqual("Account", redirectToRouteResult.RouteValues["controller"]);
 
             this.serviceMock.Verify(s => s.CreateSession(email, password), Times.Once());
-            this.serviceMock.Verify(s => s.CreateUser(email, password), Times.Once());
+            this.serviceMock.Verify(s => s.CreateUser(email, password, 0), Times.Once());
 
             this.sessionMock.VerifyGet(s => s.HasSession, Times.Once());
             this.sessionMock.VerifySet(s => s.SessionId = sessionId, Times.Once());

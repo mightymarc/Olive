@@ -64,8 +64,9 @@ namespace Olive.Services
             return default(Guid);
         }
 
-        public void CreateUser(string email, string password)
+        public void CreateUser(string email, string password, int parentUserId)
         {
+            Contract.Requires<ArgumentException>(parentUserId > 0, "parentUserId > 0");
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(email), "email");
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(password), "password");
             Contract.Requires<ArgumentException>(

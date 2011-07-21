@@ -31,6 +31,11 @@
                @Html.ValidationMessageFor(m => m.ConfirmPassword)
             </p>
             <p>
+               @Html.LabelFor(m => m.ParentUserId)
+               @Html.TextBoxFor(m => m.ParentUserId)
+               @Html.ValidationMessageFor(m => m.ParentUserId)
+            </p>
+            <p>
                 <input type="submit" value="Register" />
             </p>
         </fieldset>
