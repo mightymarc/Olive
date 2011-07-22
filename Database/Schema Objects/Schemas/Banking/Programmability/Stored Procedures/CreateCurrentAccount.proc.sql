@@ -31,6 +31,4 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
 	ROLLBACK TRAN
-	
-	exec dbo.RethrowError
 END CATCH
