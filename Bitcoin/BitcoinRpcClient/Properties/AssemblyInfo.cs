@@ -40,5 +40,5 @@ using System.Reflection;
 
 [assembly: AssemblyTitle("RPC RpcClient")]
 [assembly: AssemblyDescription("RPC RpcClient for accessing Bitcoin Daemon's JSON RPC service.")]
-[assembly: AssemblyVersion("1.0.0.*")]
+[assembly: AssemblyVersion("1.0.1.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

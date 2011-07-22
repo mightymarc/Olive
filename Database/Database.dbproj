@@ -438,9 +438,6 @@
     <Build Include="Schema Objects\Schemas\Auth\Tables\Keys\PK_User.pkey.sql">
       <SubType>Code</SubType>
     </Build>
-    <Build Include="Schema Objects\Schemas\Auth\Tables\Keys\User.FK_User_ParentUser.pkey.sql">
-      <SubType>Code</SubType>
-    </Build>
     <Build Include="Schema Objects\Schemas\Auth\Tables\Keys\User.FK_User_ParentUser.fkey.sql">
       <SubType>Code</SubType>
     </Build>
