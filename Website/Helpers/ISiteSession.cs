@@ -40,10 +40,12 @@
 namespace Olive.Website.Helpers
 {
     using System;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Helper class to access session information.
     /// </summary>
+    [ContractClass(typeof(ISiteSessionContract))]
     public interface ISiteSession
     {
         /// <summary>
