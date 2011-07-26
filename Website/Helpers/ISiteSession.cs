@@ -57,5 +57,7 @@ namespace Olive.Website.Helpers
         ///   Gets or sets the session id.
         /// </summary>
         Guid SessionId { get; set; }
+
+        void RemoveSession();
     }
 }

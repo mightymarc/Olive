@@ -70,15 +70,23 @@ namespace Olive.Website.Helpers
         {
             get
             {
-                return HttpContext.Current.Session[SessionIdKey] == null
-                           ? Guid.Empty
-                           : (Guid)HttpContext.Current.Session[SessionIdKey];
+                if (HttpContext.Current.Session[SessionIdKey] == null)
+                {
+                    throw new InvalidOperationException("The user does not have a session.");
+                }
+
+                return (Guid)HttpContext.Current.Session[SessionIdKey];
             }
 
             set
             {
                 HttpContext.Current.Session[SessionIdKey] = value;
             }
+        }
+
+        public void RemoveSession()
+        {
+            HttpContext.Current.Session[SessionIdKey] = null;
         }
     }
 }

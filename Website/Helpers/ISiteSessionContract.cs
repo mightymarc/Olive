@@ -21,11 +21,16 @@
                 Contract.Ensures(Contract.Result<Guid>() != Guid.Empty);
                 return default(Guid);
             }
+
             set
             {
                 Contract.Requires<ArgumentException>(value != Guid.Empty, "value");
                 return;
             }
+        }
+
+        public void RemoveSession()
+        {
         }
     }
 }
