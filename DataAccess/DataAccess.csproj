@@ -200,6 +200,9 @@
     <Compile Include="Domain\BitcoinTransaction.cs" />
     <Compile Include="Domain\BitcoinAccountReceiveAddress.cs" />
     <Compile Include="Domain\BitcoinWithdrawAccount.cs" />
+    <Compile Include="Domain\ExchangeMarket.cs" />
+    <Compile Include="Domain\ExchangeOrder.cs" />
+    <Compile Include="Domain\ExchangePrice.cs" />
     <Compile Include="Domain\Role.cs" />
     <Compile Include="EntityConfigurations\AccountConfiguration.cs" />
     <Compile Include="EntityConfigurations\AccountUserConfiguration.cs" />
@@ -208,6 +211,9 @@
     <Compile Include="EntityConfigurations\AccountWithBalanceConfiguration.cs" />
     <Compile Include="EntityConfigurations\BitcoinWithdrawAccountConfiguration.cs" />
     <Compile Include="EntityConfigurations\AccountHoldConfiguration.cs" />
+    <Compile Include="EntityConfigurations\ExchangePriceConfiguration.cs" />
+    <Compile Include="EntityConfigurations\ExchangeOrderConfiguration.cs" />
+    <Compile Include="EntityConfigurations\ExchangeMarketConfiguration.cs" />
     <Compile Include="EntityConfigurations\RoleConfiguration.cs" />
     <Compile Include="EntityConfigurations\SessionConfiguration.cs" />
     <Compile Include="EntityConfigurations\CurrencyConfiguration.cs" />
