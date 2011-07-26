@@ -47,8 +47,6 @@ namespace Olive.Services
 
     using Olive.DataAccess;
 
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", 
-        Justification = "Contract for IAuthService.")]
     [ContractClassFor(typeof(IAuthService))]
     public abstract class IAuthServiceContract : IAuthService
     {
@@ -57,8 +55,7 @@ namespace Olive.Services
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(email), "email");
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(password), "password");
             Contract.Requires<ArgumentException>(Regex.IsMatch(email, @"^[^@]+@.+$"));
-
-            ////Contract.Requires<ArgumentException>(Regex.IsMatch(password, "^.{8,50}$"));
+            Contract.Requires<ArgumentException>(Regex.IsMatch(password, "^.{8,50}$"));
             Contract.Ensures(Contract.Result<Guid>() != Guid.Empty);
 
             return default(Guid);
@@ -69,10 +66,7 @@ namespace Olive.Services
             Contract.Requires<ArgumentException>(parentUserId > 0, "parentUserId > 0");
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(email), "email");
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(password), "password");
-            Contract.Requires<ArgumentException>(
-                Regex.IsMatch(
-                    email, 
-                    @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"));
+            Contract.Requires<ArgumentException>(Regex.IsMatch(email, @"^[^@]+@.+$"));
             Contract.Requires<ArgumentException>(Regex.IsMatch(password, "^.{8,50}$"));
         }
     }

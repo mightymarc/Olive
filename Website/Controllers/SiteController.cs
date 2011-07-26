@@ -97,7 +97,7 @@ namespace Olive.Website.Controllers
                 {
                     this.SessionPersister.RemoveSession();
                     filterContext.ExceptionHandled = true;
-                    this.Response.Redirect("/Account/Auth");
+                    this.Response.Redirect("/User/Login");
                     return;
                 }
             }

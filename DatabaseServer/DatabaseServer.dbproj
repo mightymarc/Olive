@@ -55,7 +55,7 @@
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <SuppressWarnings>
     </SuppressWarnings>
-    <SqlCommandVariablesFile>Properties\DevMaster.sqlcmdvars</SqlCommandVariablesFile>
+    <SqlCommandVariablesFile>Properties\Dev.sqlcmdvars</SqlCommandVariablesFile>
     <DeployToDatabase>True</DeployToDatabase>
     <DeploymentConfigFile>Properties\Master.sqldeployment</DeploymentConfigFile>
   </PropertyGroup>

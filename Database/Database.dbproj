@@ -197,6 +197,28 @@
     <Folder Include="Schema Objects\Schemas\Bitcoin\Views\Indexes\" />
     <Folder Include="Schema Objects\Schemas\Bitcoin\Views\Triggers\" />
     <Folder Include="Schema Objects\Schemas\Bitcoin\Views\Statistics\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Programmability\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Programmability\Defaults\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Programmability\Functions\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Programmability\Rules\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Programmability\Stored Procedures\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Programmability\Types\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Programmability\Types\User Defined Data Types\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Programmability\Types\User Defined Types CLR\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Programmability\Types\User Defined Table Types\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Programmability\Types\XML Schema Collections\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Synonyms\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Tables\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Tables\Constraints\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Tables\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Tables\Keys\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Tables\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Tables\Statistics\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Views\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Views\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Views\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\Exchange\Views\Statistics\" />
   </ItemGroup>
   <ItemGroup>
     <PropertiesFile Include="Properties\Database.sqlsettings">
@@ -439,6 +461,93 @@
       <SubType>Code</SubType>
     </Build>
     <Build Include="Schema Objects\Schemas\Auth\Tables\Keys\User.FK_User_ParentUser.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Database Level Objects\Security\Schemas\Exchange.schema.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\ExchangeMarket.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Keys\ExchangeMarket.PK_ExchangeMarket.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Keys\Market.FK_Market_FromCurrency.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Keys\Market.FK_Market_ToCurrency.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Keys\Market.IX_Market.ukey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Constraints\Market.CK_DifferentCurrencies.chkconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Order.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Keys\Order.PK_Order.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Keys\Order.FK_Order_SourceAccount.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Keys\Order.FK_Order_DestAccount.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Constraints\Order.CK_Order_DifferentAccounts.chkconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Constraints\Order.CK_Order_Price.chkconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Constraints\Order.CK_Order_RemainingVolume.chkconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\OrderMatch.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Views\Price.view.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Programmability\Stored Procedures\CreateOrder.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Programmability\Stored Procedures\MatchOrder.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Keys\Order.FK_Order_AccountHold.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Constraints\Order.CK_Order_VolumeRemainingXorAccountHold.chkconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Triggers\Order.TG_MaintainAccountHoldForOrder.trigger.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Keys\OrderMatch.PK_OrderMatch.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Keys\OrderMatch.FK_OrderMatch_LeftOrder.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Keys\OrderMatch.FK_Order_RightOrder.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Tables\Constraints\OrderMatch.CK_LeftOrderRightAndOrderAreDifferent.chkconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Bitcoin\Tables\Keys\AccountReceiveAddress.PK_AccountReceiveAddress.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Bitcoin\Tables\Keys\AccountReceiveAddress.FK_AccountReceiveAddress_Account.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Programmability\Stored Procedures\UpdateOrderVolume.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\RoundUp.function.sql">
       <SubType>Code</SubType>
     </Build>
   </ItemGroup>

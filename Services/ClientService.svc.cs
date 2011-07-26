@@ -126,8 +126,6 @@ namespace Olive.Services
         ///   </exception>
         public Guid CreateSession(string email, string password)
         {
-            Contract.Requires(this.FaultFactory != null, "FaultFactory dependency not resolved.");
-
             using (var context = this.GetContext())
             {
                 var salt =
@@ -185,9 +183,8 @@ namespace Olive.Services
 
             using (var context = this.GetContext())
             {
-                var isAdmin = this.UserHasRole(userId, "Admin");
-                var hasAccess = isAdmin || this.UserCanWithdrawFromAccount(userId, sourceAccountId);
-                hasAccess &= isAdmin || this.UserCanDepositToAccount(userId, destAccountId);
+                var hasAccess = this.UserCanWithdrawFromAccount(userId, sourceAccountId);
+                hasAccess &= this.UserCanDepositToAccount(userId, destAccountId);
 
                 if (!hasAccess)
                 {
@@ -767,6 +764,88 @@ namespace Olive.Services
 
                 var result = q.ToList();
                 return result;
+            }
+        }
+
+        public GetMarketResponse GetMarket(string fromCurrencyId, string toCurrencyId)
+        {
+            var response = new GetMarketResponse { FromCurrencyId = fromCurrencyId, ToCurrencyId =  toCurrencyId};
+
+            using (var context = this.GetContext())
+            {
+                var market =
+                    context.ExchangeMarkets.FirstOrDefault(
+                        x => x.FromCurrencyId == fromCurrencyId && x.ToCurrencyId == toCurrencyId);
+
+                if (market == null)
+                {
+                    throw this.FaultFactory.CreateMarketNotFoundFaultException(fromCurrencyId, toCurrencyId);
+                }
+
+                response.MarketId = market.MarketId;
+
+                return response;
+            }
+        }
+
+        public GetMarketResponse GetMarket(int marketId)
+        {
+            var response = new GetMarketResponse { MarketId = marketId };
+
+            using (var context = this.GetContext())
+            {
+                var market = context.ExchangeMarkets.Find(marketId);
+
+                if (market == null)
+                {
+                    throw this.FaultFactory.CreateMarketNotFoundFaultException(marketId);
+                }
+
+                response.FromCurrencyId = market.FromCurrencyId;
+                response.ToCurrencyId = market.ToCurrencyId;
+
+                return response;
+            }
+        }
+
+        public GetMarketPricesResponse GetMarketPrices(int marketId)
+        {
+            using (var context = this.GetContext())
+            {
+                var response = new GetMarketPricesResponse { MarketId = marketId };
+
+                var allPrices = context.ExchangePrices.Where(x => x.MarketId == marketId);
+                var lowestPrices = allPrices.OrderBy(x => x.Price);
+                var prices = lowestPrices.Take(5);
+
+                response.Prices =
+                    new List<GetMarketPricesResponsePrice>(
+                        from price in prices
+                        select new GetMarketPricesResponsePrice { Price = price.Price, Volume = price.Volume });
+
+                return response;
+            }
+        }
+
+        public int CreateOrder(Guid sessionId, int sourceAccountId, int destAccountId, decimal price, decimal volume)
+        {
+            using (var context = this.GetContext())
+            {
+                var userId = this.VerifySession(sessionId);
+
+                if (!this.UserCanWithdrawFromAccount(userId, sourceAccountId))
+                {
+                    throw this.FaultFactory.CreateUnauthorizedAccountAccessFaultException(userId, sourceAccountId);
+                }
+
+                if (!this.UserCanDepositToAccount(userId, destAccountId))
+                {
+                    throw this.FaultFactory.CreateUnauthorizedAccountAccessFaultException(userId, destAccountId);
+                }
+
+                var orderId = context.CreateOrder(sourceAccountId, destAccountId, price, volume);
+
+                return orderId;
             }
         }
     }

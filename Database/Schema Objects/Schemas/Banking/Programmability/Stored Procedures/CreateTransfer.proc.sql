@@ -40,7 +40,18 @@ SELECT @SourceAccountBeforeBalance = Available, @SourceAccountAllowsNegativeBala
 	WHERE AccountId = @SourceAccountId
 		
 IF @SourceAccountAllowsNegativeBalance = 0 AND @SourceAccountBeforeBalance < @Amount
+BEGIN
+	IF '$(TargetEnv)' = 'Dev'
+	BEGIN
+		PRINT '@SourceAccountAllowsNegativeBalance = 0 (FALSE)';
+		PRINT '@SourceAccountBeforeBalance = ' + CONVERT(NVARCHAR, @SourceAccountBeforeBalance);
+		PRINT '@Amount = ' + CONVERT(NVARCHAR, @Amount);
+
+		SELECT * FROM Banking.[AccountWithBalance];
+	END
+
 	RAISERROR(51006, 16, 1);
+END
 
 -- Make sure the accounts have the same currency.
 DECLARE @SourceAccountCurrencyId VARCHAR(10) = (SELECT CurrencyId FROM Banking.Account WHERE AccountId = @SourceAccountId);
@@ -80,6 +91,9 @@ RETURN 0
 END TRY
 BEGIN CATCH
 	IF @TC = 0 ROLLBACK TRAN ELSE ROLLBACK TRAN TR1
+
+	IF '$(TargetEnv)' = 'Dev'
+		SELECT ERROR_MESSAGE();
 
 	RETURN ERROR_NUMBER();
 END CATCH

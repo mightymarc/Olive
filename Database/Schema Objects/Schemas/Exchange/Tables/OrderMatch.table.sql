@@ -1,0 +1,9 @@
+﻿CREATE TABLE [Exchange].[OrderMatch]
+(
+	OrderMatchId INT NOT NULL IDENTITY,
+	CreatedAt DATETIME NOT NULL DEFAULT(GETUTCDATE()),
+	LeftOrderId INT NOT NULL,
+	RightOrderId INT NOT NULL,
+	FromVolume DECIMAL(18, 8) NOT NULL,
+	ToVolume DECIMAL(18, 8) NOT NULL,
+);

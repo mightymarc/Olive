@@ -191,6 +191,8 @@
       <DependentUpon>ClientService.svc</DependentUpon>
     </Compile>
     <Compile Include="ClientServiceServiceHostFactory.cs" />
+    <Compile Include="IExchangeServiceContract.cs" />
+    <Compile Include="GetMarketResponse.cs" />
     <Compile Include="GetWithdrawAccountsForProcessingAccount.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -202,6 +204,7 @@
     <Compile Include="IAuthService.cs" />
     <Compile Include="IBitcoinService.cs" />
     <Compile Include="IClientService.cs" />
+    <Compile Include="IExchangeService.cs" />
     <Compile Include="IFaultFactory.cs" />
     <Compile Include="IBankService.cs" />
     <Compile Include="IBankServiceContract.cs" />

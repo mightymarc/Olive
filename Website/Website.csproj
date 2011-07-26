@@ -150,7 +150,6 @@
     </Reference>
     <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="Olive.Services, Version=1.0.0.20550, Culture=neutral, PublicKeyToken=e631a64c45b692ab, processorArchitecture=MSIL" />
     <Reference Include="PrecompiledMvcViewEngine">
       <HintPath>..\packages\PrecompiledMvcViewEngine.1.0\lib\net40\PrecompiledMvcViewEngine.dll</HintPath>
     </Reference>
@@ -189,6 +188,7 @@
   <ItemGroup>
     <Compile Include="App_Start\PrecompiledMvcViewEngineStart.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ExchangeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Helpers\CurrencyCache.cs" />
@@ -196,6 +196,7 @@
     <Compile Include="Helpers\ICurrencyCache.cs" />
     <Compile Include="Helpers\ISiteSession.cs" />
     <Compile Include="Controllers\SiteController.cs" />
+    <Compile Include="Helpers\ISiteSessionContract.cs" />
     <Compile Include="Helpers\SiteSession.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -210,6 +211,8 @@
     <Compile Include="ViewModels\Account\CreateViewModel.cs" />
     <Compile Include="ViewModels\Account\TransferViewModel.cs" />
     <Compile Include="ViewModels\Account\WithdrawViewModel.cs" />
+    <Compile Include="ViewModels\Exchange\CreateOrderViewModel.cs" />
+    <Compile Include="ViewModels\Exchange\IndexViewModel.cs" />
     <Compile Include="ViewModels\User\LoginViewModel.cs" />
     <Compile Include="ViewModels\Account\DetailsViewModel.cs" />
     <Compile Include="ViewModels\Account\IndexViewModel.cs" />
@@ -263,6 +266,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Error.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Exchange\DisplayTemplates\MarketAndPrices.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MarketAndPrices.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Views\Home\Index.cs">
       <AutoGen>True</AutoGen>
@@ -380,6 +388,12 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Error.cs</LastGenOutput>
     </None>
+    <Content Include="Views\Exchange\Index.cshtml" />
+    <Content Include="Views\Exchange\CreateOrder.cshtml" />
+    <None Include="Views\Exchange\DisplayTemplates\MarketAndPrices.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>MarketAndPrices.cs</LastGenOutput>
+    </None>
     <None Include="Views\Home\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.cs</LastGenOutput>
@@ -445,6 +459,7 @@
       <LastGenOutput>ViewResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

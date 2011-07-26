@@ -1,0 +1,12 @@
+﻿@model Olive.Website.ViewModels.Exchange.IndexViewModel
+
+@{
+    ViewBag.Title = "Exchange";
+}
+
+<h2>Exchange</h2>
+
+@foreach (var marketAndPrices in Model.Markets)
+{
+    @Html.DisplayFor(m => marketAndPrices, "MarketAndPrices")
+}

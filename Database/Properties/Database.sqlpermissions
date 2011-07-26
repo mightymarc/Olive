@@ -89,6 +89,20 @@
 
   
 
+  <!-- EXECUTE on Exchange.CreateOrder (SP) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>EXECUTE</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="CreateOrder" Schema="Exchange" Type="OBJECT" />
+  </PermissionStatement>
+
+  <!-- EXECUTE on Exchange.MatchOrder (SP) -->
+  <PermissionStatement Action="GRANT">
+    <Permission>EXECUTE</Permission>
+    <Grantee>ClientService</Grantee>
+    <Object Name="MatchOrder" Schema="Exchange" Type="OBJECT" />
+  </PermissionStatement>
+
   <!-- EXECUTE on Bitcoin.GetAccountReceiveAddress (UDF) -->
   <PermissionStatement Action="GRANT">
     <Permission>EXECUTE</Permission>

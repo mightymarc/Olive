@@ -1,0 +1,17 @@
+﻿@using Olive.Services
+@inherits System.Web.Mvc.WebViewPage<Tuple<GetMarketResponse, GetMarketPricesResponse>>
+<h3>@Model.Item1.FromCurrencyId to @Model.Item1.ToCurrencyId</h3>
+
+<h4>Best prices</h4>
+<p><a href="/Exchange/CreateOrder?marketId=@Model.Item1.MarketId">Create order</a></p>
+
+<ul>
+    @foreach (var price in Model.Item2.Prices)
+    {
+        <li>
+            <span>@price.Price</span>
+            <span>(@price.Volume)</span>
+            <a href="/Exchange/CreateOrder?marketId=@Model.Item1.MarketId&price=@price.Price">Create order</a>
+        </li>
+    }
+</ul>

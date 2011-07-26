@@ -40,9 +40,12 @@
 namespace Olive.DataAccess
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Diagnostics.Contracts;
     using System.Linq;
+
+    using Olive.DataAccess.Domain;
 
     /// <summary>
     /// The entity framework database context.
@@ -171,6 +174,26 @@ namespace Olive.DataAccess
             {
                 case 0:
                     return;
+                default:
+                    throw new UnknownReturnCodeException(command.GetReturnCode());
+            }
+        }
+
+        public int CreateOrder(int sourceAccountId, int destAccountId, decimal price, decimal volume)
+        {
+            var command = this.CommandConnection.CreateCommand("Exchange.CreateOrder");
+            command.AddParam("@SourceAccountId", DbType.Int32, sourceAccountId);
+            command.AddParam("@DestAccountId", DbType.Int32, destAccountId);
+            command.AddParam("@Price", DbType.Decimal, price);
+            command.AddParam("@Volume", DbType.Decimal, volume);
+            command.AddParam("@OrderId", DbType.Int32, direction: ParameterDirection.Output);
+
+            switch (this.ExecuteCommand(command))
+            {
+                case 0:
+                    var orderId = (int)command.GetParameter("@OrderId").Value;
+                    Contract.Assume(orderId > 0);
+                    return orderId;
                 default:
                     throw new UnknownReturnCodeException(command.GetReturnCode());
             }

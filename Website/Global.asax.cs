@@ -103,6 +103,11 @@ namespace Olive.Website
                 new { controller = "Account", action = "Edit", AccountId = UrlParameter.Optional });
 
             routes.MapRoute(
+                "Exchange_CreateOrder",
+                "{controller}/{action}",
+                new { controller = "Exchange", action = "CreateOrder" });
+
+            routes.MapRoute(
                 "Account_Transfer",
                 "{controller}/{action}/{SourceAccountId}",
                 new { controller = "Account", action = "Transfer", SourceAccountId = UrlParameter.Optional });

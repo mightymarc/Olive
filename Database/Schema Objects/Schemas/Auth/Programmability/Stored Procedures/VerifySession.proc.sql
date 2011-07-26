@@ -16,7 +16,7 @@ WHERE SessionId = @SessionId;
 IF @UserId IS NULL
 BEGIN
 	-- The specified session does not exist or is expired.
-	RAISERROR(51011, 16, 1);
+	RETURN 51011;
 END
 
 RETURN 0;

@@ -116,5 +116,9 @@ namespace Olive.Services
         FaultException CreateUnrecognizedCredentialsException(string email);
 
         FaultException CreateUnauthorizedFeatureAccessFaultException();
+
+        FaultException CreateMarketNotFoundFaultException(string fromCurrencyId, string toCurrencyId);
+
+        FaultException CreateMarketNotFoundFaultException(int fromCurrencyId);
     }
 }

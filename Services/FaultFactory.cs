@@ -61,6 +61,7 @@ namespace Olive.Services
             UnauthorizedAccountAccessFaultCode = new FaultCode("UnauthorizedAccountAccess");
             UnauthorizedFeatureAccessFaultCode = new FaultCode("UnauthorizedFeatureAccessFaultCode");
             AccountNotFoundFaultCode = new FaultCode("AccountNotFoundFaultCode");
+            MarketNotFoundFaultCode = new FaultCode("MarketNotFoundFaultCode");
         }
 
         /// <summary>
@@ -72,6 +73,8 @@ namespace Olive.Services
         public static FaultCode UnauthorizedFeatureAccessFaultCode { get; protected set; }
 
         public static FaultCode AccountNotFoundFaultCode { get; protected set; }
+
+        public static FaultCode MarketNotFoundFaultCode { get; protected set; }
 
         /// <summary>
         /// Gets or sets the email already registered fault code.
@@ -148,6 +151,24 @@ namespace Olive.Services
             return new FaultException(
                 new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, accountId)),
                 AccountNotFoundFaultCode);
+        }
+
+        public virtual FaultException CreateMarketNotFoundFaultException(string fromCurrencyId, string toCurrencyId)
+        {
+            const string ReasonFormat = "The specified market, {0} to {1}, does not exist.";
+
+            return new FaultException(
+                new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, fromCurrencyId, toCurrencyId)),
+                MarketNotFoundFaultCode);
+        }
+
+        public virtual FaultException CreateMarketNotFoundFaultException(int marketId)
+        {
+            const string ReasonFormat = "The specified market, #{0}, does not exist.";
+
+            return new FaultException(
+                new FaultReason(string.Format(CultureInfo.CurrentCulture, ReasonFormat, marketId)),
+                MarketNotFoundFaultCode);
         }
 
         /// <summary>

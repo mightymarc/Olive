@@ -266,7 +266,22 @@ namespace Olive.Services.Tests
         public void CreateSessionWithNullEmailThrowsException()
         {
             var service = new ClientService();
-            Assert.Throws<ArgumentException>(() => service.CreateSession(null, "password"));
+
+            try
+            {
+                service.CreateSession(null, "password");
+            }
+            catch (ArgumentException ae)
+            {
+                if (ae.ParamName == "email")
+                {
+                    Assert.Pass();
+                }
+
+                throw;
+            }
+
+            Assert.Fail();
         }
 
         /// <summary>
@@ -277,7 +292,19 @@ namespace Olive.Services.Tests
         {
             var service = new ClientService();
 
-            Assert.Throws<ArgumentException>(() => service.CreateSession("valid@email.com", null));
+            try
+            {
+                service.CreateSession("valid@email.com", null);
+            }
+            catch (ArgumentException ae)
+            {
+                if (ae.ParamName == "password")
+                {
+                    Assert.Pass();
+                }
+
+                throw;
+            }
         }
 
         /// <summary>
@@ -289,11 +316,25 @@ namespace Olive.Services.Tests
             var email = "email@pass.com";
             var passwordHash = "passwordHash";
 
-            var context = new MockOliveContext();
-            this.container.RegisterInstance<IOliveContext>(context);
-            var service = this.GetMockWebService();
+            var context = new Mock<OliveContext> { CallBase = true };
+            this.container.RegisterInstance<IOliveContext>(context.Object);
+            var service = this.GetMockClientService();
 
-            Assert.Throws<FaultException>(() => service.CreateSession(email, passwordHash));
+            try
+            {
+                service.CreateSession(email, passwordHash);
+            }
+            catch (FaultException fe)
+            {
+                if (fe.Code.Name == FaultFactory.UnrecognizedCredentialsFaultCode.Name)
+                {
+                    Assert.Pass();
+                }
+
+                throw;
+            }
+
+            Assert.Fail();
         }
 
         /// <summary>
@@ -313,12 +354,13 @@ namespace Olive.Services.Tests
             var context = new Mock<IOliveContext>(MockBehavior.Strict);
             context.Setup(c => c.Dispose());
             context.Setup(c => c.VerifySession(It.IsAny<Guid>())).Returns(userId);
-            context.Setup(c => c.CreateTransfer(sourceAccountId, destAccountId, description, amount)).Returns(
-                transferId);
+            context.Setup(c => c.CreateTransfer(sourceAccountId, destAccountId, description, amount)).Returns(transferId);
+
             this.container.RegisterInstance(context.Object);
 
-            var service = this.GetMockWebService();
+            var service = this.GetMockClientService();
             Mock.Get(service).Setup(s => s.UserCanWithdrawFromAccount(userId, sourceAccountId)).Returns(true);
+            Mock.Get(service).Setup(s => s.UserCanDepositToAccount(userId, destAccountId)).Returns(true);
 
             // Act
             var actualTransferId = service.CreateTransfer(
@@ -394,7 +436,7 @@ namespace Olive.Services.Tests
             context.Setup(c => c.VerifySession(It.IsAny<Guid>())).Returns(userId);
             this.container.RegisterInstance(context.Object);
 
-            var service = this.GetMockWebService();
+            var service = this.GetMockClientService();
             Mock.Get(service).Setup(s => s.UserCanWithdrawFromAccount(userId, sourceAccountId)).Returns(false);
 
             // Act
@@ -415,7 +457,7 @@ namespace Olive.Services.Tests
             var context = new Mock<IOliveContext>();
             this.container.RegisterInstance(context.Object);
 
-            IBankService service = this.GetMockWebService();
+            IBankService service = this.GetMockClientService();
 
             var sesionId = Guid.NewGuid();
             var sourceAccountId = 1;
@@ -468,6 +510,8 @@ namespace Olive.Services.Tests
         [Test]
         public void CreateUserWithAlreadyRegisteredEmailThrowsException()
         {
+            throw new NotImplementedException();
+            /*
             // Arrange
             var email = "user@email.com";
             var password = "passwordHash";
@@ -478,7 +522,7 @@ namespace Olive.Services.Tests
                 new User { Email = "USER@EMAIL.com", PasswordHash = "hash", PasswordSalt = "salt", UserId = 100 });
 
             // Act
-            var service = this.GetMockWebService();
+            var service = this.GetMockClientService();
 
             // Assert
             try
@@ -493,7 +537,7 @@ namespace Olive.Services.Tests
                 }
             }
 
-            Assert.Fail();
+            Assert.Fail();*/
         }
 
         /// <summary>
@@ -511,6 +555,8 @@ namespace Olive.Services.Tests
         [TestCase("test\n@emailcom")]
         public void CreateUserWithBadEmailFormatThrowsException(string email)
         {
+            throw new NotImplementedException();
+            /*
             // Arrange
             var password = "passwordHash";
             var context = new MockOliveContext();
@@ -523,7 +569,7 @@ namespace Olive.Services.Tests
             Assert.Throws<ArgumentException>(
                 () => service.CreateUser(email, password, 0), 
                 string.Format(
-                    CultureInfo.CurrentCulture, "E-mail '{0}' should not have been allowed to register.", email));
+                    CultureInfo.CurrentCulture, "E-mail '{0}' should not have been allowed to register.", email));*/
         }
 
         /// <summary>
@@ -651,7 +697,7 @@ namespace Olive.Services.Tests
             this.container.RegisterInstance(mockContext.Object);
             mockContext.Setup(c => c.VerifySession(sessionId)).Throws(new AuthenticationException());
 
-            var service = this.GetMockWebService();
+            var service = this.GetMockClientService();
 
             // Act and assert
             try
@@ -686,7 +732,7 @@ namespace Olive.Services.Tests
             mockContext.Setup(c => c.VerifySession(sessionId)).Returns(userId);
             this.container.RegisterInstance(mockContext.Object);
 
-            var service = this.GetMockWebService();
+            var service = this.GetMockClientService();
             Mock.Get(service).Setup(s => s.UserCanEditAccount(userId, accountId)).Returns(false);
 
             // Act and assert
@@ -731,7 +777,7 @@ namespace Olive.Services.Tests
             mockContext.SetupGet(c => c.Accounts).Returns(mockDbSet.Object);
             this.container.RegisterInstance(mockContext.Object);
 
-            var service = this.GetMockWebService();
+            var service = this.GetMockClientService();
             Mock.Get(service).Setup(s => s.UserCanViewAccount(userId, accountId)).Returns(true);
 
             // Act
@@ -760,7 +806,7 @@ namespace Olive.Services.Tests
             mockContext.Setup(c => c.VerifySession(sessionId)).Returns(userId);
             this.container.RegisterInstance(mockContext.Object);
 
-            var service = this.GetMockWebService();
+            var service = this.GetMockClientService();
             Mock.Get(service).Setup(s => s.UserCanViewAccount(userId, accountId)).Returns(false);
 
             // Act
@@ -785,7 +831,7 @@ namespace Olive.Services.Tests
             mockContext.Setup(c => c.VerifySession(sessionId)).Returns(userId);
             this.container.RegisterInstance(mockContext.Object);
 
-            var service = this.GetMockWebService();
+            var service = this.GetMockClientService();
             Mock.Get(service).Setup(s => s.UserCanViewAccount(userId, accountId)).Returns(false);
 
             try
@@ -801,6 +847,158 @@ namespace Olive.Services.Tests
             }
 
             Assert.Fail();
+        }
+
+        [Test]
+        public void CreateOrderThrowsExceptionWhenSessionIdIsEmpty()
+        {
+            var service = this.GetMockClientService();
+
+            try
+            {
+                service.CreateOrder(
+                    Guid.Empty, 0, 0, UnitTestHelper.Random.Next(1, int.MaxValue), UnitTestHelper.Random.Next(1, 100000) / 1000m, 0);
+            }
+            catch (ArgumentException ae)
+            {
+                if (ae.ParamName == "sessionId")
+                {
+                    Assert.Pass();
+                }
+
+                throw;
+            }
+
+            Assert.Fail("Expected exception to be thrown.");
+        }
+
+        [Test]
+        public void CreateOrderThrowsExceptionWhenPriceIsZero()
+        {
+            var service = this.GetMockClientService();
+
+            try
+            {
+                service.CreateOrder(
+                    Guid.NewGuid(), 123, 34, UnitTestHelper.Random.Next(1, int.MaxValue), 0, 0);
+            }
+            catch (ArgumentException ae)
+            {
+                if (ae.ParamName == "price")
+                {
+                    Assert.Pass();
+                }
+
+                throw;
+            }
+
+            Assert.Fail("Expected exception to be thrown.");
+        }
+
+        [Test]
+        public void CreateOrderThrowsExceptionWhenPriceIsNegative()
+        {
+            var service = this.GetMockClientService();
+
+            try
+            {
+                service.CreateOrder(
+                    Guid.NewGuid(), 123, 234, UnitTestHelper.Random.Next(1, int.MaxValue), -UnitTestHelper.Random.Next(1, 100000) / 1000m, 0);
+            }
+            catch (ArgumentException ae )
+            {
+                if (ae.ParamName == "price")
+                {
+                    Assert.Pass();
+                }
+
+                throw;
+            }
+
+            Assert.Fail("Expected exception to be thrown.");
+        }
+
+        [Test]
+        [TestCase(0)]
+        [TestCase(-100)]
+        public void CreateOrderThrowsExceptionWhenMarketIdIsInvalid(int marketId)
+        {
+            var service = this.GetMockClientService();
+
+            try
+            {
+                service.CreateOrder(
+                    Guid.NewGuid(), 123, 234, marketId, UnitTestHelper.Random.Next(1, 100000) / 1000m, 0);
+            }
+            catch (ArgumentException ae)
+            {
+                if (ae.ParamName == "marketId")
+                {
+                    Assert.Pass();
+                }
+
+                throw;
+            }
+
+            Assert.Fail("Expected exception to be thrown.");
+        }
+
+        [Test]
+        public void CreateOrderThrowsExceptionWhenSessionIsInvalid()
+        {
+            var service = this.GetMockClientService();
+            var sessionId = Guid.NewGuid();
+            var mockContext = new Mock<IOliveContext>();
+            mockContext.Setup(c => c.VerifySession(sessionId)).Throws(new SessionDoesNotExistException());
+            this.container.RegisterInstance(mockContext.Object);
+
+            try
+            {
+                service.CreateOrder(sessionId, 123, 234, 1, 2, 100);
+            }
+            catch (FaultException fe)
+            {
+                if (fe.Code.Name == FaultFactory.SessionDoesNotExistFaultCode.Name)
+                {
+                    mockContext.Verify(c => c.VerifySession(sessionId), Times.Once());
+                    Assert.Pass();
+                }
+
+                throw;
+            }
+
+            Assert.Fail("Expected an exception to be thrown.");
+        }
+
+        [Test]
+        public void CreateOrderSuccess()
+        {
+            var service = this.GetMockClientService();
+            var sessionId = Guid.NewGuid();
+            var marketId = UnitTestHelper.Random.Next(1, int.MaxValue);
+            var price = UnitTestHelper.Random.Next(1, 100000) / 1000m;
+            var volume = UnitTestHelper.Random.Next(1, 100000) / 1000m;
+            var userId = UnitTestHelper.Random.Next(1, int.MaxValue);
+            var sourceAccountId = UnitTestHelper.Random.Next(1, int.MaxValue / 2) * 2;
+            var destAccountId = (UnitTestHelper.Random.Next(1, int.MaxValue / 2) * 2) + 1;
+            var expectedOrderId = UnitTestHelper.Random.Next(1, int.MaxValue);
+
+            Mock.Get(service).Setup(s => s.UserCanDepositToAccount(userId, destAccountId)).Returns(true);
+            Mock.Get(service).Setup(s => s.UserCanWithdrawFromAccount(userId, sourceAccountId)).Returns(true);
+
+            var mockContext = new Mock<IOliveContext>();
+            mockContext.Setup(c => c.VerifySession(sessionId)).Returns(userId);
+            mockContext.Setup(c => c.CreateOrder(sourceAccountId, destAccountId, price, volume)).Returns(expectedOrderId);
+            this.container.RegisterInstance(mockContext.Object);
+
+            var actualOrderId = service.CreateOrder(sessionId, sourceAccountId, destAccountId, marketId, price, volume);
+
+            Assert.AreEqual(expectedOrderId, actualOrderId);
+
+            mockContext.Verify(c => c.VerifySession(sessionId), Times.Once());
+            mockContext.Verify(c => c.CreateOrder(sourceAccountId, destAccountId, price, volume), Times.Once());
+            Mock.Get(service).Verify(s => s.UserCanDepositToAccount(userId, destAccountId), Times.Once());
+            Mock.Get(service).Verify(s => s.UserCanWithdrawFromAccount(userId, sourceAccountId), Times.Once());
         }
 
         /// <summary>
@@ -843,7 +1041,7 @@ namespace Olive.Services.Tests
         /// </summary>
         /// <returns>
         /// </returns>
-        private ClientService GetMockWebService()
+        private ClientService GetMockClientService()
         {
             var mockService = new Mock<ClientService> { CallBase = true };
             mockService.Object.Container = this.container;

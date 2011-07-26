@@ -40,6 +40,7 @@
 namespace Olive.DataAccess
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
@@ -90,6 +91,8 @@ namespace Olive.DataAccess
 
         public IDbSet<AccountHold> AccountHolds { get; set; }
 
+        public IDbSet<ExchangeMarket> ExchangeMarkets { get; set; }
+
         public IDbSet<BitcoinTransaction> BitcoinTransactions { get; set; }
 
         /// <summary>
@@ -120,6 +123,10 @@ namespace Olive.DataAccess
         ///   Gets or sets Currencies.
         /// </summary>
         public IDbSet<Currency> Currencies { get; set; }
+
+        public IDbSet<ExchangeOrder> ExchangeOrders { get; set; }
+
+        public IDbSet<ExchangePrice> ExchangePrices { get; set; }
 
         /// <summary>
         ///   Gets or sets Sessions.
@@ -175,6 +182,9 @@ namespace Olive.DataAccess
             modelBuilder.Configurations.Add(new EntityConfigurations.RoleConfiguration());
             modelBuilder.Configurations.Add(new EntityConfigurations.BitcoinWithdrawAccountConfiguration());
             modelBuilder.Configurations.Add(new EntityConfigurations.AccountHoldConfiguration());
+            modelBuilder.Configurations.Add(new EntityConfigurations.ExchangeMarketConfiguration());
+            modelBuilder.Configurations.Add(new EntityConfigurations.ExchangeOrderConfiguration());
+            modelBuilder.Configurations.Add(new EntityConfigurations.ExchangePriceConfiguration());
         }
     }
 }

@@ -40,6 +40,7 @@
 namespace Olive.DataAccess
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Diagnostics.Contracts;
 
@@ -67,6 +68,12 @@ namespace Olive.DataAccess
         ///   Gets or sets Currencies.
         /// </summary>
         IDbSet<Currency> Currencies { get; set; }
+
+        IDbSet<ExchangeOrder> ExchangeOrders { get; set; }
+
+        IDbSet<ExchangeMarket> ExchangeMarkets { get; set; }
+
+        IDbSet<ExchangePrice> ExchangePrices { get; set; }
 
         /// <summary>
         ///   Gets or sets Sessions.
@@ -189,5 +196,7 @@ namespace Olive.DataAccess
         void SetAccountReceiveAddress(int accountId, string receiveAddress);
 
         string GetAccountReceiveAddress(int accountId);
+
+        int CreateOrder(int sourceAccountId, int destAccountId, decimal price, decimal volume);
     }
 }

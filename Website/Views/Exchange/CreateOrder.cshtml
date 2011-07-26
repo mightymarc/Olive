@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Create order";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "TODO")
+    @Html.EditorForModel()
+
+    <div>
+        <input type="submit" value="Create order" />
+    </div>
+}
+

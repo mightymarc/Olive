@@ -40,6 +40,7 @@
 namespace Olive.DataAccess
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Diagnostics.Contracts;
 
@@ -106,6 +107,32 @@ namespace Olive.DataAccess
                 return default(IDbSet<Currency>);
             }
 
+            set
+            {
+                return;
+            }
+        }
+
+        public IDbSet<ExchangeOrder> ExchangeOrders
+        {
+            get
+            {
+                return default(IDbSet<ExchangeOrder>);
+            }
+            set
+            {
+                return;
+            }
+        }
+
+        public IDbSet<ExchangeMarket> ExchangeMarkets { get; set; }
+
+        public IDbSet<ExchangePrice> ExchangePrices
+        {
+            get
+            {
+                return default(IDbSet<ExchangePrice>);
+            }
             set
             {
                 return;
@@ -345,6 +372,27 @@ namespace Olive.DataAccess
             Contract.Requires<ArgumentException>(accountId > 0, "accountId > 0");
             Contract.Ensures(Contract.Result<string>() == null || Contract.Result<string>().Length == 34, "receiveAddress");
             return default(string);
+        }
+
+        public List<ExchangePrice> GetPricesForMarket(int marketId)
+        {
+            Contract.Requires<ArgumentException>(marketId > 0, "marketId");
+            Contract.Ensures(Contract.Result<List<ExchangePrice>>() != null);
+            Contract.Ensures(Contract.ForAll(Contract.Result<List<ExchangePrice>>(), x => x != null));
+            Contract.Ensures(Contract.ForAll(Contract.Result<List<ExchangePrice>>(), x => x.Volume > 0));
+            Contract.Ensures(Contract.ForAll(Contract.Result<List<ExchangePrice>>(), x => x.Price > 0));
+            return default(List<ExchangePrice>);
+        }
+
+        public int CreateOrder(int sourceAccountId, int destAccountId, decimal price, decimal volume)
+        {
+            Contract.Requires<ArgumentException>(sourceAccountId > 0, "sourceAccountId");
+            Contract.Requires<ArgumentException>(destAccountId > 0, "destAccountId");
+            Contract.Requires<ArgumentException>(sourceAccountId != destAccountId, "sourceAccountId != destAccountId");
+            Contract.Requires<ArgumentException>(price > 0, "price");
+            Contract.Requires<ArgumentException>(volume > 0, "volume");
+            Contract.Ensures(Contract.Result<int>() > 0);
+            return default(int);
         }
     }
 }
