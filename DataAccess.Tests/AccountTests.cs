@@ -81,24 +81,5 @@ namespace Olive.DataAccess.Tests
         {
             var account = new Account();
         }
-
-        /// <summary>
-        /// The users_ not null.
-        /// </summary>
-        [Test]
-        public void UsersRelationshipNotNull()
-        {
-            using (var context = this.GetDbaContext())
-            {
-                var account = context.Accounts.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
-
-                if (account == null)
-                {
-                    Assert.Inconclusive("There are no accounts in the store.");
-                }
-
-                Assert.NotNull(account.Users);
-            }
-        }
     }
 }
