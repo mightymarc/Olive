@@ -41,13 +41,13 @@ namespace Olive.Website.Controllers
 {
     using System;
     using System.Diagnostics.Contracts;
+    using System.ServiceModel;
     using System.Threading;
     using System.Web.Mvc;
     using System.Web.Routing;
 
     using Microsoft.Practices.Unity;
 
-    using Olive.DataAccess;
     using Olive.Services;
     using Olive.Website.Helpers;
 
@@ -89,12 +89,17 @@ namespace Olive.Website.Controllers
         /// <param name="filterContext">Information about the current request and action.</param>
         protected override void OnException(ExceptionContext filterContext)
         {
-            if (filterContext.Exception is SessionDoesNotExistException)
+            var faultException = filterContext.Exception as FaultException;
+
+            if (faultException != null)
             {
-                this.SessionPersister.SessionId = Guid.Empty;
-                filterContext.ExceptionHandled = true;
-                this.Response.Redirect("/Account/Auth");
-                return;
+                if (faultException.Code.Name == FaultFactory.SessionDoesNotExistFaultCode.Name)
+                {
+                    this.SessionPersister.RemoveSession();
+                    filterContext.ExceptionHandled = true;
+                    this.Response.Redirect("/Account/Auth");
+                    return;
+                }
             }
 
             base.OnException(filterContext);
