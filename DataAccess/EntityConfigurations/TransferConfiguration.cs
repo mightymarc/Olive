@@ -19,8 +19,8 @@ namespace Olive.DataAccess.EntityConfigurations
         public TransferConfiguration()
         {
             this.ToTable("Transfer", "Banking");
-            this.HasRequired(t => t.SourceAccount).WithMany(m => m.OutgoingTransfers).HasForeignKey(m => m.SourceAccountId);
-            this.HasRequired(t => t.DestAccount).WithMany(m => m.IncomingTransfers).HasForeignKey(m => m.DestAccountId);
+            this.HasRequired(t => t.SourceAccount).WithMany(m => m.OutgoingTransfers).HasForeignKey(m => m.SourceAccountId).WillCascadeOnDelete(false);
+            this.HasRequired(t => t.DestAccount).WithMany(m => m.IncomingTransfers).HasForeignKey(m => m.DestAccountId).WillCascadeOnDelete(false);
         }
     }
 }
