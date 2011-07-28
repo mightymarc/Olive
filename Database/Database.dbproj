@@ -550,6 +550,9 @@
     <Build Include="Schema Objects\Schemas\dbo\RoundUp.function.sql">
       <SubType>Code</SubType>
     </Build>
+    <Build Include="Schema Objects\Schemas\Banking\Programmability\Stored Procedures\ChargeFee.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatabaseServer\DatabaseServer.dbproj">

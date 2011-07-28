@@ -29,11 +29,12 @@ BEGIN
 
 	INSERT INTO [Auth].[User] (Email, PasswordHash, PasswordSalt, ParentUserId)
 		VALUES ('bank@exu.me', 'hash', 'salt', NULL);
+	DECLARE @BankUserId INT = CONVERT(INT, SCOPE_IDENTITY());
 
 	INSERT INTO [Auth].[User] (Email, PasswordHash, PasswordSalt, ParentUserId)
 		VALUES ('andreas@opuno.com', 'gV01I0aXqNLdcX21eiZIF8GYqax5l8fbMvZ8GpNkNUk/LK+iksEwGwRJgfy1BKrXF44SIdF4EQSqXF0Xqs9yaQ==', 'hlOjDseGhycET+M7N85tESzM8tGjzp1x/p/ZflyXsVt7ksJ+mvQ2x+3jD8s6UscjdOYdCH2vReKy5ghK2noYIw==', 1);
-
 	DECLARE @TestUserId INT = CONVERT(INT, SCOPE_IDENTITY());
+
 	DECLARE @ID INT;
 
 	-- EXU faucet
