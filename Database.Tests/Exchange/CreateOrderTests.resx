@@ -184,9 +184,7 @@ SELECT
 FROM
 	Exchange.[Order]
 WHERE
---	OrderId = @OrderId AND
-	SourceAccountId = @SourceAccountId AND
-	DestAccountId = @DestAccountId AND
+--	OrderId = @OrderId FromAccountIdountId = @SourceAccountId ToAccountIdountId = @DestAccountId AND
 	Price = @Price AND
 	Volume = @Volume AND
 	ABS(DATEDIFF(second, GETUTCDATE(), CreatedAt)) &lt; 5;

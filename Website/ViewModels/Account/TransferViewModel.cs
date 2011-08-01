@@ -9,11 +9,13 @@ namespace Olive.Website.ViewModels.Account
 
     public class TransferViewModel
     {
-        public string Description { get; set; }
+        public string ToComment { get; set; }
 
-        public int DestAccountId { get; set; }
+        public string FromComment { get; set; }
 
-        public int SourceAccountId { get; set; }
+        public int ToAccountId { get; set; }
+
+        public int FromAccountId { get; set; }
 
         public decimal Amount { get; set; }
     }

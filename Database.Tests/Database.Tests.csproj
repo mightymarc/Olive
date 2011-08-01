@@ -223,6 +223,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Banking\CreateTransfer.resx">
       <DependentUpon>CreateTransfer.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Banking\EditCurrentAccountTest.resx">
       <DependentUpon>EditCurrentAccountTest.cs</DependentUpon>

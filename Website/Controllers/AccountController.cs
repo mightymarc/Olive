@@ -102,7 +102,7 @@ namespace Olive.Website.Controllers
                 return this.RedirectToLogin();
             }
 
-            return this.View(new TransferViewModel { SourceAccountId = sourceAccountId });
+            return this.View(new TransferViewModel { FromAccountId = sourceAccountId });
         }
 
         [HttpPost]
@@ -111,7 +111,7 @@ namespace Olive.Website.Controllers
             Contract.Requires<InvalidOperationException>(this.ClientService != null);
             Contract.Requires<InvalidOperationException>(this.SessionPersister != null);
             Contract.Requires<ArgumentNullException>(model != null, "model");
-            Contract.Requires<ArgumentException>(model.SourceAccountId > 0, "model.SourceAccountId > 0");
+            Contract.Requires<ArgumentException>(model.FromAccountId > 0, "model.FromAccountId > 0");
 
             if (!this.SessionPersister.HasSession)
             {
@@ -123,7 +123,7 @@ namespace Olive.Website.Controllers
                 return this.View(model);
             }
 
-            this.ClientService.CreateTransfer(this.SessionPersister.SessionId, model.SourceAccountId, model.DestAccountId, model.Amount, model.Description);
+            this.ClientService.CreateTransfer(this.SessionPersister.SessionId, model.FromAccountId, model.ToAccountId, model.Amount, model.FromComment, model.ToComment);
             return this.RedirectToAction(string.Empty, "Account");
         }
 
@@ -144,7 +144,7 @@ namespace Olive.Website.Controllers
             Contract.Requires<InvalidOperationException>(this.ClientService != null);
             Contract.Requires<InvalidOperationException>(this.SessionPersister != null);
             Contract.Requires<ArgumentNullException>(model != null, "model");
-            Contract.Requires<ArgumentException>(model.SourceAccountId > 0, "model.SourceAccountId > 0");
+            Contract.Requires<ArgumentException>(model.SourceAccountId > 0, "model.FromAccountId > 0");
 
             if (!this.SessionPersister.HasSession)
             {
@@ -160,7 +160,7 @@ namespace Olive.Website.Controllers
             var withdrawAccountId = this.ClientService.GetOrCreateBitcoinWithdrawAccount(
                 this.SessionPersister.SessionId, sourceAccount.CurrencyId, model.BitcoinReceiveAddress);
             this.ClientService.CreateTransfer(
-                this.SessionPersister.SessionId, model.SourceAccountId, withdrawAccountId, model.Amount, model.Description);
+                this.SessionPersister.SessionId, model.SourceAccountId, withdrawAccountId, model.Amount, model.Description, model.Description);
 
             return this.RedirectToAction(string.Empty, "Account");
         }

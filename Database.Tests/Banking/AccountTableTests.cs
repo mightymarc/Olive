@@ -40,6 +40,7 @@
 namespace Olive.Database.Tests.Banking
 {
     using System.ComponentModel;
+    using System.Transactions;
 
     using Microsoft.Data.Schema.UnitTesting;
     using Microsoft.Data.Schema.UnitTesting.Conditions;
@@ -70,22 +71,26 @@ namespace Olive.Database.Tests.Banking
         [TestMethod]
         public void AllowNegativeEnforced()
         {
-            DatabaseTestActions testActions = this.AllowNegativeEnforcedData;
+            using (new TransactionScope())
+            {
+                DatabaseTestActions testActions = this.AllowNegativeEnforcedData;
 
-            // Execute the pre-test script
-            System.Diagnostics.Trace.WriteLineIf(testActions.PretestAction != null, "Executing pre-test script...");
-            ExecutionResult[] pretestResults = TestService.Execute(
-                this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
+                // Execute the pre-test script
+                System.Diagnostics.Trace.WriteLineIf(testActions.PretestAction != null, "Executing pre-test script...");
+                ExecutionResult[] pretestResults = TestService.Execute(
+                    this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
 
-            // Execute the test script
-            System.Diagnostics.Trace.WriteLineIf(testActions.TestAction != null, "Executing test script...");
-            ExecutionResult[] testResults = TestService.Execute(
-                this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
+                // Execute the test script
+                System.Diagnostics.Trace.WriteLineIf(testActions.TestAction != null, "Executing test script...");
+                ExecutionResult[] testResults = TestService.Execute(
+                    this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
 
-            // Execute the post-test script
-            System.Diagnostics.Trace.WriteLineIf(testActions.PosttestAction != null, "Executing post-test script...");
-            ExecutionResult[] posttestResults = TestService.Execute(
-                this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+                // Execute the post-test script
+                System.Diagnostics.Trace.WriteLineIf(
+                    testActions.PosttestAction != null, "Executing post-test script...");
+                ExecutionResult[] posttestResults = TestService.Execute(
+                    this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+            }
         }
 
         /// <summary>

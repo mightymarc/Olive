@@ -154,10 +154,10 @@ SET IDENTITY_INSERT Banking.AccountHold OFF;
 -- Create orders.
 SET IDENTITY_INSERT Exchange.[Order] ON;
 
-INSERT INTO Exchange.[Order] (OrderId, SourceAccountId, DestAccountId, Volume, Price, AccountHoldId)
+INSERT INTO Exchange.[Order] (OrderId, FromAccountId, ToAccountId, Volume, Price, AccountHoldId)
 	VALUES (20001, 40001, 40002, @Volume1, @Price1, 30001);
 
-INSERT INTO Exchange.[Order] (OrderId, SourceAccountId, DestAccountId, Volume, Price, AccountHoldId)
+INSERT INTO Exchange.[Order] (OrderId, FromAccountId, ToAccountId, Volume, Price, AccountHoldId)
 	VALUES (20002, 40004, 40003, @Volume2, @Price2, 30002);
 
 SET IDENTITY_INSERT Exchange.[Order] OFF;

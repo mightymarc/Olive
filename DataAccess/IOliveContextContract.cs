@@ -243,27 +243,28 @@ namespace Olive.DataAccess
         /// <summary>
         /// The create transfer.
         /// </summary>
-        /// <param name="sourceAccountId">
+        /// <param name="fromAccountId">
         /// The source account id.
         /// </param>
-        /// <param name="destAccountId">
+        /// <param name="toAccountId">
         /// The dest account id.
         /// </param>
         /// <param name="description">
         /// The description.
         /// </param>
-        /// <param name="amount">
-        /// The amount.
+        /// <param name="volume">
+        /// The volume.
         /// </param>
         /// <returns>
         /// The create transfer.
         /// </returns>
-        public long CreateTransfer(int sourceAccountId, int destAccountId, string description, decimal amount)
+        public long CreateTransfer(int fromAccountId, int toAccountId, string fromComment, string toComment, decimal volume)
         {
-            Contract.Requires<ArgumentException>(sourceAccountId > 0, "sourceAccount");
-            Contract.Requires<ArgumentException>(destAccountId > 0, "destAccountId");
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(description), "description");
-            Contract.Requires<ArgumentException>(amount > 0, "amount");
+            Contract.Requires<ArgumentException>(fromAccountId > 0, "sourceAccount");
+            Contract.Requires<ArgumentException>(toAccountId > 0, "toAccountId");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(fromComment), "fromComment");
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(toComment), "destComment");
+            Contract.Requires<ArgumentException>(volume > 0, "volume");
             Contract.Ensures(Contract.Result<long>() > 0);
 
             return default(long);
@@ -356,7 +357,7 @@ namespace Olive.DataAccess
             Contract.Requires<ArgumentException>(transactionId.Length == 64, "transactionId length");
             Contract.Requires<ArgumentException>(accountId > 0, "accountId > 0");
             Contract.Requires<ArgumentException>(accountHoldId > 0, "accountHoldId > 0");
-            Contract.Requires<ArgumentException>(amount > 0, "amount > 0");
+            Contract.Requires<ArgumentException>(amount > 0, "volume > 0");
             return;
         }
 
@@ -386,9 +387,9 @@ namespace Olive.DataAccess
 
         public int CreateOrder(int sourceAccountId, int destAccountId, decimal price, decimal volume)
         {
-            Contract.Requires<ArgumentException>(sourceAccountId > 0, "sourceAccountId");
-            Contract.Requires<ArgumentException>(destAccountId > 0, "destAccountId");
-            Contract.Requires<ArgumentException>(sourceAccountId != destAccountId, "sourceAccountId != destAccountId");
+            Contract.Requires<ArgumentException>(sourceAccountId > 0, "fromAccountId");
+            Contract.Requires<ArgumentException>(destAccountId > 0, "toAccountId");
+            Contract.Requires<ArgumentException>(sourceAccountId != destAccountId, "fromAccountId != toAccountId");
             Contract.Requires<ArgumentException>(price > 0, "price");
             Contract.Requires<ArgumentException>(volume > 0, "volume");
             Contract.Ensures(Contract.Result<int>() > 0);

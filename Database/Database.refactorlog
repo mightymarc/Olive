@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0">
+  <Operation Name="Rename Refactor" Key="9224c43f-9e3e-4ee4-8ad2-3ad6d2f483df" ChangeDateTime="07/29/2011 16:27:25">
+    <Property Name="ElementName" Value="[Exchange].[Order].[SourceAccountId]" />
+    <Property Name="ElementType" Value="ISql100SimpleColumn" />
+    <Property Name="ParentElementName" Value="[Exchange].[Order]" />
+    <Property Name="ParentElementType" Value="ISql100Table" />
+    <Property Name="NewName" Value="FromAccountId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3acd8be3-5f82-4e4e-a3f0-2f65a2015f55" ChangeDateTime="07/29/2011 16:27:55">
+    <Property Name="ElementName" Value="[Exchange].[Order].[DestAccountId]" />
+    <Property Name="ElementType" Value="ISql100SimpleColumn" />
+    <Property Name="ParentElementName" Value="[Exchange].[Order]" />
+    <Property Name="ParentElementType" Value="ISql100Table" />
+    <Property Name="NewName" Value="ToAccountId" />
+  </Operation>
+</Operations>

@@ -219,6 +219,28 @@
     <Folder Include="Schema Objects\Schemas\Exchange\Views\Indexes\" />
     <Folder Include="Schema Objects\Schemas\Exchange\Views\Triggers\" />
     <Folder Include="Schema Objects\Schemas\Exchange\Views\Statistics\" />
+    <Folder Include="Schema Objects\Schemas\Lending\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Programmability\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Programmability\Defaults\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Programmability\Functions\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Programmability\Rules\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Programmability\Stored Procedures\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Programmability\Types\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Programmability\Types\User Defined Data Types\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Programmability\Types\User Defined Types CLR\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Programmability\Types\User Defined Table Types\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Programmability\Types\XML Schema Collections\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Synonyms\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Tables\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Tables\Constraints\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Tables\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Tables\Keys\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Tables\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Tables\Statistics\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Views\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Views\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Views\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\Lending\Views\Statistics\" />
   </ItemGroup>
   <ItemGroup>
     <PropertiesFile Include="Properties\Database.sqlsettings">
@@ -553,6 +575,27 @@
     <Build Include="Schema Objects\Schemas\Banking\Programmability\Stored Procedures\ChargeFee.proc.sql">
       <SubType>Code</SubType>
     </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Setting.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Keys\Setting.PK_Setting.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\GetSetting.function.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Exchange\Views\ActiveOrderView.view.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Database Level Objects\Security\Schemas\Lending.schema.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Lending\Tables\Loan.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Lending\Tables\Contribution.table.sql">
+      <SubType>Code</SubType>
+    </Build>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatabaseServer\DatabaseServer.dbproj">
@@ -561,5 +604,10 @@
       <Private>True</Private>
       <DatabaseVariableLiteralValue>master</DatabaseVariableLiteralValue>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <DeploymentExtensionConfiguration Include="Database.refactorlog">
+      <SubType>DeploymentExtensionConfiguration</SubType>
+    </DeploymentExtensionConfiguration>
   </ItemGroup>
 </Project>

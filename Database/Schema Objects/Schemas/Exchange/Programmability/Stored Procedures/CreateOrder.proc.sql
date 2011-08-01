@@ -53,7 +53,7 @@ BEGIN TRY
 
 	PRINT 'Inserting new order.';
 
-	INSERT INTO Exchange.[Order] (SourceAccountId, DestAccountId, Volume, Price, AccountHoldId)
+	INSERT INTO Exchange.[Order] (FromAccountId, ToAccountId, Volume, Price, AccountHoldId)
 		VALUES (@SourceAccountId, @DestAccountId, @Volume, @Price, @AccountHoldId);
 
 	SELECT @OrderId = CONVERT(INT, SCOPE_IDENTITY());
@@ -71,7 +71,7 @@ END TRY
 BEGIN CATCH
 	IF @TC = 0 ROLLBACK TRAN ELSE ROLLBACK TRAN TR1;
 
-	SELECT 'Error: ' + ERROR_MESSAGE();
+	PRINT ERROR_MESSAGE();
 
 	RETURN ERROR_NUMBER();
 END CATCH

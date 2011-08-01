@@ -1,6 +1,7 @@
 ﻿namespace Olive.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.ServiceModel;
 
@@ -53,6 +54,21 @@
             Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<GetMarketResponse>().ToCurrencyId));
 
             return default(GetMarketResponse);
+        }
+
+        public List<GetMarketResponse> GetMarkets()
+        {
+            Contract.Ensures(Contract.Result<List<GetMarketResponse>>() != null);
+            Contract.Ensures(Contract.ForAll(Contract.Result<List<GetMarketResponse>>(), m => m.MarketId > 0));
+            Contract.Ensures(Contract.ForAll(Contract.Result<List<GetMarketResponse>>(), m => !string.IsNullOrEmpty(m.FromCurrencyId)));
+            Contract.Ensures(Contract.ForAll(Contract.Result<List<GetMarketResponse>>(), m => !string.IsNullOrEmpty(m.ToCurrencyId)));
+
+            return default(List<GetMarketResponse>);
+        }
+
+        public List<GetMarketPricesResponse> GetAllMarketPrices()
+        {
+            throw new NotImplementedException();
         }
     }
 }

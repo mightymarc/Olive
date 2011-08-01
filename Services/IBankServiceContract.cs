@@ -70,14 +70,17 @@ namespace Olive.Services
         }
 
         public long CreateTransfer(
-            Guid sessionId, int sourceAccountId, int destAccountId, decimal amount, string description)
+            Guid sessionId, int fromAccountId, int toAccountId, decimal volume, string fromComment, string toComment)
         {
             Contract.Requires<ArgumentException>(sessionId != Guid.Empty, "sessionId");
-            Contract.Requires<ArgumentException>(sourceAccountId > 0, "sourceAccountId");
-            Contract.Requires<ArgumentException>(destAccountId > 0, "destAccountId");
-            Contract.Requires<ArgumentException>(sourceAccountId != destAccountId, "sourceAccount != destAccount");
-            Contract.Requires<ArgumentException>(amount > 0, "amount");
-            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(description), "description");
+            Contract.Requires<ArgumentException>(fromAccountId > 0, "fromAccountId");
+            Contract.Requires<ArgumentException>(toAccountId > 0, "toAccountId");
+            Contract.Requires<ArgumentException>(fromAccountId != toAccountId, "sourceAccount != destAccount");
+            Contract.Requires<ArgumentException>(volume > 0, "volume");
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(fromComment), "fromComment");
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(toComment), "toComment");
+            Contract.Ensures(Contract.Result<long>() > 0);
+
             return default(long);
         }
 
@@ -124,7 +127,7 @@ namespace Olive.Services
         {
             Contract.Requires<ArgumentException>(sessionId != Guid.Empty, "sessionId");
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(holdReason), "holdReason");
-            Contract.Requires<ArgumentException>(amount > 0, "amount > 0");
+            Contract.Requires<ArgumentException>(amount > 0, "volume > 0");
             Contract.Requires<ArgumentException>(accountId > 0, "accountId > 0");
             Contract.Requires<ArgumentException>(expiresAt == null || expiresAt.Value > DateTime.UtcNow);
             Contract.Ensures(Contract.Result<int>() > 0);

@@ -175,6 +175,18 @@ namespace Olive.Services.Tests
             Assert.AreEqual(expectedAccountId, actualAccountId);
         }
 
+        [Test]
+        public void GetMarketsSuccessTest()
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void GetAllMarketPricesTest()
+        {
+            Assert.Inconclusive();
+        }
+
         /// <summary>
         /// The create current account with bad arguments throws exception.
         /// </summary>

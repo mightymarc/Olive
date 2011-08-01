@@ -27,6 +27,12 @@ BEGIN
 	INSERT INTO dbo.Currency (CurrencyId) VALUES ('CAP');
 	INSERT INTO dbo.Currency (CurrencyId) VALUES ('BTT');
 
+	-- Settings
+	INSERT INTO dbo.[Setting] (SettingId, Value)
+	SELECT 'Exchange match fee ratio', '0.01'
+	UNION ALL
+	SELECT 'Fee K value', '2';
+
 	INSERT INTO [Auth].[User] (Email, PasswordHash, PasswordSalt, ParentUserId)
 		VALUES ('bank@exu.me', 'hash', 'salt', NULL);
 	DECLARE @BankUserId INT = CONVERT(INT, SCOPE_IDENTITY());
@@ -61,11 +67,11 @@ BEGIN
 
 	-- Give test user some EXU money.
 	DECLARE @TID BIGINT = NULL;
-	EXEC Banking.CreateTransfer @ExuFaucetId, @TestUserExuAccountId, 'From faucet', 100, @TID OUTPUT;
+	EXEC Banking.CreateTransfer @ExuFaucetId, @TestUserExuAccountId, 'From faucet', 'From faucet', 100, @TID OUTPUT;
 
 	-- Give test user some CAP money.
 	SELECT @TID = NULL;
-	EXEC Banking.CreateTransfer @CapFaucetId, @TestUserCapAccount2Id, 'From faucet', 100, @TID OUTPUT;
+	EXEC Banking.CreateTransfer @CapFaucetId, @TestUserCapAccount2Id, 'From faucet', 'From faucet', 100, @TID OUTPUT;
 
 	-- Markets
 	INSERT INTO Exchange.Market (FromCurrencyId, ToCurrencyId)

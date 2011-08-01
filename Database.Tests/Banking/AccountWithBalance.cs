@@ -40,6 +40,7 @@
 namespace Olive.DataAccess.Tests
 {
     using System.ComponentModel;
+    using System.Transactions;
 
     using Microsoft.Data.Schema.UnitTesting;
     using Microsoft.Data.Schema.UnitTesting.Conditions;
@@ -75,22 +76,26 @@ namespace Olive.DataAccess.Tests
         [TestMethod]
         public void Banking_AccountWithBalance_Balance_MatchesAcountTransferSums()
         {
-            DatabaseTestActions testActions = this.Banking_AccountWithBalance_Balance_MatchesAcountTransferSumsData;
+            using (new TransactionScope())
+            {
+                DatabaseTestActions testActions = this.Banking_AccountWithBalance_Balance_MatchesAcountTransferSumsData;
 
-            // Execute the pre-test script
-            System.Diagnostics.Trace.WriteLineIf(testActions.PretestAction != null, "Executing pre-test script...");
-            ExecutionResult[] pretestResults = TestService.Execute(
-                this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
+                // Execute the pre-test script
+                System.Diagnostics.Trace.WriteLineIf(testActions.PretestAction != null, "Executing pre-test script...");
+                ExecutionResult[] pretestResults = TestService.Execute(
+                    this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
 
-            // Execute the test script
-            System.Diagnostics.Trace.WriteLineIf(testActions.TestAction != null, "Executing test script...");
-            ExecutionResult[] testResults = TestService.Execute(
-                this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
+                // Execute the test script
+                System.Diagnostics.Trace.WriteLineIf(testActions.TestAction != null, "Executing test script...");
+                ExecutionResult[] testResults = TestService.Execute(
+                    this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
 
-            // Execute the post-test script
-            System.Diagnostics.Trace.WriteLineIf(testActions.PosttestAction != null, "Executing post-test script...");
-            ExecutionResult[] posttestResults = TestService.Execute(
-                this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+                // Execute the post-test script
+                System.Diagnostics.Trace.WriteLineIf(
+                    testActions.PosttestAction != null, "Executing post-test script...");
+                ExecutionResult[] posttestResults = TestService.Execute(
+                    this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+            }
         }
 
         /// <summary>
@@ -99,22 +104,27 @@ namespace Olive.DataAccess.Tests
         [TestMethod]
         public void Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCount()
         {
-            DatabaseTestActions testActions = this.Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCountData;
+            using (new TransactionScope())
+            {
+                DatabaseTestActions testActions =
+                    this.Banking_AccountWithBalance_RowCount_EqualsAccountTableRowCountData;
 
-            // Execute the pre-test script
-            System.Diagnostics.Trace.WriteLineIf(testActions.PretestAction != null, "Executing pre-test script...");
-            ExecutionResult[] pretestResults = TestService.Execute(
-                this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
+                // Execute the pre-test script
+                System.Diagnostics.Trace.WriteLineIf(testActions.PretestAction != null, "Executing pre-test script...");
+                ExecutionResult[] pretestResults = TestService.Execute(
+                    this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
 
-            // Execute the test script
-            System.Diagnostics.Trace.WriteLineIf(testActions.TestAction != null, "Executing test script...");
-            ExecutionResult[] testResults = TestService.Execute(
-                this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
+                // Execute the test script
+                System.Diagnostics.Trace.WriteLineIf(testActions.TestAction != null, "Executing test script...");
+                ExecutionResult[] testResults = TestService.Execute(
+                    this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
 
-            // Execute the post-test script
-            System.Diagnostics.Trace.WriteLineIf(testActions.PosttestAction != null, "Executing post-test script...");
-            ExecutionResult[] posttestResults = TestService.Execute(
-                this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+                // Execute the post-test script
+                System.Diagnostics.Trace.WriteLineIf(
+                    testActions.PosttestAction != null, "Executing post-test script...");
+                ExecutionResult[] posttestResults = TestService.Execute(
+                    this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+            }
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿ALTER TABLE [Exchange].[Order]
 	ADD CONSTRAINT [FK_Order_SourceAccount] 
-	FOREIGN KEY (SourceAccountId)
+	FOREIGN KEY (FromAccountId)
 	REFERENCES Banking.Account (AccountId);	
 

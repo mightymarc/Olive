@@ -56,7 +56,7 @@ BEGIN TRY
 		IF @@ROWCOUNT <> 1
 			RAISERROR(51018, 16, 1, 'New order volume');
 
-		UPDATE Banking.[AccountHold] SET Amount += @VolumeDelta WHERE AccountHoldId = @AccountHoldId;
+		UPDATE Banking.[AccountHold] SET Volume += @VolumeDelta WHERE AccountHoldId = @AccountHoldId;
 
 		IF @@ROWCOUNT <> 1
 			RAISERROR(51018, 16, 1, 'Updated hold amount');

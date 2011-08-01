@@ -1,7 +1,7 @@
 ﻿-- Returns:
--- 100: @SourceAccountId is null
--- 101: @DestAccountId is null
--- 102: @Amount is null
+-- 100: @FromAccountId is null
+-- 101: @ToAccountId is null
+-- 102: @Volume is null
 -- 103: @Description is null
 -- 104: @TransferId must be null
 -- 105: Source account would get illegal negative balance.
@@ -10,22 +10,24 @@
 -- 108: Accounts have different currencies.
 CREATE PROCEDURE Banking.CreateTransfer
 (
-	@SourceAccountId int,
-	@DestAccountId int,
-	@Description nvarchar(250),
-	@Amount decimal(18, 8),
+	@FromAccountId int,
+	@ToAccountId int,
+	@FromComment nvarchar(250),
+	@ToComment nvarchar(250),
+	@Volume decimal(18, 8),
 	@TransferId bigint output
 )
 
 AS
 
-if @SourceAccountId is null RAISERROR(51003, 16, 1, '@SourceAccountId');
-if @DestAccountId is null RAISERROR(51003, 16, 1, '@DestAccountId');
-if @Amount is null RAISERROR(51003, 16, 1, '@Amount');
-if @Description is null RAISERROR(51003, 16, 1, '@Description');
+if @FromAccountId is null RAISERROR(51003, 16, 1, '@FromAccountId');
+if @ToAccountId is null RAISERROR(51003, 16, 1, '@ToAccountId');
+if @Volume is null RAISERROR(51003, 16, 1, '@Volume');
+if @FromComment is null RAISERROR(51003, 16, 1, '@FromComment');
+if @ToComment is null RAISERROR(51003, 16, 1, '@ToComment');
 if @TransferId is not null RAISERROR(51004, 16, 1, '@TransferId');
-IF @SourceAccountId = @DestAccountId RAISERROR(51007, 16, 1);
-if @Amount <= 0 RAISERROR(51005, 16, 1);
+IF @FromAccountId = @ToAccountId RAISERROR(51007, 16, 1);
+if @Volume <= 0 RAISERROR(51005, 16, 1);
 
 DECLARE @TC INT = @@TRANCOUNT;
 
@@ -34,18 +36,18 @@ IF @TC = 0 BEGIN TRAN ELSE SAVE TRAN TR1
 BEGIN TRY
 
 -- Make sure the source account has enough funds.
-DECLARE @SourceAccountBeforeBalance decimal(18, 8)
-DECLARE @SourceAccountAllowsNegativeBalance bit
-SELECT @SourceAccountBeforeBalance = Available, @SourceAccountAllowsNegativeBalance = AllowNegative FROM Banking.AccountWithBalance
-	WHERE AccountId = @SourceAccountId
-		
-IF @SourceAccountAllowsNegativeBalance = 0 AND @SourceAccountBeforeBalance < @Amount
+DECLARE @FromAccountBeforeBalance decimal(18, 8)
+DECLARE @FromAccountAllowsNegativeBalance bit
+SELECT @FromAccountBeforeBalance = Available, @FromAccountAllowsNegativeBalance = AllowNegative FROM Banking.AccountWithBalance
+	WHERE AccountId = @FromAccountId
+
+IF @FromAccountAllowsNegativeBalance = 0 AND @FromAccountBeforeBalance < @Volume
 BEGIN
 	IF '$(TargetEnv)' = 'Dev'
 	BEGIN
-		PRINT '@SourceAccountAllowsNegativeBalance = 0 (FALSE)';
-		PRINT '@SourceAccountBeforeBalance = ' + CONVERT(NVARCHAR, @SourceAccountBeforeBalance);
-		PRINT '@Amount = ' + CONVERT(NVARCHAR, @Amount);
+		PRINT '@FromAccountAllowsNegativeBalance = 0 (FALSE)';
+		PRINT '@FromAccountBeforeBalance = ' + CONVERT(NVARCHAR, @FromAccountBeforeBalance);
+		PRINT '@Volume = ' + CONVERT(NVARCHAR, @Volume);
 
 		SELECT * FROM Banking.[AccountWithBalance];
 	END
@@ -54,31 +56,40 @@ BEGIN
 END
 
 -- Make sure the accounts have the same currency.
-DECLARE @SourceAccountCurrencyId VARCHAR(10) = (SELECT CurrencyId FROM Banking.Account WHERE AccountId = @SourceAccountId);
+DECLARE @FromAccountCurrencyId VARCHAR(10) = (SELECT CurrencyId FROM Banking.Account WHERE AccountId = @FromAccountId);
 
-IF @SourceAccountCurrencyId IS NULL
+IF @FromAccountCurrencyId IS NULL
 	RAISERROR(51001, 16, 1);
 
-DECLARE @DestAccountCurrencyId VARCHAR(10) = (SELECT CurrencyId FROM Banking.Account WHERE AccountId = @DestAccountId);
+DECLARE @ToAccountCurrencyId VARCHAR(10) = (SELECT CurrencyId FROM Banking.Account WHERE AccountId = @ToAccountId);
 
-IF @DestAccountCurrencyId IS NULL
+IF @ToAccountCurrencyId IS NULL
 	RAISERROR(51002, 16, 1);
 
-IF @SourceAccountCurrencyId <> @DestAccountCurrencyId
+IF @FromAccountCurrencyId <> @ToAccountCurrencyId
 	RAISERROR(51008, 16, 1);
+
+IF '$(TargetEnv)' = 'Dev'
+BEGIN
+	PRINT 'Creating transfer of ' + CONVERT(VARCHAR, @Volume) + ' ' + @FromAccountCurrencyId +
+		' from account ' + CONVERT(VARCHAR, @FromAccountId) + ' (' + @FromComment +
+		') to ' + CONVERT(VARCHAR, @ToAccountId) + ' (' + @ToComment + ')';
+END
 	
 INSERT INTO Banking.[Transfer]
 (
-	SourceAccountId, 
-	DestAccountId, 
-	Amount,
-	[Description]
+	FromAccountId, 
+	ToAccountId, 
+	Volume,
+	[FromComment],
+	[ToComment]
 ) VALUES (
-	@SourceAccountId,
-	@DestAccountId,
-	@Amount,
-	@Description
-)
+	@FromAccountId,
+	@ToAccountId,
+	@Volume,
+	@FromComment,
+	@ToComment
+);
 	
 IF @@ROWCOUNT <> 1
 	RAISERROR(51010, 16, 1);

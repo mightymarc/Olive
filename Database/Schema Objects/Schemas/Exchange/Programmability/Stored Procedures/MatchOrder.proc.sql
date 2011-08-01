@@ -23,36 +23,27 @@ BEGIN TRY
 	DECLARE @RightVolume DECIMAL(18, 4); -- Relative to its currency, not left's.
 
 	SELECT TOP 1
-		@RightPrice = Ro.Price,
-		@RightPriceInvert = ROUND(RO.Price, 4) + CASE WHEN RO.Price % 0.0001 > 0 THEN 1 ELSE 0 END,
+		@RightPrice = RO.Price,
+		@RightPriceInvert = RO.PriceInvert,
 		@RightVolume = RO.Volume,
-		@LeftSourceAccountId = LO.SourceAccountId,
-		@LeftDestAccountId = LO.DestAccountId,
-		@RightSourceAccountId = RO.SourceAccountId,
-		@RightDestAccountId = RO.DestAccountId,
+		@LeftSourceAccountId = LO.FromAccountId,
+		@LeftDestAccountId = LO.ToAccountId,
+		@RightSourceAccountId = RO.FromAccountId,
+		@RightDestAccountId = RO.ToAccountId,
 		@LeftVolume = LO.Volume,
 		@LeftAccountHoldId = LO.AccountHoldId,
 		@RightAccountHoldId = RO.AccountHoldId,
 		@RightOrderId = RO.OrderId
 	FROM
-		Exchange.[Order] LO,
-		Exchange.[Order] RO,
-		Banking.Account LSA,
-		Banking.Account LDA,
-		Banking.Account RSA,
-		Banking.Account RDA
+		Exchange.ActiveOrderView LO,
+		Exchange.ActiveOrderView RO
 	WHERE
 		LO.OrderId = @LeftOrderId AND
-		1 / RO.Price >= LO.Price AND
-		LSA.AccountId = LO.SourceAccountId AND
-		LDA.AccountId = LO.DestAccountId AND
-		RSA.AccountId = RO.SourceAccountId AND
-		RDA.AccountId = Ro.DestAccountId AND
-		LSA.CurrencyId = RDA.CurrencyId AND
-		LDA.CurrencyId = RSA.CurrencyId AND
-		RO.Volume > 0 -- Could use a view here instead, such as ActiveOrder
+		RO.PriceInvert >= LO.Price AND
+		LO.SourceCurrencyId = RO.DestCurrencyId AND
+		LO.DestCurrencyId = RO.SourceCurrencyId
 	ORDER BY
-		ROUND(1 / RO.Price, 4) + CASE WHEN 1 / RO.Price % 0.0001 > 0 THEN 1 ELSE 0 END DESC,
+		RO.PriceInvert DESC,
 		RO.CreatedAt ASC;
 
 	IF @RightOrderId IS NULL
@@ -67,24 +58,14 @@ BEGIN TRY
 		SELECT
 			RO.*
 		FROM
-			Exchange.[Order] LO,
-			Exchange.[Order] RO,
-			Banking.Account LSA,
-			Banking.Account LDA,
-			Banking.Account RSA,
-			Banking.Account RDA
+			Exchange.ActiveOrderView LO,
+			Exchange.ActiveOrderView RO
 		WHERE
 			LO.OrderId = @LeftOrderId AND
-			--1 / RO.Price >= LO.Price AND
-			LSA.AccountId = LO.SourceAccountId AND
-			LDA.AccountId = LO.DestAccountId AND
-			RSA.AccountId = RO.SourceAccountId AND
-			RDA.AccountId = Ro.DestAccountId AND
-			LSA.CurrencyId = RDA.CurrencyId AND
-			LDA.CurrencyId = RSA.CurrencyId AND
-			RO.Volume > 0 -- Could use a view here instead, such as ActiveOrder
+			LO.SourceCurrencyId = RO.DestCurrencyId AND
+			LO.DestCurrencyId = RO.SourceCurrencyId
 		ORDER BY
-			ROUND(1 / RO.Price, 4) + CASE WHEN 1 / RO.Price % 0.0001 > 0 THEN 1 ELSE 0 END DESC,
+			RO.PriceInvert DESC,
 			RO.CreatedAt ASC;
 
 		IF @TC = 0 COMMIT TRAN
@@ -134,21 +115,56 @@ BEGIN TRY
 	-- Transfer
 	DECLARE @TransferReason NVARCHAR(250) = N'Exchange order', @TransferId BIGINT;
 
-	EXEC @RC = Banking.CreateTransfer @LeftSourceAccountId, @RightDestAccountId, @TransferReason, @FromVolume, @TransferId OUTPUT;
+	-- Create transfer from right to left
+	PRINT 'Creating transfer from left source, ' + CONVERT(VARCHAR, @LeftSourceAccountId) +
+		', to right dest, ' + CONVERT(VARCHAR, @RightDestAccountId) + ' for ' +
+		CONVERT(VARCHAR, @FromVolume) + '.';
+
+	EXEC @RC = Banking.CreateTransfer @LeftSourceAccountId, @RightDestAccountId, @TransferReason, @TransferReason, @FromVolume, @TransferId OUTPUT;
 	IF @RC <> 0 RAISERROR('Failed to execute left to right transfer. RC %d.', 16, 1, @RC);
 
 	SELECT @TransferId = NULL;
 
-	EXEC @RC = Banking.CreateTransfer @RightSourceAccountId, @LeftDestAccountId, @TransferReason, @ToVolume, @TransferId OUTPUT;
+	-- Create transfer from right to left
+	PRINT 'Creating transfer from right source, ' + CONVERT(VARCHAR, @RightSourceAccountId) +
+		', to left dest, ' + CONVERT(VARCHAR, @LeftDestAccountId) + ' for ' +
+		CONVERT(VARCHAR, @ToVolume) + '.';
+
+	EXEC @RC = Banking.CreateTransfer @RightSourceAccountId, @LeftDestAccountId, @TransferReason, @TransferReason, @ToVolume, @TransferId OUTPUT;
 	IF @RC <> 0 RAISERROR('Failed to execute right to left transfer. RC %d.', 16, 1, @RC);
 
-	-- Match again if any volume remains
-	-- TODO
+	-- Charge right dest. a fee.
+	DECLARE @FromFee DECIMAL(18, 4) = @FromVolume * CONVERT(FLOAT, dbo.GetSetting('Exchange match fee ratio'));
+
+	PRINT 'Charging right dest a fee of ' + CONVERT(VARCHAR, @FromFee) + '.';
+
+	EXEC @RC = Banking.ChargeFee @RightDestAccountId, @FromFee, 'Exchange fee', NULL;
+
+	IF @RC <> 0 RAISERROR('Failed to charge fee from right dest account. RC %d.', 16, 1, @RC);
+
+	-- Charge left dest a fee.
+	DECLARE @ToFee DECIMAL(18, 4) = @ToVolume * CONVERT(FLOAT, dbo.GetSetting('Exchange match fee ratio'));
+
+	PRINT 'Charging left dest a fee of ' + CONVERT(VARCHAR, @ToFee) + '.';
+
+	EXEC @RC = Banking.ChargeFee @LeftDestAccountId, @ToFee, 'Exchange fee', NULL;
+
+	IF @RC <> 0 RAISERROR('Failed to charge fee from left dest account. RC %d.', 16, 1, @RC);
+
+	-- Recursively match if any left volume remains.
+	IF @LeftVolumeDelta + @LeftVolume > 0
+	BEGIN
+		EXEC @RC = Exchange.MatchOrder @LeftOrderId;
+
+		IF @RC <> 0 RAISERROR('Failed to recursivelt match order. RC %d.', 16, 1, @RC);
+	END
 
 	IF @TC = 0 COMMIT TRAN;
 END TRY
 BEGIN CATCH
 	IF @TC = 0 ROLLBACK TRAN ELSE ROLLBACK TRAN TR1;
+
+	PRINT ERROR_MESSAGE();
 
 	RETURN ERROR_NUMBER();
 END CATCH

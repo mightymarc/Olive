@@ -115,28 +115,29 @@ namespace Olive.DataAccess
         /// <summary>
         /// Creates the transfer.
         /// </summary>
-        /// <param name="sourceAccountId">
+        /// <param name="fromAccountId">
         /// The source account id.
         /// </param>
-        /// <param name="destAccountId">
+        /// <param name="toAccountId">
         /// The dest account id.
         /// </param>
         /// <param name="description">
         /// The description.
         /// </param>
-        /// <param name="amount">
-        /// The amount.
+        /// <param name="volume">
+        /// The volume.
         /// </param>
         /// <returns>
         /// The identifier for the transfer that was created.
         /// </returns>
-        public long CreateTransfer(int sourceAccountId, int destAccountId, string description, decimal amount)
+        public long CreateTransfer(int fromAccountId, int toAccountId, string fromComment, string toComment, decimal volume)
         {
             var command = this.CommandConnection.CreateCommand("Banking.CreateTransfer");
-            command.AddParam("@SourceAccountId", DbType.Int32, sourceAccountId);
-            command.AddParam("@DestAccountId", DbType.Int32, destAccountId);
-            command.AddParam("@Amount", DbType.Decimal, amount);
-            command.AddParam("@Description", DbType.String, (object)description ?? DBNull.Value);
+            command.AddParam("@FromAccountId", DbType.Int32, fromAccountId);
+            command.AddParam("@ToAccountId", DbType.Int32, toAccountId);
+            command.AddParam("@Volume", DbType.Decimal, volume);
+            command.AddParam("@FromComment", DbType.String, (object)fromComment ?? DBNull.Value);
+            command.AddParam("@ToComment", DbType.String, (object)toComment ?? DBNull.Value);
             command.AddParam("@TransferId", DbType.Int64, direction: ParameterDirection.Output);
 
             switch (this.ExecuteCommand(command))

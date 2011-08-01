@@ -70,15 +70,15 @@ namespace Olive.Services
         /// The create transfer.
         /// </summary>
         /// <param name="sessionId">The session id.</param>
-        /// <param name="sourceAccountId">The source account id.</param>
-        /// <param name="destAccountId">The dest account id.</param>
-        /// <param name="amount">The amount.</param>
-        /// <param name="description">The description.</param>
+        /// <param name="fromAccountId">The source account id.</param>
+        /// <param name="toAccountId">The dest account id.</param>
+        /// <param name="volume">The volume.</param>
+        /// <param name="fromComment">The fromComment.</param>
         /// <returns>
         /// The create transfer.
         /// </returns>
         [OperationContract]
-        long CreateTransfer(Guid sessionId, int sourceAccountId, int destAccountId, decimal amount, string description);
+        long CreateTransfer(Guid sessionId, int fromAccountId, int toAccountId, decimal volume, string fromComment, string toComment);
 
         /// <summary>
         /// The edit current account.

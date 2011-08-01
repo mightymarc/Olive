@@ -1,6 +1,7 @@
 ﻿namespace Olive.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.ServiceModel;
 
@@ -18,5 +19,11 @@
 
         [OperationContract]
         GetMarketResponse GetMarket(int marketId);
+
+        [OperationContract]
+        List<GetMarketResponse> GetMarkets();
+
+        [OperationContract]
+        List<GetMarketPricesResponse> GetAllMarketPrices();
     }
 }

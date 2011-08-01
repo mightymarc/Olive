@@ -16,6 +16,10 @@ namespace Olive.Services
 
     public class GetMarketPricesResponse
     {
+        public string FromCurrency { get; set; }
+
+        public string ToCurrency { get; set; }
+
         public int MarketId { get; set; }
 
         public List<GetMarketPricesResponsePrice> Prices { get; set; }

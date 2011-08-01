@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [Banking].[CreateAccountHold]
     @AccountId INT,
-    @Amount DECIMAL(18, 8),
+    @Volume DECIMAL(18, 8),
     @Reason NVARCHAR(150),
     @ExpiresAt DATETIME,
     @AccountHoldId INT OUTPUT
@@ -13,7 +13,7 @@ IF @TC = 0 BEGIN TRAN ELSE SAVE TRAN TR1;
 
 BEGIN TRY
     IF @AccountId IS NULL RAISERROR(51003, 16, 1, '@AccountId');
-    IF @Amount IS NULL RAISERROR(51003, 16, 1, '@Amount');
+    IF @Volume IS NULL RAISERROR(51003, 16, 1, '@Volume');
     IF @Reason IS NULL RAISERROR(51003, 16, 1, '@Reason');
     IF @AccountHoldId IS NOT NULL RAISERROR(51004, 16, 1, '@AccountHoldId');
 
@@ -23,11 +23,11 @@ BEGIN TRY
         FROM Banking.AccountWithBalance 
         WHERE AccountId = @AccountId;
 
-    IF @Available < @Amount
+    IF @Available < @Volume
         RAISERROR(51013, 16, 1);
 
-    INSERT INTO Banking.AccountHold (AccountId, Amount, ExpiresAt, Reason)
-        VALUES (@AccountId, @Amount, @ExpiresAt, @Reason);
+    INSERT INTO Banking.AccountHold (AccountId, Volume, ExpiresAt, Reason)
+        VALUES (@AccountId, @Volume, @ExpiresAt, @Reason);
 
     SELECT @AccountHoldId = CONVERT(INT, SCOPE_IDENTITY());
 

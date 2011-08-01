@@ -125,22 +125,22 @@ namespace Olive.DataAccess
         /// <summary>
         /// Creates the transfer.
         /// </summary>
-        /// <param name="sourceAccountId">
+        /// <param name="fromAccountId">
         /// The source account id.
         /// </param>
-        /// <param name="destAccountId">
+        /// <param name="toAccountId">
         /// The dest account id.
         /// </param>
         /// <param name="description">
         /// The description.
         /// </param>
-        /// <param name="amount">
-        /// The amount.
+        /// <param name="volume">
+        /// The volume.
         /// </param>
         /// <returns>
         /// The create transfer.
         /// </returns>
-        long CreateTransfer(int sourceAccountId, int destAccountId, string description, decimal amount);
+        long CreateTransfer(int fromAccountId, int toAccountId, string fromComment, string toComment, decimal volume);
 
         /// <summary>
         /// The edit current account.
@@ -181,7 +181,7 @@ namespace Olive.DataAccess
         /// Creates the account hold.
         /// </summary>
         /// <param name="accountId">The account id.</param>
-        /// <param name="amount">The amount.</param>
+        /// <param name="amount">The volume.</param>
         /// <param name="holdReason">The hold reason.</param>
         /// <param name="expiresAt">The expires at.</param>
         /// <returns></returns>

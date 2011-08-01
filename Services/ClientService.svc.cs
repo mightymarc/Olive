@@ -164,8 +164,8 @@ namespace Olive.Services
         /// <param name="sessionId">The session id.</param>
         /// <param name="sourceAccountId">The source account id.</param>
         /// <param name="destAccountId">The dest account id.</param>
-        /// <param name="amount">The amount.</param>
-        /// <param name="description">The description.</param>
+        /// <param name="volume">The volume.</param>
+        /// <param name="sourceComment">The description.</param>
         /// <returns>
         /// The create transfer.
         /// </returns>
@@ -175,7 +175,7 @@ namespace Olive.Services
         /// <exception cref="FaultException">
         ///   </exception>
         public long CreateTransfer(
-            Guid sessionId, int sourceAccountId, int destAccountId, decimal amount, string description)
+            Guid sessionId, int sourceAccountId, int destAccountId, decimal volume, string sourceComment, string destComment)
         {
             var userId = default(int);
 
@@ -193,7 +193,7 @@ namespace Olive.Services
 
                 try
                 {
-                    return context.CreateTransfer(sourceAccountId, destAccountId, description, amount);
+                    return context.CreateTransfer(sourceAccountId, destAccountId, sourceComment, destComment, volume);
                 }
                 catch (AuthorizationException)
                 {
@@ -436,7 +436,7 @@ namespace Olive.Services
                     var sourceAccountId = accountHold.AccountId;
                     
                     context.ReleaseAccountHold(accountHoldId);
-                    context.CreateTransfer(sourceAccountId, destAccountId, "Debited", accountHold.Amount);
+                    context.CreateTransfer(sourceAccountId, destAccountId, "Withdrawn", "Withdrawn by user " + userId, accountHold.Amount);
                     
                     scope.Complete();
                 }
@@ -610,7 +610,8 @@ namespace Olive.Services
                         throw this.FaultFactory.CreateAccountNotFoundFaultException(accountId);
                     }
 
-                    context.CreateTransfer(sourceAccountId, destAccount.AccountId, "Bitcoin " + transactionId, amount);
+                    context.CreateTransfer(sourceAccountId, destAccount.AccountId, "Bitcoin " + transactionId,
+                        "Bitcoin " + transactionId, amount);
                     var accountHoldId = context.CreateAccountHold(accountId, amount, holdReason, default(DateTime?));
                     context.CreateTransaction(transactionId, accountId, accountHoldId, amount);
 
@@ -806,6 +807,16 @@ namespace Olive.Services
 
                 return response;
             }
+        }
+
+        public List<GetMarketResponse> GetMarkets()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<GetMarketPricesResponse> GetAllMarketPrices()
+        {
+            throw new NotImplementedException();
         }
 
         public GetMarketPricesResponse GetMarketPrices(int marketId)
